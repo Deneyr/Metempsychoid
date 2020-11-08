@@ -9,8 +9,11 @@
         <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
             <TextBlock Name="txtEditor"/>
         </WrapPanel>
-        <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,50,0,50">
+        <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,50,0,0">
             <Button Name="btnLaunchTile" Click="btnLaunchTile_Click" Height="20" Width="100">Tile !</Button>
         </WrapPanel>
+        <Grid Margin="20">
+            <ProgressBar Name="prgBar" Minimum="0" Maximum="100" />
+        </Grid>
     </DockPanel>
 </Window>
