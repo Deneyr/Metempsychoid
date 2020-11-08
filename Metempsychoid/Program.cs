@@ -10,6 +10,9 @@ namespace Metempsychoid
     {
         static void Main(string[] args)
         {
+            MainWindow mainWindow = new MainWindow();
+
+            mainWindow.Run();
         }
     }
 }

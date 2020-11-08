@@ -1,0 +1,16 @@
+﻿<Window x:Class="Tiler.OpenFileDialogSample"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="OpenFileDialogSample" Height="300" Width="500">
+    <DockPanel Margin="10">
+        <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,50,0,10">
+            <Button Name="btnOpenFile" Click="btnOpenFile_Click" Width="100" >Open file</Button>
+        </WrapPanel>
+        <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,0,0,10">
+            <TextBlock Name="txtEditor"/>
+        </WrapPanel>
+        <WrapPanel HorizontalAlignment="Center" DockPanel.Dock="Top" Margin="0,50,0,50">
+            <Button Name="btnLaunchTile" Click="btnLaunchTile_Click" Height="20" Width="100">Tile !</Button>
+        </WrapPanel>
+    </DockPanel>
+</Window>
