@@ -19,13 +19,13 @@ using System.Windows.Shapes;
 
 namespace Tiler
 {
-    public partial class OpenFileDialogSample : Window
+    public partial class TilerWindow : Window
     {
         private static readonly int TILE_SIZE = 512;
 
         private FileInfo fileToTile;
 
-        public OpenFileDialogSample()
+        public TilerWindow()
         {
             InitializeComponent();
 

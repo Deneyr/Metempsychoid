@@ -10,7 +10,7 @@ namespace Metempsychoid
 {
     public class MainWindow
     {
-        public static readonly int MODEL_TO_VIEW = 16;
+        public static readonly int MODEL_TO_VIEW = 1;
 
         private Vector2f resolutionScreen;
 
