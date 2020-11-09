@@ -1,3 +1,5 @@
+using Metempsychoid.Model;
+using Metempsychoid.View;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -12,19 +14,15 @@ namespace Metempsychoid
     {
         public static readonly int MODEL_TO_VIEW = 1;
 
-        private Vector2f resolutionScreen;
+        private World world;
 
-        private FloatRect boundsView;
-
-        //private LandWorld landWorld;
-
-        //private LandWorld2D landWorld2D;
+        private World2D world2D;
 
         public MainWindow()
         {
-            //this.landWorld = new LandWorld();
+            this.world = new World();
 
-            //this.landWorld2D = new LandWorld2D(this.landWorld);
+            this.world2D = new World2D(this.world);
         }
 
         public void Run()
@@ -42,13 +40,13 @@ namespace Metempsychoid
             //this.object2DManager.SizeScreen = window.GetView().Size;
 
 
-            SFML.Graphics.View view = window.GetView();
+            //SFML.Graphics.View view = window.GetView();
 
-            view.Size = new Vector2f(400, 300);
+            //view.Size = new Vector2f(400, 300);
 
-            this.resolutionScreen = new Vector2f(view.Size.X, view.Size.Y);
-            view.Center = new Vector2f(9492, -12595);
-            this.SetView(window, view);
+            //this.resolutionScreen = new Vector2f(view.Size.X, view.Size.Y);
+            //view.Center = new Vector2f(9492, -12595);
+            //this.SetView(window, view);
 
             window.SetVerticalSyncEnabled(true);
 
@@ -62,14 +60,14 @@ namespace Metempsychoid
                 Time deltaTime = clock.Restart();
 
                 // Game logic update
-                //this.landWorld.UpdateLogic(null, deltaTime);
+                this.world.UpdateLogic(null, deltaTime);
 
                 //// Draw window
-                //AObject2D.UpdateZoomAnimationManager(deltaTime);
+                AObject2D.UpdateZoomAnimationManager(deltaTime);
 
                 window.Clear();
 
-                //this.landWorld2D.DrawIn(window, ref this.boundsView);
+                this.world2D.DrawIn(window);
 
                 // Process events
                 window.DispatchEvents();
@@ -103,18 +101,18 @@ namespace Metempsychoid
                 window.Display();
             }
 
-            //this.landWorld2D.Dispose(this.landWorld);
-            //this.landWorld.Dispose();
+            this.world2D.Dispose(this.world);
+            this.world.Dispose();
 
-            //AObject2D.StopAnimationManager();
+            AObject2D.StopAnimationManager();
         }
 
-        private void SetView(SFML.Graphics.RenderWindow window, SFML.Graphics.View view)
-        {
-            this.boundsView = new FloatRect(view.Center.X - view.Size.X / 2, view.Center.Y - view.Size.Y / 2, view.Size.X, view.Size.Y);
+        //private void SetView(SFML.Graphics.RenderWindow window, SFML.Graphics.View view)
+        //{
+        //    this.boundsView = new FloatRect(view.Center.X - view.Size.X / 2, view.Center.Y - view.Size.Y / 2, view.Size.X, view.Size.Y);
 
-            window.SetView(view);
-        }
+        //    window.SetView(view);
+        //}
 
         private void OnMouseMoved(object sender, SFML.Window.MouseMoveEventArgs e)
         {

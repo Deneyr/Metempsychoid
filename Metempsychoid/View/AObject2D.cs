@@ -48,6 +48,27 @@ namespace Metempsychoid.View
             }
         }
 
+        public float Rotation
+        {
+            get
+            {
+                return this.ObjectSprite.Rotation;
+            }
+
+            protected set
+            {
+                this.ObjectSprite.Rotation = value;
+            }
+        }
+
+        public FloatRect Bounds
+        {
+            get
+            {
+                return this.ObjectSprite.GetGlobalBounds();
+            }
+        }
+
         static AObject2D()
         {
             AObject2D.animationManager = new AnimationManager();
@@ -66,10 +87,10 @@ namespace Metempsychoid.View
 
         public virtual void Dispose()
         {
-
+            // To override
         }
 
-        public virtual void DrawIn(RenderWindow window, ref FloatRect boundsView)
+        public virtual void DrawIn(RenderWindow window)
         {
             window.Draw(this.ObjectSprite);
         }

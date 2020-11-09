@@ -8,19 +8,24 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View
 {
-    public interface IObject2D
+    public interface IObject2D: IDisposable
     {
-        Sprite ObjectSprite
-        {
-            get;
-        }
-
         Vector2f Position
         {
             get;
         }
 
-        void DrawIn(RenderWindow window, ref FloatRect boundsView);
+        float Rotation
+        {
+            get;
+        }
+
+        FloatRect Bounds
+        {
+            get;
+        }
+
+        void DrawIn(RenderWindow window);
 
         // Part animations
         void SetCanevas(IntRect newCanevas);
