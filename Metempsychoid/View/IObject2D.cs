@@ -13,11 +13,13 @@ namespace Metempsychoid.View
         Vector2f Position
         {
             get;
+            set;
         }
 
         float Rotation
         {
             get;
+            set;
         }
 
         FloatRect Bounds
@@ -25,7 +27,7 @@ namespace Metempsychoid.View
             get;
         }
 
-        void DrawIn(RenderWindow window);
+        void DrawIn(RenderWindow window, Time deltaTime);
 
         // Part animations
         void SetCanevas(IntRect newCanevas);

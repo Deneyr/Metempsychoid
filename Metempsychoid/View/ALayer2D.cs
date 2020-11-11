@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Metempsychoid.Model;
+using Metempsychoid.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 
@@ -12,7 +14,10 @@ namespace Metempsychoid.View
     {
         protected SFML.Graphics.View view;
 
-        protected List<IObject2D> object2DsList;
+        protected WeakReference<World2D> world2D;
+        protected ALayer parentLayer;
+
+        protected Dictionary<IObject, IObject2D> objectToObject2Ds;
 
         protected float zoom;
 
@@ -23,7 +28,7 @@ namespace Metempsychoid.View
                 return this.view.Center;
             }
 
-            protected set
+            set
             {
                 this.view.Center = value * MainWindow.MODEL_TO_VIEW;
             }
@@ -36,7 +41,7 @@ namespace Metempsychoid.View
                 return this.view.Rotation;
             }
 
-            protected set
+            set
             {
                 this.view.Rotation = value;
             }
@@ -63,25 +68,73 @@ namespace Metempsychoid.View
             }
         }
 
-        public ALayer2D()
+        public ALayer2D(World2D world2D, ALayer layer)
         {
             this.view = new SFML.Graphics.View();
+            this.Position = new Vector2f(0, 0);
 
-            this.object2DsList = new List<IObject2D>();
+            this.objectToObject2Ds = new Dictionary<IObject, IObject2D>();
+
+            this.world2D = new WeakReference<World2D>(world2D);
+
+            this.zoom = 0;
+
+            this.parentLayer = layer;
+            this.parentLayer.ObjectAdded += OnObjectAdded;
+            this.parentLayer.ObjectRemoved += OnObjectRemoved;
+            this.parentLayer.ObjectPropertyChanged += OnObjectPropertyChanged;
         }
 
-        public void DrawIn(RenderWindow window)
+        protected virtual void OnObjectRemoved(IObject obj)
+        {
+            this.objectToObject2Ds.Remove(obj);
+        }
+
+        protected virtual void OnObjectAdded(IObject obj)
+        {
+            if(this.world2D.TryGetTarget(out World2D world2D))
+            {
+                IObject2D object2D = World2D.MappingObjectModelView[obj.GetType()].CreateObject2D(world2D, obj);
+
+                this.objectToObject2Ds.Add(obj, object2D);
+            }
+        }
+
+        protected virtual void OnObjectPropertyChanged(IObject obj, string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "Position":
+                    this.objectToObject2Ds[obj].Position = obj.Position;
+                    break;
+            }
+        }
+
+        protected virtual void UpdateViewSize(Vector2f viewSize, Time deltaTime)
+        {
+            this.view.Size = viewSize;
+        }
+
+        public virtual bool OnControlActivated(ControlEventType eventType, string details)
+        {
+            // To override
+            return true;
+        }
+
+        public virtual void DrawIn(RenderWindow window, Time deltaTime)
         {
             SFML.Graphics.View defaultView = window.DefaultView;
-            this.view.Size = defaultView.Size;
+
+            this.UpdateViewSize(defaultView.Size, deltaTime);
 
             window.SetView(this.view);
 
-            foreach(IObject2D object2D in this.object2DsList)
+            FloatRect bounds = this.Bounds;
+            foreach (IObject2D object2D in this.objectToObject2Ds.Values)
             {
-                if (object2D.Bounds.Intersects(this.Bounds))
+                if (object2D.Bounds.Intersects(bounds))
                 {
-                    object2D.DrawIn(window);
+                    object2D.DrawIn(window, deltaTime);
                 }
             }
 
@@ -100,10 +153,15 @@ namespace Metempsychoid.View
 
         public void Dispose()
         {
-            foreach (IObject2D object2D in this.object2DsList)
+            foreach (IObject2D object2D in this.objectToObject2Ds.Values)
             {
                 object2D.Dispose();
             }
+
+            this.parentLayer.ObjectAdded -= OnObjectAdded;
+            this.parentLayer.ObjectRemoved -= OnObjectRemoved;
+            this.parentLayer.ObjectPropertyChanged -= OnObjectPropertyChanged;
+            this.parentLayer = null;
         }
     }
 }

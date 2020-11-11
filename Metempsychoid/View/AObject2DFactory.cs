@@ -24,11 +24,9 @@ namespace Metempsychoid.View
         public AObject2DFactory()
         {
             this.texturesPath = new HashSet<string>();
-
-            this.InitializeFactory();
         }
 
-        protected virtual void InitializeFactory()
+        protected void InitializeFactory()
         {
             this.resources = new Dictionary<string, Texture>();
             Texture blankTexture = BLANK_TEXTURE;
@@ -38,7 +36,7 @@ namespace Metempsychoid.View
             }
         }
 
-        public abstract IObject2D CreateObject2D(World2D landWorld2D, IObject obj);
+        public abstract IObject2D CreateObject2D(World2D world2D, IObject obj);
 
         public Dictionary<string, Texture> Resources
         {

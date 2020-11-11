@@ -42,7 +42,7 @@ namespace Metempsychoid.View
                 return this.ObjectSprite.Position;
             }
 
-            protected set
+            set
             {
                 this.ObjectSprite.Position = value * MainWindow.MODEL_TO_VIEW;
             }
@@ -55,13 +55,13 @@ namespace Metempsychoid.View
                 return this.ObjectSprite.Rotation;
             }
 
-            protected set
+            set
             {
                 this.ObjectSprite.Rotation = value;
             }
         }
 
-        public FloatRect Bounds
+        public virtual FloatRect Bounds
         {
             get
             {
@@ -90,7 +90,7 @@ namespace Metempsychoid.View
             // To override
         }
 
-        public virtual void DrawIn(RenderWindow window)
+        public virtual void DrawIn(RenderWindow window, Time deltaTime)
         {
             window.Draw(this.ObjectSprite);
         }

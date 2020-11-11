@@ -10,7 +10,7 @@ namespace Metempsychoid.View
 {
     public interface IObject2DFactory
     {
-        IObject2D CreateObject2D(World2D landWorld2D, IObject obj);
+        IObject2D CreateObject2D(World2D world2D, IObject obj);
 
         Dictionary<string, Texture> Resources
         {
