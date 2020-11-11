@@ -13,8 +13,6 @@ namespace Metempsychoid.View
     {
         protected static AnimationManager animationManager;
 
-        protected static ZoomAnimationManager zoomAnimationManager;
-
         protected static RectangleShape filter;
 
         protected Sprite sprite;
@@ -39,12 +37,12 @@ namespace Metempsychoid.View
         {
             get
             {
-                return this.ObjectSprite.Position;
+                return this.sprite.Position;
             }
 
             set
             {
-                this.ObjectSprite.Position = value * MainWindow.MODEL_TO_VIEW;
+                this.sprite.Position = value * MainWindow.MODEL_TO_VIEW;
             }
         }
 
@@ -52,12 +50,39 @@ namespace Metempsychoid.View
         {
             get
             {
-                return this.ObjectSprite.Rotation;
+                return this.sprite.Rotation;
             }
 
             set
             {
-                this.ObjectSprite.Rotation = value;
+                this.sprite.Rotation = value;
+            }
+        }
+
+        public float Zoom
+        {
+            get
+            {
+                return this.sprite.Scale.X;
+            }
+            set
+            {
+                this.sprite.Scale = new Vector2f(value, value);
+            }
+        }
+
+        public IntRect Canevas
+        {
+            get
+            {
+                return this.sprite.TextureRect;
+            }
+            set
+            {
+                if(this.sprite.TextureRect != value)
+                {
+                    this.sprite.TextureRect = value;
+                }
             }
         }
 
@@ -72,8 +97,6 @@ namespace Metempsychoid.View
         static AObject2D()
         {
             AObject2D.animationManager = new AnimationManager();
-
-            AObject2D.zoomAnimationManager = new ZoomAnimationManager();
 
             AObject2D.filter = new RectangleShape(new Vector2f(MainWindow.MODEL_TO_VIEW, MainWindow.MODEL_TO_VIEW));
         }
@@ -112,34 +135,12 @@ namespace Metempsychoid.View
         {
             IAnimation animation = this.animationsList[index];
 
-            if (animation is ZoomAnimation)
-            {
-                AObject2D.zoomAnimationManager.PlayAnimation(this, animation as ZoomAnimation);
-            }
-            else
-            {
-                AObject2D.animationManager.PlayAnimation(this, animation);
-            }
+            AObject2D.animationManager.PlayAnimation(this, animation);
         }
 
-        public static void StopAnimationManager()
+        public static void UpdateAnimationManager(Time deltaTime)
         {
-            AObject2D.animationManager.Play = false;
-        }
-
-        public static void UpdateZoomAnimationManager(Time deltaTime)
-        {
-            AObject2D.zoomAnimationManager.Run(deltaTime);
-        }
-
-        public virtual void SetCanevas(IntRect newCanevas)
-        {
-            this.sprite.TextureRect = newCanevas;
-        }
-
-        public void SetZoom(float newZoom)
-        {
-            this.sprite.Scale = new Vector2f(newZoom, newZoom);
+            AObject2D.animationManager.Run(deltaTime);
         }
     }
 }

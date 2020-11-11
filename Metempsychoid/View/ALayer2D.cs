@@ -13,6 +13,7 @@ namespace Metempsychoid.View
     public abstract class ALayer2D: IObject2D
     {
         protected SFML.Graphics.View view;
+        private Vector2f defaultViewSize;
 
         protected WeakReference<World2D> world2D;
         protected ALayer parentLayer;
@@ -20,6 +21,12 @@ namespace Metempsychoid.View
         protected Dictionary<IObject, IObject2D> objectToObject2Ds;
 
         protected float zoom;
+
+        public Vector2i Area
+        {
+            get;
+            protected set;
+        }
 
         public Vector2f Position
         {
@@ -30,7 +37,10 @@ namespace Metempsychoid.View
 
             set
             {
-                this.view.Center = value * MainWindow.MODEL_TO_VIEW;
+                if (value != this.Position)
+                {
+                    this.ClampPosition(value);
+                }
             }
         }
 
@@ -47,18 +57,57 @@ namespace Metempsychoid.View
             }
         }
 
-        public FloatRect Viewport
+        public float Zoom
         {
             get
             {
-                return this.view.Viewport;
+                return this.zoom;
             }
 
-            protected set
+            set
             {
-                this.view.Viewport = value;
+                if (value != this.zoom)
+                {
+                    this.ClampZoom(value);
+
+                    this.ClampPosition(this.Position);
+                }
             }
         }
+
+        public IntRect Canevas
+        {
+            get
+            {
+                return new IntRect(-this.Area.X / 2, -this.Area.Y / 2, this.Area.X / 2, this.Area.Y / 2);
+            }
+            set
+            {
+                // Nothing to do
+            }
+        }
+
+        protected Vector2f DefaultViewSize
+        {
+            get
+            {
+                return this.defaultViewSize;
+            }
+
+            set
+            {
+                if(value != this.defaultViewSize)
+                {
+                    this.defaultViewSize = value;
+
+                    this.ClampZoom(this.Zoom);
+
+                    this.ClampPosition(this.Position);
+                }
+            }
+        }
+
+
 
         public FloatRect Bounds
         {
@@ -71,13 +120,15 @@ namespace Metempsychoid.View
         public ALayer2D(World2D world2D, ALayer layer)
         {
             this.view = new SFML.Graphics.View();
+            this.defaultViewSize = this.view.Size;
             this.Position = new Vector2f(0, 0);
+            this.Area = new Vector2i(0, 0);
 
             this.objectToObject2Ds = new Dictionary<IObject, IObject2D>();
 
             this.world2D = new WeakReference<World2D>(world2D);
 
-            this.zoom = 0;
+            this.zoom = 1;
 
             this.parentLayer = layer;
             this.parentLayer.ObjectAdded += OnObjectAdded;
@@ -110,8 +161,40 @@ namespace Metempsychoid.View
             }
         }
 
+        protected void ClampPosition(Vector2f newPosition)
+        {
+            float minXPosition = Math.Min(0, -this.Area.X / 2f + this.defaultViewSize.X * this.zoom / 2);
+            float minYPosition = Math.Min(0, -this.Area.Y / 2f + this.defaultViewSize.Y * this.zoom / 2);
+
+            float maxXPosition = Math.Max(0, this.Area.X / 2f - this.defaultViewSize.X * this.zoom / 2);
+            float maxYPosition = Math.Max(0, this.Area.Y / 2f - this.defaultViewSize.Y * this.zoom / 2);
+
+            float newXPosition = Math.Min(Math.Max(newPosition.X, minXPosition), maxXPosition);
+            float newYPosition = Math.Min(Math.Max(newPosition.Y, minYPosition), maxYPosition);
+            Vector2f newClampedPosition = new Vector2f(newXPosition, newYPosition);
+
+            if(newClampedPosition != this.view.Center)
+            {
+                this.view.Center = newClampedPosition;
+            }
+        }
+
+        protected void ClampZoom(float newZoom)
+        {
+            float zoomXMax = ((float)this.Area.X) / this.defaultViewSize.X;
+            float zoomYMax = ((float)this.Area.Y) / this.defaultViewSize.Y;
+
+            float newZoomClamped = Math.Min(Math.Min(newZoom, zoomXMax), zoomYMax);
+
+            if(newZoomClamped != this.zoom)
+            {
+                this.zoom = newZoomClamped;
+            }
+        }
+
         protected virtual void UpdateViewSize(Vector2f viewSize, Time deltaTime)
         {
+            this.DefaultViewSize = viewSize;
             this.view.Size = viewSize;
         }
 
@@ -126,6 +209,8 @@ namespace Metempsychoid.View
             SFML.Graphics.View defaultView = window.DefaultView;
 
             this.UpdateViewSize(defaultView.Size, deltaTime);
+
+            this.view.Zoom(this.zoom);
 
             window.SetView(this.view);
 
@@ -144,11 +229,6 @@ namespace Metempsychoid.View
         public void SetCanevas(IntRect newCanevas)
         {
             // Nothing to do
-        }
-
-        public void SetZoom(float newZoom)
-        {
-            this.zoom = newZoom;
         }
 
         public void Dispose()

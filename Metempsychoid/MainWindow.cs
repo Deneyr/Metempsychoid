@@ -64,7 +64,7 @@ namespace Metempsychoid
                 this.World.UpdateLogic(null, deltaTime);
 
                 // Update Animation
-                AObject2D.UpdateZoomAnimationManager(deltaTime);
+                AObject2D.UpdateAnimationManager(deltaTime);
 
                 // Draw window
                 this.Window.Clear();
@@ -77,8 +77,6 @@ namespace Metempsychoid
 
             this.World2D.Dispose(this);
             this.World.Dispose();
-
-            AObject2D.StopAnimationManager();
         }      
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SFML.System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Metempsychoid.View.Animation
             get;
         }
 
-        void Run();
+        void Run(Time deltaTime);
 
         void Reset();
 
@@ -34,5 +35,13 @@ namespace Metempsychoid.View.Animation
     {
         ONETIME,
         LOOP
+    }
+
+    public enum InterpolationMethod
+    {
+        STEP,
+        LINEAR,
+        SQUARE_ACC,
+        SQUARE_DEC
     }
 }

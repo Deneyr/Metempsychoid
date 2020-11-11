@@ -22,16 +22,23 @@ namespace Metempsychoid.View
             set;
         }
 
+        float Zoom
+        {
+            get;
+            set;
+        }
+
+        IntRect Canevas
+        {
+            get;
+            set;
+        }
+
         FloatRect Bounds
         {
             get;
         }
 
         void DrawIn(RenderWindow window, Time deltaTime);
-
-        // Part animations
-        void SetCanevas(IntRect newCanevas);
-
-        void SetZoom(float newZoom);
     }
 }
