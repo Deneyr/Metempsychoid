@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using Metempsychoid.Animation;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,49 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model
 {
-    public abstract class AObject: IObject
+    public abstract class AObject: IObject, IUpdatable
     {
-        public Vector2f Position
+        protected static AnimationManager animationManager;
+
+        protected List<IAnimation> animationsList;
+
+        public abstract Vector2f Position
         {
             get;
-            protected set;
+            set;
+        }
+
+        public abstract float Rotation
+        {
+            get;
+            set;
+        }
+
+        static AObject()
+        {
+            AObject.animationManager = new AnimationManager();
+        }
+
+        public AObject()
+        {
+            this.animationsList = new List<IAnimation>();
+        }
+
+        public virtual void UpdateLogic(World world, Time deltaTime)
+        {
+            // To override;
+        }
+
+        public void PlayAnimation(int index)
+        {
+            IAnimation animation = this.animationsList[index];
+
+            AObject.animationManager.PlayAnimation(this, animation);
+        }
+
+        public static void UpdateAnimationManager(Time deltaTime)
+        {
+            AObject.animationManager.Run(deltaTime);
         }
     }
 }

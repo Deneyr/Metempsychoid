@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using Metempsychoid.Model;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Animation
+namespace Metempsychoid.Animation
 {
     public abstract class AAnimation: IAnimation
     {
@@ -127,6 +128,6 @@ namespace Metempsychoid.View.Animation
             this.State = AnimationState.ENDING;
         }
 
-        public abstract void Visit(IObject2D parentObject2D);
+        public abstract void Visit(IObject parentObject);
     }
 }

@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using Metempsychoid.Model;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,22 +7,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Animation
+namespace Metempsychoid.Animation
 {
     public class AnimationManager
     {
-        private Dictionary<IObject2D, IAnimation> animationsToPlay;
+        private Dictionary<IObject, IAnimation> animationsToPlay;
 
         public AnimationManager()
         {
-            this.animationsToPlay = new Dictionary<IObject2D, IAnimation>();
+            this.animationsToPlay = new Dictionary<IObject, IAnimation>();
         }
 
         public void Run(Time deltaTime)
         {
-            List<IObject2D> finishedAnimation = new List<IObject2D>();
+            List<IObject> finishedAnimation = new List<IObject>();
 
-            foreach (KeyValuePair<IObject2D, IAnimation> keyValuePair in this.animationsToPlay)
+            foreach (KeyValuePair<IObject, IAnimation> keyValuePair in this.animationsToPlay)
             {
                 if (keyValuePair.Value.State == AnimationState.ENDING)
                 {
@@ -35,36 +36,36 @@ namespace Metempsychoid.View.Animation
                 }
             }
 
-            foreach (IObject2D object2D in finishedAnimation)
+            foreach (IObject obj in finishedAnimation)
             {
-                this.animationsToPlay.Remove(object2D);
+                this.animationsToPlay.Remove(obj);
             }
         }
 
-        public IAnimation GetAnimationFromAObject2D(IObject2D object2D)
+        public IAnimation GetAnimationFromAObject2D(IObject obj)
         {
 
             IAnimation animation = null;
 
-            if (this.animationsToPlay.ContainsKey(object2D))
+            if (this.animationsToPlay.ContainsKey(obj))
             {
-                animation = this.animationsToPlay[object2D];
+                animation = this.animationsToPlay[obj];
             }
 
             return animation;
         }
 
-        public void PlayAnimation(IObject2D object2D, IAnimation animation)
+        public void PlayAnimation(IObject obj, IAnimation animation)
         {
             animation.Reset();
 
-            if (this.animationsToPlay.ContainsKey(object2D))
+            if (this.animationsToPlay.ContainsKey(obj))
             {
-                this.animationsToPlay[object2D] = animation;
+                this.animationsToPlay[obj] = animation;
             }
             else
             {
-                this.animationsToPlay.Add(object2D, animation);
+                this.animationsToPlay.Add(obj, animation);
             }
         }
 

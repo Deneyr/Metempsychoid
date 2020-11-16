@@ -1,4 +1,6 @@
-﻿using SFML.System;
+﻿using Metempsychoid.Animation;
+using Metempsychoid.Model;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +16,12 @@ namespace Metempsychoid.View.Animation
         {
         }
 
-        public override void Visit(IObject2D parentObject2D)
+        public override void Visit(IObject parentObject)
         {
-            parentObject2D.Zoom = this.currentValue;
+            if(parentObject is IObject2D)
+            {
+                (parentObject as IObject2D).Zoom = this.currentValue;
+            }
         }
     }
 }

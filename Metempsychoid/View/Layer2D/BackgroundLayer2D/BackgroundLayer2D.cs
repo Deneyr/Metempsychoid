@@ -35,13 +35,6 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
             this.Area = (factory as BackgroundLayer2DFactory).Area;
 
             this.nameToTiles = new Dictionary<string, TileBackgoundObject2D>();
-
-            foreach(KeyValuePair<string, Texture> keyValuePair in factory.Resources)
-            {
-                this.nameToTiles.Add(Path.GetFileNameWithoutExtension(keyValuePair.Key), new TileBackgoundObject2D(keyValuePair.Value, Path.GetFileNameWithoutExtension(keyValuePair.Key)));
-            }
-
-            Console.WriteLine();
         }
         
         public override void DrawIn(RenderWindow window, Time deltaTime)
@@ -94,5 +87,28 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
             return true;
         }
 
+        public override void InitializeLayer(IObject2DFactory factory)
+        {
+            this.Position = this.parentLayer.Position;
+
+            this.Rotation = this.parentLayer.Rotation;
+
+            foreach (KeyValuePair<string, Texture> keyValuePair in factory.Resources)
+            {
+                this.nameToTiles.Add(Path.GetFileNameWithoutExtension(keyValuePair.Key), new TileBackgoundObject2D(keyValuePair.Value, Path.GetFileNameWithoutExtension(keyValuePair.Key)));
+            }
+        }
+
+        public override void FlushEntities()
+        {
+            base.FlushEntities();
+
+            foreach(TileBackgoundObject2D tile in this.nameToTiles.Values)
+            {
+                tile.Dispose();
+            }
+
+            this.nameToTiles.Clear();
+        }
     }
 }

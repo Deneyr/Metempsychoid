@@ -10,7 +10,7 @@ using SFML.System;
 
 namespace Metempsychoid.View
 {
-    public abstract class ALayer2D: IObject2D
+    public abstract class ALayer2D: AObject2D
     {
         protected SFML.Graphics.View view;
         private Vector2f defaultViewSize;
@@ -18,7 +18,7 @@ namespace Metempsychoid.View
         protected WeakReference<World2D> world2D;
         protected ALayer parentLayer;
 
-        protected Dictionary<IObject, IObject2D> objectToObject2Ds;
+        protected Dictionary<AEntity, AEntity2D> objectToObject2Ds;
 
         protected float zoom;
 
@@ -28,7 +28,7 @@ namespace Metempsychoid.View
             protected set;
         }
 
-        public Vector2f Position
+        public override Vector2f Position
         {
             get
             {
@@ -44,7 +44,7 @@ namespace Metempsychoid.View
             }
         }
 
-        public float Rotation
+        public override float Rotation
         {
             get
             {
@@ -57,7 +57,7 @@ namespace Metempsychoid.View
             }
         }
 
-        public float Zoom
+        public override float Zoom
         {
             get
             {
@@ -75,7 +75,7 @@ namespace Metempsychoid.View
             }
         }
 
-        public IntRect Canevas
+        public override IntRect Canevas
         {
             get
             {
@@ -107,9 +107,7 @@ namespace Metempsychoid.View
             }
         }
 
-
-
-        public FloatRect Bounds
+        public override FloatRect Bounds
         {
             get
             {
@@ -124,34 +122,50 @@ namespace Metempsychoid.View
             this.Position = new Vector2f(0, 0);
             this.Area = new Vector2i(0, 0);
 
-            this.objectToObject2Ds = new Dictionary<IObject, IObject2D>();
+            this.objectToObject2Ds = new Dictionary<AEntity, AEntity2D>();
 
             this.world2D = new WeakReference<World2D>(world2D);
 
             this.zoom = 1;
 
             this.parentLayer = layer;
-            this.parentLayer.ObjectAdded += OnObjectAdded;
-            this.parentLayer.ObjectRemoved += OnObjectRemoved;
-            this.parentLayer.ObjectPropertyChanged += OnObjectPropertyChanged;
+            this.parentLayer.EntityAdded += OnEntityAdded;
+            this.parentLayer.EntityRemoved += OnEntityRemoved;
+
+            this.parentLayer.PositionChanged += OnPositionChanged;
+            this.parentLayer.RotationChanged += OnRotationChanged;
+
+            this.parentLayer.EntityPropertyChanged += OnEntityPropertyChanged;
         }
 
-        protected virtual void OnObjectRemoved(IObject obj)
+        public abstract void InitializeLayer(IObject2DFactory factory);
+
+        private void OnRotationChanged(float rotation)
+        {
+            this.Rotation = rotation;
+        }
+
+        private void OnPositionChanged(Vector2f position)
+        {
+            this.Position = position;
+        }
+
+        protected virtual void OnEntityRemoved(AEntity obj)
         {
             this.objectToObject2Ds.Remove(obj);
         }
 
-        protected virtual void OnObjectAdded(IObject obj)
+        protected virtual void OnEntityAdded(AEntity obj)
         {
             if(this.world2D.TryGetTarget(out World2D world2D))
             {
-                IObject2D object2D = World2D.MappingObjectModelView[obj.GetType()].CreateObject2D(world2D, obj);
+                AEntity2D object2D = World2D.MappingObjectModelView[obj.GetType()].CreateObject2D(world2D, obj) as AEntity2D;
 
                 this.objectToObject2Ds.Add(obj, object2D);
             }
         }
 
-        protected virtual void OnObjectPropertyChanged(IObject obj, string propertyName)
+        protected virtual void OnEntityPropertyChanged(AEntity obj, string propertyName)
         {
             switch (propertyName)
             {
@@ -204,7 +218,7 @@ namespace Metempsychoid.View
             return true;
         }
 
-        public virtual void DrawIn(RenderWindow window, Time deltaTime)
+        public override void DrawIn(RenderWindow window, Time deltaTime)
         {
             SFML.Graphics.View defaultView = window.DefaultView;
 
@@ -231,16 +245,26 @@ namespace Metempsychoid.View
             // Nothing to do
         }
 
-        public void Dispose()
+        public virtual void FlushEntities()
         {
             foreach (IObject2D object2D in this.objectToObject2Ds.Values)
             {
                 object2D.Dispose();
             }
+            this.objectToObject2Ds.Clear();
+        }
 
-            this.parentLayer.ObjectAdded -= OnObjectAdded;
-            this.parentLayer.ObjectRemoved -= OnObjectRemoved;
-            this.parentLayer.ObjectPropertyChanged -= OnObjectPropertyChanged;
+        public override void Dispose()
+        {
+            this.FlushEntities();
+
+            this.parentLayer.EntityAdded -= OnEntityAdded;
+            this.parentLayer.EntityRemoved -= OnEntityRemoved;
+
+            this.parentLayer.PositionChanged -= OnPositionChanged;
+            this.parentLayer.RotationChanged -= OnRotationChanged;
+
+            this.parentLayer.EntityPropertyChanged -= OnEntityPropertyChanged;
             this.parentLayer = null;
         }
     }

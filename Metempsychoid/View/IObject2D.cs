@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using Metempsychoid.Model;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -8,20 +9,8 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View
 {
-    public interface IObject2D: IDisposable
+    public interface IObject2D: IObject, IDisposable
     {
-        Vector2f Position
-        {
-            get;
-            set;
-        }
-
-        float Rotation
-        {
-            get;
-            set;
-        }
-
         float Zoom
         {
             get;

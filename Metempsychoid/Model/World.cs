@@ -10,49 +10,51 @@ namespace Metempsychoid.Model
 {
     public class World : IUpdatable, IDisposable
     {
-        private List<ALayer> layersList;
+        private Dictionary<string, ALayer> loadedLayers;
+
+        private List<ALayer> currentLayers;
+
+        private PlayerData playerData;
 
         // Events
         public event Action<ALayer> LayerAdded;
-
         public event Action<ALayer> LayerRemoved;
 
-        public event Action LevelStarting;
+        public event Action<World> WorldStarting;
+        public event Action<World> WorldEnding;
 
-        public event Action LevelEnding;
+        public event Action<World> LevelStarting;
+        public event Action<World> LevelEnding;
+
+        public List<ALayer> CurrentLayers
+        {
+            get
+            {
+                return this.currentLayers;
+            }
+        }
 
         public World()
         {
-            this.layersList = new List<ALayer>();
+            this.currentLayers = new List<ALayer>();
+
+            this.loadedLayers = new Dictionary<string, ALayer>();
+
+            this.playerData = new PlayerData();
         }
 
         public void UpdateLogic(World world, Time deltaTime)
         {
-            
+            foreach(ALayer layer in this.currentLayers)
+            {
+                layer.UpdateLogic(world, deltaTime);
+            }
         }
 
         public void Dispose()
         {
-            this.FlushLayers();
+            this.EndWorld();
         }
-
-        public void AddLayer(ALayer layer)
-        {
-            this.layersList.Add(layer);
-
-            this.NotifyLayerAdded(layer);
-        }
-
-
-        public void FlushLayers()
-        {
-            foreach(ALayer layer in this.layersList)
-            {
-                this.NotifyLayerRemoved(layer);
-            }
-            this.layersList.Clear();
-        }
-
 
         protected void NotifyLayerAdded(ALayer layer)
         {
@@ -64,14 +66,81 @@ namespace Metempsychoid.Model
             this.LayerRemoved?.Invoke(layer);
         }
 
+        protected void NotifyWorldStarting()
+        {
+            this.WorldStarting?.Invoke(this);
+        }
+
+        protected void NotifyWorldEnding()
+        {
+            this.WorldEnding?.Invoke(this);
+        }
+
         protected void NotifyLevelStarting()
         {
-            this.LevelStarting?.Invoke();
+            this.LevelStarting?.Invoke(this);
         }
 
         protected void NotifyLevelEnding()
         {
-            this.LevelEnding?.Invoke();
+            this.LevelEnding?.Invoke(this);
+        }
+
+        public void InitializeLevel(List<string> layersToAdd)
+        {
+            this.currentLayers.Clear();
+            foreach(string layerName in layersToAdd)
+            {
+                if (this.loadedLayers.ContainsKey(layerName))
+                {
+                    this.currentLayers.Add(this.loadedLayers[layerName]);
+                }
+            }
+
+            foreach(ALayer layer in this.currentLayers)
+            {
+                layer.InitializeLayer(this.playerData);
+            }
+
+            this.NotifyLevelStarting();
+        }
+
+        public void InitializeWorld(List<Tuple<string, ALayer>> layersToLoad)
+        {
+            foreach(Tuple<string, ALayer> tupleLayer in layersToLoad)
+            {
+                this.loadedLayers.Add(tupleLayer.Item1, tupleLayer.Item2);
+
+                this.NotifyLayerAdded(tupleLayer.Item2);
+            }
+
+            this.NotifyWorldStarting();
+        }
+
+        public void EndLevel()
+        {
+            foreach (ALayer layer in this.currentLayers)
+            {
+                layer.FlushLayer();
+            }
+
+            this.currentLayers.Clear();
+
+            this.NotifyLevelEnding();
+        }
+
+        public void EndWorld()
+        {
+            foreach (ALayer layer in this.currentLayers)
+            {
+                layer.FlushLayer();
+
+                this.NotifyLayerRemoved(layer);
+            }
+            this.currentLayers.Clear();
+            this.loadedLayers.Clear();
+
+            this.NotifyWorldEnding();
         }
 
         // Test
@@ -79,9 +148,9 @@ namespace Metempsychoid.Model
         {
             BackgroundLayer background = new BackgroundLayer("VsO7nJK");
 
-            this.AddLayer(background);
+            this.InitializeWorld(new List<Tuple<string, ALayer>>() { new Tuple<string, ALayer>("VsO7nJK", background) });
 
-            this.NotifyLevelStarting();
+            this.InitializeLevel(new List<string>() { "VsO7nJK" });
         }
     }
 }

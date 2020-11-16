@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Metempsychoid.Model;
 using SFML.System;
 
-namespace Metempsychoid.View.Animation
+namespace Metempsychoid.Animation
 {
     public class SequenceAnimation : IAnimation
     {
@@ -35,7 +36,7 @@ namespace Metempsychoid.View.Animation
             
         }
 
-        public void Visit(IObject2D parentObject2D)
+        public void Visit(IObject parentObject)
         {
             
         }

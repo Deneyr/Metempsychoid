@@ -21,8 +21,6 @@ namespace Metempsychoid.View
 
         private LayerResourcesLoader layerResourcesLoader;
 
-        private List<ALayer> layersToAddBuffer;
-        private List<ALayer> layersToRemoveBuffer;
         private Dictionary<ALayer, ALayer2D> layersDictionary;
         private List<ALayer2D> layersList;
 
@@ -57,15 +55,16 @@ namespace Metempsychoid.View
             this.layersDictionary = new Dictionary<ALayer, ALayer2D>();
             this.layersList = new List<ALayer2D>();
 
-            this.layersToAddBuffer = new List<ALayer>();
-            this.layersToRemoveBuffer = new List<ALayer>();
-
             this.layerResourcesLoader = new LayerResourcesLoader();
 
             mainWindow.World.LayerAdded += OnLayerAdded;
             mainWindow.World.LayerRemoved += OnLayerRemoved;
 
             mainWindow.World.LevelStarting += OnLevelStarting;
+            mainWindow.World.LevelEnding += OnLevelEnding;
+
+            mainWindow.World.WorldStarting += OnWorldStarting;
+            mainWindow.World.WorldEnding += OnWorldEnding;
 
             this.ControlManager = new ControlManager(mainWindow.Window);
             this.ControlManager.ControlActivated += OnControlActivated;
@@ -101,62 +100,83 @@ namespace Metempsychoid.View
             
         }
 
-        private void OnLayerAdded(ALayer layer)
+        private void OnLayerAdded(ALayer layerToAdd)
         {
-            this.layerResourcesLoader.LoadLayerResources(layer);
-            this.layersToAddBuffer.Add(layer);
-            //IObject2DFactory layer2DFactory = World2D.MappingObjectModelView[layer.GetType()];
+            this.layerResourcesLoader.LoadLayerResources(layerToAdd);
 
-            //ALayer2D layer2D = layer2DFactory.CreateObject2D(this, layer) as ALayer2D;
+            IObject2DFactory layer2DFactory = World2D.MappingObjectModelView[layerToAdd.GetType()];
 
-            //this.layersDictionary.Add(layer, layer2D);
-            //this.layersList.Add(layer2D);
+            ALayer2D layer2D = layer2DFactory.CreateObject2D(this, layerToAdd) as ALayer2D;
+
+            this.layersDictionary.Add(layerToAdd, layer2D);
         }
 
 
-        private void OnLayerRemoved(ALayer layer)
+        private void OnLayerRemoved(ALayer layerToRemove)
         {
-            this.layerResourcesLoader.UnloadLayerResources(layer);
-            this.layersToRemoveBuffer.Add(layer);
-            //ALayer2D layer2D = this.layersDictionary[layer];
+            ALayer2D layer2D = this.layersDictionary[layerToRemove];
 
-            //layer2D.Dispose();
+            layer2D.Dispose();
 
-            //this.layersDictionary.Remove(layer);
-            //this.layersList.Remove(layer2D);
+            this.layersDictionary.Remove(layerToRemove);
+            this.layersList.Remove(layer2D);
         }
 
-        private void OnLevelStarting()
+        private void OnLevelStarting(World world)
+        {
+            if (this.layersList.Any())
+            {
+                throw new Exception("There is always some layers in the current list at the start of the level");
+            }
+
+            foreach (ALayer layer in world.CurrentLayers)
+            {
+                ALayer2D layer2D = this.layersDictionary[layer];
+
+                if (layer2D == null)
+                {
+                    throw new Exception("The model layer : " + layer + "does not have a associated layer2D at the start of the level");
+                }
+
+                this.layersList.Add(layer2D);
+
+                layer2D.InitializeLayer(World2D.MappingObjectModelView[layer.GetType()]);
+            }
+        }
+
+        private void OnLevelEnding(World world)
+        {
+            foreach(ALayer2D layer in this.layersList)
+            {
+                layer.FlushEntities();
+            }
+
+            this.layersList.Clear();
+        }
+
+        private void OnWorldStarting(World world)
         {
             TextureManager.UpdateTextures();
+        }
 
-            foreach(ALayer layerToRemove in this.layersToRemoveBuffer)
+        private void OnWorldEnding(World world)
+        {
+            if (this.layersDictionary.Any())
             {
-                ALayer2D layer2D = this.layersDictionary[layerToRemove];
-
-                layer2D.Dispose();
-
-                this.layersDictionary.Remove(layerToRemove);
-                this.layersList.Remove(layer2D);
+                throw new Exception("There is always some layer at the end of the world");
             }
-            this.layersToRemoveBuffer.Clear();
-
-            foreach (ALayer layerToAdd in this.layersToAddBuffer)
-            {
-                IObject2DFactory layer2DFactory = World2D.MappingObjectModelView[layerToAdd.GetType()];
-
-                ALayer2D layer2D = layer2DFactory.CreateObject2D(this, layerToAdd) as ALayer2D;
-
-                this.layersDictionary.Add(layerToAdd, layer2D);
-                this.layersList.Add(layer2D);
-            }
-            this.layersToAddBuffer.Clear();
         }
 
         public void Dispose(MainWindow mainWindow)
         {
             mainWindow.World.LayerAdded -= OnLayerAdded;
             mainWindow.World.LayerRemoved -= OnLayerRemoved;
+
+            mainWindow.World.LevelStarting -= OnLevelStarting;
+            mainWindow.World.LevelEnding -= OnLevelEnding;
+
+            mainWindow.World.WorldStarting -= OnWorldStarting;
+            mainWindow.World.WorldEnding -= OnWorldEnding;
 
             this.ControlManager.ControlActivated -= OnControlActivated;
         }

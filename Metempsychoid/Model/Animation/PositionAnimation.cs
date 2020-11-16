@@ -1,11 +1,12 @@
-﻿using SFML.System;
+﻿using Metempsychoid.Animation;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Animation
+namespace Metempsychoid.Model.Animation
 {
     public class PositionAnimation : AAnimation
     {
@@ -19,11 +20,11 @@ namespace Metempsychoid.View.Animation
             this.positionTo = positionTo;
         }
 
-        public override void Visit(IObject2D parentObject2D)
+        public override void Visit(IObject parentObject)
         {
             Vector2f newPosition = positionFrom * (1 - this.currentValue) + positionTo * this.currentValue;
 
-            parentObject2D.Position = newPosition;
+            parentObject.Position = newPosition;
         }
     }
 }

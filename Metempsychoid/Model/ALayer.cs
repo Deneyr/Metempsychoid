@@ -7,18 +7,22 @@ using SFML.System;
 
 namespace Metempsychoid.Model
 {
-    public abstract class ALayer : IObject
+    public abstract class ALayer : AObject
     {
-        public event Action<IObject> ObjectAdded;
-        public event Action<IObject> ObjectRemoved;
+        private Vector2f position;
 
-        public event Action<IObject, string> ObjectPropertyChanged;
+        private float rotation;
 
-        public Vector2f Position
-        {
-            get;
-            protected set;
-        }
+        private List<AEntity> entitiesList;
+
+
+        public event Action<AEntity> EntityAdded;
+        public event Action<AEntity> EntityRemoved;
+
+        public event Action<Vector2f> PositionChanged;
+        public event Action<float> RotationChanged;
+
+        public event Action<AEntity, string> EntityPropertyChanged;
 
         public HashSet<Type> TypesInChunk
         {
@@ -26,24 +30,101 @@ namespace Metempsychoid.Model
             protected set;
         }
 
+        public override Vector2f Position
+        {
+            get
+            {
+                return this.position;
+            }
+            set
+            {
+                if (value != this.position)
+                {
+                    this.position = value;
+
+                    this.NotifyPositionChanged(this.position);
+                }
+            }
+        }
+
+        public override float Rotation
+        {
+            get
+            {
+                return this.rotation;
+            }
+            set
+            {
+                if (value != this.rotation)
+                {
+                    this.rotation = value;
+
+                    this.NotifyRotationChanged(this.rotation);
+                }
+            }
+        }
+
         public ALayer()
         {
             this.TypesInChunk = new HashSet<Type>();
+
+            this.entitiesList = new List<AEntity>();
+
+            this.position = new Vector2f(0, 0);
+            this.rotation = 0;
         }
 
-        protected void NotifyObjectAdded(IObject obj)
+        public void InitializeLayer(PlayerData playerData)
         {
-            this.ObjectAdded?.Invoke(obj);
+            // To override
         }
 
-        protected void NotifyObjectRemoved(IObject obj)
+        public override void UpdateLogic(World world, Time deltaTime)
         {
-            this.ObjectRemoved?.Invoke(obj);
+            foreach (AEntity entity in this.entitiesList)
+            {
+                entity.UpdateLogic(world, deltaTime);
+            }
         }
 
-        protected void NotifyObjectPropertyChanged(IObject obj, string propertyName)
+        public void AddEntityToLayer(AEntity entity)
         {
-            this.ObjectPropertyChanged?.Invoke(obj, propertyName);
+            this.entitiesList.Add(entity);
+
+            this.TypesInChunk.Add(entity.GetType());
+        }
+
+        public virtual void FlushLayer()
+        {
+            foreach (AEntity entity in this.entitiesList)
+            {
+                this.NotifyObjectRemoved(entity);
+            }
+        }
+
+        protected void NotifyObjectAdded(AEntity obj)
+        {
+            this.EntityAdded?.Invoke(obj);
+        }
+
+        protected void NotifyObjectRemoved(AEntity obj)
+        {
+            this.EntityRemoved?.Invoke(obj);
+        }
+
+        protected void NotifyPositionChanged(Vector2f position)
+        {
+            this.PositionChanged?.Invoke(position);
+        }
+
+        protected void NotifyRotationChanged(float rotation)
+        {
+            this.RotationChanged?.Invoke(rotation);
+        }
+
+        public void NotifyObjectPropertyChanged(AEntity obj, string propertyName)
+        {
+            this.EntityPropertyChanged?.Invoke(obj, propertyName);
         }
     }
 }

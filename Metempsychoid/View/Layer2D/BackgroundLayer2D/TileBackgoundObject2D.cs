@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
 {
-    public class TileBackgoundObject2D: AObject2D
+    public class TileBackgoundObject2D: AEntity2D
     {
         public TileBackgoundObject2D(Texture texture, string textureName)
         {

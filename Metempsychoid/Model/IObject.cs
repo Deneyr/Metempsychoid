@@ -12,6 +12,13 @@ namespace Metempsychoid.Model
         Vector2f Position
         {
             get;
+            set;
+        }
+
+        float Rotation
+        {
+            get;
+            set;
         }
     }
 }

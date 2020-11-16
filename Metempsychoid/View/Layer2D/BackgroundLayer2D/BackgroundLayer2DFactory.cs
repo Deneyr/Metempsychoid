@@ -12,7 +12,7 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
 {
     public class BackgroundLayer2DFactory : AObject2DFactory
     {
-        private static readonly string BACKGROUND_PATH = @"D:\Projects\Metempsychoid";
+        private static readonly string BACKGROUND_PATH = @"D:\Projects\Metempsychoid\Assets\Graphics\Backgrounds";
 
         public Vector2i Area
         {

@@ -1,4 +1,6 @@
-﻿using SFML.Graphics;
+﻿using Metempsychoid.Animation;
+using Metempsychoid.Model;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -19,16 +21,19 @@ namespace Metempsychoid.View.Animation
             this.frames = frames;
         }       
 
-        public override void Visit(IObject2D parentObject2D)
+        public override void Visit(IObject parentObject)
         {
-            int index = (int) this.currentValue;
-
-            if(index >= frames.Count())
+            if (parentObject is IObject2D)
             {
-                index = frames.Count() - 1;
-            }
+                int index = (int)this.currentValue;
 
-            parentObject2D.Canevas = this.frames[index];
+                if (index >= frames.Count())
+                {
+                    index = frames.Count() - 1;
+                }
+
+                (parentObject as IObject2D).Canevas = this.frames[index];
+            }
         }
     }
 }

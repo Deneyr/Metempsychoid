@@ -60,10 +60,13 @@ namespace Metempsychoid
                 // Process events
                 this.Window.DispatchEvents();
 
+                // Update Model Animations
+                AObject.UpdateAnimationManager(deltaTime);
+
                 // Game logic update
                 this.World.UpdateLogic(null, deltaTime);
 
-                // Update Animation
+                // Update View Animations
                 AObject2D.UpdateAnimationManager(deltaTime);
 
                 // Draw window

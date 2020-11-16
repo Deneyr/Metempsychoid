@@ -1,11 +1,12 @@
-﻿using SFML.System;
+﻿using Metempsychoid.Model;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Animation
+namespace Metempsychoid.Animation
 {
     public interface IAnimation
     {
@@ -20,7 +21,7 @@ namespace Metempsychoid.View.Animation
 
         void Stop(bool reset);
 
-        void Visit(IObject2D parentObject2D);
+        void Visit(IObject parentObject);
     }
 
     public enum AnimationState

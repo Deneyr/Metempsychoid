@@ -58,24 +58,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.cs" />
+    <Compile Include="Model\AEntity.cs" />
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
     <Compile Include="Model\Event\GameEvent.cs" />
     <Compile Include="Model\IObject.cs" />
     <Compile Include="Model\IUpdatable.cs" />
     <Compile Include="Model\Layer\BackgroundLayer\BackgroundLayer.cs" />
+    <Compile Include="Model\Layer\EntityLayer\EntityLayer.cs" />
     <Compile Include="Model\Node\ANode.cs" />
+    <Compile Include="Model\PlayerData.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\AEntity2D.cs" />
     <Compile Include="View\ALayer2D.cs" />
-    <Compile Include="View\Animation\AAnimation.cs" />
+    <Compile Include="Animation\AAnimation.cs" />
     <Compile Include="View\Animation\FrameAnimation.cs" />
-    <Compile Include="View\Animation\AnimationManager.cs" />
-    <Compile Include="View\Animation\IAnimation.cs" />
-    <Compile Include="View\Animation\PositionAnimation.cs" />
-    <Compile Include="View\Animation\RotationAnimation.cs" />
-    <Compile Include="View\Animation\SequenceAnimation.cs" />
+    <Compile Include="Animation\AnimationManager.cs" />
+    <Compile Include="Animation\IAnimation.cs" />
+    <Compile Include="Model\Animation\PositionAnimation.cs" />
+    <Compile Include="Model\Animation\RotationAnimation.cs" />
+    <Compile Include="Animation\SequenceAnimation.cs" />
     <Compile Include="View\Animation\ZoomAnimation.cs" />
     <Compile Include="View\AObject2D.cs" />
     <Compile Include="View\AObject2DFactory.cs" />
@@ -95,6 +99,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Model\Entity\" />
     <Folder Include="Sound\SoundManager\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
