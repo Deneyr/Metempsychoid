@@ -13,8 +13,9 @@ namespace Metempsychoid.Model
 
         private float rotation;
 
-        private List<AEntity> entitiesList;
+        private bool raiseEntityEvents;
 
+        protected Dictionary<string, AEntity> namesToEntity;
 
         public event Action<AEntity> EntityAdded;
         public event Action<AEntity> EntityRemoved;
@@ -28,6 +29,14 @@ namespace Metempsychoid.Model
         {
             get;
             protected set;
+        }
+
+        public Dictionary<string, AEntity> NamesToEntity
+        {
+            get
+            {
+                return this.namesToEntity;
+            }
         }
 
         public override Vector2f Position
@@ -68,35 +77,43 @@ namespace Metempsychoid.Model
         {
             this.TypesInChunk = new HashSet<Type>();
 
-            this.entitiesList = new List<AEntity>();
+            this.namesToEntity = new Dictionary<string, AEntity>();
 
             this.position = new Vector2f(0, 0);
             this.rotation = 0;
+
+            this.raiseEntityEvents = true;
         }
 
-        public void InitializeLayer(PlayerData playerData)
+        public virtual void InitializeLayer(PlayerData playerData)
         {
-            // To override
+            this.raiseEntityEvents = false;
+
+            this.InternalInitializeLayer(playerData);
+
+            this.raiseEntityEvents = true;
         }
+
+        protected abstract void InternalInitializeLayer(PlayerData playerData);
 
         public override void UpdateLogic(World world, Time deltaTime)
         {
-            foreach (AEntity entity in this.entitiesList)
+            foreach (AEntity entity in this.namesToEntity.Values)
             {
                 entity.UpdateLogic(world, deltaTime);
             }
         }
 
-        public void AddEntityToLayer(AEntity entity)
+        public void AddEntityToLayer(string entityName, AEntity entity)
         {
-            this.entitiesList.Add(entity);
+            this.namesToEntity.Add(entityName, entity);
 
             this.TypesInChunk.Add(entity.GetType());
         }
 
         public virtual void FlushLayer()
         {
-            foreach (AEntity entity in this.entitiesList)
+            foreach (AEntity entity in this.namesToEntity.Values)
             {
                 this.NotifyObjectRemoved(entity);
             }
@@ -124,7 +141,10 @@ namespace Metempsychoid.Model
 
         public void NotifyObjectPropertyChanged(AEntity obj, string propertyName)
         {
-            this.EntityPropertyChanged?.Invoke(obj, propertyName);
+            if (this.raiseEntityEvents)
+            {
+                this.EntityPropertyChanged?.Invoke(obj, propertyName);
+            }
         }
     }
 }

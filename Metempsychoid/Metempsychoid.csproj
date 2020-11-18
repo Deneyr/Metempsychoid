@@ -61,6 +61,7 @@
     <Compile Include="Model\AEntity.cs" />
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
+    <Compile Include="Model\Layer\EntityLayer\T_TeleEntity.cs" />
     <Compile Include="Model\Event\GameEvent.cs" />
     <Compile Include="Model\IObject.cs" />
     <Compile Include="Model\IUpdatable.cs" />
@@ -90,6 +91,10 @@
     <Compile Include="View\Layer2D\BackgroundLayer2D\BackgroundLayer2D.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\BackgroundLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\TileBackgoundObject2D.cs" />
+    <Compile Include="View\Layer2D\EntityLayer2D\EntityLayer2D.cs" />
+    <Compile Include="View\Layer2D\EntityLayer2D\EntityLayer2DFactory.cs" />
+    <Compile Include="View\Layer2D\EntityLayer2D\T_TeleEntity2D.cs" />
+    <Compile Include="View\Layer2D\EntityLayer2D\T_TeleEntity2DFactory.cs" />
     <Compile Include="View\ResourcesManager\LayerResourcesLoader.cs" />
     <Compile Include="View\ResourcesManager\TextureManager.cs" />
     <Compile Include="View\World2D.cs" />
@@ -99,7 +104,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\Entity\" />
     <Folder Include="Sound\SoundManager\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

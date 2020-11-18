@@ -48,6 +48,16 @@ namespace Metempsychoid.Model
             AObject.animationManager.PlayAnimation(this, animation);
         }
 
+        public void PlayAnimation(IAnimation animation)
+        {
+            AObject.animationManager.PlayAnimation(this, animation);
+        }
+
+        public void AddAnimation(IAnimation animation)
+        {
+            this.animationsList.Add(animation);
+        }
+
         public static void UpdateAnimationManager(Time deltaTime)
         {
             AObject.animationManager.Run(deltaTime);

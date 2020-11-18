@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Metempsychoid.Model;
 using Metempsychoid.View.Controls;
+using Metempsychoid.View.Layer2D.BackgroundLayer2D;
 using SFML.Graphics;
 using SFML.System;
 
@@ -138,7 +139,13 @@ namespace Metempsychoid.View
             this.parentLayer.EntityPropertyChanged += OnEntityPropertyChanged;
         }
 
-        public abstract void InitializeLayer(IObject2DFactory factory);
+        public virtual void InitializeLayer(IObject2DFactory factory)
+        {
+            foreach (AEntity entity in this.parentLayer.NamesToEntity.Values)
+            {
+                this.AddEntity(entity);
+            }
+        }
 
         private void OnRotationChanged(float rotation)
         {
@@ -157,7 +164,12 @@ namespace Metempsychoid.View
 
         protected virtual void OnEntityAdded(AEntity obj)
         {
-            if(this.world2D.TryGetTarget(out World2D world2D))
+            this.AddEntity(obj);
+        }
+
+        protected void AddEntity(AEntity obj)
+        {
+            if (this.world2D.TryGetTarget(out World2D world2D))
             {
                 AEntity2D object2D = World2D.MappingObjectModelView[obj.GetType()].CreateObject2D(world2D, obj) as AEntity2D;
 
@@ -171,6 +183,9 @@ namespace Metempsychoid.View
             {
                 case "Position":
                     this.objectToObject2Ds[obj].Position = obj.Position;
+                    break;
+                case "Rotation":
+                    this.objectToObject2Ds[obj].Rotation = obj.Rotation;
                     break;
             }
         }

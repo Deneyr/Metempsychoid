@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Metempsychoid.Model.Layer.BackgroundLayer;
+using Metempsychoid.Model.Layer.EntityLayer;
 using SFML.System;
 
 namespace Metempsychoid.Model
@@ -146,11 +147,15 @@ namespace Metempsychoid.Model
         // Test
         public void TestLevel()
         {
-            BackgroundLayer background = new BackgroundLayer("VsO7nJK");
+            BackgroundLayer background = new BackgroundLayer();
+            EntityLayer entityLayer = new EntityLayer();
 
-            this.InitializeWorld(new List<Tuple<string, ALayer>>() { new Tuple<string, ALayer>("VsO7nJK", background) });
+            this.InitializeWorld(new List<Tuple<string, ALayer>>() {
+                new Tuple<string, ALayer>("VsO7nJK", background),
+                new Tuple<string, ALayer>("TestLayer", entityLayer)
+            });
 
-            this.InitializeLevel(new List<string>() { "VsO7nJK" });
+            this.InitializeLevel(new List<string>() { "VsO7nJK", "TestLayer" });
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Metempsychoid.Model;
 using Metempsychoid.Model.Layer.BackgroundLayer;
+using Metempsychoid.Model.Layer.EntityLayer;
 using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.BackgroundLayer2D;
+using Metempsychoid.View.Layer2D.EntityLayer2D;
 using Metempsychoid.View.ResourcesManager;
 using SFML.Graphics;
 using SFML.System;
@@ -22,7 +24,6 @@ namespace Metempsychoid.View
         private LayerResourcesLoader layerResourcesLoader;
 
         private Dictionary<ALayer, ALayer2D> layersDictionary;
-        private List<ALayer2D> layersList;
 
         static World2D()
         {
@@ -30,8 +31,13 @@ namespace Metempsychoid.View
 
             MappingObjectModelView = new Dictionary<Type, IObject2DFactory>();
 
-            // Layer mapping
+            // Background mapping
             MappingObjectModelView.Add(typeof(BackgroundLayer), new BackgroundLayer2DFactory("VsO7nJK"));
+
+            // Entity Mapping
+            MappingObjectModelView.Add(typeof(EntityLayer), new EntityLayer2DFactory());
+
+            MappingObjectModelView.Add(typeof(T_TeleEntity), new T_TeleEntity2DFactory());
 
             // Object mapping
             // MappingObjectModelView.Add(typeof(PlayerEntity), new PlayerEntity2DFactory());
@@ -50,10 +56,16 @@ namespace Metempsychoid.View
             private set;
         }
 
+        public List<ALayer2D> LayersList
+        {
+            get;
+            private set;
+        }
+
         public World2D(MainWindow mainWindow)
         {
             this.layersDictionary = new Dictionary<ALayer, ALayer2D>();
-            this.layersList = new List<ALayer2D>();
+            this.LayersList = new List<ALayer2D>();
 
             this.layerResourcesLoader = new LayerResourcesLoader();
 
@@ -76,7 +88,7 @@ namespace Metempsychoid.View
 
             //sw.Start();
 
-            foreach (ALayer2D layer2D in this.layersList)
+            foreach (ALayer2D layer2D in this.LayersList)
             {
                 layer2D.DrawIn(window, deltaTime);
             }
@@ -88,12 +100,12 @@ namespace Metempsychoid.View
 
         public void OnControlActivated(ControlEventType eventType, string details)
         {
-            int nbLayer2D = this.layersList.Count;
+            int nbLayer2D = this.LayersList.Count;
             bool continueToForwardEvent = true;
 
             while(nbLayer2D > 0 && continueToForwardEvent)
             {
-                continueToForwardEvent = this.layersList[nbLayer2D - 1].OnControlActivated(eventType, details);
+                continueToForwardEvent = this.LayersList[nbLayer2D - 1].OnControlActivated(eventType, details);
 
                 nbLayer2D--;
             }
@@ -119,12 +131,12 @@ namespace Metempsychoid.View
             layer2D.Dispose();
 
             this.layersDictionary.Remove(layerToRemove);
-            this.layersList.Remove(layer2D);
+            this.LayersList.Remove(layer2D);
         }
 
         private void OnLevelStarting(World world)
         {
-            if (this.layersList.Any())
+            if (this.LayersList.Any())
             {
                 throw new Exception("There is always some layers in the current list at the start of the level");
             }
@@ -138,7 +150,7 @@ namespace Metempsychoid.View
                     throw new Exception("The model layer : " + layer + "does not have a associated layer2D at the start of the level");
                 }
 
-                this.layersList.Add(layer2D);
+                this.LayersList.Add(layer2D);
 
                 layer2D.InitializeLayer(World2D.MappingObjectModelView[layer.GetType()]);
             }
@@ -146,12 +158,12 @@ namespace Metempsychoid.View
 
         private void OnLevelEnding(World world)
         {
-            foreach(ALayer2D layer in this.layersList)
+            foreach(ALayer2D layer in this.LayersList)
             {
                 layer.FlushEntities();
             }
 
-            this.layersList.Clear();
+            this.LayersList.Clear();
         }
 
         private void OnWorldStarting(World world)

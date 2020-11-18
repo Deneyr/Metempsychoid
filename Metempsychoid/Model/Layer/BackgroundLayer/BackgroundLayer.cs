@@ -8,17 +8,14 @@ namespace Metempsychoid.Model.Layer.BackgroundLayer
 {
     public class BackgroundLayer: ALayer
     {
-        public string BackgroundName
+
+        public BackgroundLayer()
         {
-            get;
-            private set;
         }
 
-        public BackgroundLayer(string backgroundName)
+        protected override void InternalInitializeLayer(PlayerData playerData)
         {
-            this.BackgroundName = backgroundName;
 
-            this.Position = new SFML.System.Vector2f(0, 0);
         }
     }
 }

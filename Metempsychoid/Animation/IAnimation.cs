@@ -43,6 +43,7 @@ namespace Metempsychoid.Animation
         STEP,
         LINEAR,
         SQUARE_ACC,
-        SQUARE_DEC
+        SQUARE_DEC,
+        SIGMOID
     }
 }

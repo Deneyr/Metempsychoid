@@ -89,6 +89,8 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
 
         public override void InitializeLayer(IObject2DFactory factory)
         {
+            base.InitializeLayer(factory);
+
             this.Position = this.parentLayer.Position;
 
             this.Rotation = this.parentLayer.Rotation;

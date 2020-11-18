@@ -105,6 +105,9 @@ namespace Metempsychoid.Animation
                     case InterpolationMethod.SQUARE_DEC:
                         this.currentValue = this.valueFrom * (ratioElapsed - 1) * (ratioElapsed - 1) + this.valueTo * (ratioElapsed * (2 - ratioElapsed));
                         break;
+                    case InterpolationMethod.SIGMOID:
+                        this.currentValue = this.valueFrom + (this.valueTo - this.valueFrom) * (1 / (1 + (float) Math.Exp(-10 * (ratioElapsed - 0.5))));
+                        break;
                 }
             }
         }
