@@ -145,6 +145,11 @@ namespace Metempsychoid.View
             {
                 ALayer2D layer2D = this.layersDictionary[layer];
 
+                if(layer.ParentLayer != null)
+                {
+                    this.layersDictionary[layer.ParentLayer].ChildrenLayer2D.Add(layer2D);
+                }
+
                 if (layer2D == null)
                 {
                     throw new Exception("The model layer : " + layer + "does not have a associated layer2D at the start of the level");

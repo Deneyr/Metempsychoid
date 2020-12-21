@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.Model;
 using Metempsychoid.Model.Layer.EntityLayer;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,16 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
             }
 
             return null;
+        }
+
+        public override void OnTextureLoaded(string path, Texture texture)
+        {
+            if (this.Resources.ContainsKey(path))
+            {
+                texture.Smooth = true;
+
+                this.Resources[path] = texture;
+            }
         }
     }
 }

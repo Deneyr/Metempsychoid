@@ -51,7 +51,7 @@ namespace Metempsychoid.View
             return this.Resources[this.texturesPath.ElementAt(index)];
         }
 
-        public void OnTextureLoaded(string path, Texture texture)
+        public virtual void OnTextureLoaded(string path, Texture texture)
         {
             if (this.Resources.ContainsKey(path))
             {
@@ -59,7 +59,7 @@ namespace Metempsychoid.View
             }
         }
 
-        public void OnTextureUnloaded(string path)
+        public virtual void OnTextureUnloaded(string path)
         {
             if (this.Resources.ContainsKey(path))
             {

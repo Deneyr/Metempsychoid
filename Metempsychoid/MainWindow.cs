@@ -35,8 +35,8 @@ namespace Metempsychoid
 
     public MainWindow()
         {
-            var mode = new SFML.Window.VideoMode(800, 600);
-            this.Window = new SFML.Graphics.RenderWindow(SFML.Window.VideoMode.FullscreenModes[0], "Metempsychoid", SFML.Window.Styles.Fullscreen);
+            //var mode = new SFML.Window.VideoMode(800, 600);
+            this.Window = new SFML.Graphics.RenderWindow(new SFML.Window.VideoMode(1920, 1080), "Metempsychoid", SFML.Window.Styles.Fullscreen);
             // this.window = new SFML.Graphics.RenderWindow(mode, "Metempsychoid");
             this.Window.SetVerticalSyncEnabled(true);
 

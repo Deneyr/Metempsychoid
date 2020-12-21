@@ -150,6 +150,8 @@ namespace Metempsychoid.Model
             BackgroundLayer background = new BackgroundLayer();
             EntityLayer entityLayer = new EntityLayer();
 
+            entityLayer.ParentLayer = background;
+
             this.InitializeWorld(new List<Tuple<string, ALayer>>() {
                 new Tuple<string, ALayer>("VsO7nJK", background),
                 new Tuple<string, ALayer>("TestLayer", entityLayer)

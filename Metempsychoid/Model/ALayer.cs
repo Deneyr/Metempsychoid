@@ -25,6 +25,12 @@ namespace Metempsychoid.Model
 
         public event Action<AEntity, string> EntityPropertyChanged;
 
+        public ALayer ParentLayer
+        {
+            get;
+            set;
+        }
+
         public HashSet<Type> TypesInChunk
         {
             get;
@@ -83,6 +89,8 @@ namespace Metempsychoid.Model
             this.rotation = 0;
 
             this.raiseEntityEvents = true;
+
+            this.ParentLayer = null;
         }
 
         public virtual void InitializeLayer(PlayerData playerData)

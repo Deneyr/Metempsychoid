@@ -15,5 +15,13 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
         }
+
+        public override Vector2f Position
+        {
+            set
+            {
+                base.Position = value * 0.5f;
+            }
+        }
     }
 }

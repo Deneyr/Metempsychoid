@@ -11,7 +11,7 @@ using SFML.System;
 
 namespace Metempsychoid.View
 {
-    public abstract class ALayer2D: AObject2D
+    public abstract class ALayer2D : AObject2D
     {
         protected SFML.Graphics.View view;
         private Vector2f defaultViewSize;
@@ -22,6 +22,12 @@ namespace Metempsychoid.View
         protected Dictionary<AEntity, AEntity2D> objectToObject2Ds;
 
         protected float zoom;
+
+        public List<ALayer2D> ChildrenLayer2D
+        {
+            get;
+            protected set;
+        }
 
         public Vector2i Area
         {
@@ -41,6 +47,11 @@ namespace Metempsychoid.View
                 if (value != this.Position)
                 {
                     this.ClampPosition(value);
+
+                    foreach (ALayer2D child in this.ChildrenLayer2D)
+                    {
+                        child.Position = this.Position;
+                    }
                 }
             }
         }
@@ -54,7 +65,15 @@ namespace Metempsychoid.View
 
             set
             {
-                this.view.Rotation = value;
+                if (value != this.Rotation)
+                {
+                    this.view.Rotation = value;
+
+                    foreach (ALayer2D child in this.ChildrenLayer2D)
+                    {
+                        child.Rotation = this.Rotation;
+                    }
+                }
             }
         }
 
@@ -72,6 +91,12 @@ namespace Metempsychoid.View
                     this.ClampZoom(value);
 
                     this.ClampPosition(this.Position);
+
+                    foreach (ALayer2D child in this.ChildrenLayer2D)
+                    {
+                        child.Position = this.Position;
+                        child.Zoom = this.Zoom;
+                    }
                 }
             }
         }
@@ -118,6 +143,8 @@ namespace Metempsychoid.View
 
         public ALayer2D(World2D world2D, ALayer layer)
         {
+            this.ChildrenLayer2D = new List<ALayer2D>();
+
             this.view = new SFML.Graphics.View();
             this.defaultViewSize = this.view.Size;
             this.Position = new Vector2f(0, 0);
@@ -267,6 +294,8 @@ namespace Metempsychoid.View
                 object2D.Dispose();
             }
             this.objectToObject2Ds.Clear();
+
+            this.ChildrenLayer2D.Clear();
         }
 
         public override void Dispose()

@@ -93,7 +93,7 @@ namespace Metempsychoid.Animation
             }
             else
             {
-                float ratioElapsed = ((float)this.timeElapsed.AsMilliseconds()) / this.animationPeriod.AsMilliseconds();
+                float ratioElapsed = this.timeElapsed.AsSeconds() / this.animationPeriod.AsSeconds();
                 switch (this.method)
                 {
                     case InterpolationMethod.LINEAR:
@@ -106,7 +106,7 @@ namespace Metempsychoid.Animation
                         this.currentValue = this.valueFrom * (ratioElapsed - 1) * (ratioElapsed - 1) + this.valueTo * (ratioElapsed * (2 - ratioElapsed));
                         break;
                     case InterpolationMethod.SIGMOID:
-                        this.currentValue = this.valueFrom + (this.valueTo - this.valueFrom) * (1 / (1 + (float) Math.Exp(-10 * (ratioElapsed - 0.5))));
+                        this.currentValue = this.valueFrom + ((this.valueTo - this.valueFrom) * (1.0132f / (1 + (float) Math.Exp(-10 * (ratioElapsed - 0.5)))) - 0.0068f);
                         break;
                 }
             }
