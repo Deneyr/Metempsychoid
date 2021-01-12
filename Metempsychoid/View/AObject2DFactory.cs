@@ -38,6 +38,11 @@ namespace Metempsychoid.View
 
         public abstract IObject2D CreateObject2D(World2D world2D, IObject obj);
 
+        public virtual IObject2D CreateObject2D(World2D world2D, ALayer2D layer2D, IObject obj)
+        {
+            return this.CreateObject2D(world2D, obj);
+        }
+
         public Dictionary<string, Texture> Resources
         {
             get

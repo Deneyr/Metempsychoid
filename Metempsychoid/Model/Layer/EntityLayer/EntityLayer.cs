@@ -13,38 +13,36 @@ namespace Metempsychoid.Model.Layer.EntityLayer
     {
         public EntityLayer()
         {
-            AEntity entity = new T_TeleEntity(this);
 
-            this.AddEntityToLayer("Tele", entity);
         }
 
         public override void UpdateLogic(World world, Time deltaTime)
         {
-            base.UpdateLogic(world, deltaTime);
-
-            
+            base.UpdateLogic(world, deltaTime);           
         }
 
         protected override void InternalInitializeLayer(PlayerData playerData)
         {
-            AEntity entity = this.NamesToEntity["Tele"];
+            //AEntity entity = new T_TeleEntity(this);
 
-            entity.Position = new Vector2f(-400, 0);
+            //this.AddEntityToLayer(entity);
 
-            SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(20), AnimationType.LOOP);
+            //entity.Position = new Vector2f(-400, 0);
 
-            IAnimation anim = new PositionAnimation(entity.Position, new Vector2f(400, 0), Time.FromSeconds(20), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
-            sequence.AddAnimation(0, anim);
+            //SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(20), AnimationType.LOOP);
 
-            anim = new RotationAnimation(entity.Rotation, 180, Time.FromSeconds(5), AnimationType.ONETIME, InterpolationMethod.LINEAR);
-            sequence.AddAnimation(5, anim);
+            //IAnimation anim = new PositionAnimation(entity.Position, new Vector2f(400, 0), Time.FromSeconds(20), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
+            //sequence.AddAnimation(0, anim);
 
-            anim = new RotationAnimation(180, entity.Rotation, Time.FromSeconds(5), AnimationType.ONETIME, InterpolationMethod.LINEAR);
-            sequence.AddAnimation(10, anim);
+            //anim = new RotationAnimation(entity.Rotation, 180, Time.FromSeconds(5), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            //sequence.AddAnimation(5, anim);
 
-            entity.AddAnimation(sequence);
+            //anim = new RotationAnimation(180, entity.Rotation, Time.FromSeconds(5), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            //sequence.AddAnimation(10, anim);
 
-            entity.PlayAnimation(0);
+            //entity.AddAnimation(sequence);
+
+            //entity.PlayAnimation(0);
         }
     }
 }

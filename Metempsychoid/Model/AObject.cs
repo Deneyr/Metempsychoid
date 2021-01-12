@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model
 {
-    public abstract class AObject: IObject, IUpdatable
+    public abstract class AObject: IObject, IUpdatable, IDisposable
     {
         protected static AnimationManager animationManager;
 
@@ -61,6 +61,11 @@ namespace Metempsychoid.Model
         public static void UpdateAnimationManager(Time deltaTime)
         {
             AObject.animationManager.Run(deltaTime);
+        }
+
+        public virtual void Dispose()
+        {
+            // To override
         }
     }
 }

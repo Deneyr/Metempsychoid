@@ -14,7 +14,7 @@ namespace Metempsychoid.Model
 
         private float rotation;
 
-        WeakReference<EntityLayer> parentLayer;
+        protected WeakReference<EntityLayer> parentLayer;
 
         public override Vector2f Position
         {

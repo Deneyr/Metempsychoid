@@ -12,6 +12,8 @@ namespace Metempsychoid.View
     {
         IObject2D CreateObject2D(World2D world2D, IObject obj);
 
+        IObject2D CreateObject2D(World2D world2D, ALayer2D layer2D, IObject obj);
+
         Dictionary<string, Texture> Resources
         {
             get;

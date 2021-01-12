@@ -63,7 +63,7 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
                 case ControlEventType.MOUSE_WHEEL:
                     int delta = int.Parse(details);
 
-                    this.ZoomRatio += delta;
+                    this.ZoomRatio -= delta;
 
                     break;
                 case ControlEventType.MOUSE_MOVED:

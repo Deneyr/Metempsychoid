@@ -1,4 +1,5 @@
-﻿using Metempsychoid.View.Animation;
+﻿using Metempsychoid.Model;
+using Metempsychoid.View.Animation;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -12,6 +13,12 @@ namespace Metempsychoid.View
     public class AEntity2D: AObject2D
     {
         protected Sprite sprite;
+
+        public int Priority
+        {
+            get;
+            set;
+        }
 
         public Sprite ObjectSprite
         {
@@ -90,6 +97,16 @@ namespace Metempsychoid.View
         public AEntity2D()
         {
             this.sprite = new Sprite();
+        }
+
+        public AEntity2D(AEntity entity)
+        {
+            this.sprite = new Sprite();
+
+            this.Priority = 10;
+
+            this.Position = entity.Position;
+            this.Rotation = entity.Rotation;
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

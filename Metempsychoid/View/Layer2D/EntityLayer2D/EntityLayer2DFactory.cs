@@ -13,12 +13,6 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
 {
     public class EntityLayer2DFactory : AObject2DFactory
     {
-        public Vector2i Area
-        {
-            get;
-            private set;
-        }
-
         public EntityLayer2DFactory()
         {
             this.InitializeFactory();

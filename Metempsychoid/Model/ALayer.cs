@@ -15,7 +15,7 @@ namespace Metempsychoid.Model
 
         private bool raiseEntityEvents;
 
-        protected Dictionary<string, AEntity> namesToEntity;
+        protected HashSet<AEntity> entities;
 
         public event Action<AEntity> EntityAdded;
         public event Action<AEntity> EntityRemoved;
@@ -37,11 +37,11 @@ namespace Metempsychoid.Model
             protected set;
         }
 
-        public Dictionary<string, AEntity> NamesToEntity
+        public HashSet<AEntity> Entities
         {
             get
             {
-                return this.namesToEntity;
+                return this.entities;
             }
         }
 
@@ -83,7 +83,7 @@ namespace Metempsychoid.Model
         {
             this.TypesInChunk = new HashSet<Type>();
 
-            this.namesToEntity = new Dictionary<string, AEntity>();
+            this.entities = new HashSet<AEntity>();
 
             this.position = new Vector2f(0, 0);
             this.rotation = 0;
@@ -106,35 +106,61 @@ namespace Metempsychoid.Model
 
         public override void UpdateLogic(World world, Time deltaTime)
         {
-            foreach (AEntity entity in this.namesToEntity.Values)
+            foreach (AEntity entity in this.Entities)
             {
                 entity.UpdateLogic(world, deltaTime);
             }
         }
 
-        public void AddEntityToLayer(string entityName, AEntity entity)
+        public void AddEntityToLayer(AEntity entity)
         {
-            this.namesToEntity.Add(entityName, entity);
+            this.entities.Add(entity);
 
-            this.TypesInChunk.Add(entity.GetType());
+            this.NotifyObjectAdded(entity);
+        }
+
+        public void RemoveEntityFromLayer(AEntity entity)
+        {
+            this.entities.Remove(entity);
+
+            this.NotifyObjectRemoved(entity);
+
+            entity.Dispose();
         }
 
         public virtual void FlushLayer()
         {
-            foreach (AEntity entity in this.namesToEntity.Values)
+            foreach (AEntity entity in this.entities)
             {
+                entity.Dispose();
+
                 this.NotifyObjectRemoved(entity);
             }
+
+            this.entities.Clear();
+        }
+
+        public override void Dispose()
+        {
+            this.FlushLayer();
+
+            base.Dispose();
         }
 
         protected void NotifyObjectAdded(AEntity obj)
         {
-            this.EntityAdded?.Invoke(obj);
+            if (this.raiseEntityEvents)
+            {
+                this.EntityAdded?.Invoke(obj);
+            }
         }
 
         protected void NotifyObjectRemoved(AEntity obj)
         {
-            this.EntityRemoved?.Invoke(obj);
+            if (this.raiseEntityEvents)
+            {
+                this.EntityRemoved?.Invoke(obj);
+            }
         }
 
         protected void NotifyPositionChanged(Vector2f position)

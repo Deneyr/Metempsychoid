@@ -12,7 +12,8 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
 {
     public class T_TeleEntity2D : AEntity2D
     {
-        public T_TeleEntity2D(IObject2DFactory factory, T_TeleEntity entity)
+        public T_TeleEntity2D(IObject2DFactory factory, T_TeleEntity entity):
+            base(entity)
         {
             this.Position = entity.Position;
             this.Rotation = entity.Rotation;

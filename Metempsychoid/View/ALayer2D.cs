@@ -122,7 +122,7 @@ namespace Metempsychoid.View
 
             set
             {
-                if(value != this.defaultViewSize)
+                if (value != this.defaultViewSize)
                 {
                     this.defaultViewSize = value;
 
@@ -166,9 +166,14 @@ namespace Metempsychoid.View
             this.parentLayer.EntityPropertyChanged += OnEntityPropertyChanged;
         }
 
+        public AEntity2D GetEntity2DFromEntity(AEntity entity)
+        {
+            return this.objectToObject2Ds[entity];
+        }
+
         public virtual void InitializeLayer(IObject2DFactory factory)
         {
-            foreach (AEntity entity in this.parentLayer.NamesToEntity.Values)
+            foreach (AEntity entity in this.parentLayer.Entities)
             {
                 this.AddEntity(entity);
             }
@@ -198,7 +203,7 @@ namespace Metempsychoid.View
         {
             if (this.world2D.TryGetTarget(out World2D world2D))
             {
-                AEntity2D object2D = World2D.MappingObjectModelView[obj.GetType()].CreateObject2D(world2D, obj) as AEntity2D;
+                AEntity2D object2D = World2D.MappingObjectModelView[obj.GetType()].CreateObject2D(world2D, this, obj) as AEntity2D;
 
                 this.objectToObject2Ds.Add(obj, object2D);
             }
@@ -229,7 +234,7 @@ namespace Metempsychoid.View
             float newYPosition = Math.Min(Math.Max(newPosition.Y, minYPosition), maxYPosition);
             Vector2f newClampedPosition = new Vector2f(newXPosition, newYPosition);
 
-            if(newClampedPosition != this.view.Center)
+            if (newClampedPosition != this.view.Center)
             {
                 this.view.Center = newClampedPosition;
             }
@@ -242,7 +247,7 @@ namespace Metempsychoid.View
 
             float newZoomClamped = Math.Min(Math.Min(newZoom, zoomXMax), zoomYMax);
 
-            if(newZoomClamped != this.zoom)
+            if (newZoomClamped != this.zoom)
             {
                 this.zoom = newZoomClamped;
             }
@@ -270,8 +275,11 @@ namespace Metempsychoid.View
 
             window.SetView(this.view);
 
+            List<AEntity2D> listObjects = this.objectToObject2Ds.Values.ToList();
+            listObjects.Sort(new EntityComparer());
+
             FloatRect bounds = this.Bounds;
-            foreach (IObject2D object2D in this.objectToObject2Ds.Values)
+            foreach (IObject2D object2D in listObjects)
             {
                 if (object2D.Bounds.Intersects(bounds))
                 {
@@ -310,6 +318,22 @@ namespace Metempsychoid.View
 
             this.parentLayer.EntityPropertyChanged -= OnEntityPropertyChanged;
             this.parentLayer = null;
+        }
+
+        protected class EntityComparer : IComparer<AEntity2D>
+        {
+            public int Compare(AEntity2D x, AEntity2D y)
+            {
+                if(x.Priority > y.Priority)
+                {
+                    return 1;
+                }
+                else if(x.Priority < y.Priority)
+                {
+                    return -1;
+                }
+                return 0;
+            }
         }
     }
 }

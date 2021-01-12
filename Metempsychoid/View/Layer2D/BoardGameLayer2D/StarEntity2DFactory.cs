@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model;
+using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
 using SFML.Graphics;
 using SFML.System;
@@ -8,24 +9,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.EntityLayer2D
+namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
-    class T_TeleEntity2DFactory : AObject2DFactory
+    public class StarEntity2DFactory : AObject2DFactory
     {
-        public T_TeleEntity2DFactory()
+        public StarEntity2DFactory()
         {
-            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Entities\TV[86x76].png");
+            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Entities\Star.png");
+            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\distortion_map.png");
 
             this.InitializeFactory();
         }
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)
         {
-            if (obj is T_TeleEntity)
+            if (obj is StarEntity)
             {
-                T_TeleEntity entity = obj as T_TeleEntity;
+                StarEntity entity = obj as StarEntity;
 
-                return new T_TeleEntity2D(this, entity);
+                return new StarEntity2D(this, entity);
             }
 
             return null;

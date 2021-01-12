@@ -58,9 +58,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindow.cs" />
+    <Compile Include="Maths\Vector2fExtension.cs" />
     <Compile Include="Model\AEntity.cs" />
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
+    <Compile Include="Model\Layer\BoardGameLayer\BoardGameLayer.cs" />
+    <Compile Include="Model\Layer\BoardGameLayer\StarEntity.cs" />
+    <Compile Include="Model\Layer\BoardGameLayer\StarLinkEntity.cs" />
     <Compile Include="Model\Layer\EntityLayer\T_TeleEntity.cs" />
     <Compile Include="Model\Event\GameEvent.cs" />
     <Compile Include="Model\IObject.cs" />
@@ -91,6 +95,12 @@
     <Compile Include="View\Layer2D\BackgroundLayer2D\BackgroundLayer2D.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\BackgroundLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\TileBackgoundObject2D.cs" />
+    <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2D.cs" />
+    <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2DFactory.cs" />
+    <Compile Include="View\Layer2D\BoardGameLayer2D\StarEntity2D.cs" />
+    <Compile Include="View\Layer2D\BoardGameLayer2D\StarEntity2DFactory.cs" />
+    <Compile Include="View\Layer2D\BoardGameLayer2D\StarLinkEntity2D.cs" />
+    <Compile Include="View\Layer2D\BoardGameLayer2D\StarLinkEntity2DFactory.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\EntityLayer2D.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\EntityLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\T_TeleEntity2D.cs" />
