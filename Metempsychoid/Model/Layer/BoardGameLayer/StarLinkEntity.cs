@@ -50,7 +50,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             boardGameLayer.EntityPropertyChanged += this.OnEntityPropertyChanged;
         }
 
-        private void OnEntityPropertyChanged(AEntity entity, string propertyName)
+        protected virtual void OnEntityPropertyChanged(AEntity entity, string propertyName)
         {
             if (this.parentLayer.TryGetTarget(out Metempsychoid.Model.Layer.EntityLayer.EntityLayer target))
             {

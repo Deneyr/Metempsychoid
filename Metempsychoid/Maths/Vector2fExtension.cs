@@ -37,5 +37,31 @@ namespace Metempsychoid.Maths
             return (float) (result * 180 / Math.PI);
         }
 
+        public static Vector2f Rotate(this Vector2f obj, double angle)
+        {
+            Vector2f rotatedVector = new Vector2f((float)(obj.X * Math.Cos(angle) - obj.Y * Math.Sin(angle)),
+                (float)(obj.X * Math.Sin(angle) + obj.Y * Math.Cos(angle)));
+
+            return rotatedVector;
+        }
+
+        public static float Dot(this Vector2f obj, Vector2f vector)
+        {
+            return obj.X * vector.X + obj.Y * vector.Y;
+        }
+
+        public static Vector2f Projection (this Vector2f obj, Vector2f vector)
+        {
+            float vectorLen = vector.Len();
+            float len = obj.Dot(vector) / vectorLen;
+
+            return vector / vectorLen * len;
+        }
+
+        public static Vector2f OppProjection(this Vector2f obj, Vector2f vector)
+        {
+            return obj - obj.Projection(vector);
+        }
+
     }
 }

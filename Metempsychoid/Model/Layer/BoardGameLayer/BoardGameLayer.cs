@@ -71,6 +71,19 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             return link;
         }
 
+        protected StarLinkEntity AddCurvedStarLink(StarEntity starEntityFrom, StarEntity starEntityTo, float radius)
+        {
+            StarLinkEntity link = new CurvedStarLinkEntity(this, starEntityFrom, starEntityTo, radius);
+
+            this.StarLinkSystem.Add(link);
+            this.AddEntityToLayer(link);
+
+            this.starToLinks[starEntityFrom].Add(link);
+            this.starToLinks[starEntityTo].Add(link);
+
+            return link;
+        }
+
         protected void RemoveStarLink(StarLinkEntity starLinkEntity)
         {
             this.StarLinkSystem.Remove(starLinkEntity);
@@ -93,20 +106,26 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.AddStar(star);
 
             StarEntity star1 = new StarEntity(this);
-            star1.Position = new Vector2f(-400, -400);
+            star1.Position = new Vector2f(-400, 0);
             this.AddStar(star1);
 
             StarEntity star2 = new StarEntity(this);
-            star2.Position = new Vector2f(400, 400);
+            star2.Position = new Vector2f(0, -400);
             this.AddStar(star2);
 
-            star = new StarEntity(this);
-            star.Position = new Vector2f(0, -400);
-            this.AddStar(star);
+            StarEntity star3 = new StarEntity(this);
+            star3.Position = new Vector2f(400, 0);
+            this.AddStar(star3);
+
+            StarEntity star4 = new StarEntity(this);
+            star4.Position = new Vector2f(0, 400);
+            this.AddStar(star4);
 
             this.AddStarLink(star, star1);
             this.AddStarLink(star2, star);
-            this.AddStarLink(star1, star2);
+            this.AddCurvedStarLink(star1, star2, 400);
+            this.AddCurvedStarLink(star2, star3, 400);
+            this.AddCurvedStarLink(star3, star4, 400);
         }
     }
 }

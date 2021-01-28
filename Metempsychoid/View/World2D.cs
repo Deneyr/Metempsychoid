@@ -46,6 +46,7 @@ namespace Metempsychoid.View
             // Star entities
             MappingObjectModelView.Add(typeof(StarEntity), new StarEntity2DFactory());
             MappingObjectModelView.Add(typeof(StarLinkEntity), new StarLinkEntity2DFactory());
+            MappingObjectModelView.Add(typeof(CurvedStarLinkEntity), new CurvedStarLinkEntity2DFactory());
 
             // Object mapping
             // MappingObjectModelView.Add(typeof(PlayerEntity), new PlayerEntity2DFactory());
