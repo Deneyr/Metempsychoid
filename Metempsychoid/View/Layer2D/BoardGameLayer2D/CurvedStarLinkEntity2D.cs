@@ -30,27 +30,31 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.starEntityFrom = layer2D.GetEntity2DFromEntity(entity.StarFrom) as StarEntity2D;
             this.starEntityTo = layer2D.GetEntity2DFromEntity(entity.StarTo) as StarEntity2D;
 
-            this.ObjectSprite.Color = Color.Red;
+            this.ObjectSprite.Color = Color.Blue;
 
-            this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
+            //this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
+
 
             this.radius = (int) entity.Radius;
             this.center = new Vector2f(entity.Center.X, entity.Center.Y);
 
-            //Shader shader = new Shader(null, null, @"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\LinkSimpleFrag.frag");
+            Shader shader = new Shader(null, null, @"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\LinkCurvedFrag.frag");
 
-            //Texture distortionMap = factory.GetTextureByIndex(0);
-            //this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
-            //this.ObjectSprite.Texture.Repeated = true;
+            Texture distortionMap = factory.GetTextureByIndex(0);
+            this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
+            this.ObjectSprite.Texture.Repeated = true;
 
-            //distortionMap.Repeated = true;
-            //distortionMap.Smooth = true;
-            //shader.SetUniform("currentTexture", new Shader.CurrentTextureType());
-            //shader.SetUniform("distTexture", distortionMap);
+            distortionMap.Repeated = true;
+            distortionMap.Smooth = true;
+            shader.SetUniform("currentTexture", new Shader.CurrentTextureType());
+            shader.SetUniform("distTexture", distortionMap);
 
-            //render = new RenderStates(BlendMode.Alpha);
-            //render.Shader = shader;
+            render = new RenderStates(BlendMode.Alpha);
+            render.Shader = shader;
 
+            shader.SetUniform("radius", (float) (this.radius));
+            shader.SetUniform("margin", (float) (StarLinkEntity2D.WIDTH_LINK / 2));
+            shader.SetUniform("sideMainTexture", (int) this.ObjectSprite.Texture.Size.X);
             this.UpdateScaling();
 
             this.Priority = 9;
@@ -71,6 +75,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 this.ObjectSprite.Origin = new Vector2f(StarLinkEntity2D.WIDTH_LINK / 2, this.ObjectSprite.TextureRect.Height);
 
                 this.ObjectSprite.Scale = new Vector2f(1, Math.Sign(this.radius));
+
+                render.Shader.SetUniform("sizeX", this.ObjectSprite.TextureRect.Width);
+                render.Shader.SetUniform("sizeY", this.ObjectSprite.TextureRect.Height);
             }
         }
 
@@ -94,12 +101,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
         }
 
-        //public override void DrawIn(RenderWindow window, Time deltaTime)
-        //{
-        //    render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
+        public override void DrawIn(RenderWindow window, Time deltaTime)
+        {
+            render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
 
-        //    window.Draw(this.ObjectSprite, this.render);
-        //}
-
+            window.Draw(this.ObjectSprite, this.render);
+        }
     }
 }

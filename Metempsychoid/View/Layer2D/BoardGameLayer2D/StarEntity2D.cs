@@ -21,7 +21,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             base(entity)
         {
 
-            Shader shader = new Shader(null, null, @"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\SimpleFrag.frag");
+            Shader shader = new Shader(null, null, @"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\StarFrag.frag");
 
             Texture distortionMap = factory.GetTextureByIndex(1);
             distortionMap.Repeated = true;

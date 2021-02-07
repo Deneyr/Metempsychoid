@@ -102,11 +102,15 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         protected override void InternalInitializeLayer(PlayerData playerData)
         {
+            float cosPi4 = (float) Math.Cos(Math.PI / 4);
+
+            // Inner circle
             StarEntity star = new StarEntity(this);
             this.AddStar(star);
 
+
             StarEntity star1 = new StarEntity(this);
-            star1.Position = new Vector2f(-400, 0);
+            star1.Position = new Vector2f(-400 * cosPi4, -400 * cosPi4);
             this.AddStar(star1);
 
             StarEntity star2 = new StarEntity(this);
@@ -114,18 +118,84 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.AddStar(star2);
 
             StarEntity star3 = new StarEntity(this);
-            star3.Position = new Vector2f(400, 0);
+            star3.Position = new Vector2f(400 * cosPi4, -400 * cosPi4);
             this.AddStar(star3);
 
+
             StarEntity star4 = new StarEntity(this);
-            star4.Position = new Vector2f(0, 400);
+            star4.Position = new Vector2f(400 * cosPi4, 400 * cosPi4);
             this.AddStar(star4);
 
-            this.AddStarLink(star, star1);
-            this.AddStarLink(star2, star);
+            StarEntity star5 = new StarEntity(this);
+            star5.Position = new Vector2f(0, 400);
+            this.AddStar(star5);
+
+            StarEntity star6 = new StarEntity(this);
+            star6.Position = new Vector2f(-400 * cosPi4, 400 * cosPi4);
+            this.AddStar(star6);
+
+            this.AddStarLink(star, star2);
+            this.AddStarLink(star, star5);
             this.AddCurvedStarLink(star1, star2, 400);
             this.AddCurvedStarLink(star2, star3, 400);
-            this.AddCurvedStarLink(star3, star4, 400);
+            this.AddCurvedStarLink(star4, star5, 400);
+            this.AddCurvedStarLink(star5, star6, 400);
+
+            // Circle
+            StarEntity star7 = new StarEntity(this);
+            star7.Position = new Vector2f(-800, 0);
+            this.AddStar(star7);
+
+            StarEntity star8 = new StarEntity(this);
+            star8.Position = new Vector2f(0, -800);
+            this.AddStar(star8);
+
+            StarEntity star9 = new StarEntity(this);
+            star9.Position = new Vector2f(800, 0);
+            this.AddStar(star9);
+
+            StarEntity star10 = new StarEntity(this);
+            star10.Position = new Vector2f(0, 800);
+            this.AddStar(star10);
+
+            this.AddStarLink(star, star7);
+            this.AddStarLink(star, star9);
+            this.AddStarLink(star1, star7);
+            this.AddStarLink(star6, star7);
+            this.AddStarLink(star3, star9);
+            this.AddStarLink(star4, star9);
+            this.AddStarLink(star1, star8);
+            this.AddStarLink(star3, star8);
+            this.AddStarLink(star4, star10);
+            this.AddStarLink(star6, star10);
+            this.AddCurvedStarLink(star7, star8, 800);
+            this.AddCurvedStarLink(star8, star9, 800);
+            this.AddCurvedStarLink(star9, star10, 800);
+            this.AddCurvedStarLink(star10, star7, 800);
+
+            // out circle
+            StarEntity star11 = new StarEntity(this);
+            star11.Position = new Vector2f(-1200, 0);
+            this.AddStar(star11);
+
+            StarEntity star12 = new StarEntity(this);
+            star12.Position = new Vector2f(0, -1200);
+            this.AddStar(star12);
+
+            StarEntity star13 = new StarEntity(this);
+            star13.Position = new Vector2f(1200, 0);
+            this.AddStar(star13);
+
+            StarEntity star14 = new StarEntity(this);
+            star14.Position = new Vector2f(0, 1200);
+            this.AddStar(star14);
+
+            this.AddStarLink(star7, star11);
+            this.AddStarLink(star9, star13);
+            this.AddCurvedStarLink(star11, star12, 1200);
+            this.AddCurvedStarLink(star12, star13, 1200);
+            this.AddCurvedStarLink(star13, star14, 1200);
+            this.AddCurvedStarLink(star14, star11, 1200);
         }
     }
 }
