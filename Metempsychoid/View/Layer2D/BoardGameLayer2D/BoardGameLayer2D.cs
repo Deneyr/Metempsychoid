@@ -34,7 +34,10 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                     foreach(AEntity2D entity in this.objectToObject2Ds.Values)
                     {
-                        entity.IsActive = !entity.IsActive;
+                        if (entity is StarEntity2D)
+                        {
+                            entity.IsActive = !entity.IsActive;
+                        }
                     }
 
                     break;

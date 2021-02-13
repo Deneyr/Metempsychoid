@@ -17,7 +17,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         Clock timer = new Clock();
 
-        protected StarState starState;
+        public StarState StarEntityState
+        {
+            get;
+            private set;
+        }
 
         protected bool isActive;
 
@@ -25,7 +29,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         {
             get
             {
-                return this.starState != StarState.NOT_ACTIVE;
+                return this.StarEntityState != StarState.NOT_ACTIVE;
             }
             set
             {
@@ -33,7 +37,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 {
                     this.isActive = value;
 
-                    if(this.starState == StarState.TRANSITIONING)
+                    if(this.StarEntityState == StarState.TRANSITIONING)
                     {
                         this.PlayAnimation(this.CreateTransitioningAnimation());
                     }
@@ -112,7 +116,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 this.PlayAnimation(1);
 
-                this.starState = StarState.TRANSITIONING;
+                this.StarEntityState = StarState.TRANSITIONING;
             }
             else
             {
@@ -122,19 +126,19 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         private void StartTransitioningState()
         {
-            this.starState = StarState.TRANSITIONING;
+            this.StarEntityState = StarState.TRANSITIONING;
 
             this.PlayAnimation(this.CreateTransitioningAnimation());
         }
 
         private void StartNotActiveState()
         {
-            this.starState = StarState.NOT_ACTIVE;
+            this.StarEntityState = StarState.NOT_ACTIVE;
         }
 
         private void StartActiveState()
         {
-            this.starState = StarState.ACTIVE;
+            this.StarEntityState = StarState.ACTIVE;
 
             this.PlayAnimation(0);
         }
@@ -172,7 +176,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         public override void UpdateGraphics(Time deltaTime)
         {
-            switch (this.starState)
+            switch (this.StarEntityState)
             {
                 case StarState.ACTIVE:
                     this.UpdateActive(deltaTime);

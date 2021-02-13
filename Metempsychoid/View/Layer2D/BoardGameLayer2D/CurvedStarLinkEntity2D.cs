@@ -12,7 +12,6 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
     public class CurvedStarLinkEntity2D : StarLinkEntity2D
     { 
-
         private int radius;
 
         private Vector2f center;
@@ -52,6 +51,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.UpdateScaling();
 
             this.Priority = 9;
+
+            this.InitializeState(entity);
         }
 
         protected override void UpdateScaling()
@@ -75,14 +76,14 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
         }
 
-        public override void UpdateGraphics(Time deltaTime)
-        {
-            render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
-        }
+        //public override void UpdateGraphics(Time deltaTime)
+        //{
+        //    render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
+        //}
 
-        public override void DrawIn(RenderWindow window, Time deltaTime)
-        {
-            window.Draw(this.ObjectSprite, this.render);
-        }
+        //public override void DrawIn(RenderWindow window, Time deltaTime)
+        //{
+        //    window.Draw(this.ObjectSprite, this.render);
+        //}
     }
 }
