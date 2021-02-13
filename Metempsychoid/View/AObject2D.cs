@@ -82,6 +82,18 @@ namespace Metempsychoid.View
             AObject2D.animationManager.PlayAnimation(this, animation);
         }
 
+        public void PlayAnimation(IAnimation animation)
+        {
+            AObject2D.animationManager.PlayAnimation(this, animation);
+        }
+
+        public bool IsAnimationRunning()
+        {
+            IAnimation animation = AObject2D.animationManager.GetAnimationFromAObject2D(this);
+
+            return animation != null;
+        }
+
         public static void UpdateAnimationManager(Time deltaTime)
         {
             AObject2D.animationManager.Run(deltaTime);

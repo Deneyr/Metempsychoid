@@ -10,17 +10,11 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
-    public class CurvedStarLinkEntity2D : AEntity2D
-    {
-        private StarEntity2D starEntityFrom;
-
-        private StarEntity2D starEntityTo;
-
-        private RenderStates render;
-
-        private Clock timer = new Clock();
+    public class CurvedStarLinkEntity2D : StarLinkEntity2D
+    { 
 
         private int radius;
+
         private Vector2f center;
 
         public CurvedStarLinkEntity2D(ALayer2D layer2D, IObject2DFactory factory, CurvedStarLinkEntity entity) :
@@ -60,7 +54,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.Priority = 9;
         }
 
-        protected void UpdateScaling()
+        protected override void UpdateScaling()
         {
             if (this.starEntityTo != null && this.starEntityFrom != null)
             {
@@ -76,35 +70,18 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                 this.ObjectSprite.Scale = new Vector2f(1, Math.Sign(this.radius));
 
-                render.Shader.SetUniform("sizeX", this.ObjectSprite.TextureRect.Width);
+                //render.Shader.SetUniform("sizeX", this.ObjectSprite.TextureRect.Width);
                 render.Shader.SetUniform("sizeY", this.ObjectSprite.TextureRect.Height);
             }
         }
 
-        public override Vector2f Position
+        public override void UpdateGraphics(Time deltaTime)
         {
-            set
-            {
-                base.Position = value;
-
-                this.UpdateScaling();
-            }
-        }
-
-        public override float Rotation
-        {
-            set
-            {
-                base.Rotation = value;
-
-                this.UpdateScaling();
-            }
+            render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
         {
-            render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
-
             window.Draw(this.ObjectSprite, this.render);
         }
     }

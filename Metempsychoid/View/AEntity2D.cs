@@ -86,6 +86,12 @@ namespace Metempsychoid.View
             }
         }
 
+        public virtual bool IsActive
+        {
+            get;
+            set;
+        }
+
         public override FloatRect Bounds
         {
             get
@@ -107,11 +113,18 @@ namespace Metempsychoid.View
 
             this.Position = entity.Position;
             this.Rotation = entity.Rotation;
+
+            this.IsActive = true;
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
         {
             window.Draw(this.ObjectSprite);
+        }
+
+        public virtual void UpdateGraphics(Time deltaTime)
+        {
+            // To override
         }
     }
 }

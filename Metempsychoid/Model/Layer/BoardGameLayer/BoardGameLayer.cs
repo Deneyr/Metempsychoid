@@ -100,7 +100,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
-        protected override void InternalInitializeLayer(PlayerData playerData)
+        protected override void InternalInitializeLayer(World world)
         {
             float cosPi4 = (float) Math.Cos(Math.PI / 4);
 

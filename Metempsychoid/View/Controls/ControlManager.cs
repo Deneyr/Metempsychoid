@@ -82,7 +82,7 @@ namespace Metempsychoid.View.Controls
             {
                 window.Close();
             }
-            else if (e.Code == SFML.Window.Keyboard.Key.A)
+            else if (e.Code == SFML.Window.Keyboard.Key.Z)
             {
                 this.NotifyControlActivated(ControlEventType.UP, string.Empty);
             }

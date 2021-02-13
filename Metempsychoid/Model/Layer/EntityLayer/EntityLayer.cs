@@ -21,7 +21,7 @@ namespace Metempsychoid.Model.Layer.EntityLayer
             base.UpdateLogic(world, deltaTime);           
         }
 
-        protected override void InternalInitializeLayer(PlayerData playerData)
+        protected override void InternalInitializeLayer(World world)
         {
             //AEntity entity = new T_TeleEntity(this);
 

@@ -16,13 +16,19 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
     {
         internal static int WIDTH_LINK = 50;
 
-        private StarEntity2D starEntityFrom;
+        protected StarEntity2D starEntityFrom;
 
-        private StarEntity2D starEntityTo;
+        protected StarEntity2D starEntityTo;
 
-        private RenderStates render;
+        protected RenderStates render;
 
-        private Clock timer = new Clock();
+        protected Clock timer = new Clock();
+
+        public StarLinkEntity2D(StarLinkEntity entity) :
+            base(entity)
+        {
+
+        }
 
         public StarLinkEntity2D(ALayer2D layer2D, IObject2DFactory factory, StarLinkEntity entity) :
             base(entity)
@@ -69,7 +75,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             //this.PlayAnimation(0);
         }
 
-        protected void UpdateScaling()
+        protected virtual void UpdateScaling()
         {
             if (this.starEntityTo != null && this.starEntityFrom != null)
             {
@@ -101,10 +107,13 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
         }
 
-        public override void DrawIn(RenderWindow window, Time deltaTime)
+        public override void UpdateGraphics(Time deltaTime)
         {
             render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
+        }
 
+        public override void DrawIn(RenderWindow window, Time deltaTime)
+        {
             window.Draw(this.ObjectSprite, this.render);
         }
 

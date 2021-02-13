@@ -219,6 +219,9 @@ namespace Metempsychoid.View
                 case "Rotation":
                     this.objectToObject2Ds[obj].Rotation = obj.Rotation;
                     break;
+                case "IsActive":
+                    this.objectToObject2Ds[obj].IsActive = obj.IsActive;
+                    break;
             }
         }
 
@@ -267,6 +270,15 @@ namespace Metempsychoid.View
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
         {
+
+            List<AEntity2D> listObjects = this.objectToObject2Ds.Values.ToList();
+            listObjects.Sort(new EntityComparer());
+
+            foreach (AEntity2D entity2D in listObjects)
+            {
+                entity2D.UpdateGraphics(deltaTime);
+            }
+
             SFML.Graphics.View defaultView = window.DefaultView;
 
             this.UpdateViewSize(defaultView.Size, deltaTime);
@@ -275,15 +287,13 @@ namespace Metempsychoid.View
 
             window.SetView(this.view);
 
-            List<AEntity2D> listObjects = this.objectToObject2Ds.Values.ToList();
-            listObjects.Sort(new EntityComparer());
-
             FloatRect bounds = this.Bounds;
-            foreach (IObject2D object2D in listObjects)
+            foreach (AEntity2D entity2D in listObjects)
             {
-                if (object2D.Bounds.Intersects(bounds))
+                if (entity2D.IsActive 
+                    && entity2D.Bounds.Intersects(bounds))
                 {
-                    object2D.DrawIn(window, deltaTime);
+                    entity2D.DrawIn(window, deltaTime);
                 }
             }
 

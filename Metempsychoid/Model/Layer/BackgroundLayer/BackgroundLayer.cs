@@ -13,7 +13,7 @@ namespace Metempsychoid.Model.Layer.BackgroundLayer
         {
         }
 
-        protected override void InternalInitializeLayer(PlayerData playerData)
+        protected override void InternalInitializeLayer(World world)
         {
 
         }

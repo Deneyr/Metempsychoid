@@ -93,16 +93,16 @@ namespace Metempsychoid.Model
             this.ParentLayer = null;
         }
 
-        public virtual void InitializeLayer(PlayerData playerData)
+        public virtual void InitializeLayer(World world)
         {
             this.raiseEntityEvents = false;
 
-            this.InternalInitializeLayer(playerData);
+            this.InternalInitializeLayer(world);
 
             this.raiseEntityEvents = true;
         }
 
-        protected abstract void InternalInitializeLayer(PlayerData playerData);
+        protected abstract void InternalInitializeLayer(World world);
 
         public override void UpdateLogic(World world, Time deltaTime)
         {

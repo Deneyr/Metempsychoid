@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BackgroundLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
@@ -16,8 +17,6 @@ namespace Metempsychoid.Model
 
         private List<ALayer> currentLayers;
 
-        private PlayerData playerData;
-
         // Events
         public event Action<ALayer> LayerAdded;
         public event Action<ALayer> LayerRemoved;
@@ -27,6 +26,18 @@ namespace Metempsychoid.Model
 
         public event Action<World> LevelStarting;
         public event Action<World> LevelEnding;
+
+        public CardFactory CardLibrary
+        {
+            get;
+            private set;
+        }
+
+        public PlayerData PlayerData
+        {
+            get;
+            private set;
+        }
 
         public List<ALayer> CurrentLayers
         {
@@ -42,7 +53,9 @@ namespace Metempsychoid.Model
 
             this.loadedLayers = new Dictionary<string, ALayer>();
 
-            this.playerData = new PlayerData();
+            this.PlayerData = new PlayerData();
+
+            this.CardLibrary = new CardFactory();
         }
 
         public void UpdateLogic(World world, Time deltaTime)
@@ -101,7 +114,7 @@ namespace Metempsychoid.Model
 
             foreach(ALayer layer in this.currentLayers)
             {
-                layer.InitializeLayer(this.playerData);
+                layer.InitializeLayer(this);
             }
 
             this.NotifyLevelStarting();

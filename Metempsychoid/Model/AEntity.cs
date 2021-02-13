@@ -14,6 +14,8 @@ namespace Metempsychoid.Model
 
         private float rotation;
 
+        private bool isActive;
+
         protected WeakReference<EntityLayer> parentLayer;
 
         public override Vector2f Position
@@ -56,9 +58,31 @@ namespace Metempsychoid.Model
             }
         }
 
+        public virtual bool IsActive
+        {
+            get
+            {
+                return this.isActive;
+            }
+            set
+            {
+                if (value != this.isActive)
+                {
+                    this.isActive = value;
+
+                    if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
+                    {
+                        entityLayer.NotifyObjectPropertyChanged(this, "IsActive");
+                    }
+                }
+            }
+        }
+
         public AEntity(EntityLayer entityLayer)
         {
             this.parentLayer = new WeakReference<EntityLayer>(entityLayer);
+
+            this.isActive = true;
         }
     }
 }

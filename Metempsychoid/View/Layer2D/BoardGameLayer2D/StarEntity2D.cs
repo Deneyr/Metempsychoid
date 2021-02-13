@@ -17,6 +17,30 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         Clock timer = new Clock();
 
+        protected StarState starState;
+
+        protected bool isActive;
+
+        public override bool IsActive
+        {
+            get
+            {
+                return this.starState != StarState.NOT_ACTIVE;
+            }
+            set
+            {
+                if (this.isActive != value)
+                {
+                    this.isActive = value;
+
+                    if(this.starState == StarState.TRANSITIONING)
+                    {
+                        this.PlayAnimation(this.CreateTransitioningAnimation());
+                    }
+                }
+            }
+        }
+
         public StarEntity2D(IObject2DFactory factory, StarEntity entity):
             base(entity)
         {
@@ -37,6 +61,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
             this.ObjectSprite.Origin = new SFML.System.Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
 
+            // Active animation
             SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(4), AnimationType.LOOP);
 
             IAnimation anim = new ZoomAnimation(1, 1.5f, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.LINEAR);
@@ -47,15 +72,132 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
             this.animationsList.Add(sequence);
 
+            // Start : Transitioning active animation
+            Random rand = new Random();
+            float startTime = (float) (rand.NextDouble() * 2);
+            sequence = new SequenceAnimation(Time.FromSeconds(startTime + 2), AnimationType.ONETIME);
+
+            anim = new ZoomAnimation(0, 0, Time.FromSeconds(startTime), AnimationType.ONETIME, InterpolationMethod.STEP);
+            sequence.AddAnimation(0, anim);
+
+            anim = new ZoomAnimation(0f, 1f, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            sequence.AddAnimation(startTime, anim);
+
+            this.animationsList.Add(sequence);
+
+            this.InitializeState(entity);
+        }
+
+        private IAnimation CreateTransitioningAnimation()
+        {
+            IAnimation result;
+            if (this.isActive)
+            {
+                float time = Math.Abs(1 - this.Zoom) * 2;
+                result = new ZoomAnimation(this.Zoom, 1f, Time.FromSeconds(time), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            }
+            else
+            {
+                float time = Math.Abs(this.Zoom) * 2;
+                result = new ZoomAnimation(this.Zoom, 0f, Time.FromSeconds(time), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            }
+
+            return result;
+        }
+
+        private void InitializeState(StarEntity entity)
+        {
+            this.isActive = entity.IsActive;
+            if (this.isActive)
+            {
+                this.PlayAnimation(1);
+
+                this.starState = StarState.TRANSITIONING;
+            }
+            else
+            {
+                this.StartNotActiveState();
+            }
+        }
+
+        private void StartTransitioningState()
+        {
+            this.starState = StarState.TRANSITIONING;
+
+            this.PlayAnimation(this.CreateTransitioningAnimation());
+        }
+
+        private void StartNotActiveState()
+        {
+            this.starState = StarState.NOT_ACTIVE;
+        }
+
+        private void StartActiveState()
+        {
+            this.starState = StarState.ACTIVE;
+
             this.PlayAnimation(0);
+        }
+
+        private void UpdateTransitioning(Time deltaTime)
+        {
+            if (this.IsAnimationRunning() == false)
+            {
+                if(this.isActive)
+                {
+                    this.StartActiveState();
+                }
+                else
+                {
+                    this.StartNotActiveState();
+                }
+            }
+        }
+
+        private void UpdateActive(Time deltaTime)
+        {
+            if (this.isActive == false)
+            {
+                this.StartTransitioningState();
+            }
+        }
+
+        private void UpdateNotActive(Time deltaTime)
+        {
+            if (this.isActive)
+            {
+                this.StartTransitioningState();
+            }
+        }
+
+        public override void UpdateGraphics(Time deltaTime)
+        {
+            switch (this.starState)
+            {
+                case StarState.ACTIVE:
+                    this.UpdateActive(deltaTime);
+                    break;
+                case StarState.TRANSITIONING:
+                    this.UpdateTransitioning(deltaTime);
+                    break;
+                case StarState.NOT_ACTIVE:
+                    this.UpdateNotActive(deltaTime);
+                    break;
+            }
+
+            render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
         {
-            render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
-
             window.Draw(this.ObjectSprite, this.render);
         }
 
+        public enum StarState
+        {
+            NOT_ACTIVE,
+            TRANSITIONING,
+            ACTIVE
+        }
     }
 }
