@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.View.Animation;
 using SFML.Graphics;
@@ -13,9 +14,13 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
     public class StarEntity2D : AEntity2D
     {
+        internal static Color DEFAULT_COLOR = Color.Blue;
+
         RenderStates render;
 
         Clock timer = new Clock();
+
+        private Card cardSocketed;
 
         public StarState StarEntityState
         {
@@ -45,6 +50,27 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
         }
 
+        public Card CardSocketed
+        {
+            get
+            {
+                return this.cardSocketed;
+            }
+            set
+            {
+                this.cardSocketed = value;
+
+                if(this.cardSocketed == null)
+                {
+                    this.ObjectSprite.Color = DEFAULT_COLOR;
+                }
+                else
+                {
+                    this.ObjectSprite.Color = this.cardSocketed.player.PlayerColor;
+                }
+            }
+        }
+
         public StarEntity2D(IObject2DFactory factory, StarEntity entity):
             base(entity)
         {
@@ -60,7 +86,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             render = new RenderStates(BlendMode.Alpha);
             render.Shader = shader;
 
-            this.ObjectSprite.Color = Color.Blue;
+            this.CardSocketed = entity.CardSocketed;
+
             this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
 
             this.ObjectSprite.Origin = new SFML.System.Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
