@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using Metempsychoid.Model.Card;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
             this.TypesInChunk.Add(typeof(StarEntity));
             this.TypesInChunk.Add(typeof(StarLinkEntity));
+            this.TypesInChunk.Add(typeof(CardEntity));
         }
 
         protected void AddStar(StarEntity starEntity)
@@ -196,6 +198,21 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.AddCurvedStarLink(star12, star13, 1200);
             this.AddCurvedStarLink(star13, star14, 1200);
             this.AddCurvedStarLink(star14, star11, 1200);
+
+            // Cards
+
+            Random rand = new Random();
+            Player.Player player;
+            if (rand.NextDouble() < 0.5)
+            {
+                player = new Player.Player(SFML.Graphics.Color.Green);
+            }
+            else
+            {
+                player = new Player.Player(SFML.Graphics.Color.Red);
+            }
+            Card.Card card = new Card.Card(null, player);
+            this.AddEntityToLayer(new CardEntity(this, card));
         }
     }
 }

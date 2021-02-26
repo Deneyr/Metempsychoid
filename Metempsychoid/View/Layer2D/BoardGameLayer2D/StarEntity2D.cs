@@ -20,7 +20,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         Clock timer = new Clock();
 
-        private Card cardSocketed;
+        //private Card cardSocketed;
 
         public StarState StarEntityState
         {
@@ -50,26 +50,26 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
         }
 
-        public Card CardSocketed
-        {
-            get
-            {
-                return this.cardSocketed;
-            }
-            set
-            {
-                this.cardSocketed = value;
+        //public Card CardSocketed
+        //{
+        //    get
+        //    {
+        //        return this.cardSocketed;
+        //    }
+        //    set
+        //    {
+        //        this.cardSocketed = value;
 
-                if(this.cardSocketed == null)
-                {
-                    this.ObjectSprite.Color = DEFAULT_COLOR;
-                }
-                else
-                {
-                    this.ObjectSprite.Color = this.cardSocketed.player.PlayerColor;
-                }
-            }
-        }
+        //        if(this.cardSocketed == null)
+        //        {
+        //            this.ObjectSprite.Color = DEFAULT_COLOR;
+        //        }
+        //        else
+        //        {
+        //            this.ObjectSprite.Color = this.cardSocketed.Player.PlayerColor;
+        //        }
+        //    }
+        //}
 
         public StarEntity2D(IObject2DFactory factory, StarEntity entity):
             base(entity)
@@ -86,7 +86,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             render = new RenderStates(BlendMode.Alpha);
             render.Shader = shader;
 
-            this.CardSocketed = entity.CardSocketed;
+            this.SetCardSocketed(entity.CardSocketed);
 
             this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
 
@@ -117,6 +117,20 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.animationsList.Add(sequence);
 
             this.InitializeState(entity);
+        }
+
+        public void SetCardSocketed(CardEntity cardEntity)
+        {
+            if (cardEntity != null)
+            {
+                this.ObjectSprite.Color = cardEntity.Card.Player.PlayerColor;
+                //this.CardSocketed = cardEntity.Card;
+            }
+            else
+            {
+                this.ObjectSprite.Color = DEFAULT_COLOR;
+                //this.CardSocketed = null;
+            }
         }
 
         private IAnimation CreateTransitioningAnimation()

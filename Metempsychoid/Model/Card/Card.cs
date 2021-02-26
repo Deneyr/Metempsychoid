@@ -10,7 +10,7 @@ namespace Metempsychoid.Model.Card
     {
         private CardTemplate cardTemplate;
 
-        public Player.Player player
+        public Player.Player Player
         {
             get;
             set;
@@ -34,7 +34,7 @@ namespace Metempsychoid.Model.Card
         {
             this.cardTemplate = cardTemplate;
 
-            this.player = player;
+            this.Player = player;
 
             this.ValueModificator = 0;
         }
@@ -42,17 +42,17 @@ namespace Metempsychoid.Model.Card
 
         public virtual void CardEnteredBoard(Layer.BoardGameLayer.BoardGameLayer layer)
         {
-            this.cardTemplate.CardEnteredBoard(layer, this.player);
+            this.cardTemplate.CardEnteredBoard(layer, this.Player);
         }
 
         public void UpdateCard(Layer.BoardGameLayer.BoardGameLayer layer)
         {
-            this.cardTemplate.UpdateCard(layer, this.player);
+            this.cardTemplate.UpdateCard(layer, this.Player);
         }
 
         public virtual void CardQuitBoard(Layer.BoardGameLayer.BoardGameLayer layer)
         {
-            this.cardTemplate.CardQuitBoard(layer, this.player);
+            this.cardTemplate.CardQuitBoard(layer, this.Player);
         }
     }
 }

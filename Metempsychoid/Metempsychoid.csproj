@@ -63,6 +63,7 @@
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
     <Compile Include="Model\Card\Card.cs" />
+    <Compile Include="Model\Card\CardEntity.cs" />
     <Compile Include="Model\Card\CardFactory.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\BoardGameLayer.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\CurvedStarLinkEntity.cs" />
@@ -93,6 +94,8 @@
     <Compile Include="View\Animation\ZoomAnimation.cs" />
     <Compile Include="View\AObject2D.cs" />
     <Compile Include="View\AObject2DFactory.cs" />
+    <Compile Include="View\Card2D\CardEntity2D.cs" />
+    <Compile Include="View\Card2D\CardEntity2DFactory.cs" />
     <Compile Include="View\Controls\ControlEventType.cs" />
     <Compile Include="View\Controls\ControlManager.cs" />
     <Compile Include="View\IObject2D.cs" />
@@ -122,7 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Sound\SoundManager\" />
-    <Folder Include="View\Card2D\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Graphnode.SFML.Net.2.4\build\Graphnode.SFML.Net.targets" Condition="Exists('..\packages\Graphnode.SFML.Net.2.4\build\Graphnode.SFML.Net.targets')" />

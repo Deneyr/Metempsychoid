@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Metempsychoid.Model.Card;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 {
     public class StarEntity: AEntity
     {
-        private Card.Card cardSocketed;
+        private CardEntity cardSocketed;
 
-        public virtual Card.Card CardSocketed
+        public virtual CardEntity CardSocketed
         {
             get
             {
@@ -20,7 +21,17 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 if (value != this.cardSocketed)
                 {
+                    if (this.cardSocketed != null)
+                    {
+                        this.cardSocketed.IsSocketed = false;
+                    }
+
                     this.cardSocketed = value;
+
+                    if (this.cardSocketed != null)
+                    {
+                        this.cardSocketed.IsSocketed = true;
+                    }
 
                     if (this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
                     {

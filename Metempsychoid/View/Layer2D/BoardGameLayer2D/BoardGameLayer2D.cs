@@ -2,6 +2,7 @@
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Player;
+using Metempsychoid.View.Card2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -36,7 +37,13 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             switch (propertyName)
             {
                 case "CardSocketed":
-                    (this.objectToObject2Ds[obj] as StarEntity2D).CardSocketed = (obj as StarEntity).CardSocketed;
+                    StarEntity starEntity = obj as StarEntity;
+                    StarEntity2D starEntity2D = this.objectToObject2Ds[obj] as StarEntity2D;
+
+                    starEntity2D.SetCardSocketed(starEntity.CardSocketed);
+                    break;
+                case "IsSocketed":
+                    (this.objectToObject2Ds[obj] as CardEntity2D).IsSocketed = (obj as CardEntity).IsSocketed;
                     break;
             }
         }
@@ -61,9 +68,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 case Controls.ControlEventType.UP:
                     foreach (AEntity2D entity in this.objectToObject2Ds.Values)
                     {
-                        if (entity is StarEntity2D && rand.NextDouble() < 0.5)
+                        if (entity is CardEntity2D && rand.NextDouble() < 0.5)
                         {
-                            (entity as StarEntity2D).CardSocketed = card;
+                            (entity as CardEntity2D).IsSocketed = !(entity as CardEntity2D).IsSocketed;
                         }
                     }
 

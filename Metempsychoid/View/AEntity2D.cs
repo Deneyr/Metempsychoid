@@ -103,6 +103,9 @@ namespace Metempsychoid.View
         public AEntity2D()
         {
             this.sprite = new Sprite();
+
+            this.Priority = 10;
+            this.IsActive = true;
         }
 
         public AEntity2D(AEntity entity)

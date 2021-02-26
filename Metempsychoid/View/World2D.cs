@@ -1,7 +1,9 @@
 ﻿using Metempsychoid.Model;
+using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BackgroundLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
+using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.BackgroundLayer2D;
 using Metempsychoid.View.Layer2D.BoardGameLayer2D;
@@ -47,6 +49,9 @@ namespace Metempsychoid.View
             MappingObjectModelView.Add(typeof(StarEntity), new StarEntity2DFactory());
             MappingObjectModelView.Add(typeof(StarLinkEntity), new StarLinkEntity2DFactory());
             MappingObjectModelView.Add(typeof(CurvedStarLinkEntity), new CurvedStarLinkEntity2DFactory());
+
+            // Card entities
+            MappingObjectModelView.Add(typeof(CardEntity), new CardEntity2DFactory());
 
             // Object mapping
             // MappingObjectModelView.Add(typeof(PlayerEntity), new PlayerEntity2DFactory());
