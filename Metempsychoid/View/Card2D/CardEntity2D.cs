@@ -1,4 +1,6 @@
-﻿using Metempsychoid.Model.Card;
+﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Card;
+using Metempsychoid.View.Animation;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -11,21 +13,75 @@ namespace Metempsychoid.View.Card2D
 {
     public class CardEntity2D: AEntity2D
     {
-        private int WIDTH_BORDER = 15;
+        private static int WIDTH_BORDER = 15;
 
-        internal static float SPEED_LINK = 0.6f;
+        private static float SPEED_LINK = 0.6f;
+
+        private static float TIME_FLIP = 0.5f;
+
+        private CardEntity2DFactory factory;
+        private string cardName;
 
         private Sprite canevasSprite;
 
         private bool isSocketed;
-
         private Color playerColor;
-
         protected float ratioColor;
+
+        protected bool isFliped;
+        protected CardSideState sideState;
+        protected int cardIndex;
 
         RenderStates render;
 
         Clock timer = new Clock();
+
+        public string CardName
+        {
+            get
+            {
+                return this.cardName;
+            }
+            set
+            {
+                if(this.cardName != value)
+                {
+                    this.cardName = value;
+
+                    if (this.isFliped)
+                    {
+                        this.InitializeFaceTransState(this.factory.GetIndexFromCardName(this.cardName));
+                    }
+                }  
+            }
+        }
+
+        public bool IsFliped
+        {
+            get
+            {
+                return sideState == CardSideState.FACE 
+                    && cardIndex > 1;
+            }
+            set
+            {
+                this.isFliped = value;
+
+                switch (this.sideState)
+                {
+                    case CardSideState.FACE:
+                        if(this.isFliped == false)
+                        {
+                            this.InitializeFaceTransState(1);
+                        }
+                        else
+                        {
+                            this.InitializeFaceTransState(this.factory.GetIndexFromCardName(this.cardName));
+                        }
+                        break;
+                }
+            }
+        }
 
         public float RatioColor
         {
@@ -103,9 +159,14 @@ namespace Metempsychoid.View.Card2D
             }
             set
             {
-                base.Zoom = value;
+                if (this.Zoom != value)
+                {
+                    this.ObjectSprite.Scale = new Vector2f(value, 1);
 
-                this.canevasSprite.Scale = new Vector2f(value, value);
+                    this.canevasSprite.Scale = new Vector2f(value, 1);
+
+                    this.UpdateScaling();
+                }
             }
         }
 
@@ -147,7 +208,9 @@ namespace Metempsychoid.View.Card2D
         public CardEntity2D(IObject2DFactory factory, CardEntity entity) :
             base()
         {
-            this.ObjectSprite.Texture = factory.GetTextureByIndex(2);
+            this.factory = factory as CardEntity2DFactory;
+
+            this.ObjectSprite.Texture = factory.GetTextureByIndex(1);
 
             this.ObjectSprite.Origin = new SFML.System.Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
 
@@ -176,9 +239,21 @@ namespace Metempsychoid.View.Card2D
             render = new RenderStates(BlendMode.Alpha);
             render.Shader = shader;
 
+
+            //SequenceAnimation flipAnimation = new SequenceAnimation(Time.FromSeconds(1), AnimationType.ONETIME);
+            IAnimation animation = new FlipAnimation(0, (float)(Math.PI / 2), Time.FromSeconds(TIME_FLIP), AnimationType.ONETIME, InterpolationMethod.LINEAR, 1);
+            //flipAnimation.AddAnimation(0, animation);
+            this.animationsList.Add(animation);
+
+            animation = new FlipAnimation((float)(Math.PI / 2), 0, Time.FromSeconds(TIME_FLIP), AnimationType.ONETIME, InterpolationMethod.LINEAR, 1);
+            //flipAnimation.AddAnimation(0.5f, animation);
+            this.animationsList.Add(animation);
+
             this.Initialize(entity);
 
             this.UpdateScaling();
+            render.Shader.SetUniform("margin", ((float)(WIDTH_BORDER - 5)) / this.canevasSprite.Texture.Size.X);
+            render.Shader.SetUniform("outMargin", 5f / this.canevasSprite.Texture.Size.X);
         }
 
         private void Initialize(CardEntity entity)
@@ -186,15 +261,25 @@ namespace Metempsychoid.View.Card2D
             this.PlayerColor = entity.Card.Player.PlayerColor;
             this.IsSocketed = entity.IsSocketed;
             this.RatioColor = 1;
+            this.cardName = entity.Card.Name;
+            this.isFliped = entity.IsFliped;
+
+            if (this.isFliped)
+            {
+                this.cardIndex = this.factory.GetIndexFromCardName(this.cardName);
+            }
+            else
+            {
+                this.cardIndex = 1;
+            }
+
+            this.InitializeFaceState();
         }
 
         protected virtual void UpdateScaling()
         {
             render.Shader.SetUniform("widthRatio", ((float) this.canevasSprite.TextureRect.Width) / this.canevasSprite.Texture.Size.X);
             render.Shader.SetUniform("heightRatio", ((float) this.canevasSprite.TextureRect.Height) / this.canevasSprite.Texture.Size.Y);
-
-            render.Shader.SetUniform("margin", ((float) (WIDTH_BORDER - 5)) / this.canevasSprite.Texture.Size.X);
-            render.Shader.SetUniform("outMargin", 5f/ this.canevasSprite.Texture.Size.X);
         }
 
         public override void UpdateGraphics(Time deltaTime)
@@ -206,6 +291,16 @@ namespace Metempsychoid.View.Card2D
 
         private void UpdateColorRatio(Time deltaTime)
         {
+            switch (this.sideState)
+            {
+                case CardSideState.TRANSITIONING_START:
+                    this.UpdateTransitioningStartState(deltaTime);
+                    break;
+                case CardSideState.TRANSITIONING_END:
+                    this.UpdateTransitioningEndState(deltaTime);
+                    break;
+            }
+
             if (this.RatioColor < 1)
             {
                 this.RatioColor += SPEED_LINK * deltaTime.AsSeconds();
@@ -222,6 +317,62 @@ namespace Metempsychoid.View.Card2D
             window.Draw(this.ObjectSprite);
 
             window.Draw(this.canevasSprite, this.render);
+        }
+
+        private void InitializeFaceState()
+        {
+            this.isFliped = true;
+            this.ObjectSprite.Texture = this.factory.GetTextureByIndex(this.cardIndex);
+
+            this.sideState = CardSideState.FACE;
+        }
+
+        private void InitializeFaceTransState(int cardIndex)
+        {
+            this.cardIndex = cardIndex;
+
+            this.sideState = CardSideState.TRANSITIONING_START;
+
+            this.PlayAnimation(0);
+        }
+
+        private void InitializeTransitioningEndState()
+        {
+            if (this.isFliped)
+            {
+                this.ObjectSprite.Texture = this.factory.GetTextureByIndex(this.cardIndex);
+            }
+            else
+            {
+                this.ObjectSprite.Texture = this.factory.GetTextureByIndex(1);
+            }
+
+            this.sideState = CardSideState.TRANSITIONING_END;
+
+            this.PlayAnimation(1);
+        }
+
+        private void UpdateTransitioningStartState(Time deltaTime)
+        {
+            if (this.IsAnimationRunning() == false)
+            {
+                this.InitializeTransitioningEndState();
+            }
+        }
+
+        private void UpdateTransitioningEndState(Time deltaTime)
+        {
+            if (this.IsAnimationRunning() == false)
+            {
+                this.InitializeFaceState();
+            }
+        }
+
+        public enum CardSideState
+        {
+            FACE,
+            TRANSITIONING_START,
+            TRANSITIONING_END
         }
     }
 }

@@ -57,6 +57,8 @@ namespace Metempsychoid.Animation
             this.isEnumeratorValid = this.animationEnumerator.MoveNext();
 
             this.timeElapsed = Time.Zero;
+
+            this.State = AnimationState.STARTING;
         }
 
         public void Run(Time deltaTime)
@@ -84,8 +86,6 @@ namespace Metempsychoid.Animation
                     if (this.type == AnimationType.LOOP)
                     {
                         this.timeElapsed = Time.Zero;
-
-                        this.State = AnimationState.RUNNING;
 
                         this.Iterate(deltaTime);
                     }

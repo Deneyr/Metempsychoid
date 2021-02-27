@@ -45,6 +45,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 case "IsSocketed":
                     (this.objectToObject2Ds[obj] as CardEntity2D).IsSocketed = (obj as CardEntity).IsSocketed;
                     break;
+                case "IsFliped":
+                    (this.objectToObject2Ds[obj] as CardEntity2D).IsFliped = (obj as CardEntity).IsFliped;
+                    break;
             }
         }
 
@@ -61,16 +64,16 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 player = new Player(Color.Red);
             }
-            Card card = new Card(null, player);
 
             switch (eventType)
             {
                 case Controls.ControlEventType.UP:
                     foreach (AEntity2D entity in this.objectToObject2Ds.Values)
                     {
-                        if (entity is CardEntity2D && rand.NextDouble() < 0.5)
+                        if (entity is CardEntity2D)
                         {
                             (entity as CardEntity2D).IsSocketed = !(entity as CardEntity2D).IsSocketed;
+                            (entity as CardEntity2D).IsFliped = !(entity as CardEntity2D).IsFliped;
                         }
                     }
 

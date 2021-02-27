@@ -11,6 +11,8 @@ namespace Metempsychoid.View.Card2D
 {
     public class CardEntity2DFactory : AObject2DFactory
     {
+        private Dictionary<string, int> cardNameToIndex;
+
         public CardEntity2DFactory()
         {
             this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\distortion_map.png");
@@ -18,6 +20,9 @@ namespace Metempsychoid.View.Card2D
             this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Cards\backCard.jpg");
 
             this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Cards\wheelCard.jpg");
+
+            this.cardNameToIndex = new Dictionary<string, int>();
+            this.cardNameToIndex.Add("wheel", 2);
 
             this.InitializeFactory();
         }
@@ -47,6 +52,11 @@ namespace Metempsychoid.View.Card2D
 
                 this.Resources[path] = texture;
             }
+        }
+
+        public int GetIndexFromCardName(string cardName)
+        {
+            return this.cardNameToIndex[cardName];
         }
     }
 }

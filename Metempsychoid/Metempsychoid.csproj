@@ -85,6 +85,7 @@
     <Compile Include="View\AEntity2D.cs" />
     <Compile Include="View\ALayer2D.cs" />
     <Compile Include="Animation\AAnimation.cs" />
+    <Compile Include="View\Animation\FlipAnimation.cs" />
     <Compile Include="View\Animation\FrameAnimation.cs" />
     <Compile Include="Animation\AnimationManager.cs" />
     <Compile Include="Animation\IAnimation.cs" />

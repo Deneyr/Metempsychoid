@@ -11,6 +11,8 @@ namespace Metempsychoid.Model.Card
     {
         private bool isSocketed;
 
+        private bool isFliped;
+
         public Card Card
         {
             get;
@@ -37,11 +39,33 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public CardEntity(EntityLayer entityLayer, Card card) : base(entityLayer)
+        public bool IsFliped
+        {
+            get
+            {
+                return this.isFliped;
+            }
+            set
+            {
+                if (this.isFliped != value)
+                {
+                    this.isFliped = value;
+
+                    if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
+                    {
+                        entityLayer.NotifyObjectPropertyChanged(this, "isFliped");
+                    }
+                }
+            }
+        }
+
+        public CardEntity(EntityLayer entityLayer, Card card, bool isFliped) : base(entityLayer)
         {
             this.Card = card;
 
             this.IsSocketed = false;
+
+            this.isFliped = isFliped;
         }
     }
 }

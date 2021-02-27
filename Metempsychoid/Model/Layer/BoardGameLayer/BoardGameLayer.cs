@@ -211,8 +211,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 player = new Player.Player(SFML.Graphics.Color.Red);
             }
-            Card.Card card = new Card.Card(null, player);
-            this.AddEntityToLayer(new CardEntity(this, card));
+
+            Card.Card card = new Card.Card(new CardTemplate("wheel", 1), player);
+            this.AddEntityToLayer(new CardEntity(this, card, false));
         }
     }
 }

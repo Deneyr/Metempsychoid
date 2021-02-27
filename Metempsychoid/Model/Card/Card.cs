@@ -24,6 +24,14 @@ namespace Metempsychoid.Model.Card
             }
         }
 
+        public override string Name
+        {
+            get
+            {
+                return this.cardTemplate.Name;
+            }
+        }
+
         public int ValueModificator
         {
             get;

@@ -18,7 +18,7 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public string Name
+        public virtual string Name
         {
             get;
             private set;
