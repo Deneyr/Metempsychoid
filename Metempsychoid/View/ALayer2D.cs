@@ -8,6 +8,7 @@ using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.BackgroundLayer2D;
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 namespace Metempsychoid.View
 {
@@ -141,6 +142,18 @@ namespace Metempsychoid.View
             }
         }
 
+        public Vector2i MousePosition
+        {
+            get
+            {
+                Vector2i windowPosition = new Vector2i((int)this.Position.X, (int)this.Position.Y);
+                Vector2i mousePosition =  new Vector2i((int)(Mouse.GetPosition().X * this.Zoom), (int)(Mouse.GetPosition().Y * this.Zoom));
+                mousePosition += windowPosition - new Vector2i((int)this.view.Size.X, (int)this.view.Size.Y) / 2;
+
+                return mousePosition;
+            }
+        }
+
         public ALayer2D(World2D world2D, ALayer layer)
         {
             this.ChildrenLayer2D = new List<ALayer2D>();
@@ -264,7 +277,33 @@ namespace Metempsychoid.View
 
         public virtual bool OnControlActivated(ControlEventType eventType, string details)
         {
-            // To override
+            if(eventType == ControlEventType.MOUSE_LEFT_CLICK
+                || eventType == ControlEventType.MOUSE_RIGHT_CLICK)
+            {
+                Vector2i windowPosition = new Vector2i((int) this.Position.X, (int) this.Position.Y);
+
+                Vector2i mousePosition = this.MousePosition;
+
+                foreach (AEntity2D entity in this.objectToObject2Ds.Values)
+                {
+                    if (entity is IHitRect)
+                    {
+                        IHitRect hitRectEntity = entity as IHitRect;
+
+                        if (hitRectEntity.HitZone.Contains(mousePosition.X, mousePosition.Y))
+                        {
+                            if (details == "pressed")
+                            {
+                                hitRectEntity.OnMousePressed(eventType);
+                            }
+                            else if (details == "released")
+                            {
+                                hitRectEntity.OnMouseReleased(eventType);
+                            }
+                        }
+                    }
+                }
+            }
             return true;
         }
 

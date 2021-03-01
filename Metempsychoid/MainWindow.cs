@@ -49,8 +49,8 @@ namespace Metempsychoid
         {
             Clock clock = new Clock();
 
-            // Test
-            this.World.TestLevel();
+            // Initialize the first world node of the game.
+            this.World.InitializeGameNode();
 
             // Start the game loop
             while (this.Window.IsOpen)

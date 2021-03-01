@@ -97,7 +97,7 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
 
             foreach (KeyValuePair<string, Texture> keyValuePair in factory.Resources)
             {
-                this.nameToTiles.Add(Path.GetFileNameWithoutExtension(keyValuePair.Key), new TileBackgoundObject2D(keyValuePair.Value, Path.GetFileNameWithoutExtension(keyValuePair.Key)));
+                this.nameToTiles.Add(Path.GetFileNameWithoutExtension(keyValuePair.Key), new TileBackgoundObject2D(this, keyValuePair.Value, Path.GetFileNameWithoutExtension(keyValuePair.Key)));
             }
         }
 

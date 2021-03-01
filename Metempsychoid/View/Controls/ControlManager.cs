@@ -64,12 +64,26 @@ namespace Metempsychoid.View.Controls
 
         private void OnMouseButtonReleased(object sender, SFML.Window.MouseButtonEventArgs e)
         {
-
+            if (e.Button == Button.Left)
+            {
+                this.NotifyControlActivated(ControlEventType.MOUSE_LEFT_CLICK, "released");
+            }
+            else if(e.Button == Button.Right)
+            {
+                this.NotifyControlActivated(ControlEventType.MOUSE_LEFT_CLICK, "released");
+            }
         }
 
         private void OnMouseButtonPressed(object sender, SFML.Window.MouseButtonEventArgs e)
         {
-
+            if (e.Button == Button.Left)
+            {
+                this.NotifyControlActivated(ControlEventType.MOUSE_LEFT_CLICK, "pressed");
+            }
+            else if (e.Button == Button.Right)
+            {
+                this.NotifyControlActivated(ControlEventType.MOUSE_LEFT_CLICK, "pressed");
+            }
         }
 
         /// <summary>

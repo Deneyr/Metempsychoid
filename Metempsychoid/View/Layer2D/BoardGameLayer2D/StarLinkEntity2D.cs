@@ -129,14 +129,14 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
         }
 
-        public StarLinkEntity2D(StarLinkEntity entity) :
-            base(entity)
+        public StarLinkEntity2D(ALayer2D parentLayer, StarLinkEntity entity) :
+            base(parentLayer, entity)
         {
 
         }
 
         public StarLinkEntity2D(ALayer2D layer2D, IObject2DFactory factory, StarLinkEntity entity) :
-            base(entity)
+            base(layer2D, entity)
         {
             this.currentColorFrom = Color.Black;
             this.currentColorTo = Color.Black;

@@ -17,7 +17,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         private Vector2f center;
 
         public CurvedStarLinkEntity2D(ALayer2D layer2D, IObject2DFactory factory, CurvedStarLinkEntity entity) :
-            base(entity)
+            base(layer2D, entity)
         {
 
             this.starEntityFrom = layer2D.GetEntity2DFromEntity(entity.StarFrom) as StarEntity2D;

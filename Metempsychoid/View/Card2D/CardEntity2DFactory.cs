@@ -38,7 +38,7 @@ namespace Metempsychoid.View.Card2D
             {
                 CardEntity entity = obj as CardEntity;
 
-                return new CardEntity2D(this, entity);
+                return new CardEntity2D(this, layer2D, entity);
             }
 
             return null;

@@ -63,13 +63,16 @@
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
     <Compile Include="Model\Card\Card.cs" />
+    <Compile Include="Model\Card\CardDeck.cs" />
     <Compile Include="Model\Card\CardEntity.cs" />
     <Compile Include="Model\Card\CardFactory.cs" />
+    <Compile Include="Model\Event\InternalGameEvent.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\BoardGameLayer.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\CurvedStarLinkEntity.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\StarEntity.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\StarLinkEntity.cs" />
     <Compile Include="Model\Card\CardTemplate.cs" />
+    <Compile Include="Model\Layer\BoardPlayerLayer\BoardPlayerLayer.cs" />
     <Compile Include="Model\Layer\EntityLayer\T_TeleEntity.cs" />
     <Compile Include="Model\Event\GameEvent.cs" />
     <Compile Include="Model\IObject.cs" />
@@ -77,7 +80,12 @@
     <Compile Include="Model\Layer\BackgroundLayer\BackgroundLayer.cs" />
     <Compile Include="Model\Layer\EntityLayer\EntityLayer.cs" />
     <Compile Include="Model\Node\ANode.cs" />
-    <Compile Include="Model\PlayerData.cs" />
+    <Compile Include="Model\Node\APhaseNode.cs" />
+    <Compile Include="Model\Node\AWorldNode.cs" />
+    <Compile Include="Model\Node\ALevelNode.cs" />
+    <Compile Include="Model\Node\RootGameNode.cs" />
+    <Compile Include="Model\Node\TestWorld\TestLevel.cs" />
+    <Compile Include="Model\Node\TestWorld\TestWorld.cs" />
     <Compile Include="Model\Player\Player.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Program.cs" />
@@ -99,6 +107,7 @@
     <Compile Include="View\Card2D\CardEntity2DFactory.cs" />
     <Compile Include="View\Controls\ControlEventType.cs" />
     <Compile Include="View\Controls\ControlManager.cs" />
+    <Compile Include="View\IHitRect.cs" />
     <Compile Include="View\IObject2D.cs" />
     <Compile Include="View\IObject2DFactory.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\BackgroundLayer2D.cs" />
@@ -126,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Sound\SoundManager\" />
+    <Folder Include="View\Layer2D\BoardPlayerLayer2D\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Graphnode.SFML.Net.2.4\build\Graphnode.SFML.Net.targets" Condition="Exists('..\packages\Graphnode.SFML.Net.2.4\build\Graphnode.SFML.Net.targets')" />

@@ -23,11 +23,16 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)
         {
+            return this.CreateObject2D(world2D, null, obj);
+        }
+
+        public override IObject2D CreateObject2D(World2D world2D, ALayer2D layer2D, IObject obj)
+        {
             if (obj is StarEntity)
             {
                 StarEntity entity = obj as StarEntity;
 
-                return new StarEntity2D(this, entity);
+                return new StarEntity2D(this, layer2D, entity);
             }
 
             return null;

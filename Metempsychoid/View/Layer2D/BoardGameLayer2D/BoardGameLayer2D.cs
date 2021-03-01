@@ -53,6 +53,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         public override bool OnControlActivated(Controls.ControlEventType eventType, string details)
         {
+            base.OnControlActivated(eventType, details);
+
             Random rand = new Random();
 
             Player player;

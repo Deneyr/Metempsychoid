@@ -21,11 +21,16 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)
         {
+            return this.CreateObject2D(world2D, null, obj);
+        }
+
+        public override IObject2D CreateObject2D(World2D world2D, ALayer2D layer2D, IObject obj)
+        {
             if (obj is T_TeleEntity)
             {
                 T_TeleEntity entity = obj as T_TeleEntity;
 
-                return new T_TeleEntity2D(this, entity);
+                return new T_TeleEntity2D(this, layer2D, entity);
             }
 
             return null;

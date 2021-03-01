@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model
+namespace Metempsychoid.Model.Node
 {
-    public class PlayerData
+    public class APhaseNode: ANode
     {
     }
 }

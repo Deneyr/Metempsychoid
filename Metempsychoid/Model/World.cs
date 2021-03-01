@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Event;
 using Metempsychoid.Model.Layer.BackgroundLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
+using Metempsychoid.Model.Node;
+using Metempsychoid.Model.Node.TestWorld;
 using SFML.System;
 
 namespace Metempsychoid.Model
@@ -16,6 +19,8 @@ namespace Metempsychoid.Model
         private Dictionary<string, ALayer> loadedLayers;
 
         private List<ALayer> currentLayers;
+
+        private RootGameNode gameNode;
 
         // Events
         public event Action<ALayer> LayerAdded;
@@ -33,7 +38,7 @@ namespace Metempsychoid.Model
             private set;
         }
 
-        public PlayerData PlayerData
+        public Player.Player Player
         {
             get;
             private set;
@@ -53,16 +58,20 @@ namespace Metempsychoid.Model
 
             this.loadedLayers = new Dictionary<string, ALayer>();
 
-            this.PlayerData = new PlayerData();
+            this.Player = new Player.Player(SFML.Graphics.Color.Red);
 
             this.CardLibrary = new CardFactory();
+
+            this.gameNode = new RootGameNode();
         }
 
         public void UpdateLogic(World world, Time deltaTime)
         {
+            this.gameNode.UpdateLogic(this, deltaTime);
+
             foreach(ALayer layer in this.currentLayers)
             {
-                layer.UpdateLogic(world, deltaTime);
+                layer.UpdateLogic(this, deltaTime);
             }
         }
 
@@ -158,21 +167,14 @@ namespace Metempsychoid.Model
             this.NotifyWorldEnding();
         }
 
-        // Test
-        public void TestLevel()
+        public virtual void NotifyInternalGameEvent(InternalGameEvent internalGameEvent)
         {
-            BackgroundLayer background = new BackgroundLayer();
-            //EntityLayer entityLayer = new EntityLayer();
-            BoardGameLayer boardGameLayer = new BoardGameLayer();
+            this.gameNode.OnInternalGameEvent(this, internalGameEvent);
+        }
 
-            boardGameLayer.ParentLayer = background;
-
-            this.InitializeWorld(new List<Tuple<string, ALayer>>() {
-                new Tuple<string, ALayer>("VsO7nJK", background),
-                new Tuple<string, ALayer>("TestLayer", boardGameLayer)
-            });
-
-            this.InitializeLevel(new List<string>() { "VsO7nJK", "TestLayer" });
+        public void InitializeGameNode()
+        {
+            this.gameNode.VisitStart(this);
         }
     }
 }

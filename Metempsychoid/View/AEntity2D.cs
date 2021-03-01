@@ -1,5 +1,7 @@
 ﻿using Metempsychoid.Model;
+using Metempsychoid.Model.Event;
 using Metempsychoid.View.Animation;
+using Metempsychoid.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -13,6 +15,8 @@ namespace Metempsychoid.View
     public class AEntity2D: AObject2D
     {
         protected Sprite sprite;
+
+        protected WeakReference<ALayer2D> parentLayer;
 
         public int Priority
         {
@@ -100,16 +104,20 @@ namespace Metempsychoid.View
             }
         }
 
-        public AEntity2D()
+        public AEntity2D(ALayer2D parentLayer)
         {
+            this.parentLayer = new WeakReference<ALayer2D>(parentLayer);
+
             this.sprite = new Sprite();
 
             this.Priority = 10;
             this.IsActive = true;
         }
 
-        public AEntity2D(AEntity entity)
+        public AEntity2D(ALayer2D parentLayer, AEntity entity)
         {
+            this.parentLayer = new WeakReference<ALayer2D>(parentLayer);
+
             this.sprite = new Sprite();
 
             this.Priority = 10;

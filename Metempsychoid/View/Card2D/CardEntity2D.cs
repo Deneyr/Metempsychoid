@@ -1,6 +1,7 @@
 ﻿using Metempsychoid.Animation;
 using Metempsychoid.Model.Card;
 using Metempsychoid.View.Animation;
+using Metempsychoid.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Card2D
 {
-    public class CardEntity2D: AEntity2D
+    public class CardEntity2D: AEntity2D, IHitRect
     {
         private static int WIDTH_BORDER = 15;
 
@@ -170,6 +171,17 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
+        public IntRect HitZone
+        {
+            get
+            {
+                return new IntRect((int)(this.Position.X - this.Canevas.Width / 2),
+                    (int)(this.Position.Y - this.Canevas.Height / 2),
+                    this.Canevas.Width,
+                    this.Canevas.Height);
+            }
+        }
+
         public override IntRect Canevas
         {
             get
@@ -205,20 +217,20 @@ namespace Metempsychoid.View.Card2D
         }
 
 
-        public CardEntity2D(IObject2DFactory factory, CardEntity entity) :
-            base()
+        public CardEntity2D(IObject2DFactory factory, ALayer2D layer2D, CardEntity entity) :
+            base(layer2D)
         {
             this.factory = factory as CardEntity2DFactory;
 
             this.ObjectSprite.Texture = factory.GetTextureByIndex(1);
 
-            this.ObjectSprite.Origin = new SFML.System.Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
+            this.ObjectSprite.Origin = new Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
 
             this.canevasSprite = new Sprite();
 
             this.canevasSprite.TextureRect = new IntRect(0, 0, this.ObjectSprite.TextureRect.Width + 2 * WIDTH_BORDER, this.ObjectSprite.TextureRect.Height + 2 * WIDTH_BORDER);
 
-            this.canevasSprite.Origin = new SFML.System.Vector2f(this.canevasSprite.TextureRect.Width / 2, this.canevasSprite.TextureRect.Height / 2);
+            this.canevasSprite.Origin = new Vector2f(this.canevasSprite.TextureRect.Width / 2, this.canevasSprite.TextureRect.Height / 2);
 
             this.Position = entity.Position;
             this.Rotation = entity.Rotation;
@@ -365,6 +377,25 @@ namespace Metempsychoid.View.Card2D
             if (this.IsAnimationRunning() == false)
             {
                 this.InitializeFaceState();
+            }
+        }
+
+        public void OnMousePressed(ControlEventType eventType)
+        {
+
+        }
+
+        public void OnMouseReleased(ControlEventType eventType)
+        {
+
+        }
+
+        private void AlignCardOnMousePosition()
+        {
+            if(this.parentLayer.TryGetTarget(out ALayer2D parentLayer))
+            {
+                Vector2f mousePosition = new Vector2f(parentLayer.MousePosition.X, parentLayer.MousePosition.Y);
+                this.Position = mousePosition;
             }
         }
 

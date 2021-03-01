@@ -1,4 +1,5 @@
-﻿using SFML.System;
+﻿using Metempsychoid.Model.Event;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Metempsychoid.Model.Node
 {
     public class ANode
     {
-        public ANode NextNode
+        public virtual ANode NextNode
         {
             get;
             set;
@@ -37,6 +38,7 @@ namespace Metempsychoid.Model.Node
 
         public virtual void VisitEnd(World world)
         {
+
             //world.InternalGameEvent -= this.OnInternalGameEvent;
         }
 
@@ -45,11 +47,10 @@ namespace Metempsychoid.Model.Node
 
         }
 
-        protected virtual void OnInternalGameEvent(World world, AObject lObject, AObject lObjectTo, string details)
+        public virtual void OnInternalGameEvent(World world, InternalGameEvent internalGameEvent)
         {
             
         }
-
     }
 
     public enum NodeState
