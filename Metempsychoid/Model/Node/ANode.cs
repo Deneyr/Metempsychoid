@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Node
 {
-    public class ANode
+    public class ANode: IGameEventListener
     {
+        protected WeakReference<World> world;
+
         public virtual ANode NextNode
         {
             get;
@@ -22,11 +24,13 @@ namespace Metempsychoid.Model.Node
             set;
         }
 
-        public ANode()
+        public ANode(World world)
         {
             this.NextNode = null;
 
             this.NodeState = NodeState.NOT_ACTIVE;
+
+            this.world = new WeakReference<World>(world);
         }
 
         public virtual void VisitStart(World world)
@@ -49,7 +53,12 @@ namespace Metempsychoid.Model.Node
 
         public virtual void OnInternalGameEvent(World world, InternalGameEvent internalGameEvent)
         {
-            
+
+        }
+
+        public virtual void OnGameEvent(World world, GameEvent gameEvent)
+        {
+
         }
     }
 

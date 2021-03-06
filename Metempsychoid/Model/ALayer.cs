@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Metempsychoid.Model.Event;
 using SFML.System;
 
 namespace Metempsychoid.Model
 {
-    public abstract class ALayer : AObject
+    public abstract class ALayer : AObject, IGameEventListener
     {
         private Vector2f position;
 
@@ -24,6 +25,8 @@ namespace Metempsychoid.Model
         public event Action<float> RotationChanged;
 
         public event Action<AEntity, string> EntityPropertyChanged;
+
+        public event Action<string> LevelStateChanged; 
 
         public ALayer ParentLayer
         {
@@ -179,6 +182,19 @@ namespace Metempsychoid.Model
             {
                 this.EntityPropertyChanged?.Invoke(obj, propertyName);
             }
+        }
+
+        public void NotifyLevelStateChanged(string state)
+        {
+            if (this.raiseEntityEvents)
+            {
+                this.LevelStateChanged?.Invoke(state);
+            }
+        }
+
+        public virtual void OnGameEvent(World world, GameEvent gameEvent)
+        {
+            // To override.
         }
     }
 }

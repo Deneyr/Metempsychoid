@@ -177,6 +177,8 @@ namespace Metempsychoid.View
             this.parentLayer.RotationChanged += OnRotationChanged;
 
             this.parentLayer.EntityPropertyChanged += OnEntityPropertyChanged;
+
+            this.parentLayer.LevelStateChanged += OnLevelStateChanged;
         }
 
         public AEntity2D GetEntity2DFromEntity(AEntity entity)
@@ -236,6 +238,11 @@ namespace Metempsychoid.View
                     this.objectToObject2Ds[obj].IsActive = obj.IsActive;
                     break;
             }
+        }
+
+        protected virtual void OnLevelStateChanged(string obj)
+        {
+            // To override
         }
 
         protected void ClampPosition(Vector2f newPosition)
@@ -366,6 +373,9 @@ namespace Metempsychoid.View
             this.parentLayer.RotationChanged -= OnRotationChanged;
 
             this.parentLayer.EntityPropertyChanged -= OnEntityPropertyChanged;
+
+            this.parentLayer.LevelStateChanged -= OnLevelStateChanged;
+
             this.parentLayer = null;
         }
 

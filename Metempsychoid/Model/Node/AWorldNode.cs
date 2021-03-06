@@ -16,7 +16,8 @@ namespace Metempsychoid.Model.Node
 
         protected string nextLevelNodeName;
 
-        public AWorldNode()
+        public AWorldNode(World world) :
+            base(world)
         {
             this.nameTolevelNodes = new Dictionary<string, ALevelNode>();
 
@@ -58,6 +59,14 @@ namespace Metempsychoid.Model.Node
             base.VisitEnd(world);
 
             world.EndWorld();
+        }
+
+        public override void OnGameEvent(World world, GameEvent gameEvent)
+        {
+            if (this.currentLevelNode != null)
+            {
+                this.currentLevelNode.OnGameEvent(world, gameEvent);
+            }
         }
 
         public override void OnInternalGameEvent(World world, InternalGameEvent internalGameEvent)

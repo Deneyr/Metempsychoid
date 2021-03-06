@@ -9,13 +9,10 @@ namespace Metempsychoid.Model.Node
 {
     public abstract class ALevelNode: ANode
     {
-        protected List<ALayer> layers;
-
-        public ALevelNode()
+        public ALevelNode(World world) : 
+            base(world)
         {
-            this.layers = new List<ALayer>();
         }
-
 
         public override void VisitEnd(World world)
         {
@@ -24,9 +21,25 @@ namespace Metempsychoid.Model.Node
             world.EndLevel();
         }
 
+        protected void NotifyLevelStateChanged(World world, string state)
+        {
+            foreach(ALayer layer in world.CurrentLayers)
+            {
+                layer.NotifyLevelStateChanged(state);
+            }
+        }
+
         public override void OnInternalGameEvent(World world, InternalGameEvent internalGameEvent)
         {
 
+        }
+
+        public override void OnGameEvent(World world, GameEvent gameEvent)
+        {
+            foreach(ALayer layer in world.CurrentLayers)
+            {
+                layer.OnGameEvent(world, gameEvent);
+            }
         }
     }
 }

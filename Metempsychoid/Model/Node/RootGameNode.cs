@@ -8,19 +8,20 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Node
 {
-    public class RootGameNode: ANode
+    public class RootGameNode : ANode
     {
         private Dictionary<string, AWorldNode> nameToWorldNodes;
         private string nextWorldNodeName;
         private AWorldNode currentWorldNode;
 
-        public RootGameNode()
+        public RootGameNode(World world) :
+            base(world)
         {
             this.nameToWorldNodes = new Dictionary<string, AWorldNode>();
             this.nextWorldNodeName = null;
             this.currentWorldNode = null;
 
-            this.nameToWorldNodes.Add("TestWorld", new TestWorld.TestWorld());
+            this.nameToWorldNodes.Add("TestWorld", new TestWorld.TestWorld(world));
         }
 
         public override void VisitStart(World world)
@@ -65,6 +66,14 @@ namespace Metempsychoid.Model.Node
             if (internalGameEvent.Type == InternalEventType.GO_TO_WORLD)
             {
                 this.nextWorldNodeName = internalGameEvent.Details;
+            }
+        }
+
+        public override void OnGameEvent(World world, GameEvent gameEvent)
+        {
+            if (this.currentWorldNode != null)
+            {
+                this.currentWorldNode.OnGameEvent(world, gameEvent);
             }
         }
     }

@@ -62,7 +62,7 @@ namespace Metempsychoid.Model
 
             this.CardLibrary = new CardFactory();
 
-            this.gameNode = new RootGameNode();
+            this.gameNode = new RootGameNode(this);
         }
 
         public void UpdateLogic(World world, Time deltaTime)
@@ -167,13 +167,23 @@ namespace Metempsychoid.Model
             this.NotifyWorldEnding();
         }
 
-        public virtual void NotifyInternalGameEvent(InternalGameEvent internalGameEvent)
+        public void NotifyGameEvent(GameEvent gameEvent)
+        {
+            this.gameNode.OnGameEvent(this, gameEvent);
+        }
+
+        public void NotifyInternalGameEvent(InternalGameEvent internalGameEvent)
         {
             this.gameNode.OnInternalGameEvent(this, internalGameEvent);
         }
 
         public void InitializeGameNode()
         {
+            for (int i = 0; i < 30; i++)
+            {
+                this.Player.Deck.Cards.Add(this.CardLibrary.CreateCard("wheel", this.Player));
+            }
+
             this.gameNode.VisitStart(this);
         }
     }

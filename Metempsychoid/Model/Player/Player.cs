@@ -25,6 +25,8 @@ namespace Metempsychoid.Model.Player
         public Player(Color playerColor)
         {
             this.PlayerColor = playerColor;
+
+            this.Deck = new CardDeck();
         }
     }
 }

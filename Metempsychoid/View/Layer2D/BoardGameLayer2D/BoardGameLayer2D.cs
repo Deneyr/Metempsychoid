@@ -77,6 +77,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                             (entity as CardEntity2D).IsSocketed = !(entity as CardEntity2D).IsSocketed;
                             (entity as CardEntity2D).IsFliped = !(entity as CardEntity2D).IsFliped;
                         }
+
+                        if(entity is StarEntity2D && rand.NextDouble() > 0.5)
+                        {
+                            (entity as StarEntity2D).SetCardSocketed(new CardEntity(null, new Card(new CardTemplate("wheel", 0), player), false));
+                        }
                     }
 
                     break;

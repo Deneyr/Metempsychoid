@@ -199,21 +199,21 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.AddCurvedStarLink(star13, star14, 1200);
             this.AddCurvedStarLink(star14, star11, 1200);
 
-            // Cards
+            //// Cards
 
-            Random rand = new Random();
-            Player.Player player;
-            if (rand.NextDouble() < 0.5)
-            {
-                player = new Player.Player(SFML.Graphics.Color.Green);
-            }
-            else
-            {
-                player = new Player.Player(SFML.Graphics.Color.Red);
-            }
+            //Random rand = new Random();
+            //Player.Player player;
+            //if (rand.NextDouble() < 0.5)
+            //{
+            //    player = new Player.Player(SFML.Graphics.Color.Green);
+            //}
+            //else
+            //{
+            //    player = new Player.Player(SFML.Graphics.Color.Red);
+            //}
 
-            Card.Card card = new Card.Card(new CardTemplate("wheel", 1), player);
-            this.AddEntityToLayer(new CardEntity(this, card, false));
+            //Card.Card card = new Card.Card(new CardTemplate("wheel", 1), player);
+            //this.AddEntityToLayer(new CardEntity(this, card, false));
         }
     }
 }
