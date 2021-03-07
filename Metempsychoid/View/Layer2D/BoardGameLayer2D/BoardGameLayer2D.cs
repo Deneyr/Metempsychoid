@@ -1,6 +1,7 @@
 ﻿using Metempsychoid.Model;
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardGameLayer;
+using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.Model.Player;
 using Metempsychoid.View.Card2D;
 using SFML.Graphics;
@@ -15,10 +16,18 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
     public class BoardGameLayer2D : ALayer2D
     {
+        public TurnPhase LevelTurnPhase
+        {
+            get;
+            private set;
+        }
+
         public BoardGameLayer2D(World2D world2D, IObject2DFactory factory, BoardGameLayer layer) :
             base(world2D, layer)
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
+
+            this.LevelTurnPhase = TurnPhase.VOID;
         }
 
 
@@ -48,6 +57,49 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 case "IsFliped":
                     (this.objectToObject2Ds[obj] as CardEntity2D).IsFliped = (obj as CardEntity).IsFliped;
                     break;
+            }
+        }
+
+        protected override void OnLevelStateChanged(string obj)
+        {
+            this.LevelTurnPhase = (TurnPhase) Enum.Parse(typeof(TurnPhase), obj.ToString());
+        }
+
+        public override void UpdateGraphics(Time deltaTime)
+        {
+            switch (this.LevelTurnPhase)
+            {
+                case TurnPhase.START_LEVEL:
+                    this.UpdateStartLevelPhase(deltaTime);
+                    break;
+            }
+        }
+
+        private void UpdateStartLevelPhase(Time deltaTime)
+        {
+            bool areAllLinksActive = true;
+            foreach (KeyValuePair<AEntity, AEntity2D> pair in this.objectToObject2Ds)
+            {
+                if (pair.Value is StarLinkEntity2D)
+                {
+                    if (pair.Key.IsActive)
+                    {
+                        areAllLinksActive &= pair.Value.IsActive;
+                    }
+                }
+            }
+
+            if (areAllLinksActive)
+            {
+                this.GoOnTurnPhase(TurnPhase.CREATE_HAND);
+            }
+        }
+
+        private void GoOnTurnPhase(TurnPhase nextTurnPhase)
+        {
+            if (this.world2D.TryGetTarget(out World2D world))
+            {
+                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase)));
             }
         }
 
@@ -88,6 +140,13 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
 
             return true;
+        }
+
+        public override void Dispose()
+        {
+            this.LevelTurnPhase = TurnPhase.VOID;
+
+            base.Dispose();
         }
     }
 }

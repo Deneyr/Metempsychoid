@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model.Event;
+using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Metempsychoid.Model.Node.TestWorld
         public TestLevel(World world) :
             base(world)
         {
-
+            this.CurrentTurnPhase = TurnPhase.VOID;
         }
 
         public TurnPhase CurrentTurnPhase
@@ -40,6 +41,9 @@ namespace Metempsychoid.Model.Node.TestWorld
                 case TurnPhase.START_LEVEL:
                     this.UpdateStartLevelPhase(world);
                     break;
+                case TurnPhase.CREATE_HAND:
+
+                    break;
                 case TurnPhase.START_TURN:
 
                     break;
@@ -63,18 +67,23 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.SetCurrentTurnPhase(world, TurnPhase.START_LEVEL);
         }
 
-        private void InitializeStartTurnPhase(World world)
+        private void InitializeCreateHandPhase(World world)
         {
-            this.SetCurrentTurnPhase(world, TurnPhase.START_TURN);
+            this.SetCurrentTurnPhase(world, TurnPhase.CREATE_HAND);
+
+            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+            boardPlayerLayer.DrawCard();
+            boardPlayerLayer.DrawCard();
+            boardPlayerLayer.DrawCard();
+            boardPlayerLayer.DrawCard();
         }
 
         private void UpdateStartLevelPhase(World world)
         {
             if(string.IsNullOrEmpty(this.nextTurnPhase) == false
-                && this.nextTurnPhase == Enum.GetName(typeof(TurnPhase), TurnPhase.START_TURN))
+                && this.nextTurnPhase == Enum.GetName(typeof(TurnPhase), TurnPhase.CREATE_HAND))
             {
-
-                this.InitializeStartTurnPhase(world);
+                this.InitializeCreateHandPhase(world);
             }
         }
 
@@ -86,6 +95,13 @@ namespace Metempsychoid.Model.Node.TestWorld
 
                 this.NotifyLevelStateChanged(world, Enum.GetName(typeof(TurnPhase), this.CurrentTurnPhase));
             }
+        }
+
+        public override void VisitEnd(World world)
+        {
+            this.SetCurrentTurnPhase(world, TurnPhase.VOID);
+
+            base.VisitEnd(world);
         }
 
         public override void OnGameEvent(World world, GameEvent gameEvent)
@@ -103,7 +119,9 @@ namespace Metempsychoid.Model.Node.TestWorld
 
     public enum TurnPhase
     {
+        VOID,
         START_LEVEL,
+        CREATE_HAND,
         START_TURN,
         DRAW,
         MAIN,

@@ -110,7 +110,7 @@ namespace Metempsychoid.View
 
             this.sprite = new Sprite();
 
-            this.Priority = 10;
+            this.Priority = 0;
             this.IsActive = true;
         }
 

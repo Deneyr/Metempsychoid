@@ -52,6 +52,14 @@ namespace Metempsychoid.Model
             }
         }
 
+        public Dictionary<string, ALayer> LoadedLayers
+        {
+            get
+            {
+                return this.loadedLayers;
+            }
+        }
+
         public World()
         {
             this.currentLayers = new List<ALayer>();

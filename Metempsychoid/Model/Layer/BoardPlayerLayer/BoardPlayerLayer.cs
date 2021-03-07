@@ -1,4 +1,6 @@
-﻿using Metempsychoid.Model.Card;
+﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Animation;
+using Metempsychoid.Model.Card;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,9 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         private List<CardEntity> cardsCemetery;
 
         private List<CardEntity> cardsHand;
+
+
+        public event Action<AEntity> CardDrew;
 
         public BoardPlayerLayer()
         {
@@ -67,8 +72,10 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
                 if (this.cardsDeck.Count >= TOP_DECK)
                 {
-                    this.cardsHand[TOP_DECK - 1].IsActive = true;
+                    this.cardsDeck[TOP_DECK - 1].IsActive = true;
                 }
+
+                this.NotifyCardDrew(cardEntity);
 
                 this.UpdateCardsHandPosition();
             }
@@ -81,11 +88,20 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             float startWidth = HAND_POSITION.X - HAND_CARD_SPACE * this.cardsHand.Count / 2f;
 
             int i = 0;
-            foreach(CardEntity cardEntity in this.cardsDeck)
+            foreach(CardEntity cardEntity in this.cardsHand)
             {
-                cardEntity.Position = new Vector2f(startWidth + i * HAND_CARD_SPACE, HAND_POSITION.Y);
+                Vector2f newPosition = new Vector2f(startWidth + i * HAND_CARD_SPACE, HAND_POSITION.Y);
+
+                IAnimation positionAnimation = new PositionAnimation(cardEntity.Position, newPosition, Time.FromSeconds(2f), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
+
+                cardEntity.PlayAnimation(positionAnimation);
                 i++;
             }
+        }
+
+        protected void NotifyCardDrew(AEntity obj)
+        {
+            this.CardDrew?.Invoke(obj);
         }
     }
 }

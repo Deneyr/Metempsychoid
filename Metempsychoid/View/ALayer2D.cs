@@ -214,14 +214,17 @@ namespace Metempsychoid.View
             this.AddEntity(obj);
         }
 
-        protected void AddEntity(AEntity obj)
+        protected AEntity2D AddEntity(AEntity obj)
         {
             if (this.world2D.TryGetTarget(out World2D world2D))
             {
                 AEntity2D object2D = World2D.MappingObjectModelView[obj.GetType()].CreateObject2D(world2D, this, obj) as AEntity2D;
 
                 this.objectToObject2Ds.Add(obj, object2D);
+
+                return object2D;
             }
+            return null;
         }
 
         protected virtual void OnEntityPropertyChanged(AEntity obj, string propertyName)
@@ -314,8 +317,14 @@ namespace Metempsychoid.View
             return true;
         }
 
+        public virtual void UpdateGraphics(Time deltaTime)
+        {
+            // To override
+        }
+
         public override void DrawIn(RenderWindow window, Time deltaTime)
         {
+            this.UpdateGraphics(deltaTime);
 
             List<AEntity2D> listObjects = this.objectToObject2Ds.Values.ToList();
             listObjects.Sort(new EntityComparer());

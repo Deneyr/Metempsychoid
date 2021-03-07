@@ -53,7 +53,7 @@ namespace Metempsychoid.Model.Card
 
                     if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
                     {
-                        entityLayer.NotifyObjectPropertyChanged(this, "isFliped");
+                        entityLayer.NotifyObjectPropertyChanged(this, "IsFliped");
                     }
                 }
             }

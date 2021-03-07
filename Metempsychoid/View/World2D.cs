@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.Model;
 using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Event;
 using Metempsychoid.Model.Layer.BackgroundLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
@@ -21,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View
 {
-    public class World2D
+    public class World2D: IDisposable
     {
         public static readonly Dictionary<Type, IObject2DFactory> MappingObjectModelView;
 
@@ -30,6 +31,8 @@ namespace Metempsychoid.View
         private LayerResourcesLoader layerResourcesLoader;
 
         private Dictionary<ALayer, ALayer2D> layersDictionary;
+
+        private World world;
 
         static World2D()
         {
@@ -87,14 +90,16 @@ namespace Metempsychoid.View
 
             this.layerResourcesLoader = new LayerResourcesLoader();
 
-            mainWindow.World.LayerAdded += OnLayerAdded;
-            mainWindow.World.LayerRemoved += OnLayerRemoved;
+            this.world = mainWindow.World;
 
-            mainWindow.World.LevelStarting += OnLevelStarting;
-            mainWindow.World.LevelEnding += OnLevelEnding;
+            this.world.LayerAdded += OnLayerAdded;
+            this.world.LayerRemoved += OnLayerRemoved;
 
-            mainWindow.World.WorldStarting += OnWorldStarting;
-            mainWindow.World.WorldEnding += OnWorldEnding;
+            this.world.LevelStarting += OnLevelStarting;
+            this.world.LevelEnding += OnLevelEnding;
+
+            this.world.WorldStarting += OnWorldStarting;
+            this.world.WorldEnding += OnWorldEnding;
 
             this.ControlManager = new ControlManager(mainWindow.Window);
             this.ControlManager.ControlActivated += OnControlActivated;
@@ -202,18 +207,25 @@ namespace Metempsychoid.View
             }
         }
 
-        public void Dispose(MainWindow mainWindow)
+        public void Dispose()
         {
-            mainWindow.World.LayerAdded -= OnLayerAdded;
-            mainWindow.World.LayerRemoved -= OnLayerRemoved;
+            this.world.LayerAdded -= OnLayerAdded;
+            this.world.LayerRemoved -= OnLayerRemoved;
 
-            mainWindow.World.LevelStarting -= OnLevelStarting;
-            mainWindow.World.LevelEnding -= OnLevelEnding;
+            this.world.LevelStarting -= OnLevelStarting;
+            this.world.LevelEnding -= OnLevelEnding;
 
-            mainWindow.World.WorldStarting -= OnWorldStarting;
-            mainWindow.World.WorldEnding -= OnWorldEnding;
+            this.world.WorldStarting -= OnWorldStarting;
+            this.world.WorldEnding -= OnWorldEnding;
+
+            this.world = null;
 
             this.ControlManager.ControlActivated -= OnControlActivated;
+        }
+
+        public void SendEventToWorld(GameEvent gameEvent)
+        {
+            this.world.NotifyGameEvent(gameEvent);
         }
 
         public void SetCanevas(IntRect newCanevas)
