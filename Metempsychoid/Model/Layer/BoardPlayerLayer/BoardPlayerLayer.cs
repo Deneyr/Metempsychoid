@@ -1,6 +1,7 @@
 ﻿using Metempsychoid.Animation;
 using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Event;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -21,22 +22,34 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         private static Vector2f HAND_POSITION = new Vector2f(600, -150);
         private static int HAND_CARD_SPACE = 100;
 
-        private List<CardEntity> cardsDeck;
+        public List<CardEntity> CardsDeck
+        {
+            get;
+            private set;
+        }
 
-        private List<CardEntity> cardsCemetery;
+        public List<CardEntity> CardsCemetery
+        {
+            get;
+            private set;
+        }
 
-        private List<CardEntity> cardsHand;
+        public List<CardEntity> CardsHand
+        {
+            get;
+            private set;
+        }
 
 
         public event Action<AEntity> CardDrew;
 
         public BoardPlayerLayer()
         {
-            this.cardsDeck = new List<CardEntity>();
+            this.CardsDeck = new List<CardEntity>();
 
-            this.cardsCemetery = new List<CardEntity>();
+            this.CardsCemetery = new List<CardEntity>();
 
-            this.cardsHand = new List<CardEntity>();
+            this.CardsHand = new List<CardEntity>();
 
             this.TypesInChunk.Add(typeof(CardEntity));
         }
@@ -52,7 +65,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
                 cardEntity.IsActive = i < TOP_DECK;
 
-                this.cardsDeck.Add(cardEntity);
+                this.CardsDeck.Add(cardEntity);
                 this.AddEntityToLayer(cardEntity);
 
                 i++;
@@ -61,18 +74,18 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         public bool DrawCard()
         {
-            if (this.cardsDeck.Any())
+            if (this.CardsDeck.Any())
             {
-                CardEntity cardEntity = this.cardsDeck.FirstOrDefault();
-                this.cardsDeck.RemoveAt(0);
+                CardEntity cardEntity = this.CardsDeck.FirstOrDefault();
+                this.CardsDeck.RemoveAt(0);
 
                 cardEntity.IsFliped = true;
 
-                this.cardsHand.Add(cardEntity);
+                this.CardsHand.Add(cardEntity);
 
-                if (this.cardsDeck.Count >= TOP_DECK)
+                if (this.CardsDeck.Count >= TOP_DECK)
                 {
-                    this.cardsDeck[TOP_DECK - 1].IsActive = true;
+                    this.CardsDeck[TOP_DECK - 1].IsActive = true;
                 }
 
                 this.NotifyCardDrew(cardEntity);
@@ -85,10 +98,10 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         private void UpdateCardsHandPosition()
         {
-            float startWidth = HAND_POSITION.X - HAND_CARD_SPACE * this.cardsHand.Count / 2f;
+            float startWidth = HAND_POSITION.X - HAND_CARD_SPACE * this.CardsHand.Count / 2f;
 
             int i = 0;
-            foreach(CardEntity cardEntity in this.cardsHand)
+            foreach(CardEntity cardEntity in this.CardsHand)
             {
                 Vector2f newPosition = new Vector2f(startWidth + i * HAND_CARD_SPACE, HAND_POSITION.Y);
 

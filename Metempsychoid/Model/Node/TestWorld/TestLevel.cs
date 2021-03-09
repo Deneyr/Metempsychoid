@@ -11,7 +11,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 {
     public class TestLevel: ALevelNode
     {
-        private string nextTurnPhase;
+        private static int NB_CARDS_HAND = 5;
 
         public TestLevel(World world) :
             base(world)
@@ -34,7 +34,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.InitializeStartLevelPhase(world);
         }
 
-        public override void UpdateLogic(World world, Time timeElapsed)
+        protected override void InternalUpdateLogic(World world, Time timeElapsed)
         {
             switch (this.CurrentTurnPhase)
             {
@@ -42,7 +42,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                     this.UpdateStartLevelPhase(world);
                     break;
                 case TurnPhase.CREATE_HAND:
-
+                    this.UpdateCreateHandPhase(world);
                     break;
                 case TurnPhase.START_TURN:
 
@@ -70,20 +70,42 @@ namespace Metempsychoid.Model.Node.TestWorld
         private void InitializeCreateHandPhase(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.CREATE_HAND);
+        }
 
-            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
-            boardPlayerLayer.DrawCard();
-            boardPlayerLayer.DrawCard();
-            boardPlayerLayer.DrawCard();
-            boardPlayerLayer.DrawCard();
+        private void InitializeStartTurnPhase(World world)
+        {
+            this.SetCurrentTurnPhase(world, TurnPhase.START_TURN);
         }
 
         private void UpdateStartLevelPhase(World world)
         {
-            if(string.IsNullOrEmpty(this.nextTurnPhase) == false
-                && this.nextTurnPhase == Enum.GetName(typeof(TurnPhase), TurnPhase.CREATE_HAND))
+            string nextTurnPhase = Enum.GetName(typeof(TurnPhase), TurnPhase.CREATE_HAND);
+
+            GameEvent nextTurnGameEvent = this.pendingGameEvents.FirstOrDefault(pElem => pElem.Type == EventType.LEVEL_PHASE_CHANGE && pElem.Details == nextTurnPhase);
+            
+            if (nextTurnGameEvent != null)
             {
                 this.InitializeCreateHandPhase(world);
+            }
+        }
+
+        private void UpdateCreateHandPhase(World world)
+        {
+            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+            foreach (GameEvent gameEvent in this.pendingGameEvents)
+            {
+                if(gameEvent.Type == EventType.DRAW_CARD)
+                {
+                    if (boardPlayerLayer.CardsHand.Count < NB_CARDS_HAND)
+                    {
+                        boardPlayerLayer.DrawCard();
+                    }
+                }
+            }
+
+            if(boardPlayerLayer.CardsHand.Count >= NB_CARDS_HAND)
+            {
+                this.InitializeStartTurnPhase(world);
             }
         }
 
@@ -102,18 +124,6 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.SetCurrentTurnPhase(world, TurnPhase.VOID);
 
             base.VisitEnd(world);
-        }
-
-        public override void OnGameEvent(World world, GameEvent gameEvent)
-        {
-            base.OnGameEvent(world, gameEvent);
-
-            switch (gameEvent.Type)
-            {
-                case EventType.LEVEL_PHASE_CHANGE:
-                    this.nextTurnPhase = gameEvent.Details;
-                    break;
-            }
         }
     }
 

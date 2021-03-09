@@ -8,7 +8,7 @@ using SFML.System;
 
 namespace Metempsychoid.Model
 {
-    public abstract class ALayer : AObject, IGameEventListener
+    public abstract class ALayer : AObject
     {
         private Vector2f position;
 
@@ -190,11 +190,6 @@ namespace Metempsychoid.Model
             {
                 this.LevelStateChanged?.Invoke(state);
             }
-        }
-
-        public virtual void OnGameEvent(World world, GameEvent gameEvent)
-        {
-            // To override.
         }
     }
 }

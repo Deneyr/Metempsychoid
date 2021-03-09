@@ -3,6 +3,7 @@ using Metempsychoid.Model;
 using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
+using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.View.Card2D;
 using SFML.System;
 using System;
@@ -21,7 +22,33 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private List<CardEntity2D> cardsHand;
 
+        private CardEntity2D cardDrew;
+
         private int maxPriority;
+
+        private TurnPhase levelTurnPhase;
+
+        public TurnPhase LevelTurnPhase
+        {
+            get
+            {
+                return this.levelTurnPhase;
+            }
+            private set
+            {
+                if(this.levelTurnPhase != value)
+                {
+                    this.levelTurnPhase = value;
+
+                    switch (this.levelTurnPhase)
+                    {
+                        case TurnPhase.CREATE_HAND:
+                            this.cardDrew = null;
+                            break;
+                    }
+                }
+            }
+        }
 
         public BoardPlayerLayer2D(World2D world2D, IObject2DFactory factory, BoardPlayerLayer layer) :
             base(world2D, layer)
@@ -37,14 +64,17 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.maxPriority = 0;
 
             (this.parentLayer as BoardPlayerLayer).CardDrew += OnCardDrew;
+
+            this.LevelTurnPhase = TurnPhase.VOID;
+            this.cardDrew = null;
         }
 
         private void OnCardDrew(AEntity obj)
         {
-            CardEntity2D cardDrew = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+            this.cardDrew = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
-            this.cardsDeck.Remove(cardDrew);
-            this.cardsHand.Add(cardDrew);
+            this.cardsDeck.Remove(this.cardDrew);
+            this.cardsHand.Add(this.cardDrew);
 
             this.UpdateCardEntitiesPriority();
         }
@@ -56,6 +86,46 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             {
                 cardEntity2D.Priority = 1000 + i;
                 i++;
+            }
+        }
+
+        protected override void OnLevelStateChanged(string obj)
+        {
+            this.LevelTurnPhase = (TurnPhase)Enum.Parse(typeof(TurnPhase), obj.ToString());
+        }
+
+        public override void UpdateGraphics(Time deltaTime)
+        {
+            switch (this.LevelTurnPhase)
+            {
+                case TurnPhase.CREATE_HAND:
+                    this.UpdateCreateHandPhase(deltaTime);
+                    break;
+            }
+        }
+
+        private void UpdateCreateHandPhase(Time deltaTime)
+        {
+            if(this.cardDrew != null
+                && this.cardDrew.IsFliped)
+            {
+                this.cardDrew = null;
+            }
+
+            if(this.cardDrew == null)
+            {
+                if (this.world2D.TryGetTarget(out World2D world))
+                {
+                    world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.DRAW_CARD, null, string.Empty));
+                }
+            }
+        }
+
+        private void GoOnTurnPhase(TurnPhase nextTurnPhase)
+        {
+            if (this.world2D.TryGetTarget(out World2D world))
+            {
+                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase)));
             }
         }
 
@@ -109,6 +179,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardsCemetery.Clear();
 
             this.cardsHand.Clear();
+
+            this.maxPriority = 0;
+
+            this.LevelTurnPhase = TurnPhase.VOID;
+            this.cardDrew = null;
         }
 
         public override void Dispose()

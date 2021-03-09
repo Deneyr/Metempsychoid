@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model.Event;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,18 @@ namespace Metempsychoid.Model.Node
 {
     public abstract class ALevelNode: ANode
     {
+        protected List<GameEvent> pendingGameEvents;
+
         public ALevelNode(World world) : 
             base(world)
         {
+        }
+
+        public override void VisitStart(World world)
+        {
+            base.VisitStart(world);
+
+            this.pendingGameEvents = new List<GameEvent>();
         }
 
         public override void VisitEnd(World world)
@@ -19,6 +29,20 @@ namespace Metempsychoid.Model.Node
             base.VisitEnd(world);
 
             world.EndLevel();
+        }
+
+        public override void UpdateLogic(World world, Time timeElapsed)
+        {
+            base.UpdateLogic(world, timeElapsed);
+
+            this.InternalUpdateLogic(world, timeElapsed);
+
+            this.pendingGameEvents.Clear();
+        }
+
+        protected virtual void InternalUpdateLogic(World world, Time timeElapsed)
+        {
+            // To Override.
         }
 
         protected void NotifyLevelStateChanged(World world, string state)
@@ -36,10 +60,7 @@ namespace Metempsychoid.Model.Node
 
         public override void OnGameEvent(World world, GameEvent gameEvent)
         {
-            foreach(ALayer layer in world.CurrentLayers)
-            {
-                layer.OnGameEvent(world, gameEvent);
-            }
+            this.pendingGameEvents.Add(gameEvent);
         }
     }
 }

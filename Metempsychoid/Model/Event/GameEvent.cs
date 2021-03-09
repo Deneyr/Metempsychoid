@@ -38,6 +38,7 @@ namespace Metempsychoid.Model.Event
 
     public enum EventType
     {
-        LEVEL_PHASE_CHANGE
+        LEVEL_PHASE_CHANGE,
+        DRAW_CARD
     }
 }
