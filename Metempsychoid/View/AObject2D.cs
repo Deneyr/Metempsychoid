@@ -45,6 +45,12 @@ namespace Metempsychoid.View
             set;
         }
 
+        public abstract Color SpriteColor
+        {
+            get;
+            set;
+        }
+
         static AObject2D()
         {
             AObject2D.animationManager = new AnimationManager();

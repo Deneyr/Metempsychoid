@@ -20,8 +20,6 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         Clock timer = new Clock();
 
-        //private Card cardSocketed;
-
         public StarState StarEntityState
         {
             get;
@@ -49,27 +47,6 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 }
             }
         }
-
-        //public Card CardSocketed
-        //{
-        //    get
-        //    {
-        //        return this.cardSocketed;
-        //    }
-        //    set
-        //    {
-        //        this.cardSocketed = value;
-
-        //        if(this.cardSocketed == null)
-        //        {
-        //            this.ObjectSprite.Color = DEFAULT_COLOR;
-        //        }
-        //        else
-        //        {
-        //            this.ObjectSprite.Color = this.cardSocketed.Player.PlayerColor;
-        //        }
-        //    }
-        //}
 
         public StarEntity2D(IObject2DFactory factory, ALayer2D parentLayer, StarEntity entity):
             base(parentLayer, entity)
@@ -124,12 +101,10 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             if (cardEntity != null)
             {
                 this.ObjectSprite.Color = cardEntity.Card.Player.PlayerColor;
-                //this.CardSocketed = cardEntity.Card;
             }
             else
             {
                 this.ObjectSprite.Color = DEFAULT_COLOR;
-                //this.CardSocketed = null;
             }
         }
 

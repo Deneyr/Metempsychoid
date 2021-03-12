@@ -29,7 +29,13 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             base.VisitStart(world);
 
-            world.InitializeLevel(new List<string>() { "VsO7nJK", "gameLayer", "playerLayer" });
+            world.InitializeLevel(new List<string>()
+            {
+                "VsO7nJK",
+                "gameLayer",
+                "playerLayer",
+                "bannerLayer"
+            });
 
             this.InitializeStartLevelPhase(world);
         }

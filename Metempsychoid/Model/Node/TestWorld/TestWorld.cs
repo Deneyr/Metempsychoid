@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model.Layer.BackgroundLayer;
+using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using System;
@@ -24,15 +25,17 @@ namespace Metempsychoid.Model.Node.TestWorld
             BackgroundLayer background = new BackgroundLayer();
             //EntityLayer entityLayer = new EntityLayer();
             BoardGameLayer boardGameLayer = new BoardGameLayer();
+            boardGameLayer.ParentLayer = background;
 
             BoardPlayerLayer boardPlayerLayer = new BoardPlayerLayer();
 
-            boardGameLayer.ParentLayer = background;
+            BoardBannerLayer bannerLayer = new BoardBannerLayer();
 
             world.InitializeWorld(new List<Tuple<string, ALayer>>() {
                 new Tuple<string, ALayer>("VsO7nJK", background),
                 new Tuple<string, ALayer>("gameLayer", boardGameLayer),
-                new Tuple<string, ALayer>("playerLayer", boardPlayerLayer)
+                new Tuple<string, ALayer>("playerLayer", boardPlayerLayer),
+                new Tuple<string, ALayer>("bannerLayer", bannerLayer)
             });
 
             this.nextLevelNodeName = "TestLevel";

@@ -23,6 +23,12 @@ namespace Metempsychoid.View
             set;
         }
 
+        Color SpriteColor
+        {
+            get;
+            set;
+        }
+
         FloatRect Bounds
         {
             get;

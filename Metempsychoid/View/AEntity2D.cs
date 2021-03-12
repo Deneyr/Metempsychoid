@@ -75,6 +75,18 @@ namespace Metempsychoid.View
             }
         }
 
+        public override Color SpriteColor
+        {
+            get
+            {
+                return this.sprite.Color;
+            }
+            set
+            {
+                this.sprite.Color = value;
+            }
+        }
+
         public override IntRect Canevas
         {
             get

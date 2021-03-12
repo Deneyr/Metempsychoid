@@ -98,12 +98,12 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         private void UpdateCardsHandPosition()
         {
-            float startWidth = HAND_POSITION.X - HAND_CARD_SPACE * this.CardsHand.Count / 2f;
+            float startWidth = HAND_POSITION.X + HAND_CARD_SPACE * this.CardsHand.Count / 2f;
 
             int i = 0;
             foreach(CardEntity cardEntity in this.CardsHand)
             {
-                Vector2f newPosition = new Vector2f(startWidth + i * HAND_CARD_SPACE, HAND_POSITION.Y);
+                Vector2f newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, HAND_POSITION.Y);
 
                 IAnimation positionAnimation = new PositionAnimation(cardEntity.Position, newPosition, Time.FromSeconds(2f), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
 

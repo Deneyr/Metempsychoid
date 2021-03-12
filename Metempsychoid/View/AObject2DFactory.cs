@@ -10,6 +10,8 @@ namespace Metempsychoid.View
 {
     public abstract class AObject2DFactory: IObject2DFactory
     {
+        private static Dictionary<string, Font> nameToFonts;
+
         private static readonly Texture BLANK_TEXTURE;
 
         private Dictionary<string, Texture> resources;
@@ -19,6 +21,16 @@ namespace Metempsychoid.View
         static AObject2DFactory()
         {
             BLANK_TEXTURE = new Texture((uint)MainWindow.MODEL_TO_VIEW * 16, (uint)MainWindow.MODEL_TO_VIEW * 16);
+
+            nameToFonts = new Dictionary<string, Font>();
+            nameToFonts.Add("Protector", new Font(@"D:\Projects\Metempsychoid\Assets\Graphics\Fonts\ProtectorBy7NTypes.otf"));
+            nameToFonts.Add("Sans", new Font(@"D:\Projects\Metempsychoid\Assets\Graphics\Fonts\SansByAaron.ttf"));
+            nameToFonts.Add("Nzoda", new Font(@"D:\Projects\Metempsychoid\Assets\Graphics\Fonts\nzoda.ttf"));
+        }
+
+        public static Font GetFontByName(string fontName)
+        {
+            return nameToFonts[fontName];
         }
 
         public AObject2DFactory()

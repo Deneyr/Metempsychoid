@@ -73,6 +73,7 @@
     <Compile Include="Model\Layer\BoardGameLayer\StarEntity.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\StarLinkEntity.cs" />
     <Compile Include="Model\Card\CardTemplate.cs" />
+    <Compile Include="Model\Layer\BoardBannerLayer\BoardBannerLayer.cs" />
     <Compile Include="Model\Layer\BoardPlayerLayer\BoardPlayerLayer.cs" />
     <Compile Include="Model\Layer\EntityLayer\T_TeleEntity.cs" />
     <Compile Include="Model\Event\GameEvent.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="View\AEntity2D.cs" />
     <Compile Include="View\ALayer2D.cs" />
     <Compile Include="Animation\AAnimation.cs" />
+    <Compile Include="View\Animation\ColorAnimation.cs" />
     <Compile Include="View\Animation\FlipAnimation.cs" />
     <Compile Include="View\Animation\FrameAnimation.cs" />
     <Compile Include="Animation\AnimationManager.cs" />
@@ -113,6 +115,10 @@
     <Compile Include="View\Layer2D\BackgroundLayer2D\BackgroundLayer2D.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\BackgroundLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\TileBackgoundObject2D.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\BannerEntity2D.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\BoardBannerLayer2D.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\BoardBannerLayer2DFactory.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\HeaderEntity2D.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2D.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\CurvedStarLinkEntity2D.cs" />

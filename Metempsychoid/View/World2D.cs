@@ -2,12 +2,14 @@
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Event;
 using Metempsychoid.Model.Layer.BackgroundLayer;
+using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
 using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.BackgroundLayer2D;
+using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
 using Metempsychoid.View.Layer2D.BoardGameLayer2D;
 using Metempsychoid.View.Layer2D.BoardPlayerLayer2D;
 using Metempsychoid.View.Layer2D.EntityLayer2D;
@@ -40,17 +42,18 @@ namespace Metempsychoid.View
 
             MappingObjectModelView = new Dictionary<Type, IObject2DFactory>();
 
-            // Background mapping
+            // Layer background mapping
             MappingObjectModelView.Add(typeof(BackgroundLayer), new BackgroundLayer2DFactory("VsO7nJK"));
 
-            // Entity Mapping
+            // Layer entity Mapping
             MappingObjectModelView.Add(typeof(EntityLayer), new EntityLayer2DFactory());
 
             MappingObjectModelView.Add(typeof(BoardGameLayer), new BoardGameLayer2DFactory());
 
             MappingObjectModelView.Add(typeof(BoardPlayerLayer), new BoardPlayerLayer2DFactory());
 
-            MappingObjectModelView.Add(typeof(T_TeleEntity), new T_TeleEntity2DFactory());
+            // Layer foreground mapping
+            MappingObjectModelView.Add(typeof(BoardBannerLayer), new BoardBannerLayer2DFactory());
 
             // Star entities
             MappingObjectModelView.Add(typeof(StarEntity), new StarEntity2DFactory());
@@ -60,8 +63,8 @@ namespace Metempsychoid.View
             // Card entities
             MappingObjectModelView.Add(typeof(CardEntity), new CardEntity2DFactory());
 
-            // Object mapping
-            // MappingObjectModelView.Add(typeof(PlayerEntity), new PlayerEntity2DFactory());
+            // Test Entity mapping
+            MappingObjectModelView.Add(typeof(T_TeleEntity), new T_TeleEntity2DFactory());
 
             foreach (IObject2DFactory factory in MappingObjectModelView.Values)
             {
