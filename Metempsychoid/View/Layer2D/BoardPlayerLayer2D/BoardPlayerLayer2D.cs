@@ -26,6 +26,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private int maxPriority;
 
+        private int nbCardsToDraw;
+
         private TurnPhase levelTurnPhase;
 
         public TurnPhase LevelTurnPhase
@@ -63,10 +65,18 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.maxPriority = 0;
 
+            this.nbCardsToDraw = 0;
+
             (this.parentLayer as BoardPlayerLayer).CardDrew += OnCardDrew;
+            (this.parentLayer as BoardPlayerLayer).NbCardsToDrawChanged += OnNbCardToDrawsChanged;
 
             this.LevelTurnPhase = TurnPhase.VOID;
             this.cardDrew = null;
+        }
+
+        private void OnNbCardToDrawsChanged(int obj)
+        {
+            this.nbCardsToDraw = obj;
         }
 
         private void OnCardDrew(AEntity obj)
@@ -96,6 +106,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         public override void UpdateGraphics(Time deltaTime)
         {
+            this.UpdateCardsToDraw();
+
             switch (this.LevelTurnPhase)
             {
                 case TurnPhase.CREATE_HAND:
@@ -104,20 +116,30 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
-        private void UpdateCreateHandPhase(Time deltaTime)
+        private void UpdateCardsToDraw()
         {
-            if(this.cardDrew != null
+            if (this.cardDrew != null
                 && this.cardDrew.IsFliped)
             {
                 this.cardDrew = null;
             }
 
-            if(this.cardDrew == null)
+            if (this.nbCardsToDraw > 0
+                && this.cardDrew == null)
             {
                 if (this.world2D.TryGetTarget(out World2D world))
                 {
                     world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.DRAW_CARD, null, string.Empty));
                 }
+            }
+        }
+
+        private void UpdateCreateHandPhase(Time deltaTime)
+        {
+            if(this.nbCardsToDraw == 0
+                && this.cardDrew == null)
+            {
+                this.GoOnTurnPhase(TurnPhase.START_TURN);
             }
         }
 
@@ -182,6 +204,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.maxPriority = 0;
 
+            this.nbCardsToDraw = 0;
+
             this.LevelTurnPhase = TurnPhase.VOID;
             this.cardDrew = null;
         }
@@ -189,6 +213,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         public override void Dispose()
         {
             (this.parentLayer as BoardPlayerLayer).CardDrew -= OnCardDrew;
+            (this.parentLayer as BoardPlayerLayer).NbCardsToDrawChanged -= OnNbCardToDrawsChanged;
 
             base.Dispose();
         }

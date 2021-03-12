@@ -22,6 +22,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         private static Vector2f HAND_POSITION = new Vector2f(600, -150);
         private static int HAND_CARD_SPACE = 100;
 
+        private int nbCardsToDraw;
+
         public List<CardEntity> CardsDeck
         {
             get;
@@ -40,8 +42,27 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             private set;
         }
 
+        public int NbCardsToDraw
+        {
+            get
+            {
+                return this.nbCardsToDraw;
+            }
+            set
+            {
+                if(this.nbCardsToDraw != value)
+                {
+                    this.nbCardsToDraw = value;
+
+                    this.NotifyNbCardsToDraw();
+                }
+            }
+        }
+
 
         public event Action<AEntity> CardDrew;
+
+        public event Action<int> NbCardsToDrawChanged;
 
         public BoardPlayerLayer()
         {
@@ -70,11 +91,14 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
                 i++;
             }
+
+            this.nbCardsToDraw = 0;
         }
 
         public bool DrawCard()
         {
-            if (this.CardsDeck.Any())
+            if (this.CardsDeck.Any()
+                && this.NbCardsToDraw > 0)
             {
                 CardEntity cardEntity = this.CardsDeck.FirstOrDefault();
                 this.CardsDeck.RemoveAt(0);
@@ -91,6 +115,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                 this.NotifyCardDrew(cardEntity);
 
                 this.UpdateCardsHandPosition();
+
+                this.NbCardsToDraw -= 1;
             }
 
             return false;
@@ -115,6 +141,11 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         protected void NotifyCardDrew(AEntity obj)
         {
             this.CardDrew?.Invoke(obj);
+        }
+
+        protected void NotifyNbCardsToDraw()
+        {
+            this.NbCardsToDrawChanged?.Invoke(this.NbCardsToDraw);
         }
     }
 }

@@ -76,6 +76,10 @@ namespace Metempsychoid.Model.Node.TestWorld
         private void InitializeCreateHandPhase(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.CREATE_HAND);
+
+            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+
+            boardPlayerLayer.NbCardsToDraw = NB_CARDS_HAND;
         }
 
         private void InitializeStartTurnPhase(World world)
@@ -85,11 +89,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         private void UpdateStartLevelPhase(World world)
         {
-            string nextTurnPhase = Enum.GetName(typeof(TurnPhase), TurnPhase.CREATE_HAND);
-
-            GameEvent nextTurnGameEvent = this.pendingGameEvents.FirstOrDefault(pElem => pElem.Type == EventType.LEVEL_PHASE_CHANGE && pElem.Details == nextTurnPhase);
-            
-            if (nextTurnGameEvent != null)
+            if (this.CheckNextTurnPhaseEvent(TurnPhase.CREATE_HAND))
             {
                 this.InitializeCreateHandPhase(world);
             }
@@ -98,21 +98,38 @@ namespace Metempsychoid.Model.Node.TestWorld
         private void UpdateCreateHandPhase(World world)
         {
             BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
-            foreach (GameEvent gameEvent in this.pendingGameEvents)
+
+            if (this.CheckDrawCardEvent(world))
             {
-                if(gameEvent.Type == EventType.DRAW_CARD)
-                {
-                    if (boardPlayerLayer.CardsHand.Count < NB_CARDS_HAND)
-                    {
-                        boardPlayerLayer.DrawCard();
-                    }
-                }
+                boardPlayerLayer.DrawCard();
             }
 
-            if(boardPlayerLayer.CardsHand.Count >= NB_CARDS_HAND)
+            if (this.CheckNextTurnPhaseEvent(TurnPhase.START_TURN))
             {
                 this.InitializeStartTurnPhase(world);
             }
+        }
+
+        private bool CheckDrawCardEvent(World world)
+        {
+            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+            foreach (GameEvent gameEvent in this.pendingGameEvents)
+            {
+                if (gameEvent.Type == EventType.DRAW_CARD)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckNextTurnPhaseEvent(TurnPhase nextTurnPhase)
+        {
+            string nextTurnPhaseString = Enum.GetName(typeof(TurnPhase), nextTurnPhase);
+
+            GameEvent nextTurnGameEvent = this.pendingGameEvents.FirstOrDefault(pElem => pElem.Type == EventType.LEVEL_PHASE_CHANGE && pElem.Details == nextTurnPhaseString);
+
+            return nextTurnGameEvent != null;
         }
 
         private void SetCurrentTurnPhase(World world, TurnPhase newPhase)
