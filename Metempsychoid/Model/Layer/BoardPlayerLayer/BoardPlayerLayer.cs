@@ -26,6 +26,14 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         private CardEntity cardFocused;
 
+        public event Action<CardEntity> CardPicked;
+
+        public event Action<CardEntity> CardUnpicked;
+
+        public event Action<CardEntity> CardDrew;
+
+        public event Action<int> NbCardsToDrawChanged;
+
         public List<CardEntity> CardsDeck
         {
             get;
@@ -78,11 +86,6 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                 }
             }
         }
-
-
-        public event Action<AEntity> CardDrew;
-
-        public event Action<int> NbCardsToDrawChanged;
 
         public BoardPlayerLayer()
         {
@@ -148,6 +151,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         {
             if (this.CardsHand.Contains(cardToPick))
             {
+                this.NotifyCardPicked(cardToPick);
+
                 this.RemoveEntityFromLayer(cardToPick);
 
                 this.CardFocused = null;
@@ -155,6 +160,21 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                 return true;
             }
             return false;
+        }
+
+        public void UnpickCard(Card.Card cardToUnpick, Vector2f startPosition)
+        {
+            CardEntity cardEntity = new CardEntity(this, cardToUnpick, true);
+
+            this.AddEntityToLayer(cardEntity);
+
+            cardEntity.Position = startPosition;
+
+            this.CardsHand.Add(cardEntity);
+
+            this.NotifyCardUnpicked(cardEntity);
+
+            this.UpdateCardsHandPosition();
         }
 
         public override void RemoveEntityFromLayer(AEntity entity)
@@ -220,7 +240,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             }
         }
 
-        protected void NotifyCardDrew(AEntity obj)
+        protected void NotifyCardDrew(CardEntity obj)
         {
             this.CardDrew?.Invoke(obj);
         }
@@ -228,6 +248,16 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         protected void NotifyNbCardsToDraw()
         {
             this.NbCardsToDrawChanged?.Invoke(this.NbCardsToDraw);
+        }
+
+        protected void NotifyCardPicked(CardEntity cardPicked)
+        {
+            this.CardPicked?.Invoke(cardPicked);
+        }
+
+        protected void NotifyCardUnpicked(CardEntity cardUnpicked)
+        {
+            this.CardUnpicked?.Invoke(cardUnpicked);
         }
     }
 }

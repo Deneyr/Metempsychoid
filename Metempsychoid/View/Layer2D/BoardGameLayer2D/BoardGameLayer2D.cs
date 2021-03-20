@@ -38,7 +38,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
 
             layer.CardPicked += this.OnCardPicked;
-            layer.CardUnPicked += this.OnCardUnPicked;
+            layer.CardUnpicked += this.OnCardUnPicked;
         }
 
         public override void InitializeLayer(IObject2DFactory factory)
@@ -150,39 +150,53 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         public override bool OnControlActivated(Controls.ControlEventType eventType, string details)
         {
-            base.OnControlActivated(eventType, details);
+            //switch (this.LevelTurnPhase)
+            //{
+            //    case TurnPhase.MAIN:
+            //        if (eventType == Controls.ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed"
+            //            && this.cardPicked != null)
+            //        {
+            //            if (this.world2D.TryGetTarget(out World2D world))
+            //            {
+            //                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, null, null));
+            //            }
+            //        }
+            //        break;
+            //}
 
-            Random rand = new Random();
+            //base.OnControlActivated(eventType, details);
 
-            Player player;
-            if (rand.NextDouble() < 0.5)
-            {
-                player = new Player(Color.Green);
-            }
-            else
-            {
-                player = new Player(Color.Red);
-            }
+            //Random rand = new Random();
 
-            switch (eventType)
-            {
-                case Controls.ControlEventType.UP:
-                    foreach (AEntity2D entity in this.objectToObject2Ds.Values)
-                    {
-                        if (entity is CardEntity2D)
-                        {
-                            (entity as CardEntity2D).IsSocketed = !(entity as CardEntity2D).IsSocketed;
-                            (entity as CardEntity2D).IsFliped = !(entity as CardEntity2D).IsFliped;
-                        }
+            //Player player;
+            //if (rand.NextDouble() < 0.5)
+            //{
+            //    player = new Player(Color.Green);
+            //}
+            //else
+            //{
+            //    player = new Player(Color.Red);
+            //}
 
-                        if(entity is StarEntity2D && rand.NextDouble() > 0.5)
-                        {
-                            (entity as StarEntity2D).SetCardSocketed(new CardEntity(null, new Card(new CardTemplate("wheel", 0), player), false));
-                        }
-                    }
+            //switch (eventType)
+            //{
+            //    case Controls.ControlEventType.UP:
+            //        foreach (AEntity2D entity in this.objectToObject2Ds.Values)
+            //        {
+            //            if (entity is CardEntity2D)
+            //            {
+            //                (entity as CardEntity2D).IsSocketed = !(entity as CardEntity2D).IsSocketed;
+            //                (entity as CardEntity2D).IsFliped = !(entity as CardEntity2D).IsFliped;
+            //            }
 
-                    break;
-            }
+            //            if(entity is StarEntity2D && rand.NextDouble() > 0.5)
+            //            {
+            //                (entity as StarEntity2D).SetCardSocketed(new CardEntity(null, new Card(new CardTemplate("wheel", 0), player), false));
+            //            }
+            //        }
+
+            //        break;
+            //}
 
             return true;
         }
@@ -192,7 +206,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.LevelTurnPhase = TurnPhase.VOID;
 
             (this.parentLayer as BoardGameLayer).CardPicked -= this.OnCardPicked;
-            (this.parentLayer as BoardGameLayer).CardUnPicked -= this.OnCardUnPicked;
+            (this.parentLayer as BoardGameLayer).CardUnpicked -= this.OnCardUnPicked;
 
             base.Dispose();
         }

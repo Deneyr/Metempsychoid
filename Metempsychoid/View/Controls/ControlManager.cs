@@ -70,7 +70,7 @@ namespace Metempsychoid.View.Controls
             }
             else if(e.Button == Button.Right)
             {
-                this.NotifyControlActivated(ControlEventType.MOUSE_LEFT_CLICK, "released");
+                this.NotifyControlActivated(ControlEventType.MOUSE_RIGHT_CLICK, "released");
             }
         }
 
@@ -82,7 +82,7 @@ namespace Metempsychoid.View.Controls
             }
             else if (e.Button == Button.Right)
             {
-                this.NotifyControlActivated(ControlEventType.MOUSE_LEFT_CLICK, "pressed");
+                this.NotifyControlActivated(ControlEventType.MOUSE_RIGHT_CLICK, "pressed");
             }
         }
 

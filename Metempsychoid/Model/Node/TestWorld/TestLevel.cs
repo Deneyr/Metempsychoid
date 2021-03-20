@@ -162,11 +162,28 @@ namespace Metempsychoid.Model.Node.TestWorld
                 }
             }
 
-            if(this.CheckPickCardEvent(world, out CardEntity cardPicked))
+            if(this.CheckPickCardEvent(world, out CardEntity cardPicked, out string details))
             {
-                if (boardPlayerLayer.PickCard(cardPicked))
+                if (cardPicked != null)
                 {
-                    boardGameLayer.PickCard(cardPicked.Card);
+                    if (boardGameLayer.CardEntityPicked == null)
+                    {
+                        if (boardPlayerLayer.PickCard(cardPicked))
+                        {
+                            boardGameLayer.PickCard(cardPicked.Card);
+                        }
+                    }
+                }
+                else
+                {
+                    if (boardGameLayer.CardEntityPicked != null)
+                    {
+                        Card.Card cardToUnpick = boardGameLayer.CardEntityPicked.Card;
+                        if (boardGameLayer.PickCard(null))
+                        {
+                            boardPlayerLayer.UnpickCard(cardToUnpick, GetPositionFrom(details));
+                        }
+                    }
                 }
             }
         }
@@ -184,15 +201,17 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
-        private bool CheckPickCardEvent(World world, out CardEntity cardEntity)
+        private bool CheckPickCardEvent(World world, out CardEntity cardEntity, out string details)
         {
             cardEntity = null;
+            details = null;
 
             foreach (GameEvent gameEvent in this.pendingGameEvents)
             {
                 if (gameEvent.Type == EventType.PICK_CARD)
                 {
                     cardEntity = gameEvent.Entity as CardEntity;
+                    details = gameEvent.Details;
 
                     return true;
                 }
@@ -214,6 +233,13 @@ namespace Metempsychoid.Model.Node.TestWorld
                 }
             }
             return false;
+        }
+
+        private static Vector2f GetPositionFrom(string position)
+        {
+            string[] token = position.Split(':');
+
+            return new Vector2f(float.Parse(token[0]), float.Parse(token[1]));
         }
 
         private bool CheckNextTurnPhaseEvent(TurnPhase nextTurnPhase)

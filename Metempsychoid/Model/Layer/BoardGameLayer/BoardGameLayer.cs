@@ -32,7 +32,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public event Action<CardEntity> CardPicked;
 
-        public event Action<CardEntity> CardUnPicked;
+        public event Action<CardEntity> CardUnpicked;
 
         public BoardGameLayer()
         {
@@ -110,6 +110,34 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 this.starToLinks[starLinkEntity.StarTo].Remove(starLinkEntity);
             }
+        }
+
+        public bool PickCard(Card.Card card)
+        {
+            if (card != null)
+            {
+                CardEntity cardEntity = new CardEntity(this, card, true);
+
+                this.CardEntityPicked = cardEntity;
+
+                this.AddEntityToLayer(cardEntity);
+
+                this.NotifyCardPicked(cardEntity);
+
+                return true;
+            }
+            else if (this.CardEntityPicked != null)
+            {
+                this.RemoveEntityFromLayer(this.CardEntityPicked);
+
+                CardEntity cardUnpicked = this.CardEntityPicked;
+                this.CardEntityPicked = null;
+
+                this.NotifyCardUnpicked(cardUnpicked);
+
+                return true;
+            }
+            return false;
         }
 
         protected override void InternalInitializeLayer(World world)
@@ -228,26 +256,14 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             //this.AddEntityToLayer(new CardEntity(this, card, false));
         }
 
-
-        public void PickCard(Card.Card card)
-        {
-            CardEntity cardEntity = new CardEntity(this, card, true);
-
-            this.CardEntityPicked = cardEntity;
-
-            this.AddEntityToLayer(cardEntity);
-
-            this.NotifyCardPicked(cardEntity);
-        }
-
         protected void NotifyCardPicked(CardEntity cardPicked)
         {
             this.CardPicked?.Invoke(cardPicked);
         }
 
-        protected void NotifyCardUnPicked(CardEntity cardUnPicked)
+        protected void NotifyCardUnpicked(CardEntity cardUnpicked)
         {
-            this.CardUnPicked?.Invoke(cardUnPicked);
+            this.CardUnpicked?.Invoke(cardUnpicked);
         }
     }
 }

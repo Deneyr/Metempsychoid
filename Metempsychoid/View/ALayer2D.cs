@@ -120,7 +120,7 @@ namespace Metempsychoid.View
             }
         }
 
-        protected Vector2f DefaultViewSize
+        protected virtual Vector2f DefaultViewSize
         {
             get
             {
