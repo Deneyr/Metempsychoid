@@ -26,6 +26,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             base(world2D, layer)
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
+        }
+
+        public override void InitializeLayer(IObject2DFactory factory)
+        {
+            base.InitializeLayer(factory);
 
             this.LevelTurnPhase = TurnPhase.VOID;
         }

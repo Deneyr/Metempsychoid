@@ -220,7 +220,7 @@ namespace Metempsychoid.View
             this.AddEntity(obj);
         }
 
-        protected AEntity2D AddEntity(AEntity obj)
+        protected virtual AEntity2D AddEntity(AEntity obj)
         {
             if (this.world2D.TryGetTarget(out World2D world2D))
             {

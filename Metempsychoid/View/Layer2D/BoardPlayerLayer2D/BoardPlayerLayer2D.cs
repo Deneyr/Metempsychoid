@@ -24,6 +24,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private CardEntity2D cardDrew;
 
+        private CardEntity2D cardFocused;
+
         private int maxPriority;
 
         private int nbCardsToDraw;
@@ -57,6 +59,12 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
 
+            (this.parentLayer as BoardPlayerLayer).CardDrew += OnCardDrew;
+            (this.parentLayer as BoardPlayerLayer).NbCardsToDrawChanged += OnNbCardToDrawsChanged;
+        }
+
+        public override void InitializeLayer(IObject2DFactory factory)
+        {
             this.cardsDeck = new List<CardEntity2D>();
 
             this.cardsCemetery = new List<CardEntity2D>();
@@ -67,11 +75,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.nbCardsToDraw = 0;
 
-            (this.parentLayer as BoardPlayerLayer).CardDrew += OnCardDrew;
-            (this.parentLayer as BoardPlayerLayer).NbCardsToDrawChanged += OnNbCardToDrawsChanged;
-
             this.LevelTurnPhase = TurnPhase.VOID;
             this.cardDrew = null;
+            this.cardFocused = null;
+
+            base.InitializeLayer(factory);
         }
 
         private void OnNbCardToDrawsChanged(int obj)
@@ -113,6 +121,12 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 case TurnPhase.CREATE_HAND:
                     this.UpdateCreateHandPhase(deltaTime);
                     break;
+                case TurnPhase.DRAW:
+                    this.UpdateDrawPhase(deltaTime);
+                    break;
+                case TurnPhase.MAIN:
+                    this.UpdateMainPhase(deltaTime);
+                    break;
             }
         }
 
@@ -143,6 +157,55 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
+        private void UpdateDrawPhase(Time deltaTime)
+        {
+            if (this.nbCardsToDraw == 0
+                && this.cardDrew == null)
+            {
+                this.GoOnTurnPhase(TurnPhase.MAIN);
+            }
+        }
+
+        private void UpdateMainPhase(Time deltaTime)
+        {
+            CardEntity2D cardFocused = this.GetCardFocused();
+
+            if (cardFocused != this.cardFocused)
+            {
+                this.cardFocused = cardFocused;
+
+                AEntity associatedCardFocused = this.objectToObject2Ds.FirstOrDefault(pElem => pElem.Value == cardFocused).Key;
+
+                if (this.world2D.TryGetTarget(out World2D world))
+                {
+                    world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.FOCUS_CARD, associatedCardFocused, null));
+                }
+            }     
+        }
+
+        private CardEntity2D GetCardFocused()
+        {
+            CardEntity2D cardFocused = null;
+
+            Vector2i mousePosition = this.MousePosition;
+
+            foreach (CardEntity2D cardDeck in this.cardsHand)
+            {
+                if(cardDeck is IHitRect
+                    && (cardDeck as IHitRect).HitZone.Contains(mousePosition.X, mousePosition.Y))
+                {
+                    if(cardFocused == null
+                        || Math.Abs(mousePosition.X - cardDeck.Position.X) + Math.Abs(mousePosition.Y - cardDeck.Position.Y) 
+                        < Math.Abs(mousePosition.X - cardFocused.Position.X) + Math.Abs(mousePosition.Y - cardFocused.Position.Y))
+                    {
+                        cardFocused = cardDeck;
+                    }
+                }
+            }
+
+            return cardFocused;
+        }
+
         private void GoOnTurnPhase(TurnPhase nextTurnPhase)
         {
             if (this.world2D.TryGetTarget(out World2D world))
@@ -151,33 +214,34 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
-        protected override void OnEntityAdded(AEntity obj)
+        protected override AEntity2D AddEntity(AEntity obj)
         {
-            CardEntity2D entity2D = this.AddEntity(obj) as CardEntity2D;
+            CardEntity2D entity2D = base.AddEntity(obj) as CardEntity2D;
 
-            entity2D.Priority = this.maxPriority++;
+            if (entity2D != null)
+            {
+                entity2D.Priority = this.maxPriority++;
 
-            this.cardsDeck.Add(entity2D);
+                this.cardsDeck.Add(entity2D);
+            }
+
+            return entity2D;
         }
 
         protected override void OnEntityPropertyChanged(AEntity obj, string propertyName)
         {
-            base.OnEntityPropertyChanged(obj, propertyName);
-
             switch (propertyName)
             {
                 case "IsFliped":
                     (this.objectToObject2Ds[obj] as CardEntity2D).IsFliped = (obj as CardEntity).IsFliped;
                     break;
-                //case "Position":
-                //    AEntity2D entity2D = this.objectToObject2Ds[obj];
-                //    IAnimation positionAnimation = new PositionAnimation(entity2D.Position, obj.Position, Time.FromSeconds(20f), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
-
-                //    this.objectToObject2Ds[obj].PlayAnimation(positionAnimation);
-                //    break;
-                //case "IsActive":
-                //    this.objectToObject2Ds[obj].IsActive = obj.IsActive;
-                //    break;
+                case "Position":
+                    AEntity2D entity2D = this.objectToObject2Ds[obj];
+                    entity2D.Position = new Vector2f(obj.Position.X, entity2D.Position.Y);
+                    break;
+                case "IsActive":
+                    this.objectToObject2Ds[obj].IsActive = obj.IsActive;
+                    break;
             }
         }
 

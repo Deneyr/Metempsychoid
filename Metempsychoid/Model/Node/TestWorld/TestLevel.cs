@@ -1,4 +1,5 @@
-﻿using Metempsychoid.Model.Event;
+﻿using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Event;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using SFML.System;
 using System;
@@ -11,7 +12,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 {
     public class TestLevel: ALevelNode
     {
-        private static int NB_CARDS_HAND = 5;
+        private static int NB_CARDS_HAND = 4;
 
         public TestLevel(World world) :
             base(world)
@@ -51,13 +52,13 @@ namespace Metempsychoid.Model.Node.TestWorld
                     this.UpdateCreateHandPhase(world);
                     break;
                 case TurnPhase.START_TURN:
-
+                    this.UpdateStartTurnPhase(world);
                     break;
                 case TurnPhase.DRAW:
-
+                    this.UpdateDrawPhase(world);
                     break;
                 case TurnPhase.MAIN:
-
+                    this.UpdateMainPhase(world);
                     break;
                 case TurnPhase.END_TURN:
 
@@ -87,6 +88,20 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.SetCurrentTurnPhase(world, TurnPhase.START_TURN);
         }
 
+        private void InitializeDrawPhase(World world)
+        {
+            this.SetCurrentTurnPhase(world, TurnPhase.DRAW);
+
+            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+
+            boardPlayerLayer.NbCardsToDraw = 1;
+        }
+
+        private void InitializeMainPhase(World world)
+        {
+            this.SetCurrentTurnPhase(world, TurnPhase.MAIN);
+        }
+
         private void UpdateStartLevelPhase(World world)
         {
             if (this.CheckNextTurnPhaseEvent(TurnPhase.CREATE_HAND))
@@ -110,6 +125,39 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
+        private void UpdateStartTurnPhase(World world)
+        {
+            if (this.CheckNextTurnPhaseEvent(TurnPhase.DRAW))
+            {
+                this.InitializeDrawPhase(world);
+            }
+        }
+
+        private void UpdateDrawPhase(World world)
+        {
+            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+
+            if (this.CheckDrawCardEvent(world))
+            {
+                boardPlayerLayer.DrawCard();
+            }
+
+            if (this.CheckNextTurnPhaseEvent(TurnPhase.MAIN))
+            {
+                this.InitializeMainPhase(world);
+            }
+        }
+
+        private void UpdateMainPhase(World world)
+        {
+            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+
+            if (this.CheckFocusCardEvent(world, out CardEntity cardFocused))
+            {
+                boardPlayerLayer.CardFocused = cardFocused;
+            }
+        }
+
         private bool CheckDrawCardEvent(World world)
         {
             BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
@@ -117,6 +165,23 @@ namespace Metempsychoid.Model.Node.TestWorld
             {
                 if (gameEvent.Type == EventType.DRAW_CARD)
                 {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckFocusCardEvent(World world, out CardEntity cardEntity)
+        {
+            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+            cardEntity = null;
+
+            foreach (GameEvent gameEvent in this.pendingGameEvents)
+            {
+                if (gameEvent.Type == EventType.FOCUS_CARD)
+                {
+                    cardEntity = gameEvent.Entity as CardEntity;
+
                     return true;
                 }
             }

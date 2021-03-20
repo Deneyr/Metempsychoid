@@ -101,21 +101,9 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
             }
         }
 
-        //public override void FlushEntities()
-        //{
-        //    base.FlushEntities();
-
-        //    foreach(TileBackgoundObject2D tile in this.nameToTiles.Values)
-        //    {
-        //        tile.Dispose();
-        //    }
-
-        //    this.nameToTiles.Clear();
-        //}
-
-        public override void Dispose()
+        public override void FlushEntities()
         {
-            base.Dispose();
+            base.FlushEntities();
 
             foreach (TileBackgoundObject2D tile in this.nameToTiles.Values)
             {

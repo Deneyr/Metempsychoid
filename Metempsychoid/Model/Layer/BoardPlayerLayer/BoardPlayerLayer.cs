@@ -19,10 +19,12 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         private static Vector2f CEMETERY_POSITION = new Vector2f(-500, -150);
 
-        private static Vector2f HAND_POSITION = new Vector2f(600, -150);
+        private static Vector2f HAND_POSITION = new Vector2f(400, -150);
         private static int HAND_CARD_SPACE = 100;
 
         private int nbCardsToDraw;
+
+        private CardEntity cardFocused;
 
         public List<CardEntity> CardsDeck
         {
@@ -55,6 +57,24 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     this.nbCardsToDraw = value;
 
                     this.NotifyNbCardsToDraw();
+                }
+            }
+        }
+
+        public CardEntity CardFocused
+        {
+            get
+            {
+                return this.cardFocused;
+            }
+
+            set
+            {
+                if (value != this.cardFocused)
+                {
+                    this.cardFocused = value;
+
+                    this.UpdateCardsHandPosition();
                 }
             }
         }
@@ -93,6 +113,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             }
 
             this.nbCardsToDraw = 0;
+
+            this.cardFocused = null;
         }
 
         public bool DrawCard()
@@ -127,14 +149,46 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             float startWidth = HAND_POSITION.X + HAND_CARD_SPACE * this.CardsHand.Count / 2f;
 
             int i = 0;
-            foreach(CardEntity cardEntity in this.CardsHand)
-            {
-                Vector2f newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, HAND_POSITION.Y);
+            bool cardFocusedEncountered = false;
 
-                IAnimation positionAnimation = new PositionAnimation(cardEntity.Position, newPosition, Time.FromSeconds(2f), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
+            foreach (CardEntity cardEntity in this.CardsHand)
+            {
+                Vector2f newPosition;
+                cardFocusedEncountered |= this.cardFocused == cardEntity;
+
+                if (this.cardFocused != null)
+                {
+                    if (this.cardFocused == cardEntity)
+                    {
+                        newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, HAND_POSITION.Y);
+                    }
+                    else if (cardFocusedEncountered)
+                    {
+                        newPosition = new Vector2f(startWidth - (i + 1) * HAND_CARD_SPACE, HAND_POSITION.Y);
+                    }
+                    else
+                    {
+                        newPosition = new Vector2f(startWidth - (i - 1) * HAND_CARD_SPACE, HAND_POSITION.Y);
+                    }
+                }
+                else
+                {
+                    newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, HAND_POSITION.Y);
+                }
+
+                IAnimation positionAnimation;
+                if (this.cardFocused != null)
+                {
+                    positionAnimation = new PositionAnimation(cardEntity.Position, newPosition, Time.FromSeconds(1f), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
+                }
+                else
+                {
+                    positionAnimation = new PositionAnimation(cardEntity.Position, newPosition, Time.FromSeconds(2f), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
+                }
 
                 cardEntity.PlayAnimation(positionAnimation);
                 i++;
+
             }
         }
 
