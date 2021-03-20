@@ -24,6 +24,16 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public Dictionary<StarEntity, HashSet<StarLinkEntity>> starToLinks;
 
+        public CardEntity CardEntityPicked
+        {
+            get;
+            private set;
+        }
+
+        public event Action<CardEntity> CardPicked;
+
+        public event Action<CardEntity> CardUnPicked;
+
         public BoardGameLayer()
         {
             this.StarSystem = new HashSet<StarEntity>();
@@ -104,6 +114,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         protected override void InternalInitializeLayer(World world)
         {
+            this.CardEntityPicked = null;
+
             float cosPi4 = (float) Math.Cos(Math.PI / 4);
 
             // Inner circle
@@ -214,6 +226,28 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
             //Card.Card card = new Card.Card(new CardTemplate("wheel", 1), player);
             //this.AddEntityToLayer(new CardEntity(this, card, false));
+        }
+
+
+        public void PickCard(Card.Card card)
+        {
+            CardEntity cardEntity = new CardEntity(this, card, true);
+
+            this.CardEntityPicked = cardEntity;
+
+            this.AddEntityToLayer(cardEntity);
+
+            this.NotifyCardPicked(cardEntity);
+        }
+
+        protected void NotifyCardPicked(CardEntity cardPicked)
+        {
+            this.CardPicked?.Invoke(cardPicked);
+        }
+
+        protected void NotifyCardUnPicked(CardEntity cardUnPicked)
+        {
+            this.CardUnPicked?.Invoke(cardUnPicked);
         }
     }
 }

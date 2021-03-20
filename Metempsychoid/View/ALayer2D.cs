@@ -328,6 +328,11 @@ namespace Metempsychoid.View
             // To override
         }
 
+        public virtual void UpdateAfterViewUpdated(Time deltaTime)
+        {
+            // To override
+        }
+
         public override void DrawIn(RenderWindow window, Time deltaTime)
         {
             this.UpdateGraphics(deltaTime);
@@ -347,6 +352,8 @@ namespace Metempsychoid.View
             this.view.Zoom(this.zoom);
 
             window.SetView(this.view);
+
+            this.UpdateAfterViewUpdated(deltaTime);
 
             FloatRect bounds = this.Bounds;
             foreach (AEntity2D entity2D in listObjects)

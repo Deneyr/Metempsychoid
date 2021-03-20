@@ -69,6 +69,11 @@ namespace Metempsychoid.Animation
             }
         }
 
+        public void StopAnimation(IObject obj)
+        {
+            this.animationsToPlay.Remove(obj);
+        }
+
 
     }
 }

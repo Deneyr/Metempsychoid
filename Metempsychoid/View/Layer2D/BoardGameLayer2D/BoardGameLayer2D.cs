@@ -16,25 +16,13 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
     public class BoardGameLayer2D : ALayer2D
     {
+        private CardEntity2D cardPicked;
+
         public TurnPhase LevelTurnPhase
         {
             get;
             private set;
         }
-
-        public BoardGameLayer2D(World2D world2D, IObject2DFactory factory, BoardGameLayer layer) :
-            base(world2D, layer)
-        {
-            this.Area = new Vector2i(int.MaxValue, int.MaxValue);
-        }
-
-        public override void InitializeLayer(IObject2DFactory factory)
-        {
-            base.InitializeLayer(factory);
-
-            this.LevelTurnPhase = TurnPhase.VOID;
-        }
-
 
         public override Vector2f Position
         {
@@ -42,6 +30,35 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 base.Position = value * 0.75f;
             }
+        }
+
+        public BoardGameLayer2D(World2D world2D, IObject2DFactory factory, BoardGameLayer layer) :
+            base(world2D, layer)
+        {
+            this.Area = new Vector2i(int.MaxValue, int.MaxValue);
+
+            layer.CardPicked += this.OnCardPicked;
+            layer.CardUnPicked += this.OnCardUnPicked;
+        }
+
+        public override void InitializeLayer(IObject2DFactory factory)
+        {
+            base.InitializeLayer(factory);
+
+            this.LevelTurnPhase = TurnPhase.VOID;
+
+            this.cardPicked = null;
+        }
+
+        private void OnCardPicked(CardEntity obj)
+        {
+            this.cardPicked = this.objectToObject2Ds[obj] as CardEntity2D;
+            this.cardPicked.Priority = 1000;
+        }
+
+        private void OnCardUnPicked(CardEntity obj)
+        {
+            this.cardPicked = null;
         }
 
         protected override void OnEntityPropertyChanged(AEntity obj, string propertyName)
@@ -77,6 +94,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 case TurnPhase.START_LEVEL:
                     this.UpdateStartLevelPhase(deltaTime);
                     break;
+                case TurnPhase.MAIN:
+                    this.UpdateMainPhase(deltaTime);
+                    break;
             }
         }
 
@@ -97,6 +117,26 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             if (areAllLinksActive)
             {
                 this.GoOnTurnPhase(TurnPhase.CREATE_HAND);
+            }
+        }
+
+        private void UpdateMainPhase(Time deltaTime)
+        {
+
+        }
+
+        public override void UpdateAfterViewUpdated(Time deltaTime)
+        {
+            this.UpdateCardPickedPosition();
+        }
+
+        private void UpdateCardPickedPosition()
+        {
+            if (this.cardPicked != null)
+            {
+                Vector2i mousePosition = this.MousePosition;
+
+                this.cardPicked.Position = new Vector2f(mousePosition.X, mousePosition.Y);
             }
         }
 
@@ -150,6 +190,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         public override void Dispose()
         {
             this.LevelTurnPhase = TurnPhase.VOID;
+
+            (this.parentLayer as BoardGameLayer).CardPicked -= this.OnCardPicked;
+            (this.parentLayer as BoardGameLayer).CardUnPicked -= this.OnCardUnPicked;
 
             base.Dispose();
         }

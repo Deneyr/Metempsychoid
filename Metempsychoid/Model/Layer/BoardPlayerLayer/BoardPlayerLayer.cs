@@ -144,6 +144,34 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             return false;
         }
 
+        public bool PickCard(CardEntity cardToPick)
+        {
+            if (this.CardsHand.Contains(cardToPick))
+            {
+                this.RemoveEntityFromLayer(cardToPick);
+
+                this.CardFocused = null;
+
+                return true;
+            }
+            return false;
+        }
+
+        public override void RemoveEntityFromLayer(AEntity entity)
+        {
+            if (entity is CardEntity)
+            {
+                CardEntity cardEntity = entity as CardEntity;
+
+                this.CardsDeck.Remove(cardEntity);
+
+                this.CardsHand.Remove(cardEntity);
+
+                this.CardsCemetery.Remove(cardEntity);
+            }
+            base.RemoveEntityFromLayer(entity);
+        }
+
         private void UpdateCardsHandPosition()
         {
             float startWidth = HAND_POSITION.X + HAND_CARD_SPACE * this.CardsHand.Count / 2f;

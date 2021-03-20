@@ -183,6 +183,27 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }     
         }
 
+        public override bool OnControlActivated(Controls.ControlEventType eventType, string details)
+        {
+            switch (this.levelTurnPhase)
+            {
+                case TurnPhase.MAIN:
+                    if(eventType == Controls.ControlEventType.MOUSE_LEFT_CLICK
+                        && this.cardFocused != null)
+                    {
+                        AEntity associatedCardFocused = this.objectToObject2Ds.FirstOrDefault(pElem => pElem.Value == cardFocused).Key;
+
+                        if (this.world2D.TryGetTarget(out World2D world))
+                        {
+                            world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, associatedCardFocused, null));
+                        }
+                    }
+                    break;
+            }
+
+            return true;
+        }
+
         private CardEntity2D GetCardFocused()
         {
             CardEntity2D cardFocused = null;

@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Event;
+using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using SFML.System;
 using System;
@@ -151,10 +152,22 @@ namespace Metempsychoid.Model.Node.TestWorld
         private void UpdateMainPhase(World world)
         {
             BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
 
             if (this.CheckFocusCardEvent(world, out CardEntity cardFocused))
             {
-                boardPlayerLayer.CardFocused = cardFocused;
+                if (boardGameLayer.CardEntityPicked == null)
+                {
+                    boardPlayerLayer.CardFocused = cardFocused;
+                }
+            }
+
+            if(this.CheckPickCardEvent(world, out CardEntity cardPicked))
+            {
+                if (boardPlayerLayer.PickCard(cardPicked))
+                {
+                    boardGameLayer.PickCard(cardPicked.Card);
+                }
             }
         }
 
@@ -171,9 +184,24 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
+        private bool CheckPickCardEvent(World world, out CardEntity cardEntity)
+        {
+            cardEntity = null;
+
+            foreach (GameEvent gameEvent in this.pendingGameEvents)
+            {
+                if (gameEvent.Type == EventType.PICK_CARD)
+                {
+                    cardEntity = gameEvent.Entity as CardEntity;
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool CheckFocusCardEvent(World world, out CardEntity cardEntity)
         {
-            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
             cardEntity = null;
 
             foreach (GameEvent gameEvent in this.pendingGameEvents)

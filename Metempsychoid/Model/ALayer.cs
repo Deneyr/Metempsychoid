@@ -122,8 +122,10 @@ namespace Metempsychoid.Model
             this.NotifyObjectAdded(entity);
         }
 
-        public void RemoveEntityFromLayer(AEntity entity)
+        public virtual void RemoveEntityFromLayer(AEntity entity)
         {
+            AObject.animationManager.StopAnimation(entity);
+
             this.entities.Remove(entity);
 
             this.NotifyObjectRemoved(entity);
