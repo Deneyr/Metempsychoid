@@ -31,7 +31,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.radius = (int) entity.Radius;
             this.center = new Vector2f(entity.Center.X, entity.Center.Y);
 
-            Shader shader = new Shader(null, null, @"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\LinkCurvedFrag.frag");
+            Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\LinkCurvedFrag.frag");
 
             Texture distortionMap = factory.GetTextureByIndex(0);
             this.ObjectSprite.Texture = factory.GetTextureByIndex(0);

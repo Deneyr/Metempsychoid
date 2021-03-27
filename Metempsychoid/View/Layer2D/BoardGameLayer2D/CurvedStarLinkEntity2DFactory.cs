@@ -13,8 +13,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
     {
         public CurvedStarLinkEntity2DFactory()
         {
-            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\linkDistorsionMap3.png");
-            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\linkDistorsionMap4.png");
+            this.texturesPath.Add(@"Assets\Graphics\Shaders\linkDistorsionMap3.png");
+            this.texturesPath.Add(@"Assets\Graphics\Shaders\linkDistorsionMap4.png");
 
             this.InitializeFactory();
         }

@@ -250,7 +250,7 @@ namespace Metempsychoid.View.Card2D
             this.isSocketed = !entity.IsSocketed;
             this.ratioColor = -1;
 
-            Shader shader = new Shader(null, null, @"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\cardCanevas.frag");
+            Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\cardCanevas.frag");
 
             Texture distortionMap = factory.GetTextureByIndex(0);
             distortionMap.Repeated = true;

@@ -15,11 +15,11 @@ namespace Metempsychoid.View.Card2D
 
         public CardEntity2DFactory()
         {
-            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\distortion_map.png");
+            this.texturesPath.Add(@"Assets\Graphics\Shaders\distortion_map.png");
 
-            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Cards\backCard.jpg");
+            this.texturesPath.Add(@"Assets\Graphics\Cards\backCard.jpg");
 
-            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Cards\wheelCard.jpg");
+            this.texturesPath.Add(@"Assets\Graphics\Cards\wheelCard.jpg");
 
             this.cardNameToIndex = new Dictionary<string, int>();
             this.cardNameToIndex.Add("wheel", 2);

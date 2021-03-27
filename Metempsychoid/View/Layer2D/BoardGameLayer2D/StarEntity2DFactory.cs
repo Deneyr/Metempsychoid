@@ -15,8 +15,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
     {
         public StarEntity2DFactory()
         {
-            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Entities\Star.png");
-            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\distortion_map.png");
+            this.texturesPath.Add(@"Assets\Graphics\Entities\Star.png");
+            this.texturesPath.Add(@"Assets\Graphics\Shaders\distortion_map.png");
 
             this.InitializeFactory();
         }

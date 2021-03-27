@@ -14,7 +14,7 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
     {
         public T_TeleEntity2DFactory()
         {
-            this.texturesPath.Add(@"D:\Projects\Metempsychoid\Assets\Graphics\Entities\TV[86x76].png");
+            this.texturesPath.Add(@"Assets\Graphics\Entities\TV[86x76].png");
 
             this.InitializeFactory();
         }

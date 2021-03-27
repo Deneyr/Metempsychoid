@@ -148,7 +148,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
             this.ObjectSprite.Color = Color.Blue;
 
-            Shader shader = new Shader(null, null, @"D:\Projects\Metempsychoid\Assets\Graphics\Shaders\LinkSimpleFrag.frag");
+            Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\LinkSimpleFrag.frag");
 
             Texture distortionMap = factory.GetTextureByIndex(0);
             this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
