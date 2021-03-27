@@ -186,6 +186,14 @@ namespace Metempsychoid.Model.Node.TestWorld
                     }
                 }
             }
+
+            if(this.CheckSocketCardEvent(world, out StarEntity starEntity))
+            {
+                if(starEntity != null)
+                {
+                    boardGameLayer.SocketCard(starEntity);
+                }
+            }
         }
 
         private bool CheckDrawCardEvent(World world)
@@ -212,6 +220,22 @@ namespace Metempsychoid.Model.Node.TestWorld
                 {
                     cardEntity = gameEvent.Entity as CardEntity;
                     details = gameEvent.Details;
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckSocketCardEvent(World world, out StarEntity starEntity)
+        {
+            starEntity = null;
+
+            foreach (GameEvent gameEvent in this.pendingGameEvents)
+            {
+                if (gameEvent.Type == EventType.SOCKET_CARD)
+                {
+                    starEntity = gameEvent.Entity as StarEntity;
 
                     return true;
                 }

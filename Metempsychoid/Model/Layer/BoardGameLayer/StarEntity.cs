@@ -31,6 +31,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                     if (this.cardSocketed != null)
                     {
                         this.cardSocketed.IsSocketed = true;
+
+                        this.cardSocketed.Position = this.Position;
                     }
 
                     if (this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
@@ -43,6 +45,18 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public StarEntity(BoardGameLayer boardGameLayer) : base(boardGameLayer)
         {
+            this.cardSocketed = null;
+        }
+
+        public bool CanSocketCard(CardEntity cardToSocket)
+        {
+            return this.IsActive && this.CardSocketed == null;
+        }
+
+        public bool CanMoveCard(CardEntity cardToMove)
+        {
+            return this.IsActive 
+                && (this.CardSocketed == null || this.CardSocketed.Card.Player != cardToMove.Card.Player);
         }
     }
 }

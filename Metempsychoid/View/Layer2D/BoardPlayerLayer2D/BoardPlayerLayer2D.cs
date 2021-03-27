@@ -16,14 +16,13 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 {
     public class BoardPlayerLayer2D: ALayer2D
     {
+        private static float COOLDOWN_FOCUS = 2;
+
         private List<CardEntity2D> cardsDeck;
-
         private List<CardEntity2D> cardsCemetery;
-
         private List<CardEntity2D> cardsHand;
 
         private CardEntity2D cardDrew;
-
         private CardEntity2D cardFocused;
 
         private int maxPriority;
@@ -126,6 +125,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardsDeck.Remove(this.cardDrew);
             this.cardsHand.Add(this.cardDrew);
 
+            this.cardDrew.SetCooldownFocus(COOLDOWN_FOCUS);
+
             this.UpdateCardEntitiesPriority();
         }
 
@@ -138,7 +139,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private void OnCardUnpicked(CardEntity obj)
         {
-            this.cardsHand.Add(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+            CardEntity2D cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+
+            this.cardsHand.Add(cardPicked);
+
+            cardPicked.SetCooldownFocus(COOLDOWN_FOCUS);
 
             this.UpdateCardEntitiesPriority();
         }
@@ -220,7 +225,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             {
                 this.cardFocused = cardFocused;
 
-                AEntity associatedCardFocused = this.objectToObject2Ds.FirstOrDefault(pElem => pElem.Value == cardFocused).Key;
+                AEntity associatedCardFocused = null;
+                if (this.cardFocused != null)
+                {
+                    associatedCardFocused = this.object2DToObjects[cardFocused];
+                }
 
                 if (this.world2D.TryGetTarget(out World2D world))
                 {
@@ -241,7 +250,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
                         mousePosition.Y -= (int)(this.view.Size.Y / 2);
 
-                        AEntity associatedCardFocused = this.objectToObject2Ds.FirstOrDefault(pElem => pElem.Value == cardFocused).Key;
+                        AEntity associatedCardFocused = this.object2DToObjects[this.cardFocused];
 
                         if (this.world2D.TryGetTarget(out World2D world))
                         {
@@ -273,7 +282,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             foreach (CardEntity2D cardDeck in this.cardsHand)
             {
-                if(cardDeck is IHitRect
+                if(cardDeck.IsFocusable
+                    && cardDeck is IHitRect
                     && (cardDeck as IHitRect).HitZone.Contains(mousePosition.X, mousePosition.Y))
                 {
                     if(cardFocused == null

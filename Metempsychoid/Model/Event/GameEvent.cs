@@ -41,6 +41,7 @@ namespace Metempsychoid.Model.Event
         LEVEL_PHASE_CHANGE,
         DRAW_CARD,
         FOCUS_CARD,
-        PICK_CARD
+        PICK_CARD,
+        SOCKET_CARD
     }
 }

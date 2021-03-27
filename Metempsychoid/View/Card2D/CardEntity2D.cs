@@ -33,6 +33,8 @@ namespace Metempsychoid.View.Card2D
         protected CardSideState sideState;
         protected int cardIndex;
 
+        private float cooldownFocus;
+
         RenderStates render;
 
         Clock timer = new Clock();
@@ -81,6 +83,14 @@ namespace Metempsychoid.View.Card2D
                         }
                         break;
                 }
+            }
+        }
+
+        public bool IsFocusable
+        {
+            get
+            {
+                return this.cooldownFocus <= 0;
             }
         }
 
@@ -276,6 +286,8 @@ namespace Metempsychoid.View.Card2D
             this.cardName = entity.Card.Name;
             this.isFliped = entity.IsFliped;
 
+            this.cooldownFocus = 0;
+
             if (this.isFliped)
             {
                 this.cardIndex = this.factory.GetIndexFromCardName(this.cardName);
@@ -288,6 +300,11 @@ namespace Metempsychoid.View.Card2D
             this.InitializeFaceState();
         }
 
+        public void SetCooldownFocus(float cooldownFocus)
+        {
+            this.cooldownFocus = cooldownFocus;
+        }
+
         protected virtual void UpdateScaling()
         {
             render.Shader.SetUniform("widthRatio", ((float) this.canevasSprite.TextureRect.Width) / this.canevasSprite.Texture.Size.X);
@@ -296,10 +313,26 @@ namespace Metempsychoid.View.Card2D
 
         public override void UpdateGraphics(Time deltaTime)
         {
+            this.UpdateCooldowns(deltaTime);
+
             this.UpdateColorRatio(deltaTime);
 
             render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
         }
+
+        private void UpdateCooldowns(Time deltaTime)
+        {
+            if(this.cooldownFocus > 0)
+            {
+                this.cooldownFocus -= deltaTime.AsSeconds();
+
+                if(this.cooldownFocus < 0)
+                {
+                    this.cooldownFocus = 0;
+                }
+            }
+        }
+
 
         private void UpdateColorRatio(Time deltaTime)
         {

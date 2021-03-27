@@ -140,6 +140,16 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             return false;
         }
 
+        public void SocketCard(StarEntity starEntity)
+        {
+            if(this.CardEntityPicked != null)
+            {
+                starEntity.CardSocketed = this.CardEntityPicked;
+
+                this.CardEntityPicked = null;
+            }
+        }
+
         protected override void InternalInitializeLayer(World world)
         {
             this.CardEntityPicked = null;

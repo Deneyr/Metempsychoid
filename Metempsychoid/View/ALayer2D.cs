@@ -21,6 +21,7 @@ namespace Metempsychoid.View
         protected ALayer parentLayer;
 
         protected Dictionary<AEntity, AEntity2D> objectToObject2Ds;
+        protected Dictionary<AEntity2D, AEntity> object2DToObjects;
 
         protected float zoom;
 
@@ -170,6 +171,7 @@ namespace Metempsychoid.View
             this.Area = new Vector2i(0, 0);
 
             this.objectToObject2Ds = new Dictionary<AEntity, AEntity2D>();
+            this.object2DToObjects = new Dictionary<AEntity2D, AEntity>();
 
             this.world2D = new WeakReference<World2D>(world2D);
 
@@ -192,6 +194,11 @@ namespace Metempsychoid.View
             return this.objectToObject2Ds[entity];
         }
 
+        public AEntity GetEntityFromEntity2D(AEntity2D entity2D)
+        {
+            return this.object2DToObjects[entity2D];
+        }
+
         public virtual void InitializeLayer(IObject2DFactory factory)
         {
             foreach (AEntity entity in this.parentLayer.Entities)
@@ -212,6 +219,7 @@ namespace Metempsychoid.View
 
         protected virtual void OnEntityRemoved(AEntity obj)
         {
+            this.object2DToObjects.Remove(this.objectToObject2Ds[obj]);
             this.objectToObject2Ds.Remove(obj);
         }
 
@@ -226,6 +234,7 @@ namespace Metempsychoid.View
             {
                 AEntity2D object2D = World2D.MappingObjectModelView[obj.GetType()].CreateObject2D(world2D, this, obj) as AEntity2D;
 
+                this.object2DToObjects.Add(object2D, obj);
                 this.objectToObject2Ds.Add(obj, object2D);
 
                 return object2D;
@@ -379,6 +388,7 @@ namespace Metempsychoid.View
             {
                 object2D.Dispose();
             }
+            this.object2DToObjects.Clear();
             this.objectToObject2Ds.Clear();
 
             this.ChildrenLayer2D.Clear();

@@ -72,6 +72,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     StarEntity2D starEntity2D = this.objectToObject2Ds[obj] as StarEntity2D;
 
                     starEntity2D.SetCardSocketed(starEntity.CardSocketed);
+
+                    this.cardPicked = null;
                     break;
                 case "IsSocketed":
                     (this.objectToObject2Ds[obj] as CardEntity2D).IsSocketed = (obj as CardEntity).IsSocketed;
@@ -136,8 +138,46 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 Vector2i mousePosition = this.MousePosition;
 
-                this.cardPicked.Position = new Vector2f(mousePosition.X, mousePosition.Y);
+                StarEntity2D starEntity2D = this.GetStarEntity2DOn(mousePosition);
+
+                Vector2f cardPosition = new Vector2f(mousePosition.X, mousePosition.Y);
+
+                if (starEntity2D != null)
+                {
+                    StarEntity starEntity = this.object2DToObjects[starEntity2D] as StarEntity;
+                    CardEntity cardEntity = this.object2DToObjects[this.cardPicked] as CardEntity;
+
+                    if (starEntity.CanSocketCard(cardEntity))
+                    {
+                        cardPosition = new Vector2f(starEntity2D.Position.X, starEntity2D.Position.Y);
+                    }
+                }
+
+                this.cardPicked.Position = cardPosition;
             }
+        }
+
+        private StarEntity2D GetStarEntity2DOn(Vector2i mousePosition)
+        {
+            StarEntity2D starEntityResult = null;
+
+            foreach (AObject2D object2D in this.objectToObject2Ds.Values)
+            {
+                StarEntity2D starEntity2D = object2D as StarEntity2D;
+
+                if (starEntity2D != null
+                    && starEntity2D.HitZone.Contains(mousePosition.X, mousePosition.Y))
+                {
+                    if (starEntityResult == null
+                        || Math.Abs(mousePosition.X - starEntity2D.Position.X) + Math.Abs(mousePosition.Y - starEntity2D.Position.Y)
+                        < Math.Abs(mousePosition.X - starEntity2D.Position.X) + Math.Abs(mousePosition.Y - starEntity2D.Position.Y))
+                    {
+                        starEntityResult = starEntity2D;
+                    }
+                }
+            }
+
+            return starEntityResult;
         }
 
         private void GoOnTurnPhase(TurnPhase nextTurnPhase)
@@ -150,6 +190,30 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         public override bool OnControlActivated(Controls.ControlEventType eventType, string details)
         {
+
+            switch (this.LevelTurnPhase)
+            {
+                case TurnPhase.MAIN:
+
+                    StarEntity2D starEntity2D = this.GetStarEntity2DOn(this.MousePosition);
+
+                    if (eventType == Controls.ControlEventType.MOUSE_LEFT_CLICK && details == "pressed"
+                        && this.cardPicked != null
+                        && starEntity2D != null)
+                    {
+                        StarEntity starEntity = this.object2DToObjects[starEntity2D] as StarEntity;
+                        CardEntity cardEntity = this.object2DToObjects[this.cardPicked] as CardEntity;
+
+                        if (starEntity.CanSocketCard(cardEntity))
+                        {
+                            if (this.world2D.TryGetTarget(out World2D world))
+                            {
+                                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.SOCKET_CARD, this.object2DToObjects[starEntity2D], null));
+                            }
+                        }
+                    }
+                    break;
+            }
             //switch (this.LevelTurnPhase)
             //{
             //    case TurnPhase.MAIN:

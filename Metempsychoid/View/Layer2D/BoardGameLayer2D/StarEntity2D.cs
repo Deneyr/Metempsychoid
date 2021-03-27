@@ -2,6 +2,7 @@
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.View.Animation;
+using Metempsychoid.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
-    public class StarEntity2D : AEntity2D
+    public class StarEntity2D : AEntity2D, IHitRect
     {
         internal static Color DEFAULT_COLOR = Color.Blue;
 
@@ -45,6 +46,17 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                         this.PlayAnimation(this.CreateTransitioningAnimation());
                     }
                 }
+            }
+        }
+
+        public IntRect HitZone
+        {
+            get
+            {
+                return new IntRect((int)(this.Position.X - this.Canevas.Width / 2),
+                    (int)(this.Position.Y - this.Canevas.Height / 2),
+                    this.Canevas.Width,
+                    this.Canevas.Height);
             }
         }
 
@@ -211,6 +223,16 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         public override void DrawIn(RenderWindow window, Time deltaTime)
         {
             window.Draw(this.ObjectSprite, this.render);
+        }
+
+        public void OnMousePressed(ControlEventType eventType)
+        {
+
+        }
+
+        public void OnMouseReleased(ControlEventType eventType)
+        {
+
         }
 
         public enum StarState
