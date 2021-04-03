@@ -16,6 +16,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
     public class BoardGameLayer2D : ALayer2D
     {
+        private List<CardEntity2D> cardsOnBoard;
+
         private CardEntity2D cardPicked;
 
         public TurnPhase LevelTurnPhase
@@ -37,17 +39,43 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
 
+            this.cardsOnBoard = new List<CardEntity2D>();
+
             layer.CardPicked += this.OnCardPicked;
             layer.CardUnpicked += this.OnCardUnPicked;
         }
 
         public override void InitializeLayer(IObject2DFactory factory)
         {
+            this.cardsOnBoard.Clear();
+
             base.InitializeLayer(factory);
 
             this.LevelTurnPhase = TurnPhase.VOID;
 
             this.cardPicked = null;
+        }
+
+        protected override AEntity2D AddEntity(AEntity obj)
+        {
+            AEntity2D entityAdded =  base.AddEntity(obj);
+
+            if(entityAdded is CardEntity2D)
+            {
+                this.cardsOnBoard.Add(entityAdded as CardEntity2D);
+            }
+
+            return entityAdded;
+        }
+
+        protected override void OnEntityRemoved(AEntity obj)
+        {
+            if (obj is CardEntity)
+            {
+                this.cardsOnBoard.Remove(this.objectToObject2Ds[obj] as CardEntity2D);
+            }
+
+            base.OnEntityRemoved(obj);
         }
 
         private void OnCardPicked(CardEntity obj)
@@ -76,7 +104,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     this.cardPicked = null;
                     break;
                 case "IsSocketed":
-                    (this.objectToObject2Ds[obj] as CardEntity2D).IsSocketed = (obj as CardEntity).IsSocketed;
+                    (this.objectToObject2Ds[obj] as CardEntity2D).IsSocketed = ((obj as CardEntity).ParentStar != null);
                     break;
                 case "IsFliped":
                     (this.objectToObject2Ds[obj] as CardEntity2D).IsFliped = (obj as CardEntity).IsFliped;
@@ -142,15 +170,21 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                 Vector2f cardPosition = new Vector2f(mousePosition.X, mousePosition.Y);
 
+                CardEntity cardEntity = this.object2DToObjects[this.cardPicked] as CardEntity;
+
                 if (starEntity2D != null)
                 {
                     StarEntity starEntity = this.object2DToObjects[starEntity2D] as StarEntity;
-                    CardEntity cardEntity = this.object2DToObjects[this.cardPicked] as CardEntity;
 
                     if (starEntity.CanSocketCard(cardEntity))
                     {
                         cardPosition = new Vector2f(starEntity2D.Position.X, starEntity2D.Position.Y);
                     }
+                }
+
+                if (this.world2D.TryGetTarget(out World2D world))
+                {
+                    world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.MOVE_CARD_OVERBOARD, cardEntity, cardPosition.X + ":" + cardPosition.Y));
                 }
 
                 this.cardPicked.Position = cardPosition;
@@ -195,80 +229,99 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 case TurnPhase.MAIN:
 
-                    StarEntity2D starEntity2D = this.GetStarEntity2DOn(this.MousePosition);
-
-                    if (eventType == Controls.ControlEventType.MOUSE_LEFT_CLICK && details == "pressed"
-                        && this.cardPicked != null
-                        && starEntity2D != null)
+                    if (eventType == Controls.ControlEventType.MOUSE_LEFT_CLICK && details == "pressed")
                     {
-                        StarEntity starEntity = this.object2DToObjects[starEntity2D] as StarEntity;
-                        CardEntity cardEntity = this.object2DToObjects[this.cardPicked] as CardEntity;
-
-                        if (starEntity.CanSocketCard(cardEntity))
+                        if (this.cardPicked != null)
                         {
-                            if (this.world2D.TryGetTarget(out World2D world))
+                            StarEntity2D starEntity2D = this.GetStarEntity2DOn(this.MousePosition);
+
+                            if (starEntity2D != null)
                             {
-                                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.SOCKET_CARD, this.object2DToObjects[starEntity2D], null));
+                                StarEntity starEntity = this.object2DToObjects[starEntity2D] as StarEntity;
+                                CardEntity cardEntity = this.object2DToObjects[this.cardPicked] as CardEntity;
+
+                                if (starEntity.CanSocketCard(cardEntity))
+                                {
+                                    if (this.world2D.TryGetTarget(out World2D world))
+                                    {
+                                        world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.SOCKET_CARD, this.object2DToObjects[starEntity2D], null));
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            CardEntity2D cardFocused = this.GetCardFocused();
+
+                            if(cardFocused != null)
+                            {
+                                if (this.world2D.TryGetTarget(out World2D world))
+                                {
+                                    world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, this.object2DToObjects[cardFocused], null));
+                                }
                             }
                         }
                     }
+                    else if (eventType == Controls.ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
+                    {
+                        // TODO
+
+                        //if (this.cardPicked != null
+                        //    && this.cardPicked.IsSocketed)
+                        //{
+                        //    Vector2i mousePosition = this.MousePosition;
+
+                        //    mousePosition.Y -= (int)(this.view.Size.Y / 2);
+
+                        //    if (this.world2D.TryGetTarget(out World2D world))
+                        //    {
+                        //        world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y));
+                        //    }
+                        //}
+                    }
                     break;
             }
-            //switch (this.LevelTurnPhase)
-            //{
-            //    case TurnPhase.MAIN:
-            //        if (eventType == Controls.ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed"
-            //            && this.cardPicked != null)
-            //        {
-            //            if (this.world2D.TryGetTarget(out World2D world))
-            //            {
-            //                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, null, null));
-            //            }
-            //        }
-            //        break;
-            //}
-
-            //base.OnControlActivated(eventType, details);
-
-            //Random rand = new Random();
-
-            //Player player;
-            //if (rand.NextDouble() < 0.5)
-            //{
-            //    player = new Player(Color.Green);
-            //}
-            //else
-            //{
-            //    player = new Player(Color.Red);
-            //}
-
-            //switch (eventType)
-            //{
-            //    case Controls.ControlEventType.UP:
-            //        foreach (AEntity2D entity in this.objectToObject2Ds.Values)
-            //        {
-            //            if (entity is CardEntity2D)
-            //            {
-            //                (entity as CardEntity2D).IsSocketed = !(entity as CardEntity2D).IsSocketed;
-            //                (entity as CardEntity2D).IsFliped = !(entity as CardEntity2D).IsFliped;
-            //            }
-
-            //            if(entity is StarEntity2D && rand.NextDouble() > 0.5)
-            //            {
-            //                (entity as StarEntity2D).SetCardSocketed(new CardEntity(null, new Card(new CardTemplate("wheel", 0), player), false));
-            //            }
-            //        }
-
-            //        break;
-            //}
 
             return true;
         }
 
+        private CardEntity2D GetCardFocused()
+        {
+            CardEntity2D cardFocused = null;
+
+            Vector2i mousePosition = this.MousePosition;
+
+            foreach (CardEntity2D cardDeck in this.cardsOnBoard)
+            {
+                if (cardDeck.IsFocusable
+                    && cardDeck is IHitRect
+                    && (cardDeck as IHitRect).HitZone.Contains(mousePosition.X, mousePosition.Y))
+                {
+                    if (cardFocused == null
+                        || Math.Abs(mousePosition.X - cardDeck.Position.X) + Math.Abs(mousePosition.Y - cardDeck.Position.Y)
+                        < Math.Abs(mousePosition.X - cardFocused.Position.X) + Math.Abs(mousePosition.Y - cardFocused.Position.Y))
+                    {
+                        cardFocused = cardDeck;
+                    }
+                }
+            }
+
+            return cardFocused;
+        }
+
+        public override void FlushEntities()
+        {
+            base.FlushEntities();
+
+            this.cardsOnBoard.Clear();
+
+            this.LevelTurnPhase = TurnPhase.VOID;
+        }
+
+
+
         public override void Dispose()
         {
-            this.LevelTurnPhase = TurnPhase.VOID;
-
             (this.parentLayer as BoardGameLayer).CardPicked -= this.OnCardPicked;
             (this.parentLayer as BoardGameLayer).CardUnpicked -= this.OnCardUnPicked;
 

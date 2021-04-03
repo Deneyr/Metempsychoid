@@ -162,7 +162,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                 }
             }
 
-            if(this.CheckPickCardEvent(world, out CardEntity cardPicked, out string details))
+            if(this.CheckPickCardEvent(world, out CardEntity cardPicked, out string detailsPicked))
             {
                 if (cardPicked != null)
                 {
@@ -172,6 +172,10 @@ namespace Metempsychoid.Model.Node.TestWorld
                         {
                             boardGameLayer.PickCard(cardPicked.Card);
                         }
+                        else
+                        {
+                            boardGameLayer.PickCard(cardPicked);
+                        }
                     }
                 }
                 else
@@ -179,15 +183,23 @@ namespace Metempsychoid.Model.Node.TestWorld
                     if (boardGameLayer.CardEntityPicked != null)
                     {
                         Card.Card cardToUnpick = boardGameLayer.CardEntityPicked.Card;
-                        if (boardGameLayer.PickCard(null))
+                        Vector2f startPosition = GetPositionFrom(detailsPicked);
+
+                        if (boardGameLayer.UnPickCard())
                         {
-                            boardPlayerLayer.UnpickCard(cardToUnpick, GetPositionFrom(details));
+                            boardPlayerLayer.UnpickCard(cardToUnpick, startPosition);
                         }
                     }
                 }
             }
 
-            if(this.CheckSocketCardEvent(world, out StarEntity starEntity))
+            if (this.CheckMoveCardOverboardEvent(world, out CardEntity cardToMove, out string detailsMove))
+            {
+                Vector2f startPosition = GetPositionFrom(detailsMove);
+                boardGameLayer.MoveCardOverBoard(cardToMove, startPosition);
+            }
+
+            if (this.CheckSocketCardEvent(world, out StarEntity starEntity))
             {
                 if(starEntity != null)
                 {
@@ -252,6 +264,24 @@ namespace Metempsychoid.Model.Node.TestWorld
                 if (gameEvent.Type == EventType.FOCUS_CARD)
                 {
                     cardEntity = gameEvent.Entity as CardEntity;
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckMoveCardOverboardEvent(World world, out CardEntity cardEntity, out string details)
+        {
+            cardEntity = null;
+            details = null;
+
+            foreach (GameEvent gameEvent in this.pendingGameEvents)
+            {
+                if (gameEvent.Type == EventType.MOVE_CARD_OVERBOARD)
+                {
+                    cardEntity = gameEvent.Entity as CardEntity;
+                    details = gameEvent.Details;
 
                     return true;
                 }

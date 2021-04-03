@@ -247,7 +247,7 @@ namespace Metempsychoid.View.Card2D
 
             this.canevasSprite.Color = Color.Black;
             this.playerColor = Color.Black;
-            this.isSocketed = !entity.IsSocketed;
+            this.isSocketed = entity.ParentStar == null;
             this.ratioColor = -1;
 
             Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\cardCanevas.frag");
@@ -281,7 +281,7 @@ namespace Metempsychoid.View.Card2D
         private void Initialize(CardEntity entity)
         {
             this.PlayerColor = entity.Card.Player.PlayerColor;
-            this.IsSocketed = entity.IsSocketed;
+            this.IsSocketed = entity.ParentStar != null;
             this.RatioColor = 1;
             this.cardName = entity.Card.Name;
             this.isFliped = entity.IsFliped;

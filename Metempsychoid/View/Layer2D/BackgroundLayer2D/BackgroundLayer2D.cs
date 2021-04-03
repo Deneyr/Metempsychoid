@@ -61,7 +61,7 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
             switch (eventType)
             {
                 case ControlEventType.MOUSE_WHEEL:
-                    int delta = int.Parse(details);
+                    float delta = float.Parse(details);
 
                     this.ZoomRatio -= delta;
 

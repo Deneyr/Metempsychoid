@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
 
 namespace Metempsychoid.Model.Card
 {
     public class CardEntity : AEntity
     {
-        private bool isSocketed;
+        private StarEntity parentStar;
 
         private bool isFliped;
 
@@ -19,17 +20,17 @@ namespace Metempsychoid.Model.Card
             private set;
         }
 
-        public bool IsSocketed
+        public StarEntity ParentStar
         {
             get
             {
-                return this.isSocketed;
+                return this.parentStar;
             }
             set
             {
-                if (this.isSocketed != value)
+                if (this.parentStar != value)
                 {
-                    this.isSocketed = value;
+                    this.parentStar = value;
 
                     if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
                     {
@@ -63,7 +64,7 @@ namespace Metempsychoid.Model.Card
         {
             this.Card = card;
 
-            this.IsSocketed = false;
+            this.parentStar = null;
 
             this.isFliped = isFliped;
         }

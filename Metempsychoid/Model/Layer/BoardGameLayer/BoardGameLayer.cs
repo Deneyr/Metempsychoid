@@ -1,4 +1,6 @@
-﻿using Metempsychoid.Model.Card;
+﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Animation;
+using Metempsychoid.Model.Card;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 {
     public class BoardGameLayer: EntityLayer.EntityLayer
     {
+        private Dictionary<StarEntity, HashSet<StarLinkEntity>> starToLinks;
+
         public HashSet<StarEntity> StarSystem
         {
             get;
@@ -21,8 +25,6 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             get;
             protected set;
         }
-
-        public Dictionary<StarEntity, HashSet<StarLinkEntity>> starToLinks;
 
         public CardEntity CardEntityPicked
         {
@@ -114,7 +116,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public bool PickCard(Card.Card card)
         {
-            if (card != null)
+            if (this.CardEntityPicked == null)
             {
                 CardEntity cardEntity = new CardEntity(this, card, true);
 
@@ -126,17 +128,50 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
                 return true;
             }
-            else if (this.CardEntityPicked != null)
+            return false;
+        }
+
+        public bool PickCard(CardEntity cardEntity)
+        {
+            if (this.CardEntityPicked == null)
             {
-                this.RemoveEntityFromLayer(this.CardEntityPicked);
+                this.CardEntityPicked = cardEntity;
 
-                CardEntity cardUnpicked = this.CardEntityPicked;
-                this.CardEntityPicked = null;
-
-                this.NotifyCardUnpicked(cardUnpicked);
+                this.NotifyCardPicked(cardEntity);
 
                 return true;
             }
+            return false;
+        }
+
+        public bool UnPickCard()
+        {
+            if (this.CardEntityPicked != null)
+            {
+                CardEntity cardEntity = this.CardEntityPicked;
+                this.CardEntityPicked = null;
+
+                if (cardEntity.ParentStar != null)
+                {
+                    IAnimation positionAnimation;
+                    positionAnimation = new PositionAnimation(cardEntity.Position, cardEntity.ParentStar.Position, Time.FromSeconds(1f), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
+
+                    cardEntity.PlayAnimation(positionAnimation);
+
+                    this.NotifyCardUnpicked(cardEntity);
+
+                    return false;
+                }
+                else
+                {
+                    this.RemoveEntityFromLayer(cardEntity);
+
+                    this.NotifyCardUnpicked(cardEntity);
+
+                    return true;
+                }
+            }
+
             return false;
         }
 
@@ -147,6 +182,15 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 starEntity.CardSocketed = this.CardEntityPicked;
 
                 this.CardEntityPicked = null;
+            }
+        }
+
+        public void MoveCardOverBoard(CardEntity cardEntity, Vector2f positionToMove)
+        {
+            if(this.CardEntityPicked != null
+                && this.CardEntityPicked == cardEntity)
+            {
+                this.CardEntityPicked.Position = positionToMove;
             }
         }
 

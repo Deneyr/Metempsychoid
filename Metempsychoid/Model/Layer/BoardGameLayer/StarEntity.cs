@@ -23,14 +23,14 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 {
                     if (this.cardSocketed != null)
                     {
-                        this.cardSocketed.IsSocketed = false;
+                        this.cardSocketed.ParentStar = null;
                     }
 
                     this.cardSocketed = value;
 
                     if (this.cardSocketed != null)
                     {
-                        this.cardSocketed.IsSocketed = true;
+                        this.cardSocketed.ParentStar = this;
 
                         this.cardSocketed.Position = this.Position;
                     }
