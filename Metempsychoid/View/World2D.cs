@@ -171,7 +171,7 @@ namespace Metempsychoid.View
             {
                 ALayer2D layer2D = this.layersDictionary[layer];
 
-                if(layer.ParentLayer != null)
+                if (layer.ParentLayer != null)
                 {
                     this.layersDictionary[layer.ParentLayer].ChildrenLayer2D.Add(layer2D);
                 }
@@ -183,6 +183,12 @@ namespace Metempsychoid.View
 
                 this.LayersList.Add(layer2D);
 
+                //layer2D.InitializeLayer(World2D.MappingObjectModelView[layer.GetType()]);
+            }
+
+            foreach (ALayer layer in world.CurrentLayers)
+            {
+                ALayer2D layer2D = this.layersDictionary[layer];
                 layer2D.InitializeLayer(World2D.MappingObjectModelView[layer.GetType()]);
             }
         }

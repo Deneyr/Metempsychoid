@@ -154,6 +154,12 @@ namespace Metempsychoid.Model.Node.TestWorld
             BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
             BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
 
+            if (this.CheckMoveCardOverboardEvent(world, out CardEntity cardToMove, out string detailsMove))
+            {
+                Vector2f startPosition = GetPositionFrom(detailsMove);
+                boardGameLayer.MoveCardOverBoard(cardToMove, startPosition);
+            }
+
             if (this.CheckFocusCardEvent(world, out CardEntity cardFocused))
             {
                 if (boardGameLayer.CardEntityPicked == null)
@@ -191,12 +197,6 @@ namespace Metempsychoid.Model.Node.TestWorld
                         }
                     }
                 }
-            }
-
-            if (this.CheckMoveCardOverboardEvent(world, out CardEntity cardToMove, out string detailsMove))
-            {
-                Vector2f startPosition = GetPositionFrom(detailsMove);
-                boardGameLayer.MoveCardOverBoard(cardToMove, startPosition);
             }
 
             if (this.CheckSocketCardEvent(world, out StarEntity starEntity))

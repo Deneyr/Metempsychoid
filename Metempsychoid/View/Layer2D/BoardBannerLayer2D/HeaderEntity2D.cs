@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.Animation;
 using Metempsychoid.View.Animation;
+using Metempsychoid.View.Text2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -83,6 +84,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         public HeaderEntity2D(ALayer2D parentLayer) : base(parentLayer)
         {
+            // TO REMOVE
+            new TextCanevas2D(parentLayer);
+
             this.text = new Text();
             this.text.Font = AObject2DFactory.GetFontByName("Protector");
 

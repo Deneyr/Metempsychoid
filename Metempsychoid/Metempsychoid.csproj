@@ -135,6 +135,10 @@
     <Compile Include="View\Layer2D\EntityLayer2D\T_TeleEntity2DFactory.cs" />
     <Compile Include="View\ResourcesManager\LayerResourcesLoader.cs" />
     <Compile Include="View\ResourcesManager\TextureManager.cs" />
+    <Compile Include="View\Text2D\TextCanevas2D.cs" />
+    <Compile Include="View\Text2D\TextParagraph2D.cs" />
+    <Compile Include="View\Text2D\TextParagraphFactory.cs" />
+    <Compile Include="View\Text2D\TextToken2D.cs" />
     <Compile Include="View\World2D.cs" />
   </ItemGroup>
   <ItemGroup>

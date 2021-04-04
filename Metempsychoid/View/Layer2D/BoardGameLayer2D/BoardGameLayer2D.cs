@@ -81,11 +81,12 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         private void OnCardPicked(CardEntity obj)
         {
             this.cardPicked = this.objectToObject2Ds[obj] as CardEntity2D;
-            this.cardPicked.Priority = 1000;
+            this.cardPicked.Priority = 1001;
         }
 
         private void OnCardUnPicked(CardEntity obj)
         {
+            this.cardPicked.Priority = 1000;
             this.cardPicked = null;
         }
 
@@ -101,6 +102,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                     starEntity2D.SetCardSocketed(starEntity.CardSocketed);
 
+                    this.cardPicked.Priority = 1000;
                     this.cardPicked = null;
                     break;
                 case "IsSocketed":
@@ -182,11 +184,6 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     }
                 }
 
-                if (this.world2D.TryGetTarget(out World2D world))
-                {
-                    world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.MOVE_CARD_OVERBOARD, cardEntity, cardPosition.X + ":" + cardPosition.Y));
-                }
-
                 this.cardPicked.Position = cardPosition;
             }
         }
@@ -264,20 +261,17 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     }
                     else if (eventType == Controls.ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
                     {
-                        // TODO
+                        if (this.cardPicked != null
+                            && this.cardPicked.IsSocketed)
+                        {
+                            Vector2i mousePosition = this.MousePosition;
+                            CardEntity cardEntity = this.object2DToObjects[this.cardPicked] as CardEntity;
 
-                        //if (this.cardPicked != null
-                        //    && this.cardPicked.IsSocketed)
-                        //{
-                        //    Vector2i mousePosition = this.MousePosition;
-
-                        //    mousePosition.Y -= (int)(this.view.Size.Y / 2);
-
-                        //    if (this.world2D.TryGetTarget(out World2D world))
-                        //    {
-                        //        world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y));
-                        //    }
-                        //}
+                            if (this.world2D.TryGetTarget(out World2D world))
+                            {
+                                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.MOVE_CARD_OVERBOARD, cardEntity, mousePosition.X + ":" + mousePosition.Y));
+                            }
+                        }
                     }
                     break;
             }

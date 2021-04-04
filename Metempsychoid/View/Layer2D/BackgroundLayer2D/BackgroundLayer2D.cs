@@ -99,6 +99,8 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
             {
                 this.nameToTiles.Add(Path.GetFileNameWithoutExtension(keyValuePair.Key), new TileBackgoundObject2D(this, keyValuePair.Value, Path.GetFileNameWithoutExtension(keyValuePair.Key)));
             }
+
+            this.ZoomRatio = 3;
         }
 
         public override void FlushEntities()
