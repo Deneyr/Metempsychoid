@@ -5,6 +5,7 @@ using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.View.Card2D;
+using Metempsychoid.View.Controls;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -243,7 +244,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             switch (this.levelTurnPhase)
             {
                 case TurnPhase.MAIN:
-                    if(eventType == Controls.ControlEventType.MOUSE_LEFT_CLICK && details == "pressed"
+                    if(eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "pressed"
                         && this.cardFocused != null)
                     {
                         Vector2i mousePosition = this.MousePosition;
@@ -257,7 +258,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                             world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, associatedCardFocused, mousePosition.X + ":" + mousePosition.Y));
                         }
                     }
-                    else if(eventType == Controls.ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
+                    else if(eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
                     {
                         Vector2i mousePosition = this.MousePosition;
 

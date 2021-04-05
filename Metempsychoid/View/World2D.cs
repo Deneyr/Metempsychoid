@@ -106,6 +106,7 @@ namespace Metempsychoid.View
 
             this.ControlManager = new ControlManager(mainWindow.Window);
             this.ControlManager.ControlActivated += OnControlActivated;
+            this.ControlManager.MouseMoved += OnMouseMoved;
         }
 
         public void DrawIn(RenderWindow window, Time deltaTime)
@@ -136,6 +137,14 @@ namespace Metempsychoid.View
                 nbLayer2D--;
             }
             
+        }
+
+        private void OnMouseMoved(Vector2i arg2, Vector2i arg3)
+        {
+            foreach(ALayer2D layer2D in this.LayersList)
+            {
+                layer2D.OnMouseMoved(arg2, arg3);
+            }
         }
 
         private void OnLayerAdded(ALayer layerToAdd)
@@ -230,6 +239,7 @@ namespace Metempsychoid.View
             this.world = null;
 
             this.ControlManager.ControlActivated -= OnControlActivated;
+            this.ControlManager.MouseMoved -= OnMouseMoved;
         }
 
         public void SendEventToWorld(GameEvent gameEvent)

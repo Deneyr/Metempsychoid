@@ -23,6 +23,8 @@ namespace Metempsychoid.View
         protected Dictionary<AEntity, AEntity2D> objectToObject2Ds;
         protected Dictionary<AEntity2D, AEntity> object2DToObjects;
 
+        private Vector2i mousePosition;
+
         protected float zoom;
 
         public List<ALayer2D> ChildrenLayer2D
@@ -153,11 +155,7 @@ namespace Metempsychoid.View
         {
             get
             {
-                Vector2i windowPosition = new Vector2i((int)this.Position.X, (int)this.Position.Y);
-                Vector2i mousePosition =  new Vector2i((int)(Mouse.GetPosition().X * this.Zoom), (int)(Mouse.GetPosition().Y * this.Zoom));
-                mousePosition += windowPosition - new Vector2i((int)this.view.Size.X, (int)this.view.Size.Y) / 2;
-
-                return mousePosition;
+                return this.mousePosition;
             }
         }
 
@@ -330,6 +328,20 @@ namespace Metempsychoid.View
                 }
             }
             return true;
+        }
+
+        public virtual void OnMouseMoved(Vector2i newPosition, Vector2i deltaPosition)
+        {
+            this.UpdateMousePosition(newPosition);
+        }
+
+        protected void UpdateMousePosition(Vector2i positionRelativeToWindow)
+        {
+            Vector2i windowPosition = new Vector2i((int)this.Position.X, (int)this.Position.Y);
+            Vector2i mousePosition = new Vector2i((int)(positionRelativeToWindow.X * this.Zoom), (int)(positionRelativeToWindow.Y * this.Zoom));
+            mousePosition += windowPosition - new Vector2i((int)this.view.Size.X, (int)this.view.Size.Y) / 2;
+
+            this.mousePosition = mousePosition;
         }
 
         public virtual void UpdateGraphics(Time deltaTime)

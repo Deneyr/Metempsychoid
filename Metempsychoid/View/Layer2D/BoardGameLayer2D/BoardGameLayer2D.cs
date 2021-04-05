@@ -4,6 +4,7 @@ using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.Model.Player;
 using Metempsychoid.View.Card2D;
+using Metempsychoid.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -226,7 +227,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 case TurnPhase.MAIN:
 
-                    if (eventType == Controls.ControlEventType.MOUSE_LEFT_CLICK && details == "pressed")
+                    if (eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "pressed")
                     {
                         if (this.cardPicked != null)
                         {
@@ -259,7 +260,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                             }
                         }
                     }
-                    else if (eventType == Controls.ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
+                    else if (eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
                     {
                         if (this.cardPicked != null
                             && this.cardPicked.IsSocketed)

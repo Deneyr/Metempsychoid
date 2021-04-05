@@ -66,25 +66,25 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
                     this.ZoomRatio -= delta;
 
                     break;
-                case ControlEventType.MOUSE_MOVED:
-
-                    if (this.world2D.TryGetTarget(out World2D world2D))
-                    {
-                        if (world2D.ControlManager.IsMousePressed(SFML.Window.Mouse.Button.Left))
-                        {
-                            string[] token = details.Split(',');
-
-                            Vector2f deltaPosition = new Vector2f(int.Parse(token[0]), int.Parse(token[1]));
-                            deltaPosition *= this.Zoom;
-
-                            this.Position += deltaPosition;
-                        }
-                    }
-
-                    break;
             }
 
             return true;
+        }
+
+        public override void OnMouseMoved(Vector2i newPosition, Vector2i deltaPosition)
+        {
+            base.OnMouseMoved(newPosition, deltaPosition);
+
+            if (this.world2D.TryGetTarget(out World2D world2D))
+            {
+                if (world2D.ControlManager.IsMousePressed(SFML.Window.Mouse.Button.Left))
+                {
+                    Vector2f deltaPositionFloat = new Vector2f(deltaPosition.X, deltaPosition.Y);
+                    deltaPositionFloat *= this.Zoom;
+
+                    this.Position += deltaPositionFloat;
+                }
+            }
         }
 
         public override void InitializeLayer(IObject2DFactory factory)

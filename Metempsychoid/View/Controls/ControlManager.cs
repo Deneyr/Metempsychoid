@@ -17,17 +17,11 @@ namespace Metempsychoid.View.Controls
 
         public event Action<ControlEventType, string> ControlActivated;
 
-        public Vector2i MousePosition
-        {
-            get
-            {
-                return Mouse.GetPosition();
-            }
-        }
+        public event Action<Vector2i, Vector2i> MouseMoved;
 
         public ControlManager(RenderWindow window)
         {
-            this.previousMousePosition = this.MousePosition;
+            this.previousMousePosition = Mouse.GetPosition(window);
 
             window.KeyPressed += OnKeyPressed;
 
@@ -59,7 +53,7 @@ namespace Metempsychoid.View.Controls
             Vector2i deltaPosition = this.previousMousePosition - newPosition;
             this.previousMousePosition = newPosition;
 
-            this.NotifyControlActivated(ControlEventType.MOUSE_MOVED, deltaPosition.X + "," + deltaPosition.Y);
+            this.NotifyMouseMoved(newPosition, deltaPosition);
         }
 
         private void OnMouseButtonReleased(object sender, SFML.Window.MouseButtonEventArgs e)
@@ -117,6 +111,11 @@ namespace Metempsychoid.View.Controls
         private void NotifyControlActivated(ControlEventType controlEvent, string details)
         {
             this.ControlActivated?.Invoke(controlEvent, details);
+        }
+
+        private void NotifyMouseMoved(Vector2i newPosition, Vector2i deltaPosition)
+        {
+            this.MouseMoved?.Invoke(newPosition, deltaPosition);
         }
 
         public void Dispose(RenderWindow window)

@@ -423,15 +423,6 @@ namespace Metempsychoid.View.Card2D
 
         }
 
-        private void AlignCardOnMousePosition()
-        {
-            if(this.parentLayer.TryGetTarget(out ALayer2D parentLayer))
-            {
-                Vector2f mousePosition = new Vector2f(parentLayer.MousePosition.X, parentLayer.MousePosition.Y);
-                this.Position = mousePosition;
-            }
-        }
-
         public enum CardSideState
         {
             FACE,

@@ -33,10 +33,10 @@ namespace Metempsychoid
             private set;
         }
 
-    public MainWindow()
+        public MainWindow()
         {
             //var mode = new SFML.Window.VideoMode(800, 600);
-            this.Window = new SFML.Graphics.RenderWindow(SFML.Window.VideoMode.DesktopMode, "Metempsychoid", SFML.Window.Styles.Fullscreen);
+            this.Window = new SFML.Graphics.RenderWindow(SFML.Window.VideoMode.DesktopMode, "Metempsychoid", Styles.Fullscreen);
             // this.window = new SFML.Graphics.RenderWindow(mode, "Metempsychoid");
             this.Window.SetVerticalSyncEnabled(true);
 
