@@ -139,11 +139,11 @@ namespace Metempsychoid.View
             
         }
 
-        private void OnMouseMoved(Vector2i arg2, Vector2i arg3)
+        private void OnMouseMoved(Vector2i newPosition, Vector2i deltaPosition)
         {
             foreach(ALayer2D layer2D in this.LayersList)
             {
-                layer2D.OnMouseMoved(arg2, arg3);
+                layer2D.OnMouseMoved(newPosition, deltaPosition);
             }
         }
 

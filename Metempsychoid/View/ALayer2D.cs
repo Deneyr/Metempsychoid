@@ -15,7 +15,7 @@ namespace Metempsychoid.View
     public abstract class ALayer2D : AObject2D
     {
         protected SFML.Graphics.View view;
-        private Vector2f defaultViewSize;
+        protected Vector2f defaultViewSize;
 
         protected WeakReference<World2D> world2D;
         protected ALayer parentLayer;
@@ -23,8 +23,8 @@ namespace Metempsychoid.View
         protected Dictionary<AEntity, AEntity2D> objectToObject2Ds;
         protected Dictionary<AEntity2D, AEntity> object2DToObjects;
 
-        private Vector2i mousePosition;
-
+        private bool mustUpdateMousePosition;
+        private Vector2i mousePositionRelativeToWindow;
         protected float zoom;
 
         public List<ALayer2D> ChildrenLayer2D
@@ -56,6 +56,8 @@ namespace Metempsychoid.View
                     {
                         child.Position = this.Position;
                     }
+
+                    this.mustUpdateMousePosition = true;
                 }
             }
         }
@@ -77,6 +79,8 @@ namespace Metempsychoid.View
                     {
                         child.Rotation = this.Rotation;
                     }
+
+                    this.mustUpdateMousePosition = true;
                 }
             }
         }
@@ -101,6 +105,8 @@ namespace Metempsychoid.View
                         child.Position = this.Position;
                         child.Zoom = this.Zoom;
                     }
+
+                    this.mustUpdateMousePosition = true;
                 }
             }
         }
@@ -153,10 +159,8 @@ namespace Metempsychoid.View
 
         public Vector2i MousePosition
         {
-            get
-            {
-                return this.mousePosition;
-            }
+            get;
+            private set;
         }
 
         public ALayer2D(World2D world2D, ALayer layer)
@@ -199,6 +203,8 @@ namespace Metempsychoid.View
 
         public virtual void InitializeLayer(IObject2DFactory factory)
         {
+            this.mustUpdateMousePosition = false;
+
             foreach (AEntity entity in this.parentLayer.Entities)
             {
                 this.AddEntity(entity);
@@ -296,6 +302,14 @@ namespace Metempsychoid.View
         {
             this.DefaultViewSize = viewSize;
             this.view.Size = viewSize;
+
+            this.view.Zoom(this.zoom);
+
+            if (this.mustUpdateMousePosition)
+            {
+                this.UpdateMousePosition();
+                this.mustUpdateMousePosition = false;
+            }
         }
 
         public virtual bool OnControlActivated(ControlEventType eventType, string details)
@@ -332,24 +346,21 @@ namespace Metempsychoid.View
 
         public virtual void OnMouseMoved(Vector2i newPosition, Vector2i deltaPosition)
         {
-            this.UpdateMousePosition(newPosition);
+            this.mousePositionRelativeToWindow = newPosition;
+
+            this.UpdateMousePosition();
         }
 
-        protected void UpdateMousePosition(Vector2i positionRelativeToWindow)
+        protected void UpdateMousePosition()
         {
             Vector2i windowPosition = new Vector2i((int)this.Position.X, (int)this.Position.Y);
-            Vector2i mousePosition = new Vector2i((int)(positionRelativeToWindow.X * this.Zoom), (int)(positionRelativeToWindow.Y * this.Zoom));
+            Vector2i mousePosition = new Vector2i((int)(this.mousePositionRelativeToWindow.X * this.Zoom), (int)(this.mousePositionRelativeToWindow.Y * this.Zoom));
             mousePosition += windowPosition - new Vector2i((int)this.view.Size.X, (int)this.view.Size.Y) / 2;
 
-            this.mousePosition = mousePosition;
+            this.MousePosition = mousePosition;
         }
 
         public virtual void UpdateGraphics(Time deltaTime)
-        {
-            // To override
-        }
-
-        public virtual void UpdateAfterViewUpdated(Time deltaTime)
         {
             // To override
         }
@@ -370,11 +381,7 @@ namespace Metempsychoid.View
 
             this.UpdateViewSize(defaultView.Size, deltaTime);
 
-            this.view.Zoom(this.zoom);
-
             window.SetView(this.view);
-
-            this.UpdateAfterViewUpdated(deltaTime);
 
             FloatRect bounds = this.Bounds;
             foreach (AEntity2D entity2D in listObjects)

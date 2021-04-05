@@ -45,7 +45,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             layer.CardPicked += this.OnCardPicked;
             layer.CardUnpicked += this.OnCardUnPicked;
         }
-
+   
         public override void InitializeLayer(IObject2DFactory factory)
         {
             this.cardsOnBoard.Clear();
@@ -158,8 +158,10 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         }
 
-        public override void UpdateAfterViewUpdated(Time deltaTime)
+        protected override void UpdateViewSize(Vector2f viewSize, Time deltaTime)
         {
+            base.UpdateViewSize(viewSize, deltaTime);
+
             this.UpdateCardPickedPosition();
         }
 
@@ -312,8 +314,6 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
             this.LevelTurnPhase = TurnPhase.VOID;
         }
-
-
 
         public override void Dispose()
         {
