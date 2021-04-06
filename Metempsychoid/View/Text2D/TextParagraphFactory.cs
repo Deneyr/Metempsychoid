@@ -46,7 +46,7 @@ namespace Metempsychoid.View.Text2D
             this.idToTokens.Clear();
 
             // Replace by searching in the localization file.
-            string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+            string text = "Agent immuable du changement \n Cercle d'or et d'arain \n Voici, pressement, le destin \n dans la farandole du temps";
 
             List<TextToken2D> token2DsList = this.CreateTextTokens(text);
 

@@ -129,6 +129,7 @@
     <Compile Include="View\Layer2D\BoardGameLayer2D\StarLinkEntity2DFactory.cs" />
     <Compile Include="View\Layer2D\BoardPlayerLayer2D\BoardPlayerLayer2D.cs" />
     <Compile Include="View\Layer2D\BoardPlayerLayer2D\BoardPlayerLayer2DFactory.cs" />
+    <Compile Include="View\Layer2D\BoardPlayerLayer2D\CardToolTip.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\EntityLayer2D.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\EntityLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\T_TeleEntity2D.cs" />

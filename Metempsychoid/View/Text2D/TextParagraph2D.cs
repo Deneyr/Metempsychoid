@@ -11,7 +11,8 @@ namespace Metempsychoid.View.Text2D
     public class TextParagraph2D: AObject2D
     {
         private Vector2f realPosition;
-        private Vector2f positionOffset;
+        private Vector2f positionOffsetTopLeft;
+        private Vector2f positionOffsetBotRight;
 
         private float realRotation;
         private float rotationOffset;
@@ -24,9 +25,13 @@ namespace Metempsychoid.View.Text2D
 
         private uint characterSize;
 
+        private Alignment alignment;
+
         private IntRect realCanevas;
 
         private List<TextToken2D> textToken2Ds;
+
+        delegate int TextLineHandler(ref Vector2f cursor, List<TextToken2D> tokensInLine, int offsetLine);
 
         public override Vector2f Position
         {
@@ -36,12 +41,12 @@ namespace Metempsychoid.View.Text2D
             }
             set
             {
-                Vector2f newPosition = value + this.positionOffset;
+                Vector2f newPosition = value + this.positionOffsetTopLeft;
                 if(this.realPosition != newPosition)
                 {
                     this.realPosition = newPosition;
 
-                    this.UpdateTextTokensToFitCanevas();
+                    this.AlignTextTokens();
                 }
             }
         }
@@ -119,7 +124,25 @@ namespace Metempsychoid.View.Text2D
                         textToken2D.CharacterSize = this.characterSize;
                     }
 
-                    this.UpdateTextTokensToFitCanevas();
+                    this.AlignTextTokens();
+                }
+            }
+        }
+
+        public Alignment ParagraphAlignment
+        {
+            get
+            {
+                return this.alignment;
+            }
+
+            set
+            {
+                if(this.alignment != value)
+                {
+                    this.alignment = value;
+
+                    this.AlignTextTokens();
                 }
             }
         }
@@ -132,11 +155,11 @@ namespace Metempsychoid.View.Text2D
             }
             set
             {
-                int top = (int) Math.Min(value.Top + value.Height, value.Top + this.positionOffset.Y);
-                int left = (int) Math.Min(value.Left + value.Width, value.Left + this.positionOffset.X);
+                int top = (int) Math.Min(value.Top + value.Height, value.Top + this.positionOffsetTopLeft.Y);
+                int left = (int) Math.Min(value.Left + value.Width, value.Left + this.positionOffsetTopLeft.X);
 
-                int height = value.Top + value.Height - top;
-                int width = value.Left + value.Width - left;
+                int height = Math.Max(0, value.Top + value.Height - top);
+                int width = Math.Max(0, value.Left + value.Width - (int)this.positionOffsetBotRight.X - left);
 
                 IntRect newCanevas = new IntRect(left, top, width, height);
 
@@ -144,7 +167,7 @@ namespace Metempsychoid.View.Text2D
                 {
                     this.realCanevas = newCanevas;
 
-                    this.UpdateTextTokensToFitCanevas();
+                    this.AlignTextTokens();
                 }
             }
         }
@@ -160,11 +183,6 @@ namespace Metempsychoid.View.Text2D
                 if(this.isActive != value)
                 {
                     this.isActive = value;
-
-                    foreach (TextToken2D textToken2D in this.textToken2Ds)
-                    {
-                        textToken2D.IsActive = this.isActive;
-                    }
                 }
             }
         }
@@ -175,14 +193,15 @@ namespace Metempsychoid.View.Text2D
             {
                 IntRect canevas = this.Canevas;
                 Vector2f position = this.Position;
-                return new FloatRect(position.X + canevas.Left, position.Y + canevas.Top, canevas.Width, canevas.Height);
+                return new FloatRect(position.X, position.Y, canevas.Width, canevas.Height);
             }
         }
 
-        public TextParagraph2D(TextCanevas2D textCanevas2D, Vector2f positionOffset, float rotationOffset, uint characterSize)
+        public TextParagraph2D(TextCanevas2D textCanevas2D, Vector2f positionOffsetTopLeft, Vector2f positionOffsetBotRight, Alignment alignment, uint characterSize)
         {
-            this.positionOffset = positionOffset;
-            this.rotationOffset = rotationOffset;
+            this.positionOffsetTopLeft = positionOffsetTopLeft;
+            this.positionOffsetBotRight = positionOffsetBotRight;
+            this.rotationOffset = 0;
 
             this.isActive = true;
 
@@ -193,7 +212,11 @@ namespace Metempsychoid.View.Text2D
 
             this.Canevas = textCanevas2D.Canevas;
 
-            this.CharacterSize = characterSize;
+            this.alignment = alignment;
+
+            this.spriteColor = Color.White;
+
+            this.characterSize = characterSize;
             this.Zoom = textCanevas2D.Zoom;
         }
 
@@ -207,7 +230,7 @@ namespace Metempsychoid.View.Text2D
                 textToken.SpriteColor = this.SpriteColor;
             }
 
-            this.UpdateTextTokensToFitCanevas();
+            this.AlignTextTokens();
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
@@ -221,27 +244,186 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
-        private void UpdateTextTokensToFitCanevas()
+        private int AlignLeftLineTextTokens(ref Vector2f cursor, List<TextToken2D> tokensInLine, int offsetLine)
+        {
+            int maxHeight = 0;
+            IntRect tokenCanevas = new IntRect();
+            foreach (TextToken2D textToken2D in tokensInLine)
+            {
+                tokenCanevas = textToken2D.Canevas;
+
+                textToken2D.Position = cursor;
+                cursor.X += tokenCanevas.Width;
+
+                if (tokenCanevas.Height > maxHeight)
+                {
+                    maxHeight = tokenCanevas.Height;
+                }
+            }
+
+            return maxHeight;
+        }
+
+        private int AlignRightLineTextTokens(ref Vector2f cursor, List<TextToken2D> tokensInLine, int offsetLine)
+        {
+            cursor.X += offsetLine;
+            int maxHeight = 0;
+            IntRect tokenCanevas = new IntRect();
+            foreach (TextToken2D textToken2D in tokensInLine)
+            {
+                tokenCanevas = textToken2D.Canevas;
+
+                textToken2D.Position = cursor;
+                cursor.X += tokenCanevas.Width;
+
+                if (tokenCanevas.Height > maxHeight)
+                {
+                    maxHeight = tokenCanevas.Height;
+                }
+            }
+
+            return maxHeight;
+        }
+
+        private int AlignCenterLineTextTokens(ref Vector2f cursor, List<TextToken2D> tokensInLine, int offsetLine)
+        {
+            cursor.X += offsetLine / 2;
+            int maxHeight = 0;
+            IntRect tokenCanevas = new IntRect();
+            foreach (TextToken2D textToken2D in tokensInLine)
+            {
+                tokenCanevas = textToken2D.Canevas;
+
+                textToken2D.Position = cursor;
+                cursor.X += tokenCanevas.Width;
+
+                if (tokenCanevas.Height > maxHeight)
+                {
+                    maxHeight = tokenCanevas.Height;
+                }
+            }
+
+            return maxHeight;
+        }
+
+        private int AlignJustifyLineTextTokens(ref Vector2f cursor, List<TextToken2D> tokensInLine, int offsetLine)
+        {
+            if (tokensInLine.Count > 1)
+            {
+                offsetLine /= (tokensInLine.Count - 1);
+            }
+
+            int maxHeight = 0;
+            IntRect tokenCanevas = new IntRect();
+            int i = 0;
+            foreach (TextToken2D textToken2D in tokensInLine)
+            {
+                tokenCanevas = textToken2D.Canevas;
+
+                if(i != 0)
+                {
+                    cursor.X += offsetLine;
+                }
+
+                textToken2D.Position = cursor;
+                cursor.X += tokenCanevas.Width;
+
+                if (tokenCanevas.Height > maxHeight)
+                {
+                    maxHeight = tokenCanevas.Height;
+                }
+                i++;
+            }
+
+            return maxHeight;
+        }
+
+        private void AlignTextTokens()
         {
             FloatRect bounds = this.Bounds;
 
             Vector2f startCursor = new Vector2f(bounds.Left, bounds.Top);
             Vector2f maxCursor = new Vector2f(bounds.Left + bounds.Width, bounds.Top + bounds.Height);
-
             Vector2f currentCursor = startCursor;
 
-            foreach (TextToken2D textToken2D in this.textToken2Ds)
+            int maxHeight = 0;
+
+            List<TextToken2D> tokensInLine = new List<TextToken2D>();
+
+            IEnumerator<TextToken2D> tokenEnumerator = this.textToken2Ds.GetEnumerator();
+            int lineWidth = 0;
+            int maxWidth = (int) (maxCursor.X - startCursor.X);
+
+            bool notReachEnd = true;
+
+            IntRect tokenCanevas = new IntRect();
+
+            TextLineHandler LineHandler = this.AlignLeftLineTextTokens;
+            switch (this.ParagraphAlignment)
             {
-                IntRect tokenCanevas = textToken2D.Canevas;
+                case Alignment.LEFT:
+                    LineHandler = this.AlignLeftLineTextTokens;
+                    break;
+                case Alignment.RIGHT:
+                    LineHandler = this.AlignRightLineTextTokens;
+                    break;
+                case Alignment.CENTER:
+                    LineHandler = this.AlignCenterLineTextTokens;
+                    break;
+                case Alignment.JUSTIFY:
+                    LineHandler = this.AlignJustifyLineTextTokens;
+                    break;
+            }
 
-                if(currentCursor.X + tokenCanevas.Width > maxCursor.X)
+            while (notReachEnd)
+            {
+                notReachEnd = tokenEnumerator.MoveNext();
+
+                if (notReachEnd)
                 {
-                    currentCursor.X = startCursor.X;
-                    currentCursor.Y += this.CharacterSize;
+                    tokenCanevas = tokenEnumerator.Current.Canevas;
+                }
 
-                    textToken2D.Position = currentCursor;
+                if (notReachEnd == false
+                    || lineWidth + tokenCanevas.Width > maxWidth 
+                    || tokenEnumerator.Current.FullText == "\n")
+                {
+                    int diffWidth = maxWidth - lineWidth;
+                    lineWidth = tokenCanevas.Width;
+
+                    if (tokensInLine.Count > 0)
+                    {
+                        maxHeight = LineHandler(ref currentCursor, tokensInLine, diffWidth);
+                    }
+                    else
+                    {
+                        maxHeight = (int) this.characterSize;
+                    }
+
+                    currentCursor.X = startCursor.X;
+                    currentCursor.Y += maxHeight;
+
+                    tokensInLine.Clear();
+                }
+                else
+                {
+                    lineWidth += tokenCanevas.Width;
+                }
+
+                if (notReachEnd
+                    && tokenEnumerator.Current.FullText != "\n")
+                {
+                    tokensInLine.Add(tokenEnumerator.Current);
                 }
             }
+        }
+
+        public enum Alignment
+        {
+            LEFT,
+            RIGHT,
+            CENTER,
+            JUSTIFY
         }
     }
 }

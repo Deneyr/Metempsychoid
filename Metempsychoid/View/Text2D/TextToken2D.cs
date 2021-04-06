@@ -139,8 +139,10 @@ namespace Metempsychoid.View.Text2D
 
         public virtual bool IsActive
         {
-            get;
-            set;
+            get
+            {
+                return this.FullText != "\n";
+            }
         }
 
         public override FloatRect Bounds
@@ -160,13 +162,13 @@ namespace Metempsychoid.View.Text2D
             this.text2D = new Text();
 
             this.TextCursor = this.FullText.Count();
-            //this.text.Font = AObject2DFactory.GetFontByName("Protector");
+            this.text2D.Font = AObject2DFactory.GetFontByName("Sans");
 
             //this.Position = new Vector2f(0, 0);
-            //this.text.FillColor = Color.White;
+            this.text2D.FillColor = Color.White;
             //this.CharacterSize = 80;
-            //this.text.OutlineThickness = 2;
-            //this.text.OutlineColor = Color.Black;
+            this.text2D.OutlineThickness = 2;
+            this.text2D.OutlineColor = Color.Black;
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

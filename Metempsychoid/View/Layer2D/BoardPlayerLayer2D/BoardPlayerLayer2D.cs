@@ -6,6 +6,7 @@ using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Controls;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private CardEntity2D cardDrew;
         private CardEntity2D cardFocused;
+
+        private CardToolTip cardToolTip;
 
         private int maxPriority;
 
@@ -86,9 +89,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         public override void InitializeLayer(IObject2DFactory factory)
         {
             this.cardsDeck = new List<CardEntity2D>();
-
             this.cardsCemetery = new List<CardEntity2D>();
-
             this.cardsHand = new List<CardEntity2D>();
 
             this.maxPriority = 0;
@@ -98,6 +99,10 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.LevelTurnPhase = TurnPhase.VOID;
             this.cardDrew = null;
             this.cardFocused = null;
+
+            this.cardToolTip = new CardToolTip(this);
+            this.cardToolTip.CreateTextParagraph2D(new Vector2f(10, 20), new Vector2f(10, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
+            this.cardToolTip.UpdateTextOfParagraph(0, "test");
 
             base.InitializeLayer(factory);
 
@@ -305,6 +310,18 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             {
                 world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase)));
             }
+        }
+
+        public override void DrawIn(RenderWindow window, Time deltaTime)
+        {
+            base.DrawIn(window, deltaTime);
+
+            SFML.Graphics.View defaultView = window.DefaultView;
+            window.SetView(this.view);
+
+            this.cardToolTip.DrawIn(window, deltaTime);
+
+            window.SetView(defaultView);
         }
 
         protected override AEntity2D AddEntity(AEntity obj)
