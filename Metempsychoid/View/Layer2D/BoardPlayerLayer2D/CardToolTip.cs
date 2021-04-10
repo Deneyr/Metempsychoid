@@ -1,4 +1,8 @@
-﻿using Metempsychoid.View.Text2D;
+﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Card;
+using Metempsychoid.View.Animation;
+using Metempsychoid.View.Card2D;
+using Metempsychoid.View.Text2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -12,6 +16,12 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
     public class CardToolTip : TextCanevas2D
     {
         private RectangleShape bannerShape;
+
+        public CardEntity2D CardFocused
+        {
+            get;
+            private set;
+        }
 
         public override Vector2f Position
         {
@@ -35,7 +45,10 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
             set
             {
+                base.SpriteColor = value;
+
                 this.bannerShape.FillColor = value;
+                this.bannerShape.FillColor = new Color(this.bannerShape.FillColor.R, this.bannerShape.FillColor.G, this.bannerShape.FillColor.B, (byte) (this.bannerShape.FillColor.A / 2));
             }
         }
 
@@ -43,14 +56,14 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             get
             {
-                return new IntRect(0, 0, (int) this.bannerShape.Size.X, (int) this.bannerShape.Size.Y);
+                return new IntRect(0, 0, (int)this.bannerShape.Size.X, (int)this.bannerShape.Size.Y);
             }
 
             set
             {
                 Vector2f newSize = new Vector2f(value.Width, value.Height);
 
-                if(this.bannerShape.Size != newSize)
+                if (this.bannerShape.Size != newSize)
                 {
                     this.bannerShape.Size = newSize;
 
@@ -69,21 +82,34 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.bannerShape = new RectangleShape(new Vector2f(200, 400));
             //this.bannerShape.Origin = new Vector2f(this.bannerShape.Size.X / 2, this.bannerShape.Size.Y / 2);
 
-            this.bannerShape.FillColor = new Color(0, 0, 0, 128);
+            this.bannerShape.FillColor = new Color(0, 0, 0, 255);
 
             this.Position = new Vector2f(0, 0);
 
-            //SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(6), AnimationType.ONETIME);
+            this.CardFocused = null;
 
-            //IAnimation anim = new PositionAnimation(new Vector2f(-this.bannerShape.Size.X, 0), new Vector2f(0, 0), Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
-            //sequence.AddAnimation(0, anim);
+            IAnimation showAnimation = new ColorAnimation(new Color(0, 0, 0, 0), new Color(0, 0, 0, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            this.animationsList.Add(showAnimation);
+        }
 
-            //anim = new ColorAnimation(new Color(0, 0, 0, 128), new Color(0, 0, 0, 0), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
-            //sequence.AddAnimation(5, anim);
+        public void DisplayToolTip(Card card, CardEntity2D cardFocused)
+        {
+            this.CardFocused = cardFocused;
 
-            //this.animationsList.Add(sequence);
+            this.PlayAnimation(0);
 
-            //this.IsActive = false;
+            this.IsActive = true;
+            this.UpdateTextOfParagraph(0, card.NameIdLoc);
+
+            this.UpdateTextOfParagraph(1, card.PoemIdLoc);
+            this.LaunchTextOfParagraphScrolling(1, 20);
+
+            this.UpdatePosition();
+        }
+
+        public void HideToolTip()
+        {
+            this.IsActive = false;
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
@@ -94,6 +120,20 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
 
             base.DrawIn(window, deltaTime);
+        }
+
+        public void UpdatePosition()
+        {
+            if(this.CardFocused != null)
+            {
+                Vector2f cardFocusedPosition = this.CardFocused.Position;
+
+                cardFocusedPosition.X -= this.Canevas.Width / 2;
+
+                cardFocusedPosition.Y -= this.CardFocused.Canevas.Height /2 + this.Canevas.Height;
+
+                this.Position = cardFocusedPosition;
+            }
         }
     }
 }

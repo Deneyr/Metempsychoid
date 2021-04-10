@@ -14,6 +14,8 @@ namespace Metempsychoid.View.Text2D
 
         private int textCursor;
 
+        private IntRect canevas;
+
         public string FullText
         {
             get;
@@ -95,7 +97,12 @@ namespace Metempsychoid.View.Text2D
             }
             set
             {
-                this.text2D.CharacterSize = value;
+                if (this.text2D.CharacterSize != value)
+                {
+                    this.text2D.CharacterSize = value;
+
+                    this.UpdateCanevas();
+                }
             }
         }
 
@@ -115,12 +122,11 @@ namespace Metempsychoid.View.Text2D
         {
             get
             {
-                FloatRect canevas = this.Bounds;
-                return new IntRect((int) canevas.Left, (int) canevas.Left, (int) canevas.Width, (int) canevas.Height);
+                return this.canevas;
             }
             set
             {
-                
+
             }
         }
 
@@ -169,6 +175,17 @@ namespace Metempsychoid.View.Text2D
             //this.CharacterSize = 80;
             this.text2D.OutlineThickness = 2;
             this.text2D.OutlineColor = Color.Black;
+        }
+
+        private void UpdateCanevas()
+        {
+            int currentCursor = this.TextCursor;
+
+            this.TextCursor = this.FullText.Count();
+            FloatRect canevas = this.Bounds;
+            this.canevas = new IntRect((int)canevas.Left, (int)canevas.Left, (int)canevas.Width, (int)canevas.Height);
+
+            this.TextCursor = currentCursor;
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

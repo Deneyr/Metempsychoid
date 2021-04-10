@@ -82,6 +82,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             layer.CardDrew += OnCardDrew;
             layer.NbCardsToDrawChanged += OnNbCardToDrawsChanged;
 
+            layer.CardFocused += OnCardFocused;
+
             layer.CardPicked += OnCardPicked;
             layer.CardUnpicked += OnCardUnpicked;
         }
@@ -101,8 +103,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardFocused = null;
 
             this.cardToolTip = new CardToolTip(this);
-            this.cardToolTip.CreateTextParagraph2D(new Vector2f(10, 20), new Vector2f(10, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
-            this.cardToolTip.UpdateTextOfParagraph(0, "test");
+            this.cardToolTip.CreateTextParagraph2D(new Vector2f(0, 10), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 20);
+            this.cardToolTip.CreateTextParagraph2D(new Vector2f(0, 60), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
+            this.cardToolTip.IsActive = false;
 
             base.InitializeLayer(factory);
 
@@ -122,6 +125,20 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         private void OnNbCardToDrawsChanged(int obj)
         {
             this.nbCardsToDraw = obj;
+        }
+
+        private void OnCardFocused(CardEntity obj)
+        {
+            if (obj != null)
+            {
+                CardEntity2D cardFocused = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+
+                this.cardToolTip.DisplayToolTip(obj.Card, cardFocused);
+            }
+            else
+            {
+                this.cardToolTip.HideToolTip();
+            }
         }
 
         private void OnCardDrew(CardEntity obj)
@@ -171,6 +188,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         public override void UpdateGraphics(Time deltaTime)
         {
+            this.cardToolTip.UpdateGraphics(deltaTime);
+
             this.UpdateCardsToDraw();
 
             switch (this.LevelTurnPhase)
@@ -346,6 +365,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 case "Position":
                     AEntity2D entity2D = this.objectToObject2Ds[obj];
                     entity2D.Position = new Vector2f(obj.Position.X, obj.Position.Y + this.view.Size.Y / 2);
+
+                    if(this.cardToolTip.CardFocused != null && this.cardToolTip.CardFocused == entity2D)
+                    {
+                        this.cardToolTip.UpdatePosition();
+                    }
                     break;
                 case "IsActive":
                     this.objectToObject2Ds[obj].IsActive = obj.IsActive;
@@ -387,6 +411,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             (this.parentLayer as BoardPlayerLayer).CardDrew -= OnCardDrew;
             (this.parentLayer as BoardPlayerLayer).NbCardsToDrawChanged -= OnNbCardToDrawsChanged;
 
+            (this.parentLayer as BoardPlayerLayer).CardFocused -= OnCardFocused;
+
+            (this.parentLayer as BoardPlayerLayer).CardPicked -= OnCardPicked;
             (this.parentLayer as BoardPlayerLayer).CardUnpicked -= OnCardUnpicked;
 
             base.Dispose();

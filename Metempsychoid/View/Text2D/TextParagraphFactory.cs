@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Metempsychoid.View.Text2D
 {
     public class TextParagraphFactory
     {
         private Dictionary<string, List<TextToken2D>> idToTokens;
+
+        private DirectoryInfo localizationFolder;
 
         private string culture;
 
@@ -33,6 +37,8 @@ namespace Metempsychoid.View.Text2D
         {
             this.idToTokens = new Dictionary<string, List<TextToken2D>>();
 
+            this.localizationFolder = new DirectoryInfo(@"Assets\Localization");
+
             this.culture = null;
         }
 
@@ -45,12 +51,34 @@ namespace Metempsychoid.View.Text2D
         {
             this.idToTokens.Clear();
 
-            // Replace by searching in the localization file.
-            string text = "Agent immuable du changement \n Cercle d'or et d'arain \n Voici, pressement, le destin \n dans la farandole du temps";
+            FileInfo[] locFiles = this.localizationFolder.GetFiles("*.loc");
 
-            List<TextToken2D> token2DsList = this.CreateTextTokens(text);
+            foreach(FileInfo locFile in locFiles)
+            {
+                using (Stream locStream = new FileStream(locFile.FullName, FileMode.Open))
+                {
+                    XDocument locDocument = XDocument.Load(locStream);
 
-            this.idToTokens.Add("test", token2DsList);
+                    XElement rootElement = locDocument.Element("localization");
+
+                    IEnumerable<XElement> paragraphEntries = rootElement.Elements("paragraphEntry");
+
+                    foreach(XElement entry in paragraphEntries)
+                    {
+                        string key = entry.Element("key").Value;
+
+                        XElement paragraph = entry.Elements("paragraph").FirstOrDefault(pElem => pElem.Attribute("culture").Value == this.Culture);
+                        if(paragraph != null)
+                        {
+                            string content = paragraph.Value;
+
+                            List<TextToken2D> token2DsList = this.CreateTextTokens(content);
+
+                            this.idToTokens.Add(key, token2DsList);
+                        }
+                    }
+                }
+            }
         }
 
         private List<TextToken2D> CreateTextTokens(string text)

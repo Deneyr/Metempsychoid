@@ -24,16 +24,32 @@ namespace Metempsychoid.Model.Card
             private set;
         }
 
-        public CardTemplate(string name, int defaultValue)
+        public virtual string NameIdLoc
+        {
+            get;
+            private set;
+        }
+
+        public virtual string PoemIdLoc
+        {
+            get;
+            private set;
+        }
+
+        public CardTemplate(string name, string nameIdLoc, string poemIdLoc, int defaultValue)
         {
             this.defaultValue = defaultValue;
 
             this.Name = name;
+
+            this.NameIdLoc = nameIdLoc;
+
+            this.PoemIdLoc = poemIdLoc;
         }
 
         public CardTemplate()
         {
-            this.Name = string.Empty;
+            this.NameIdLoc = string.Empty;
         }
 
         public virtual void CardEnteredBoard(Layer.BoardGameLayer.BoardGameLayer layer, Player.Player player)

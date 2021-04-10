@@ -102,6 +102,7 @@
     <Compile Include="Model\Animation\PositionAnimation.cs" />
     <Compile Include="Model\Animation\RotationAnimation.cs" />
     <Compile Include="Animation\SequenceAnimation.cs" />
+    <Compile Include="View\Animation\TextScrollingAnimation.cs" />
     <Compile Include="View\Animation\ZoomAnimation.cs" />
     <Compile Include="View\AObject2D.cs" />
     <Compile Include="View\AObject2DFactory.cs" />

@@ -164,7 +164,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             {
                 if (boardGameLayer.CardEntityPicked == null)
                 {
-                    boardPlayerLayer.CardFocused = cardFocused;
+                    boardPlayerLayer.CardEntityFocused = cardFocused;
                 }
             }
 

@@ -32,6 +32,22 @@ namespace Metempsychoid.Model.Card
             }
         }
 
+        public override string NameIdLoc
+        {
+            get
+            {
+                return this.cardTemplate.NameIdLoc;
+            }
+        }
+
+        public override string PoemIdLoc
+        {
+            get
+            {
+                return this.cardTemplate.PoemIdLoc;
+            }
+        }
+
         public int ValueModificator
         {
             get;

@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using Metempsychoid.View.Animation;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,8 @@ namespace Metempsychoid.View.Text2D
         private IntRect realCanevas;
 
         private List<TextToken2D> textToken2Ds;
+        private int tokenCursor;
+        private float scrollingSpeed;
 
         delegate int TextLineHandler(ref Vector2f cursor, List<TextToken2D> tokensInLine, int offsetLine);
 
@@ -206,6 +209,7 @@ namespace Metempsychoid.View.Text2D
             this.isActive = true;
 
             this.textToken2Ds = new List<TextToken2D>();
+            tokenCursor = -1;
 
             this.Position = textCanevas2D.Position;
             this.Rotation = textCanevas2D.Rotation;
@@ -231,6 +235,44 @@ namespace Metempsychoid.View.Text2D
             }
 
             this.AlignTextTokens();
+        }
+
+        public void LaunchAnimationScrolling(float speed)
+        {
+            this.scrollingSpeed = speed;
+
+            foreach(TextToken2D textToken2D in this.textToken2Ds)
+            {
+                AObject2D.animationManager.StopAnimation(textToken2D);
+                textToken2D.TextCursor = 0;
+            }
+            tokenCursor = 0;
+
+            this.LaunchAnimationScrollingOnToken();
+        }
+
+        private void LaunchAnimationScrollingOnToken()
+        {
+            if (this.tokenCursor < this.textToken2Ds.Count)
+            {
+                TextToken2D textToken2D = this.textToken2Ds[this.tokenCursor];
+
+                TextScrollingAnimation textScrollingAnimation = new TextScrollingAnimation(0, textToken2D.FullText.Length, Time.FromSeconds(textToken2D.FullText.Length * 1 / this.scrollingSpeed), Metempsychoid.Animation.AnimationType.ONETIME, Metempsychoid.Animation.InterpolationMethod.LINEAR);
+                textToken2D.PlayAnimation(textScrollingAnimation);
+            }
+        }
+
+        public void UpdateGraphics(Time deltaTime)
+        {
+            if(this.tokenCursor >= 0 && this.tokenCursor < this.textToken2Ds.Count)
+            {
+                if(this.textToken2Ds[this.tokenCursor].IsAnimationRunning() == false)
+                {
+                    this.tokenCursor++;
+
+                    this.LaunchAnimationScrollingOnToken();
+                }
+            }
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

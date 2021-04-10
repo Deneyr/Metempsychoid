@@ -130,6 +130,11 @@ namespace Metempsychoid.View.Text2D
             textParagraphFactory.CreateTextTokensIn(this.textParagraph2Ds[index], id);
         }
 
+        public void LaunchTextOfParagraphScrolling(int index, float speed)
+        {
+            this.textParagraph2Ds[index].LaunchAnimationScrolling(speed);
+        }
+
         static TextCanevas2D()
         {
             textParagraphFactory = new TextParagraphFactory();
@@ -141,6 +146,14 @@ namespace Metempsychoid.View.Text2D
             base(parentLayer)
         {
             this.textParagraph2Ds = new List<TextParagraph2D>();
+        }
+
+        public override void UpdateGraphics(Time deltaTime)
+        {
+            foreach (TextParagraph2D textParagraph2D in this.textParagraph2Ds)
+            {
+                textParagraph2D.UpdateGraphics(deltaTime);
+            }
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

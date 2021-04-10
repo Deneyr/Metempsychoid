@@ -26,7 +26,7 @@ namespace Metempsychoid.Model.Card
         {
             this.cardLibrary = new Dictionary<string, CardTemplate>();
 
-            CardTemplate cardTemplate = new CardTemplate("wheel", 2);
+            CardTemplate cardTemplate = new CardTemplate("wheel", "wheel_of_fortune_title", "wheel_of_fortune_poem", 2);
             this.AddCardTemplateToLibrary(cardTemplate);
         }
 

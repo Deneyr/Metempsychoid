@@ -32,6 +32,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         public event Action<CardEntity> CardDrew;
 
+        public event Action<CardEntity> CardFocused;
+
         public event Action<int> NbCardsToDrawChanged;
 
         public List<CardEntity> CardsDeck
@@ -69,7 +71,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             }
         }
 
-        public CardEntity CardFocused
+        public CardEntity CardEntityFocused
         {
             get
             {
@@ -83,6 +85,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     this.cardFocused = value;
 
                     this.UpdateCardsHandPosition();
+
+                    this.NotifyCardFocused(this.cardFocused);
                 }
             }
         }
@@ -155,7 +159,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
                 this.RemoveEntityFromLayer(cardToPick);
 
-                this.CardFocused = null;
+                this.CardEntityFocused = null;
 
                 return true;
             }
@@ -253,6 +257,11 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         protected void NotifyCardPicked(CardEntity cardPicked)
         {
             this.CardPicked?.Invoke(cardPicked);
+        }
+
+        protected void NotifyCardFocused(CardEntity cardFocused)
+        {
+            this.CardFocused?.Invoke(cardFocused);
         }
 
         protected void NotifyCardUnpicked(CardEntity cardUnpicked)
