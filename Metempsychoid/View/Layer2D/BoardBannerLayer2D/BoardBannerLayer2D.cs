@@ -55,7 +55,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.bannerEntity2D = new BannerEntity2D(this);
 
-            this.headerEntity2D = new HeaderEntity2D(this);
+            BoardBannerLayer boardBannerLayer = this.parentLayer as BoardBannerLayer;
+            this.headerEntity2D = new HeaderEntity2D(this, boardBannerLayer.Player.PlayerName, boardBannerLayer.Opponent.PlayerName);
         }
 
         protected override void OnLevelStateChanged(string obj)
@@ -93,9 +94,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.bannerEntity2D.Position = new Vector2f(-this.bannerEntity2D.ObjectSprite.TextureRect.Width, 0);
             this.bannerEntity2D.PlayAnimation(0);
 
-            this.headerEntity2D.Text = "Player turn Start !";
-            this.headerEntity2D.IsActive = true;
-            this.headerEntity2D.PlayAnimation(0);
+            this.headerEntity2D.DisplayHeader("start_player_turn");
         }
 
         private void UpdateStartTurnPhase(Time deltaTime)

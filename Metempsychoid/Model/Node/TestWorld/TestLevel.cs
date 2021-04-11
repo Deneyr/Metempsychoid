@@ -15,10 +15,18 @@ namespace Metempsychoid.Model.Node.TestWorld
     {
         private static int NB_CARDS_HAND = 4;
 
+        protected Player.Player opponent;
+
         public TestLevel(World world) :
             base(world)
         {
             this.CurrentTurnPhase = TurnPhase.VOID;
+
+            this.opponent = new Player.Player(SFML.Graphics.Color.Green, "Seth");
+            for (int i = 0; i < 30; i++)
+            {
+                this.opponent.Deck.Cards.Add(world.CardLibrary.CreateCard("wheel", this.opponent));
+            }
         }
 
         public TurnPhase CurrentTurnPhase
@@ -30,6 +38,8 @@ namespace Metempsychoid.Model.Node.TestWorld
         public override void VisitStart(World world)
         {
             base.VisitStart(world);
+
+            world.Opponent = this.opponent;
 
             world.InitializeLevel(new List<string>()
             {
@@ -318,6 +328,8 @@ namespace Metempsychoid.Model.Node.TestWorld
         public override void VisitEnd(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.VOID);
+
+            world.Opponent = null;
 
             base.VisitEnd(world);
         }

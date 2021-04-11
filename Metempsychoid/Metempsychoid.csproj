@@ -120,6 +120,7 @@
     <Compile Include="View\Layer2D\BoardBannerLayer2D\BoardBannerLayer2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\BoardBannerLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\HeaderEntity2D.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\TitleBannerTextToken2D.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2D.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\CurvedStarLinkEntity2D.cs" />

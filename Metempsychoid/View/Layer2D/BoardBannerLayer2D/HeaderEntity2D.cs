@@ -11,90 +11,27 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 {
-    public class HeaderEntity2D : AEntity2D
+    public class HeaderEntity2D : TextCanevas2D
     {
-        private Text text;
 
-        public override Vector2f Position
+        public override bool IsActive
         {
             get
             {
-                return this.text.Position;
-            }
-            set
-            {
-                base.Position = value;
-
-                this.text.Position = value * MainWindow.MODEL_TO_VIEW;
+                return base.IsActive && this.SpriteColor.A > 0;
             }
         }
 
-        public override Color SpriteColor
+        public HeaderEntity2D(ALayer2D parentLayer, string playerName, string opponentName) : base(parentLayer)
         {
-            get
-            {
-                return this.text.FillColor;
-            }
-            set
-            {
-                this.text.FillColor = new Color(this.text.FillColor.R, this.text.FillColor.G, this.text.FillColor.B, value.A);
-                this.text.OutlineColor = new Color(this.text.OutlineColor.R, this.text.OutlineColor.G, this.text.OutlineColor.B, value.A);
-            }
-        }
+            this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 60);
+            this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 60);
+            this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 60);
 
-        public override float Zoom
-        {
-            get
-            {
-                return this.text.Scale.X;
-            }
-            set
-            {
-                this.text.Scale = new Vector2f(value, value);
-            }
-        }
+            this.Canevas = new IntRect(0, 0, 2000, 500);
+            this.Position = new Vector2f(-1000, -50);
 
-        public uint CharacterSize
-        {
-            get
-            {
-                return this.text.CharacterSize;
-            }
-            set
-            {
-                this.text.CharacterSize = value;
-
-                this.UpdateCanevas();
-            }
-        }
-
-        public string Text
-        {
-            get
-            {
-                return this.text.DisplayedString;
-            }
-            set
-            {
-                this.text.DisplayedString = value;
-
-                this.UpdateCanevas();
-            }
-        }
-
-        public HeaderEntity2D(ALayer2D parentLayer) : base(parentLayer)
-        {
-            // TO REMOVE
-            new TextCanevas2D(parentLayer);
-
-            this.text = new Text();
-            this.text.Font = AObject2DFactory.GetFontByName("Protector");
-
-            this.Position = new Vector2f(0, 0);
-            this.text.FillColor = Color.White;
-            this.CharacterSize = 80;
-            this.text.OutlineThickness = 2;
-            this.text.OutlineColor = Color.Black;
+            this.UpdateTextOfParagraph(0, "start_player_turn", playerName);
 
             SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(6), AnimationType.ONETIME);
 
@@ -112,17 +49,12 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.IsActive = false;
         }
 
-        private void UpdateCanevas()
+        public void DisplayHeader(string idLoc)
         {
-            this.text.Origin = new Vector2f(this.text.GetGlobalBounds().Width / 2, this.text.GetGlobalBounds().Height / 2);
-        }
+            this.ActiveOnlyParagraph(0);
 
-        public override void DrawIn(RenderWindow window, Time deltaTime)
-        {
-            if (this.IsActive)
-            {
-                window.Draw(this.text);
-            }
+            this.IsActive = true;
+            this.PlayAnimation(0);
         }
     }
 }

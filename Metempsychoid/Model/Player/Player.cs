@@ -22,9 +22,17 @@ namespace Metempsychoid.Model.Player
             private set;
         }
 
-        public Player(Color playerColor)
+        public string PlayerName
+        {
+            get;
+            private set;
+        }
+
+        public Player(Color playerColor, string playerName)
         {
             this.PlayerColor = playerColor;
+
+            this.PlayerName = playerName;
 
             this.Deck = new CardDeck();
         }

@@ -118,6 +118,23 @@ namespace Metempsychoid.View.Text2D
         }
 
 
+        public void ActiveOnlyParagraph(int index)
+        {
+            int i = 0;
+            foreach (TextParagraph2D paragraph in this.textParagraph2Ds)
+            {
+                if(i == index)
+                {
+                    paragraph.IsActive = true;
+                }
+                else
+                {
+                    paragraph.IsActive = false;
+                }
+                i++;
+            }
+        }
+
         public void CreateTextParagraph2D(Vector2f positionOffsetTopLeft, Vector2f positionOffsetBotRight, Alignment alignment, uint characterSize)
         {
             TextParagraph2D textParagraph2D = new TextParagraph2D(this, positionOffsetTopLeft, positionOffsetBotRight, alignment, characterSize);
@@ -125,9 +142,9 @@ namespace Metempsychoid.View.Text2D
             this.textParagraph2Ds.Add(textParagraph2D);
         }
 
-        public void UpdateTextOfParagraph(int index, string id)
+        public void UpdateTextOfParagraph(int index, string id, params string[] parameters)
         {
-            textParagraphFactory.CreateTextTokensIn(this.textParagraph2Ds[index], id);
+            textParagraphFactory.CreateTextTokensIn(this.textParagraph2Ds[index], id, parameters);
         }
 
         public void LaunchTextOfParagraphScrolling(int index, float speed)

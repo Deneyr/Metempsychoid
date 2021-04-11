@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,8 +43,19 @@ namespace Metempsychoid.View.Text2D
             this.culture = null;
         }
 
-        public void CreateTextTokensIn(TextParagraph2D paragraph2D, string id)
+        public void CreateTextTokensIn(TextParagraph2D paragraph2D, string id, params string[] parameters)
         {
+            List<TextToken2D> textToken2Ds = this.idToTokens[id];
+
+            if (parameters.Count() > 0)
+            {
+                IEnumerable<TextToken2D> tokenParameters = textToken2Ds.Where(pElem => pElem.ParameterIndex >= 0);
+                foreach (TextToken2D textToken2D in tokenParameters)
+                {
+                    textToken2D.FullText = parameters[textToken2D.ParameterIndex];
+                }
+            }
+
             paragraph2D.UpdateTextTokens(this.idToTokens[id]);
         }
 
@@ -70,11 +82,29 @@ namespace Metempsychoid.View.Text2D
                         XElement paragraph = entry.Elements("paragraph").FirstOrDefault(pElem => pElem.Attribute("culture").Value == this.Culture);
                         if(paragraph != null)
                         {
-                            string content = paragraph.Value;
+                            IEnumerable<XElement> paragraphElements = paragraph.Elements();
 
-                            List<TextToken2D> token2DsList = this.CreateTextTokens(content);
+                            if (paragraphElements.Count() == 0)
+                            {
+                                string content = paragraph.Value;
 
-                            this.idToTokens.Add(key, token2DsList);
+                                List<TextToken2D> token2DsList = this.CreateTextTokens(content);
+
+                                this.idToTokens.Add(key, token2DsList);
+                            }
+                            else
+                            {
+                                List<TextToken2D> token2DsList = new List<TextToken2D>();
+
+                                foreach (XElement paragraphElement in paragraphElements)
+                                {
+                                    string content = paragraphElement.Value;
+
+                                    this.AppendTextTokens(token2DsList, content, paragraphElement.Name.LocalName);
+                                }
+
+                                this.idToTokens.Add(key, token2DsList);
+                            }
                         }
                     }
                 }
@@ -96,6 +126,33 @@ namespace Metempsychoid.View.Text2D
             }
 
             return tokens;
+        }
+
+        private void AppendTextTokens(List<TextToken2D> tokenListToAppend, string text, string tokenType)
+        {
+            string[] textTokens = text.Split(' ');
+
+            foreach (string textToken in textTokens)
+            {
+                if (string.IsNullOrEmpty(textToken) == false)
+                {
+                    TextToken2D textToken2D = null;
+                    switch (tokenType)
+                    {
+                        case "Normal":
+                            textToken2D = new TextToken2D(textToken);
+                            break;
+                        case "BannerTitle":
+                            textToken2D = new TitleBannerTextToken2D(textToken);
+                            break;
+                        default:
+                            textToken2D = new TextToken2D(textToken);
+                            break;
+                    }
+
+                    tokenListToAppend.Add(textToken2D);
+                }
+            }
         }
     }
 }

@@ -8,7 +8,24 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
 {
     public class BoardBannerLayer: EntityLayer.EntityLayer
     {
+        public Player.Player Player
+        {
+            get;
+            private set;
+        }
 
+        public Player.Player Opponent
+        {
+            get;
+            private set;
+        }
 
+        public override void InitializeLayer(World world)
+        {
+            base.InitializeLayer(world);
+
+            this.Player = world.Player;
+            this.Opponent = world.Opponent;
+        }
     }
 }

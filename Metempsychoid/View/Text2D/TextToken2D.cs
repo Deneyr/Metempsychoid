@@ -10,16 +10,41 @@ namespace Metempsychoid.View.Text2D
 {
     public class TextToken2D: AObject2D
     {
-        private Text text2D;
+        protected Text text2D;
 
         private int textCursor;
 
         private IntRect canevas;
 
+        private int parameterIndex;
+
+        private string fullText;
+
+        public int ParameterIndex
+        {
+            get
+            {
+                return this.parameterIndex;
+            }
+        }
+
         public string FullText
         {
-            get;
-            private set;
+            get
+            {
+                return fullText;
+            }
+            set
+            {
+                if (this.fullText != value)
+                {
+                    this.fullText = value;
+                    this.textCursor = 0;
+                    this.TextCursor = this.fullText.Count();
+
+                    this.UpdateCanevas();
+                }
+            }
         }
 
         public int TextCursor
@@ -161,18 +186,25 @@ namespace Metempsychoid.View.Text2D
 
         public TextToken2D(string text)
         {
-            this.FullText = text;
+            this.fullText = text;
 
             this.textCursor = -1;
 
             this.text2D = new Text();
 
+            if(text.StartsWith("{") && text.EndsWith("}") && int.TryParse(text.Substring(1, text.Length - 2), out int parameterIndex))
+            {
+                this.parameterIndex = parameterIndex;
+            }
+            else
+            {
+                this.parameterIndex = -1;
+            }
+
             this.TextCursor = this.FullText.Count();
             this.text2D.Font = AObject2DFactory.GetFontByName("Sans");
 
-            //this.Position = new Vector2f(0, 0);
             this.text2D.FillColor = Color.White;
-            //this.CharacterSize = 80;
             this.text2D.OutlineThickness = 2;
             this.text2D.OutlineColor = Color.Black;
         }
