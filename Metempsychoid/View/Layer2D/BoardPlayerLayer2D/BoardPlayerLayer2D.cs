@@ -103,9 +103,6 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardFocused = null;
 
             this.cardToolTip = new CardToolTip(this);
-            this.cardToolTip.CreateTextParagraph2D(new Vector2f(0, 10), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 20);
-            this.cardToolTip.CreateTextParagraph2D(new Vector2f(0, 60), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
-            this.cardToolTip.IsActive = false;
 
             base.InitializeLayer(factory);
 

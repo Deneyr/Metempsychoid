@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model;
+using Metempsychoid.View.Text2D;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Metempsychoid.View
     public abstract class AObject2DFactory: IObject2DFactory
     {
         private static Dictionary<string, Font> nameToFonts;
+        private static Dictionary<Font, float> fontToWidths;
 
         private static readonly Texture BLANK_TEXTURE;
 
@@ -23,9 +25,41 @@ namespace Metempsychoid.View
             BLANK_TEXTURE = new Texture((uint)MainWindow.MODEL_TO_VIEW * 16, (uint)MainWindow.MODEL_TO_VIEW * 16);
 
             nameToFonts = new Dictionary<string, Font>();
-            nameToFonts.Add("Protector", new Font(@"Assets\Graphics\Fonts\ProtectorBy7NTypes.otf"));
-            nameToFonts.Add("Sans", new Font(@"Assets\Graphics\Fonts\SansByAaron.ttf"));
-            nameToFonts.Add("Nzoda", new Font(@"Assets\Graphics\Fonts\nzoda.ttf"));
+            fontToWidths = new Dictionary<Font, float>();
+
+            Font font = new Font(@"Assets\Graphics\Fonts\ProtectorBy7NTypes.otf");
+            nameToFonts.Add("Protector", font);
+            fontToWidths.Add(font, 650);
+
+            font = new Font(@"Assets\Graphics\Fonts\PERLS.ttf");
+            nameToFonts.Add("perls", font);
+            fontToWidths.Add(font, 250);
+
+            font = new Font(@"Assets\Graphics\Fonts\SansByAaron.ttf");
+            nameToFonts.Add("Sans", font);
+            fontToWidths.Add(font, 190);
+
+            font = new Font(@"Assets\Graphics\Fonts\nzoda.ttf");
+            nameToFonts.Add("Nzoda", font);
+            fontToWidths.Add(font, 200);
+
+            //InitFontToWidths();
+        }
+
+        private static void InitFontToWidths()
+        {
+            fontToWidths = new Dictionary<Font, float>();
+
+            foreach(Font font in nameToFonts.Values)
+            {
+                Text text = new Text(" ", font, 1000);
+                fontToWidths.Add(font, text.GetGlobalBounds().Width);
+            }
+        }
+
+        public static int GetWidthFromTextToken(TextToken2D textToken2D)
+        {
+            return (int) (fontToWidths[textToken2D.TextFont] * textToken2D.CharacterSize / 1000f);
         }
 
         public static Font GetFontByName(string fontName)

@@ -290,6 +290,7 @@ namespace Metempsychoid.View.Text2D
         {
             int maxHeight = 0;
             IntRect tokenCanevas = new IntRect();
+            int i = 0;
             foreach (TextToken2D textToken2D in tokensInLine)
             {
                 tokenCanevas = textToken2D.Canevas;
@@ -301,6 +302,13 @@ namespace Metempsychoid.View.Text2D
                 {
                     maxHeight = tokenCanevas.Height;
                 }
+
+                if (i < tokensInLine.Count - 1)
+                {
+                    cursor.X += AObject2DFactory.GetWidthFromTextToken(textToken2D);
+                }
+
+                i++;
             }
 
             return maxHeight;
@@ -311,6 +319,7 @@ namespace Metempsychoid.View.Text2D
             cursor.X += offsetLine;
             int maxHeight = 0;
             IntRect tokenCanevas = new IntRect();
+            int i = 0;
             foreach (TextToken2D textToken2D in tokensInLine)
             {
                 tokenCanevas = textToken2D.Canevas;
@@ -322,6 +331,13 @@ namespace Metempsychoid.View.Text2D
                 {
                     maxHeight = tokenCanevas.Height;
                 }
+
+                if (i < tokensInLine.Count - 1)
+                {
+                    cursor.X += AObject2DFactory.GetWidthFromTextToken(textToken2D);
+                }
+
+                i++;
             }
 
             return maxHeight;
@@ -332,6 +348,7 @@ namespace Metempsychoid.View.Text2D
             cursor.X += offsetLine / 2;
             int maxHeight = 0;
             IntRect tokenCanevas = new IntRect();
+            int i = 0;
             foreach (TextToken2D textToken2D in tokensInLine)
             {
                 tokenCanevas = textToken2D.Canevas;
@@ -343,6 +360,13 @@ namespace Metempsychoid.View.Text2D
                 {
                     maxHeight = tokenCanevas.Height;
                 }
+
+                if (i < tokensInLine.Count - 1)
+                {
+                    cursor.X += AObject2DFactory.GetWidthFromTextToken(textToken2D);
+                }
+
+                i++;
             }
 
             return maxHeight;
@@ -433,13 +457,20 @@ namespace Metempsychoid.View.Text2D
                     int diffWidth = maxWidth - lineWidth;
                     lineWidth = tokenCanevas.Width;
 
+                    if (notReachEnd)
+                    {
+                        lineWidth += AObject2DFactory.GetWidthFromTextToken(tokenEnumerator.Current);
+                    }
+
                     if (tokensInLine.Count > 0)
                     {
+                        diffWidth += AObject2DFactory.GetWidthFromTextToken(tokensInLine.Last());
+
                         maxHeight = LineHandler(ref currentCursor, tokensInLine, diffWidth);
                     }
                     else
                     {
-                        maxHeight = (int) this.characterSize;
+                        maxHeight = (int)this.characterSize;
                     }
 
                     currentCursor.X = startCursor.X;
@@ -449,7 +480,7 @@ namespace Metempsychoid.View.Text2D
                 }
                 else
                 {
-                    lineWidth += tokenCanevas.Width;
+                    lineWidth += tokenCanevas.Width + AObject2DFactory.GetWidthFromTextToken(tokenEnumerator.Current);
                 }
 
                 if (notReachEnd

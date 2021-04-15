@@ -90,6 +90,10 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             IAnimation showAnimation = new ColorAnimation(new Color(0, 0, 0, 0), new Color(0, 0, 0, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(showAnimation);
+
+            this.CreateTextParagraph2D(new Vector2f(0, 10), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 20);
+            this.CreateTextParagraph2D(new Vector2f(0, 60), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
+            this.IsActive = false;
         }
 
         public void DisplayToolTip(Card card, CardEntity2D cardFocused)
@@ -120,7 +124,14 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
 
             base.DrawIn(window, deltaTime);
+
+            //this.text.FillColor = Color.White;
+            //this.text.OutlineThickness = 2;
+            //this.text.OutlineColor = Color.Black;
+            //window.Draw(text);
         }
+
+        //private Text text = new Text("Dans la farandole du temps", AObject2DFactory.GetFontByName("Sans"), 14);
 
         public void UpdatePosition()
         {
