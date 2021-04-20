@@ -66,6 +66,12 @@
     <Compile Include="Model\Card\CardDeck.cs" />
     <Compile Include="Model\Card\CardEntity.cs" />
     <Compile Include="Model\Card\CardFactory.cs" />
+    <Compile Include="Model\Constellations\Constellation.cs" />
+    <Compile Include="Model\Constellations\ConstellationLink.cs" />
+    <Compile Include="Model\Constellations\ConstellationNode.cs" />
+    <Compile Include="Model\Constellations\ConstellationNodeSelf.cs" />
+    <Compile Include="Model\Constellations\ConstellationPattern.cs" />
+    <Compile Include="Model\Constellations\ConstellationPatternFactory.cs" />
     <Compile Include="Model\Event\InternalGameEvent.cs" />
     <Compile Include="Model\Event\IGameEventListener.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\BoardGameLayer.cs" />

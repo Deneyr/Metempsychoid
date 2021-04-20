@@ -12,7 +12,11 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 {
     public class BoardGameLayer: EntityLayer.EntityLayer
     {
-        private Dictionary<StarEntity, HashSet<StarLinkEntity>> starToLinks;
+        public Dictionary<StarEntity, HashSet<StarLinkEntity>> StarToLinks
+        {
+            get;
+            private set;
+        }
 
         public HashSet<StarEntity> StarSystem
         {
@@ -41,7 +45,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarSystem = new HashSet<StarEntity>();
             this.StarLinkSystem = new HashSet<StarLinkEntity>();
 
-            this.starToLinks = new Dictionary<StarEntity, HashSet<StarLinkEntity>>();
+            this.StarToLinks = new Dictionary<StarEntity, HashSet<StarLinkEntity>>();
 
             this.TypesInChunk.Add(typeof(StarEntity));
             this.TypesInChunk.Add(typeof(StarLinkEntity));
@@ -53,7 +57,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarSystem.Add(starEntity);
             this.AddEntityToLayer(starEntity);
 
-            this.starToLinks.Add(starEntity, new HashSet<StarLinkEntity>());
+            this.StarToLinks.Add(starEntity, new HashSet<StarLinkEntity>());
         }
 
         protected void RemoveStar(StarEntity starEntity)
@@ -61,8 +65,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarSystem.Remove(starEntity);
             this.RemoveEntityFromLayer(starEntity);
 
-            HashSet<StarLinkEntity> linksList = this.starToLinks[starEntity];
-            this.starToLinks.Remove(starEntity);
+            HashSet<StarLinkEntity> linksList = this.StarToLinks[starEntity];
+            this.StarToLinks.Remove(starEntity);
 
             foreach(StarLinkEntity link in linksList)
             {
@@ -79,8 +83,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarLinkSystem.Add(link);
             this.AddEntityToLayer(link);
 
-            this.starToLinks[starEntityFrom].Add(link);
-            this.starToLinks[starEntityTo].Add(link);
+            this.StarToLinks[starEntityFrom].Add(link);
+            this.StarToLinks[starEntityTo].Add(link);
 
             return link;
         }
@@ -92,8 +96,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarLinkSystem.Add(link);
             this.AddEntityToLayer(link);
 
-            this.starToLinks[starEntityFrom].Add(link);
-            this.starToLinks[starEntityTo].Add(link);
+            this.StarToLinks[starEntityFrom].Add(link);
+            this.StarToLinks[starEntityTo].Add(link);
 
             return link;
         }
@@ -103,14 +107,14 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarLinkSystem.Remove(starLinkEntity);
             this.RemoveEntityFromLayer(starLinkEntity);
 
-            if (this.starToLinks.ContainsKey(starLinkEntity.StarFrom))
+            if (this.StarToLinks.ContainsKey(starLinkEntity.StarFrom))
             {
-                this.starToLinks[starLinkEntity.StarFrom].Remove(starLinkEntity);
+                this.StarToLinks[starLinkEntity.StarFrom].Remove(starLinkEntity);
             }
 
-            if (this.starToLinks.ContainsKey(starLinkEntity.StarTo))
+            if (this.StarToLinks.ContainsKey(starLinkEntity.StarTo))
             {
-                this.starToLinks[starLinkEntity.StarTo].Remove(starLinkEntity);
+                this.StarToLinks[starLinkEntity.StarTo].Remove(starLinkEntity);
             }
         }
 
@@ -182,6 +186,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 starEntity.CardSocketed = this.CardEntityPicked;
 
                 this.CardEntityPicked = null;
+
+                // Run events
+                starEntity.CardSocketed.Card.CardSocketed(this, starEntity);
             }
         }
 

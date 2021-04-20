@@ -398,6 +398,12 @@ namespace Metempsychoid.View.Text2D
                 {
                     maxHeight = tokenCanevas.Height;
                 }
+
+                if (i < tokensInLine.Count - 1)
+                {
+                    cursor.X += AObject2DFactory.GetWidthFromTextToken(textToken2D);
+                }
+
                 i++;
             }
 
