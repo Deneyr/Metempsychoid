@@ -55,103 +55,145 @@ namespace Metempsychoid.Model.Constellations
 
                 Dictionary<ConstellationNode, StarEntity> nodeToStarEntity = new Dictionary<ConstellationNode, StarEntity>();
 
+                Dictionary<ConstellationNode, int> alreadyEncounteredNodes = new Dictionary<ConstellationNode, int>();
+                Dictionary<StarEntity, int> alreadyEncounteredStars = new Dictionary<StarEntity, int>();
+                int counter = 0;
+
                 Stack<StarEntity> pathStarEntities = new Stack<StarEntity>();
 
                 Stack<Tuple<ConstellationLink, ConstellationNode>> constellationStack = new Stack<Tuple<ConstellationLink, ConstellationNode>>();
+                Stack<Tuple<ConstellationLink, ConstellationNode>> constellationHandledStack = new Stack<Tuple<ConstellationLink, ConstellationNode>>();
                 constellationStack.Push(firstTuple);
 
-                while(constellationStack.Count > 0)
+                while (constellationStack.Count > 0)
                 {
                     Tuple<ConstellationLink, ConstellationNode> currentConstellationTuple = constellationStack.Peek();
-
-                    Stack<StarEntity> potentialStarEntities = new Stack<StarEntity>();
-
-                    bool alreadyExploredNode = nodeToStarEntity.ContainsKey(currentConstellationTuple.Item2);
-
-                    if (linkToPotentialStarEntities.ContainsKey(currentConstellationTuple) == false)
+                    if (constellationHandledStack.Count > 0 && currentConstellationTuple == constellationHandledStack.Peek())
                     {
-                        if (currentConstellationTuple.Item2 != this.NodeSelf)
-                        {
-                            potentialStarEntities = currentConstellationTuple.Item1.GetPotentialLinkedStars(boardGameLayer, pathStarEntities.Peek());
+                        constellationStack.Pop();
+                        constellationHandledStack.Pop();
+                        StarEntity starEntity = pathStarEntities.Pop();
 
-                            if (alreadyExploredNode)
+                        //alreadyEncounteredStars.Remove(starEntity);
+                        //alreadyEncounteredNodes.Remove(currentConstellationTuple.Item2);
+
+                        linkToPotentialStarEntities.Remove(currentConstellationTuple);
+                    }
+                    else
+                    {
+                        constellationHandledStack.Push(currentConstellationTuple);
+
+                        Stack<StarEntity> potentialStarEntities = new Stack<StarEntity>();
+
+                        bool alreadyExploredNode = alreadyEncounteredNodes.ContainsKey(currentConstellationTuple.Item2);
+
+                        if (linkToPotentialStarEntities.ContainsKey(currentConstellationTuple) == false)
+                        {
+                            if (currentConstellationTuple.Item1 != null)
                             {
-                                potentialStarEntities = new Stack<StarEntity>();
-                                StarEntity starEntityAlreadyExplored = nodeToStarEntity[currentConstellationTuple.Item2];
-                                if (potentialStarEntities.Contains(starEntityAlreadyExplored))
+                                potentialStarEntities = currentConstellationTuple.Item1.GetPotentialLinkedStars(boardGameLayer, pathStarEntities.Peek());
+
+                                if (alreadyExploredNode)
                                 {
-                                    potentialStarEntities.Push(starEntityAlreadyExplored);
+                                    StarEntity starEntityAlreadyExplored = nodeToStarEntity[currentConstellationTuple.Item2];
+                                    bool potentialStarContainsAlreadyExplored = potentialStarEntities.Contains(starEntityAlreadyExplored);
+                                    potentialStarEntities = new Stack<StarEntity>();
+                                    if (potentialStarContainsAlreadyExplored)
+                                    {
+                                        potentialStarEntities.Push(starEntityAlreadyExplored);
+                                    }
+                                }
+                                else
+                                {
+                                    potentialStarEntities = new Stack<StarEntity>(potentialStarEntities.Where(pElem => currentConstellationTuple.Item2.IsStarValid(pElem) && alreadyEncounteredStars.ContainsKey(pElem) == false));
                                 }
                             }
                             else
                             {
-                                potentialStarEntities = new Stack<StarEntity>(potentialStarEntities.Where(pElem => currentConstellationTuple.Item2.IsStarValid(pElem)));
+                                potentialStarEntities.Push(startStarEntity);
+                            }
+
+                            linkToPotentialStarEntities.Add(currentConstellationTuple, potentialStarEntities);
+                        }
+                        else
+                        {
+                            potentialStarEntities = linkToPotentialStarEntities[currentConstellationTuple];
+                        }
+
+                        if (potentialStarEntities.Count > 0)
+                        {
+                            StarEntity starEntity = potentialStarEntities.Pop();
+                            pathStarEntities.Push(starEntity);
+
+                            if (alreadyExploredNode == false)
+                            {
+                                nodeToStarEntity.Add(currentConstellationTuple.Item2, starEntity);
+
+                                alreadyEncounteredStars.Add(starEntity, counter);
+                                alreadyEncounteredNodes.Add(currentConstellationTuple.Item2, counter);
+                                counter++;
+
+                                this.StackConstellationElementFrom(currentConstellationTuple.Item1, constellationStack, currentConstellationTuple.Item2);
                             }
                         }
                         else
                         {
-                            potentialStarEntities.Push(startStarEntity);
-                        }
-                    }
-                    else
-                    {
-                        potentialStarEntities = linkToPotentialStarEntities[currentConstellationTuple];
-                    }
-
-                    if(potentialStarEntities.Count > 0)
-                    {
-                        if (alreadyExploredNode == false)
-                        {
-                            StarEntity starEntity = potentialStarEntities.Pop();
-
-                            nodeToStarEntity.Add(currentConstellationTuple.Item2, starEntity);
-
-                            pathStarEntities.Push(starEntity);
-
-                            linkToPotentialStarEntities.Add(currentConstellationTuple, potentialStarEntities);
-
-                            this.StackConstellationElementFrom(currentConstellationTuple.Item1, constellationStack, currentConstellationTuple.Item2);
-                        }
-                    }
-                    else
-                    {
-                        constellationStack.Pop();
-                        bool reachAnotherTuple;
-                        do
-                        {
-                            reachAnotherTuple = false;
-
-                            if (constellationStack.Count > 0)
+                            Tuple<ConstellationLink, ConstellationNode> constellationTupleToRemove = constellationStack.Pop();
+                            constellationHandledStack.Pop();
+                            linkToPotentialStarEntities.Remove(constellationTupleToRemove);
+                            bool reachAnotherTuple;
+                            do
                             {
-                                Tuple<ConstellationLink, ConstellationNode> constellationTuple = constellationStack.Peek();
+                                reachAnotherTuple = false;
 
-                                if (linkToPotentialStarEntities.ContainsKey(constellationTuple))
+                                if (constellationStack.Count > 0)
                                 {
-                                    reachAnotherTuple = linkToPotentialStarEntities[constellationTuple].Count > 0;
+                                    Tuple<ConstellationLink, ConstellationNode> constellationTuple = constellationStack.Peek();
+
+                                    if (constellationTuple == constellationHandledStack.Peek())
+                                    {
+                                        constellationHandledStack.Pop();
+
+                                        reachAnotherTuple = linkToPotentialStarEntities[constellationTuple].Count > 0;
+
+                                        StarEntity starEntity = pathStarEntities.Pop();
+
+                                        nodeToStarEntity.Remove(constellationTuple.Item2);
+
+                                        //alreadyEncounteredStars.Remove(starEntity);
+                                        //alreadyEncounteredNodes.Remove(constellationTuple.Item2);
+
+                                        //linkToPotentialStarEntities.Remove(constellationTuple);
+
+                                        if (reachAnotherTuple)
+                                        {
+                                            int counterToReach = alreadyEncounteredNodes[constellationTuple.Item2];
+
+                                            alreadyEncounteredStars = alreadyEncounteredStars.Where(pElem => pElem.Value < counterToReach).ToDictionary(x => x.Key, x => x.Value);
+                                            alreadyEncounteredNodes = alreadyEncounteredNodes.Where(pElem => pElem.Value < counterToReach).ToDictionary(x => x.Key, x => x.Value);
+                                        }
+                                        else
+                                        {
+                                            linkToPotentialStarEntities.Remove(constellationTuple);
+                                        }
+                                    }
 
                                     if (reachAnotherTuple == false)
                                     {
-                                        StarEntity starEntityToPop = pathStarEntities.Pop();
-
-                                        nodeToStarEntity.Remove(constellationTuple.Item2);
+                                        constellationStack.Pop();
                                     }
                                 }
-
-                                if (reachAnotherTuple == false)
+                                else
                                 {
-                                    constellationStack.Pop();
+                                    reachAnotherTuple = true;
                                 }
-                            }
-                            else
+
+                            } while (reachAnotherTuple == false);
+
+                            if (constellationStack.Count == 0)
                             {
-                                reachAnotherTuple = true;
+                                return false;
                             }
-
-                        } while (reachAnotherTuple == false);
-
-                        if(constellationStack.Count == 0)
-                        {
-                            return false;
                         }
                     }
                 }

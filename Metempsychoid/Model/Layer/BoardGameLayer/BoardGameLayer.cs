@@ -254,6 +254,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.AddStar(star8);
 
             StarEntity star9 = new StarEntity(this);
+            star9.Name = "in_star_right";
             star9.Position = new Vector2f(800, 0);
             this.AddStar(star9);
 
@@ -278,6 +279,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
             // out circle
             StarEntity star11 = new StarEntity(this);
+            star11.Name = "out_star_left";
             star11.Position = new Vector2f(-1200, 0);
             this.AddStar(star11);
 
@@ -286,10 +288,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.AddStar(star12);
 
             StarEntity star13 = new StarEntity(this);
+            star13.Name = "out_star_right";
             star13.Position = new Vector2f(1200, 0);
             this.AddStar(star13);
 
             StarEntity star14 = new StarEntity(this);
+            star14.Name = "out_star_bot";
             star14.Position = new Vector2f(0, 1200);
             this.AddStar(star14);
 

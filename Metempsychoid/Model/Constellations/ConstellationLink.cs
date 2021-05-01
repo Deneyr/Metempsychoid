@@ -9,6 +9,12 @@ namespace Metempsychoid.Model.Constellations
 {
     public class ConstellationLink
     {
+        public string Name
+        {
+            get;
+            set;
+        }
+
         public ConstellationNode Node1
         {
             get;

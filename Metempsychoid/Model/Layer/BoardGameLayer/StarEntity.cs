@@ -11,6 +11,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
     {
         private CardEntity cardSocketed;
 
+        public string Name
+        {
+            get;
+            set;
+        }
+
         public virtual CardEntity CardSocketed
         {
             get

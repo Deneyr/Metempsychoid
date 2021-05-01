@@ -9,6 +9,12 @@ namespace Metempsychoid.Model.Constellations
 {
     public class ConstellationNode
     {
+        public string Name
+        {
+            get;
+            set;
+        }
+
         public virtual bool IsStarValid(StarEntity star)
         {
             return star.CardSocketed != null;

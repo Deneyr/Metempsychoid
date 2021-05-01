@@ -10,6 +10,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 {
     public class StarLinkEntity: AEntity
     {
+        public string Name
+        {
+            get;
+            set;
+        }
+
         public StarEntity StarFrom
         {
             get;
