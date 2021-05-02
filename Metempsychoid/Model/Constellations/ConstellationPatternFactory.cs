@@ -16,10 +16,10 @@ namespace Metempsychoid.Model.Constellations
             node1.Name = "head1";
             patternToCreate.AddNode(node1);
             ConstellationNode node2 = new ConstellationNode();
-            node2.Name = "tail";
+            node2.Name = "head2";
             patternToCreate.AddNode(node2);
             ConstellationNode node3 = new ConstellationNode();
-            node3.Name = "head2";
+            node3.Name = "tail";
             patternToCreate.AddNode(node3);
             ConstellationNodeSelf self = new ConstellationNodeSelf();
             self.Name = "self";
@@ -31,6 +31,8 @@ namespace Metempsychoid.Model.Constellations
             patternToCreate.AddNodeLink(link2);
             ConstellationLink link3 = new ConstellationLink(node1, node2);
             patternToCreate.AddNodeLink(link3);
+            ConstellationLink link4 = new ConstellationLink(self, node3);
+            patternToCreate.AddNodeLink(link4);
 
             return patternToCreate;
         }
