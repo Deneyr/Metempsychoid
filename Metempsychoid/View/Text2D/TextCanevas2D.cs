@@ -160,7 +160,7 @@ namespace Metempsychoid.View.Text2D
         }
 
         public TextCanevas2D(ALayer2D parentLayer):
-            base(parentLayer)
+            base(parentLayer, true)
         {
             this.textParagraph2Ds = new List<TextParagraph2D>();
         }

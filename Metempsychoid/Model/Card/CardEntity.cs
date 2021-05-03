@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Metempsychoid.Model.Constellations;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
 
@@ -64,9 +65,36 @@ namespace Metempsychoid.Model.Card
         {
             this.Card = card;
 
+            this.Card.CardAwakened += OnCardAwakened;
+            this.Card.CardUnAwakened += OnCardUnAwakened;
+
             this.parentStar = null;
 
             this.isFliped = isFliped;
+        }
+
+        private void OnCardUnAwakened()
+        {
+            if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
+            {
+                entityLayer.NotifyObjectPropertyChanged(this, "IsAwakened");
+            }
+        }
+
+        private void OnCardAwakened()
+        {
+            if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
+            {
+                entityLayer.NotifyObjectPropertyChanged(this, "IsAwakened");
+            }
+        }
+
+        public override void Dispose()
+        {
+            this.Card.CardAwakened -= OnCardAwakened;
+            this.Card.CardUnAwakened -= OnCardUnAwakened;
+
+            base.Dispose();
         }
     }
 }

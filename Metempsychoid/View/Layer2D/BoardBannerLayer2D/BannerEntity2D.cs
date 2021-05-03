@@ -41,7 +41,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
         }
 
-        public BannerEntity2D(ALayer2D parentLayer) : base(parentLayer)
+        public BannerEntity2D(ALayer2D parentLayer) 
+            : base(parentLayer, false)
         {
             this.bannerShape = new RectangleShape(new Vector2f(3000, 200));
             this.bannerShape.Origin = new Vector2f(this.bannerShape.Size.X / 2, this.bannerShape.Size.Y / 2);
@@ -59,8 +60,6 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             sequence.AddAnimation(5, anim);
 
             this.animationsList.Add(sequence);
-
-            this.IsActive = false;
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

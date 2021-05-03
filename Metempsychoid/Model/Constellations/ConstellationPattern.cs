@@ -61,12 +61,17 @@ namespace Metempsychoid.Model.Constellations
             this.pathStarEntities = new Stack<StarEntity>();
         }
 
-        public bool CreateConstellationSystem(BoardGameLayer boardGameLayer, StarEntity startStarEntity)
+        public bool CreateConstellationSystem(
+            BoardGameLayer boardGameLayer, 
+            StarEntity startStarEntity, 
+            Dictionary<ConstellationNode, StarEntity> nodeToStarEntity, 
+            Dictionary<ConstellationLink, StarLinkEntity> linkToStarLinkEntity)
         {
-            if(this.NodeSelf != null)
-            {
-                Dictionary<ConstellationNode, StarEntity> nodeToStarEntity = new Dictionary<ConstellationNode, StarEntity>();
+            nodeToStarEntity.Clear();
+            linkToStarLinkEntity.Clear();
 
+            if (this.NodeSelf != null)
+            {
                 this.Initialize(boardGameLayer, startStarEntity);
 
                 while (this.constellationStack.Any())
@@ -97,14 +102,16 @@ namespace Metempsychoid.Model.Constellations
                                 this.snapshotStack.Push(new Snapshot(this, potentialStarEntities));
                             }
 
-                            if (nodeToStarEntity.ContainsKey(currentTuple.Item2))
-                            {
-                                nodeToStarEntity[currentTuple.Item2] = starEntity;
-                            }
-                            else
-                            {
-                                nodeToStarEntity.Add(currentTuple.Item2, starEntity);
-                            }
+                            //if (nodeToStarEntity.ContainsKey(currentTuple.Item2))
+                            //{
+                            //    nodeToStarEntity[currentTuple.Item2] = starEntity;
+                            //}
+                            //else
+                            //{
+                            //    nodeToStarEntity.Add(currentTuple.Item2, starEntity);
+                            //}
+
+                            this.UpdateMapping(boardGameLayer, nodeToStarEntity, linkToStarLinkEntity, currentTuple, starEntity);
 
                             this.alreadyEncounteredStarEntities.Add(starEntity);
                             this.alreadyEncounteredNodes.Add(currentTuple.Item2);
@@ -151,6 +158,43 @@ namespace Metempsychoid.Model.Constellations
             this.pathStarEntities.Push(startStarEntity);
 
             //Stack<StarEntity> potentialStarEntity = this.CreatePotentialStarEntitiesFrom(boardGameLayer, null, out bool alreadyExploredNode);
+        }
+
+        private void UpdateMapping(BoardGameLayer boardGameLayer,
+            Dictionary<ConstellationNode, StarEntity> nodeToStarEntity, 
+            Dictionary<ConstellationLink, StarLinkEntity> linkToStarLinkEntity,
+            Tuple<ConstellationLink, ConstellationNode> currentTuple, 
+            StarEntity starEntity)
+        {
+            if (nodeToStarEntity.ContainsKey(currentTuple.Item2))
+            {
+                nodeToStarEntity[currentTuple.Item2] = starEntity;
+            }
+            else
+            {
+                nodeToStarEntity.Add(currentTuple.Item2, starEntity);
+            }
+
+            if(currentTuple.Item1 != null)
+            {
+                StarEntity fromStar = this.pathStarEntities.Peek();
+
+                foreach(StarLinkEntity link in boardGameLayer.StarToLinks[fromStar])
+                {
+                    if(link.StarFrom == starEntity
+                        || link.StarTo == starEntity)
+                    {
+                        if (linkToStarLinkEntity.ContainsKey(currentTuple.Item1))
+                        {
+                            linkToStarLinkEntity[currentTuple.Item1] = link;
+                        }
+                        else
+                        {
+                            linkToStarLinkEntity.Add(currentTuple.Item1, link);
+                        }
+                    }
+                }
+            }
         }
 
         private bool RewindConstellationStack()

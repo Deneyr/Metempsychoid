@@ -10,7 +10,7 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
     public class TileBackgoundObject2D: AEntity2D
     {
         public TileBackgoundObject2D(ALayer2D layer2D, Texture texture, string textureName):
-            base(layer2D)
+            base(layer2D, true)
         {
             string[] token = textureName.Split(',');
             int coordX = int.Parse(token[0]);

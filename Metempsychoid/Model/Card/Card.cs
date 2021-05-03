@@ -14,6 +14,36 @@ namespace Metempsychoid.Model.Card
 
         private List<Constellation> constellations;
 
+        private bool isAwakened;
+
+        public event Action CardAwakened;
+
+        public event Action CardUnAwakened;
+
+        public bool IsAwakened
+        {
+            get
+            {
+                return this.isAwakened;
+            }
+            private set
+            {
+                if(this.isAwakened != value)
+                {
+                    this.isAwakened = value;
+
+                    if (this.isAwakened)
+                    {
+                        this.CardAwakened?.Invoke();
+                    }
+                    else
+                    {
+                        this.CardUnAwakened?.Invoke();
+                    }
+                }
+            }
+        }
+
         public Player.Player Player
         {
             get;
@@ -74,6 +104,8 @@ namespace Metempsychoid.Model.Card
 
             this.ValueModificator = 0;
 
+            this.isAwakened = false;
+
             this.InitConstellations();
         }
 
@@ -82,8 +114,26 @@ namespace Metempsychoid.Model.Card
             this.constellations = new List<Constellation>();
             foreach(ConstellationPattern pattern in this.cardTemplate.Patterns)
             {
-                this.constellations.Add(new Constellation(pattern));
+                Constellation constellation = new Constellation(this, pattern);
+                this.constellations.Add(constellation);
             }
+        }
+
+        internal void OnConstellationAwakened(Constellation constellationAwakened)
+        {
+            bool isAwakened = true;
+
+            foreach (Constellation constellation in this.constellations)
+            {
+                isAwakened &= constellation.IsAwakened;
+            }
+
+            this.IsAwakened = isAwakened;
+        }
+
+        internal void OnConstellationUnawakened(Constellation constellationUnawakened)
+        {
+            this.IsAwakened = false;
         }
 
         public virtual void CardSocketed(BoardGameLayer layer, StarEntity parentStarEntity)
@@ -102,14 +152,20 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public virtual void OtherCardSocketed(BoardGameLayer layer)
+        public virtual void OtherCardSocketed(BoardGameLayer layer, StarEntity starEntity, StarEntity starFromUnsocketedCard)
         {
-
+            foreach (Constellation constellation in this.constellations)
+            {
+                constellation.OnOtherCardSocketed(layer, starEntity, starFromUnsocketedCard);
+            }
         }
 
-        public void OtherCardUnsocketed(BoardGameLayer layer)
+        public void OtherCardUnsocketed(BoardGameLayer layer, StarEntity starEntity, StarEntity starFromUnsocketedCard)
         {
-
+            foreach (Constellation constellation in this.constellations)
+            {
+                constellation.OnOtherCardUnsocketed(layer, starEntity, starFromUnsocketedCard);
+            }
         }
 
         public virtual void CardEnteredBoard(BoardGameLayer layer)

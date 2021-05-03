@@ -116,14 +116,14 @@ namespace Metempsychoid.View
             }
         }
 
-        public AEntity2D(ALayer2D parentLayer)
+        public AEntity2D(ALayer2D parentLayer, bool isActive)
         {
             this.parentLayer = new WeakReference<ALayer2D>(parentLayer);
 
             this.sprite = new Sprite();
 
             this.Priority = 0;
-            this.IsActive = true;
+            this.IsActive = isActive;
         }
 
         public AEntity2D(ALayer2D parentLayer, AEntity entity)
@@ -137,7 +137,7 @@ namespace Metempsychoid.View
             this.Position = entity.Position;
             this.Rotation = entity.Rotation;
 
-            this.IsActive = true;
+            this.IsActive = entity.IsActive;
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

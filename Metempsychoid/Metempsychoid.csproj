@@ -114,6 +114,7 @@
     <Compile Include="View\AObject2DFactory.cs" />
     <Compile Include="View\Card2D\CardEntity2D.cs" />
     <Compile Include="View\Card2D\CardEntity2DFactory.cs" />
+    <Compile Include="View\Card2D\CardHalo2D.cs" />
     <Compile Include="View\Controls\ControlEventType.cs" />
     <Compile Include="View\Controls\ControlManager.cs" />
     <Compile Include="View\IHitRect.cs" />

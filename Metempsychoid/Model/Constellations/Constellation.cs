@@ -12,58 +12,117 @@ namespace Metempsychoid.Model.Constellations
     {
         private ConstellationPattern constellationPattern;
 
-        public HashSet<StarEntity> starsInVicinity;
-        public HashSet<StarLinkEntity> starLinksInVicinity;
+        private WeakReference<Card.Card> parentCard;
 
-        public HashSet<StarEntity> starsInPattern;
-        public HashSet<StarLinkEntity> starLinksInPattern;
+        private bool isAwakened;
 
-        public Action CardAwakened;
-
-        public Action CardUnawakened;
-
-        public Constellation(ConstellationPattern constellationPattern)
+        public Dictionary<ConstellationNode, StarEntity> NodeToStarEntity
         {
+            get;
+            private set;
+        }
+
+        public Dictionary<ConstellationLink, StarLinkEntity> LinkToStarLinkEntity
+        {
+            get;
+            private set;
+        }
+
+        public bool IsAwakened
+        {
+            get
+            {
+                return this.isAwakened;
+            }
+            private set
+            {
+                if (this.isAwakened != value)
+                {
+                    this.isAwakened = value;
+
+                    if (this.parentCard.TryGetTarget(out Card.Card parentCard))
+                    {
+                        if (this.isAwakened)
+                        {
+                            parentCard.OnConstellationAwakened(this);
+                        }
+                        else
+                        {
+                            parentCard.OnConstellationUnawakened(this);
+                        }
+                    }
+                }
+            }
+        }
+
+        public Constellation(Card.Card parentCard, ConstellationPattern constellationPattern)
+        {
+            this.parentCard = new WeakReference<Card.Card>(parentCard);
+
             this.constellationPattern = constellationPattern;
 
-            this.starsInVicinity = new HashSet<StarEntity>();
-            this.starLinksInVicinity = new HashSet<StarLinkEntity>();
+            this.NodeToStarEntity = new Dictionary<ConstellationNode, StarEntity>();
+            this.LinkToStarLinkEntity = new Dictionary<ConstellationLink, StarLinkEntity>();
 
-            this.starsInPattern = new HashSet<StarEntity>();
-            this.starLinksInPattern = new HashSet<StarLinkEntity>();
+            this.isAwakened = false;
         }
 
-        public void OnSocketed(StarEntity starEntity, CardEntity cardEntitySocketed)
+        public void OnOtherCardSocketed(BoardGameLayer boardGameLayer, StarEntity starEntity, StarEntity starFromSocketedCard)
         {
-            
+            if(this.isAwakened == false)
+            {
+                this.IsAwakened = this.constellationPattern.CreateConstellationSystem(
+                    boardGameLayer,
+                    starEntity,
+                    this.NodeToStarEntity,
+                    this.LinkToStarLinkEntity);
+            }
         }
 
-        public void OnUnsocketed(StarEntity starEntity, CardEntity cardEntityUnsocketed)
+        public void OnOtherCardUnsocketed(BoardGameLayer boardGameLayer, StarEntity starEntity, StarEntity starFromUnsocketedCard)
         {
-            this.starsInVicinity.Clear();
-            this.starLinksInVicinity.Clear();
-
-            this.starsInPattern.Clear();
-            this.starLinksInPattern.Clear();
+            if (this.isAwakened)
+            {
+                if (this.NodeToStarEntity.ContainsValue(starFromUnsocketedCard))
+                {
+                    this.IsAwakened = this.constellationPattern.CreateConstellationSystem(
+                        boardGameLayer,
+                        starEntity,
+                        this.NodeToStarEntity,
+                        this.LinkToStarLinkEntity);
+                }
+            }
         }
 
         public void OnCardSocketed(BoardGameLayer boardGameLayer, StarEntity starEntity)
         {
-            this.constellationPattern.CreateConstellationSystem(boardGameLayer, starEntity);
+            //this.parentStarEntity = new WeakReference<StarEntity>(starEntity);
+
+            this.IsAwakened = this.constellationPattern.CreateConstellationSystem(
+                boardGameLayer,
+                starEntity,
+                this.NodeToStarEntity,
+                this.LinkToStarLinkEntity);
         }
 
         public void OnCardUnsocketed(BoardGameLayer boardGameLayer, StarEntity starEntity)
         {
+            //this.parentStarEntity = null;
 
+            this.NodeToStarEntity.Clear();
+            this.LinkToStarLinkEntity.Clear();
+
+            this.IsAwakened = false;
         }
 
         public void Dispose()
         {
-            this.starsInVicinity.Clear();
-            this.starLinksInVicinity.Clear();
+            //this.parentStarEntity = null;
 
-            this.starsInPattern.Clear();
-            this.starLinksInPattern.Clear();
+            this.NodeToStarEntity.Clear();
+            this.LinkToStarLinkEntity.Clear();
+
+            this.isAwakened = false;
         }
     }
 }

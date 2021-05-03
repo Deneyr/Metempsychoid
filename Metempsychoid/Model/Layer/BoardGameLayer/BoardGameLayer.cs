@@ -189,6 +189,14 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
                 // Run events
                 starEntity.CardSocketed.Card.CardSocketed(this, starEntity);
+
+                foreach(StarEntity star in this.StarSystem)
+                {
+                    if(star != starEntity && star.CardSocketed != null)
+                    {
+                        star.CardSocketed.Card.OtherCardSocketed(this, star, starEntity);
+                    }
+                }
             }
         }
 

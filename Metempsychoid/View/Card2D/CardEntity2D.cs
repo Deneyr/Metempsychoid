@@ -24,6 +24,7 @@ namespace Metempsychoid.View.Card2D
         private string cardName;
 
         private Sprite canevasSprite;
+        private CardHalo2D cardHalo;
 
         private bool isSocketed;
         private Color playerColor;
@@ -38,6 +39,18 @@ namespace Metempsychoid.View.Card2D
         RenderStates render;
 
         Clock timer = new Clock();
+
+        public bool IsAwakened
+        {
+            get
+            {
+                return this.cardHalo.IsActive;
+            }
+            set
+            {
+                this.cardHalo.IsActive = value;
+            }
+        }
 
         public string CardName
         {
@@ -144,6 +157,8 @@ namespace Metempsychoid.View.Card2D
                 base.Position = value;
 
                 this.canevasSprite.Position = value * MainWindow.MODEL_TO_VIEW;
+
+                this.cardHalo.Position = this.Position;
             }
         }
 
@@ -228,9 +243,11 @@ namespace Metempsychoid.View.Card2D
 
 
         public CardEntity2D(IObject2DFactory factory, ALayer2D layer2D, CardEntity entity) :
-            base(layer2D)
+            base(layer2D, true)
         {
             this.factory = factory as CardEntity2DFactory;
+
+            this.cardHalo = new CardHalo2D(factory, layer2D, this);
 
             this.ObjectSprite.Texture = factory.GetTextureByIndex(1);
 
@@ -261,7 +278,6 @@ namespace Metempsychoid.View.Card2D
             render = new RenderStates(BlendMode.Alpha);
             render.Shader = shader;
 
-
             //SequenceAnimation flipAnimation = new SequenceAnimation(Time.FromSeconds(1), AnimationType.ONETIME);
             IAnimation animation = new FlipAnimation(0, (float)(Math.PI / 2), Time.FromSeconds(TIME_FLIP), AnimationType.ONETIME, InterpolationMethod.LINEAR, 1);
             //flipAnimation.AddAnimation(0, animation);
@@ -281,6 +297,8 @@ namespace Metempsychoid.View.Card2D
         private void Initialize(CardEntity entity)
         {
             this.PlayerColor = entity.Card.Player.PlayerColor;
+            this.cardHalo.SpriteColor = this.PlayerColor;
+
             this.IsSocketed = entity.ParentStar != null;
             this.RatioColor = 1;
             this.cardName = entity.Card.Name;
@@ -316,6 +334,8 @@ namespace Metempsychoid.View.Card2D
             this.UpdateCooldowns(deltaTime);
 
             this.UpdateColorRatio(deltaTime);
+
+            this.cardHalo.UpdateGraphics(deltaTime);
 
             render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
         }
@@ -359,6 +379,8 @@ namespace Metempsychoid.View.Card2D
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
         {
+            this.cardHalo.DrawIn(window, deltaTime);
+
             window.Draw(this.ObjectSprite);
 
             window.Draw(this.canevasSprite, this.render);
