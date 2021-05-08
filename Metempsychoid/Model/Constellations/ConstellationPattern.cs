@@ -65,7 +65,7 @@ namespace Metempsychoid.Model.Constellations
             BoardGameLayer boardGameLayer, 
             StarEntity startStarEntity, 
             Dictionary<ConstellationNode, StarEntity> nodeToStarEntity, 
-            Dictionary<ConstellationLink, StarLinkEntity> linkToStarLinkEntity)
+            Dictionary<ConstellationLink, List<StarLinkEntity>> linkToStarLinkEntity)
         {
             nodeToStarEntity.Clear();
             linkToStarLinkEntity.Clear();
@@ -82,42 +82,32 @@ namespace Metempsychoid.Model.Constellations
                     bool alreadyExploredNode = false;
 
                     Stack<StarEntity> potentialStarEntities = null;
+                    Dictionary<StarEntity, List<StarLinkEntity>> starEntityToStarLinks = null;
                     if (isRewind)
                     {
+                        starEntityToStarLinks = this.snapshotStack.Peek().CurrentStarEntityToStarLinks;
                         potentialStarEntities = this.snapshotStack.Peek().PotentialStarEntities;
                     }
                     else
                     {
-                        potentialStarEntities = this.CreatePotentialStarEntitiesFrom(boardGameLayer, nodeToStarEntity, out alreadyExploredNode);
+                        potentialStarEntities = this.CreatePotentialStarEntitiesFrom(boardGameLayer, nodeToStarEntity, out alreadyExploredNode, out starEntityToStarLinks);
                     }
 
                     if (potentialStarEntities.Count > 0)
                     {
                         StarEntity starEntity = potentialStarEntities.Pop();
 
-                        // To construct previously
-                        this.UpdateMapping(boardGameLayer, nodeToStarEntity, linkToStarLinkEntity, currentTuple, starEntity);
+                        this.UpdateMapping(starEntityToStarLinks, nodeToStarEntity, linkToStarLinkEntity, currentTuple, starEntity);
 
                         if (alreadyExploredNode == false)
                         {
                             if (isRewind == false && potentialStarEntities.Any())
                             {
-                                this.snapshotStack.Push(new Snapshot(this, potentialStarEntities));
+                                this.snapshotStack.Push(new Snapshot(this, potentialStarEntities, starEntityToStarLinks));
                             }
-
-                            //if (nodeToStarEntity.ContainsKey(currentTuple.Item2))
-                            //{
-                            //    nodeToStarEntity[currentTuple.Item2] = starEntity;
-                            //}
-                            //else
-                            //{
-                            //    nodeToStarEntity.Add(currentTuple.Item2, starEntity);
-                            //}
 
                             this.alreadyEncounteredStarEntities.Add(starEntity);
                             this.alreadyEncounteredNodes.Add(currentTuple.Item2);
-
-                            //this.pathStarEntities.Push(starEntity);
 
                             this.constellationStack.Pop();
                             this.pathStarEntities.Pop();
@@ -161,9 +151,9 @@ namespace Metempsychoid.Model.Constellations
             //Stack<StarEntity> potentialStarEntity = this.CreatePotentialStarEntitiesFrom(boardGameLayer, null, out bool alreadyExploredNode);
         }
 
-        private void UpdateMapping(BoardGameLayer boardGameLayer,
+        private void UpdateMapping(Dictionary<StarEntity, List<StarLinkEntity>> starEntityToStarLinks,
             Dictionary<ConstellationNode, StarEntity> nodeToStarEntity, 
-            Dictionary<ConstellationLink, StarLinkEntity> linkToStarLinkEntity,
+            Dictionary<ConstellationLink, List<StarLinkEntity>> linkToStarLinkEntity,
             Tuple<ConstellationLink, ConstellationNode> currentTuple, 
             StarEntity starEntity)
         {
@@ -178,22 +168,15 @@ namespace Metempsychoid.Model.Constellations
 
             if(currentTuple.Item1 != null)
             {
-                StarEntity fromStar = this.pathStarEntities.Peek();
+                List<StarLinkEntity> starLinks = starEntityToStarLinks[starEntity];
 
-                foreach(StarLinkEntity link in boardGameLayer.StarToLinks[fromStar])
+                if (linkToStarLinkEntity.ContainsKey(currentTuple.Item1))
                 {
-                    if(link.StarFrom == starEntity
-                        || link.StarTo == starEntity)
-                    {
-                        if (linkToStarLinkEntity.ContainsKey(currentTuple.Item1))
-                        {
-                            linkToStarLinkEntity[currentTuple.Item1] = link;
-                        }
-                        else
-                        {
-                            linkToStarLinkEntity.Add(currentTuple.Item1, link);
-                        }
-                    }
+                    linkToStarLinkEntity[currentTuple.Item1] = starLinks;
+                }
+                else
+                {
+                    linkToStarLinkEntity.Add(currentTuple.Item1, starLinks);
                 }
             }
         }
@@ -224,11 +207,13 @@ namespace Metempsychoid.Model.Constellations
             this.pathStarEntities = currentSnapshot.CurrentPathStarEntities;
         }
 
-        private Stack<StarEntity> CreatePotentialStarEntitiesFrom(BoardGameLayer boardGameLayer, Dictionary<ConstellationNode, StarEntity> nodeToStarEntity, out bool alreadyExploredNode)
+        private Stack<StarEntity> CreatePotentialStarEntitiesFrom(BoardGameLayer boardGameLayer, Dictionary<ConstellationNode, StarEntity> nodeToStarEntity, out bool alreadyExploredNode, out Dictionary<StarEntity, List<StarLinkEntity>> starEntityToStarLinks)
         {
             Stack<StarEntity> potentialStarEntities = new Stack<StarEntity>();
 
             StarEntity currentStarEntity = this.pathStarEntities.Peek();
+
+            starEntityToStarLinks = new Dictionary<StarEntity, List<StarLinkEntity>>();
 
             Tuple<ConstellationLink, ConstellationNode> currentConstellationTuple = constellationStack.Peek();
 
@@ -236,7 +221,7 @@ namespace Metempsychoid.Model.Constellations
 
             if (currentConstellationTuple.Item1 != null)
             {
-                potentialStarEntities = currentConstellationTuple.Item1.GetPotentialLinkedStars(boardGameLayer, currentStarEntity);
+                potentialStarEntities = currentConstellationTuple.Item1.GetPotentialLinkedStars(boardGameLayer, currentStarEntity, out starEntityToStarLinks);
 
                 if (alreadyExploredNode)
                 {
@@ -352,6 +337,12 @@ namespace Metempsychoid.Model.Constellations
 
             private Tuple<ConstellationLink, ConstellationNode> currentTopStack;
 
+            public Dictionary<StarEntity, List<StarLinkEntity>> CurrentStarEntityToStarLinks
+            {
+                get;
+                private set;
+            }
+
             public HashSet<ConstellationNode> CurrentEncouteredNodes
             {
                 get
@@ -398,8 +389,10 @@ namespace Metempsychoid.Model.Constellations
                 private set;
             }
 
-            public Snapshot(ConstellationPattern parentConstellationPattern, Stack<StarEntity> potentialStarEntities)
+            public Snapshot(ConstellationPattern parentConstellationPattern, Stack<StarEntity> potentialStarEntities, Dictionary<StarEntity, List<StarLinkEntity>> starEntityToStarLinks)
             {
+                this.CurrentStarEntityToStarLinks = starEntityToStarLinks;
+
                 this.currentStack = new Stack<Tuple<ConstellationLink, ConstellationNode>>(parentConstellationPattern.constellationStack);
                 this.currentTopStack = parentConstellationPattern.constellationStack.Peek();
 

@@ -33,13 +33,15 @@ namespace Metempsychoid.Model.Constellations
             this.Node2 = node2;
         }
 
-        public Stack<StarEntity> GetPotentialLinkedStars(BoardGameLayer boardGameLayer, StarEntity fromStar)
+        public Stack<StarEntity> GetPotentialLinkedStars(BoardGameLayer boardGameLayer, StarEntity fromStar, out Dictionary<StarEntity, List<StarLinkEntity>> starEntityToStarLinks)
         {
             Stack<StarEntity> result = new Stack<StarEntity>();
 
             HashSet<StarLinkEntity> linksConnectedToStar = boardGameLayer.StarToLinks[fromStar];
 
-            foreach(StarLinkEntity starLinks in linksConnectedToStar)
+            starEntityToStarLinks = new Dictionary<StarEntity, List<StarLinkEntity>>();
+
+            foreach (StarLinkEntity starLinks in linksConnectedToStar)
             {
                 if (this.IsStarLinkValid(starLinks))
                 {
@@ -54,6 +56,8 @@ namespace Metempsychoid.Model.Constellations
                     }
 
                     result.Push(starEntity);
+
+                    starEntityToStarLinks.Add(starEntity, new List<StarLinkEntity>() { starLinks });
                 }
             }
 

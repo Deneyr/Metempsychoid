@@ -22,7 +22,7 @@ namespace Metempsychoid.Model.Constellations
             private set;
         }
 
-        public Dictionary<ConstellationLink, StarLinkEntity> LinkToStarLinkEntity
+        public Dictionary<ConstellationLink, List<StarLinkEntity>> LinkToStarLinkEntity
         {
             get;
             private set;
@@ -62,7 +62,7 @@ namespace Metempsychoid.Model.Constellations
             this.constellationPattern = constellationPattern;
 
             this.NodeToStarEntity = new Dictionary<ConstellationNode, StarEntity>();
-            this.LinkToStarLinkEntity = new Dictionary<ConstellationLink, StarLinkEntity>();
+            this.LinkToStarLinkEntity = new Dictionary<ConstellationLink, List<StarLinkEntity>>();
 
             this.isAwakened = false;
         }
