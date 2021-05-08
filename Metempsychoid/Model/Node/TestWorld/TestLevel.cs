@@ -170,15 +170,26 @@ namespace Metempsychoid.Model.Node.TestWorld
                 boardGameLayer.MoveCardOverBoard(cardToMove, startPosition);
             }
 
-            if (this.CheckFocusCardEvent(world, out CardEntity cardFocused))
+            if (this.CheckFocusCardHandEvent(world, out CardEntity cardHandFocused, out string detailsHandFocused))
             {
                 if (boardGameLayer.CardEntityPicked == null)
                 {
-                    boardPlayerLayer.CardEntityFocused = cardFocused;
+                    boardPlayerLayer.CardEntityFocused = cardHandFocused;
+
+                    boardGameLayer.CardEntityFocused = null;
                 }
             }
 
-            if(this.CheckPickCardEvent(world, out CardEntity cardPicked, out string detailsPicked))
+
+            if (this.CheckFocusCardBoardEvent(world, out CardEntity cardBoardFocused, out string detailsBoardFocused))
+            {
+                if (boardGameLayer.CardEntityPicked == null && boardPlayerLayer.CardEntityFocused == null)
+                {
+                    boardGameLayer.CardEntityFocused = cardBoardFocused;
+                }
+            }
+
+            if (this.CheckPickCardEvent(world, out CardEntity cardPicked, out string detailsPicked))
             {
                 if (cardPicked != null)
                 {
@@ -265,15 +276,37 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
-        private bool CheckFocusCardEvent(World world, out CardEntity cardEntity)
+        private bool CheckFocusCardHandEvent(World world, out CardEntity cardEntity, out string detailsFocused)
         {
             cardEntity = null;
+            detailsFocused = null;
 
             foreach (GameEvent gameEvent in this.pendingGameEvents)
             {
-                if (gameEvent.Type == EventType.FOCUS_CARD)
+                if (gameEvent.Type == EventType.FOCUS_CARD_HAND)
                 {
                     cardEntity = gameEvent.Entity as CardEntity;
+
+                    detailsFocused = gameEvent.Details;
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckFocusCardBoardEvent(World world, out CardEntity cardEntity, out string detailsFocused)
+        {
+            cardEntity = null;
+            detailsFocused = null;
+
+            foreach (GameEvent gameEvent in this.pendingGameEvents)
+            {
+                if (gameEvent.Type == EventType.FOCUS_CARD_BOARD)
+                {
+                    cardEntity = gameEvent.Entity as CardEntity;
+
+                    detailsFocused = gameEvent.Details;
 
                     return true;
                 }

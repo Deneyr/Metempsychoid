@@ -255,7 +255,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
                 if (this.world2D.TryGetTarget(out World2D world))
                 {
-                    world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.FOCUS_CARD, associatedCardFocused, null));
+                    world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.FOCUS_CARD_HAND, associatedCardFocused, null));
                 }
             }     
         }

@@ -12,6 +12,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 {
     public class BoardGameLayer: EntityLayer.EntityLayer
     {
+        private CardEntity cardFocused;
+
         public Dictionary<StarEntity, HashSet<StarLinkEntity>> StarToLinks
         {
             get;
@@ -36,9 +38,32 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             private set;
         }
 
+        public CardEntity CardEntityFocused
+        {
+            get
+            {
+                return this.cardFocused;
+            }
+
+            set
+            {
+                if (value != this.cardFocused)
+                {
+                    if (value == null || this.Entities.Contains(value))
+                    {
+                        this.cardFocused = value;
+
+                        this.NotifyCardFocused(this.cardFocused);
+                    }
+                }
+            }
+        }
+
         public event Action<CardEntity> CardPicked;
 
         public event Action<CardEntity> CardUnpicked;
+
+        public event Action<CardEntity> CardFocused;
 
         public BoardGameLayer()
         {
@@ -313,20 +338,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.AddCurvedStarLink(star14, star11, 1200);
 
             //// Cards
-
-            //Random rand = new Random();
-            //Player.Player player;
-            //if (rand.NextDouble() < 0.5)
-            //{
-            //    player = new Player.Player(SFML.Graphics.Color.Green);
-            //}
-            //else
-            //{
-            //    player = new Player.Player(SFML.Graphics.Color.Red);
-            //}
-
-            //Card.Card card = new Card.Card(new CardTemplate("wheel", 1), player);
-            //this.AddEntityToLayer(new CardEntity(this, card, false));
+            this.cardFocused = null;
         }
 
         protected void NotifyCardPicked(CardEntity cardPicked)
@@ -337,6 +349,11 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
         protected void NotifyCardUnpicked(CardEntity cardUnpicked)
         {
             this.CardUnpicked?.Invoke(cardUnpicked);
+        }
+
+        protected void NotifyCardFocused(CardEntity cardFocused)
+        {
+            this.CardFocused?.Invoke(cardFocused);
         }
     }
 }

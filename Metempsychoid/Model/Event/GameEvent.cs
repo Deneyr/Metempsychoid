@@ -40,7 +40,8 @@ namespace Metempsychoid.Model.Event
     {
         LEVEL_PHASE_CHANGE,
         DRAW_CARD,
-        FOCUS_CARD,
+        FOCUS_CARD_HAND,
+        FOCUS_CARD_BOARD,
         PICK_CARD,
         SOCKET_CARD,
         MOVE_CARD_OVERBOARD

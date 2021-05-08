@@ -82,11 +82,14 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             {
                 if (value != this.cardFocused)
                 {
-                    this.cardFocused = value;
+                    if (value == null || this.Entities.Contains(value))
+                    {
+                        this.cardFocused = value;
 
-                    this.UpdateCardsHandPosition();
+                        this.UpdateCardsHandPosition();
 
-                    this.NotifyCardFocused(this.cardFocused);
+                        this.NotifyCardFocused(this.cardFocused);
+                    }
                 }
             }
         }

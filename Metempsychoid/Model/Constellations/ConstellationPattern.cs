@@ -95,6 +95,9 @@ namespace Metempsychoid.Model.Constellations
                     {
                         StarEntity starEntity = potentialStarEntities.Pop();
 
+                        // To construct previously
+                        this.UpdateMapping(boardGameLayer, nodeToStarEntity, linkToStarLinkEntity, currentTuple, starEntity);
+
                         if (alreadyExploredNode == false)
                         {
                             if (isRewind == false && potentialStarEntities.Any())
@@ -110,8 +113,6 @@ namespace Metempsychoid.Model.Constellations
                             //{
                             //    nodeToStarEntity.Add(currentTuple.Item2, starEntity);
                             //}
-
-                            this.UpdateMapping(boardGameLayer, nodeToStarEntity, linkToStarLinkEntity, currentTuple, starEntity);
 
                             this.alreadyEncounteredStarEntities.Add(starEntity);
                             this.alreadyEncounteredNodes.Add(currentTuple.Item2);
