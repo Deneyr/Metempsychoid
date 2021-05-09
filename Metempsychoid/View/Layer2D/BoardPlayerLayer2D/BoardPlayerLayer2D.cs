@@ -25,7 +25,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         private List<CardEntity2D> cardsHand;
 
         private CardEntity2D cardDrew;
-        private CardEntity2D cardFocused;
+        //private CardEntity2D cardFocused;
 
         private CardToolTip cardToolTip;
 
@@ -100,7 +100,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.LevelTurnPhase = TurnPhase.VOID;
             this.cardDrew = null;
-            this.cardFocused = null;
+            // this.cardFocused = null;
 
             this.cardToolTip = new CardToolTip(this);
 
@@ -181,6 +181,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         protected override void OnLevelStateChanged(string obj)
         {
             this.LevelTurnPhase = (TurnPhase)Enum.Parse(typeof(TurnPhase), obj.ToString());
+
+            this.FocusedGraphicEntity2D = null;
         }
 
         public override void UpdateGraphics(Time deltaTime)
@@ -203,6 +205,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
+        protected override IEnumerable<AEntity2D> GetEntities2DFocusable()
+        {
+            return this.cardsHand.Where(pElem => (pElem as CardEntity2D).IsFocusable);
+        }
+
         private void UpdateCardsToDraw()
         {
             if (this.cardDrew != null
@@ -214,10 +221,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             if (this.nbCardsToDraw > 0
                 && this.cardDrew == null)
             {
-                if (this.world2D.TryGetTarget(out World2D world))
-                {
-                    world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.DRAW_CARD, null, string.Empty));
-                }
+                this.SendEventToWorld(Model.Event.EventType.DRAW_CARD, null, string.Empty);
             }
         }
 
@@ -241,23 +245,25 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private void UpdateMainPhase(Time deltaTime)
         {
-            CardEntity2D cardFocused = this.GetCardFocused();
+            this.UpdateFocusedEntity2Ds();
 
-            if (cardFocused != this.cardFocused)
-            {
-                this.cardFocused = cardFocused;
+            //CardEntity2D cardFocused = this.GetCardFocused();
 
-                AEntity associatedCardFocused = null;
-                if (this.cardFocused != null)
-                {
-                    associatedCardFocused = this.object2DToObjects[cardFocused];
-                }
+            //if (cardFocused != this.cardFocused)
+            //{
+            //    this.cardFocused = cardFocused;
 
-                if (this.world2D.TryGetTarget(out World2D world))
-                {
-                    world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.FOCUS_CARD_HAND, associatedCardFocused, null));
-                }
-            }     
+            //    AEntity associatedCardFocused = null;
+            //    if (this.cardFocused != null)
+            //    {
+            //        associatedCardFocused = this.object2DToObjects[cardFocused];
+            //    }
+
+            //    if (this.world2D.TryGetTarget(out World2D world))
+            //    {
+            //        world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.FOCUS_CARD_HAND, associatedCardFocused, null));
+            //    }
+            //}     
         }
 
         public override bool OnControlActivated(Controls.ControlEventType eventType, string details)
@@ -265,67 +271,75 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             switch (this.levelTurnPhase)
             {
                 case TurnPhase.MAIN:
-                    if(eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "pressed"
-                        && this.cardFocused != null)
+                    //if(eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "pressed"
+                    //    && this.cardFocused != null)
+                    //{
+                    //    Vector2i mousePosition = this.MousePosition;
+
+                    //    mousePosition.Y -= (int)(this.view.Size.Y / 2);
+
+                    //    AEntity associatedCardFocused = this.object2DToObjects[this.cardFocused];
+
+                    //    if (this.world2D.TryGetTarget(out World2D world))
+                    //    {
+                    //        world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, associatedCardFocused, mousePosition.X + ":" + mousePosition.Y));
+                    //    }
+                    //}
+                    //else if(eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
+                    //{
+                    //    Vector2i mousePosition = this.MousePosition;
+
+                    //    mousePosition.Y -= (int)(this.view.Size.Y / 2);
+
+                    //    if (this.world2D.TryGetTarget(out World2D world))
+                    //    {
+                    //        world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y));
+                    //    }
+                    //}
+
+                    if (eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
                     {
                         Vector2i mousePosition = this.MousePosition;
 
                         mousePosition.Y -= (int)(this.view.Size.Y / 2);
 
-                        AEntity associatedCardFocused = this.object2DToObjects[this.cardFocused];
-
-                        if (this.world2D.TryGetTarget(out World2D world))
-                        {
-                            world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, associatedCardFocused, mousePosition.X + ":" + mousePosition.Y));
-                        }
+                        this.SendEventToWorld(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y);
                     }
-                    else if(eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
-                    {
-                        Vector2i mousePosition = this.MousePosition;
+                    base.OnControlActivated(eventType, details);
 
-                        mousePosition.Y -= (int)(this.view.Size.Y / 2);
-
-                        if (this.world2D.TryGetTarget(out World2D world))
-                        {
-                            world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y));
-                        }
-                    }
                     break;
             }
 
             return true;
         }
 
-        private CardEntity2D GetCardFocused()
-        {
-            CardEntity2D cardFocused = null;
+        //private CardEntity2D GetCardFocused()
+        //{
+        //    CardEntity2D cardFocused = null;
 
-            Vector2i mousePosition = this.MousePosition;
+        //    Vector2i mousePosition = this.MousePosition;
 
-            foreach (CardEntity2D cardDeck in this.cardsHand)
-            {
-                if(cardDeck.IsFocusable
-                    && cardDeck is IHitRect
-                    && (cardDeck as IHitRect).HitZone.Contains(mousePosition.X, mousePosition.Y))
-                {
-                    if(cardFocused == null
-                        || Math.Abs(mousePosition.X - cardDeck.Position.X) + Math.Abs(mousePosition.Y - cardDeck.Position.Y) 
-                        < Math.Abs(mousePosition.X - cardFocused.Position.X) + Math.Abs(mousePosition.Y - cardFocused.Position.Y))
-                    {
-                        cardFocused = cardDeck;
-                    }
-                }
-            }
+        //    foreach (CardEntity2D cardDeck in this.cardsHand)
+        //    {
+        //        if(cardDeck.IsFocusable
+        //            && cardDeck is IHitRect
+        //            && (cardDeck as IHitRect).HitZone.Contains(mousePosition.X, mousePosition.Y))
+        //        {
+        //            if(cardFocused == null
+        //                || Math.Abs(mousePosition.X - cardDeck.Position.X) + Math.Abs(mousePosition.Y - cardDeck.Position.Y) 
+        //                < Math.Abs(mousePosition.X - cardFocused.Position.X) + Math.Abs(mousePosition.Y - cardFocused.Position.Y))
+        //            {
+        //                cardFocused = cardDeck;
+        //            }
+        //        }
+        //    }
 
-            return cardFocused;
-        }
+        //    return cardFocused;
+        //}
 
         private void GoOnTurnPhase(TurnPhase nextTurnPhase)
         {
-            if (this.world2D.TryGetTarget(out World2D world))
-            {
-                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase)));
-            }
+            this.SendEventToWorld(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase));
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

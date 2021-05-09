@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Metempsychoid.Model;
+using Metempsychoid.Model.Event;
 using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.BackgroundLayer2D;
 using SFML.Graphics;
@@ -23,6 +24,9 @@ namespace Metempsychoid.View
         protected Dictionary<AEntity, AEntity2D> objectToObject2Ds;
         protected Dictionary<AEntity2D, AEntity> object2DToObjects;
 
+        //protected HashSet<IHitRect> focusedEntity2Ds;
+        protected IHitRect focusedGraphicEntity2D;
+
         private bool mustUpdateMousePosition;
         private Vector2i mousePositionRelativeToWindow;
         protected float zoom;
@@ -37,6 +41,32 @@ namespace Metempsychoid.View
         {
             get;
             protected set;
+        }
+
+        protected IHitRect FocusedGraphicEntity2D
+        {
+            get
+            {
+                return this.focusedGraphicEntity2D;
+            }
+
+            set
+            {
+                if (this.focusedGraphicEntity2D != value)
+                {
+                    if (this.focusedGraphicEntity2D != null)
+                    {
+                        this.focusedGraphicEntity2D.OnMouseUnFocused(this, ControlEventType.MOUSE_MOVED);
+                    }
+
+                    this.focusedGraphicEntity2D = value;
+
+                    if (this.focusedGraphicEntity2D != null)
+                    {
+                        this.focusedGraphicEntity2D.OnMouseFocused(this, ControlEventType.MOUSE_MOVED);
+                    }
+                }
+            }
         }
 
         public override Vector2f Position
@@ -175,6 +205,8 @@ namespace Metempsychoid.View
             this.objectToObject2Ds = new Dictionary<AEntity, AEntity2D>();
             this.object2DToObjects = new Dictionary<AEntity2D, AEntity>();
 
+            //this.focusedEntity2Ds = new HashSet<IHitRect>();
+
             this.world2D = new WeakReference<World2D>(world2D);
 
             this.zoom = 1;
@@ -205,6 +237,9 @@ namespace Metempsychoid.View
         {
             this.mustUpdateMousePosition = false;
 
+            //this.focusedEntity2Ds.Clear();
+            this.focusedGraphicEntity2D = null;
+
             foreach (AEntity entity in this.parentLayer.Entities)
             {
                 this.AddEntity(entity);
@@ -223,7 +258,14 @@ namespace Metempsychoid.View
 
         protected virtual void OnEntityRemoved(AEntity obj)
         {
-            this.object2DToObjects.Remove(this.objectToObject2Ds[obj]);
+            AEntity2D entity2DToRemove = this.objectToObject2Ds[obj];
+
+            if (this.FocusedGraphicEntity2D == entity2DToRemove)
+            {
+                this.FocusedGraphicEntity2D = null;
+            }
+
+            this.object2DToObjects.Remove(entity2DToRemove);
             this.objectToObject2Ds.Remove(obj);
         }
 
@@ -317,29 +359,41 @@ namespace Metempsychoid.View
             if(eventType == ControlEventType.MOUSE_LEFT_CLICK
                 || eventType == ControlEventType.MOUSE_RIGHT_CLICK)
             {
-                Vector2i windowPosition = new Vector2i((int) this.Position.X, (int) this.Position.Y);
+                //Vector2i windowPosition = new Vector2i((int) this.Position.X, (int) this.Position.Y);
 
-                Vector2i mousePosition = this.MousePosition;
+                //Vector2i mousePosition = this.MousePosition;
 
-                foreach (AEntity2D entity in this.objectToObject2Ds.Values)
+                //foreach (AEntity2D entity in this.objectToObject2Ds.Values)
+                //{
+                //    if (entity is IHitRect)
+                //    {
+                //        IHitRect hitRectEntity = entity as IHitRect;
+
+                //        if (hitRectEntity.HitZone.Contains(mousePosition.X, mousePosition.Y))
+                //        {
+                //            if (details == "pressed")
+                //            {
+                //                hitRectEntity.OnMousePressed(this, eventType);
+                //            }
+                //            else if (details == "released")
+                //            {
+                //                hitRectEntity.OnMouseReleased(this, eventType);
+                //            }
+                //        }
+                //    }
+                //}
+                if(this.FocusedGraphicEntity2D != null)
                 {
-                    if (entity is IHitRect)
+                    if (details == "pressed")
                     {
-                        IHitRect hitRectEntity = entity as IHitRect;
-
-                        if (hitRectEntity.HitZone.Contains(mousePosition.X, mousePosition.Y))
-                        {
-                            if (details == "pressed")
-                            {
-                                hitRectEntity.OnMousePressed(eventType);
-                            }
-                            else if (details == "released")
-                            {
-                                hitRectEntity.OnMouseReleased(eventType);
-                            }
-                        }
+                        this.FocusedGraphicEntity2D.OnMousePressed(this, eventType);
+                    }
+                    else if (details == "released")
+                    {
+                        this.FocusedGraphicEntity2D.OnMouseReleased(this, eventType);
                     }
                 }
+
             }
             return true;
         }
@@ -362,7 +416,45 @@ namespace Metempsychoid.View
 
         public virtual void UpdateGraphics(Time deltaTime)
         {
-            // To override
+            this.UpdateFocusedEntity2Ds();
+        }
+
+        protected virtual void UpdateFocusedEntity2Ds()
+        {
+            Vector2i mousePosition = this.MousePosition;
+
+            AEntity2D newFocusedEntity2D = null;
+            IEnumerable<AEntity2D> focusableEntities2D = this.GetEntities2DFocusable();
+            foreach (AEntity2D entity2D in focusableEntities2D)
+            {
+                IHitRect hitRect = entity2D as IHitRect;
+
+                if (hitRect != null
+                    && hitRect.HitZone.Contains(mousePosition.X, mousePosition.Y))
+                {
+                    if (newFocusedEntity2D == null
+                        || (Math.Abs(mousePosition.X - entity2D.Position.X) + Math.Abs(mousePosition.Y - entity2D.Position.Y)
+                            < Math.Abs(mousePosition.X - newFocusedEntity2D.Position.X) + Math.Abs(mousePosition.Y - newFocusedEntity2D.Position.Y)))
+                    {
+                        newFocusedEntity2D = entity2D;
+                    }
+                }
+            }
+
+            this.FocusedGraphicEntity2D = newFocusedEntity2D as IHitRect;
+        }
+
+        protected virtual IEnumerable<AEntity2D> GetEntities2DFocusable()
+        {
+            return this.objectToObject2Ds.Values; 
+        }
+
+        internal void SendEventToWorld(Model.Event.EventType eventType, AEntity entityConcerned, string details)
+        {
+            if (this.world2D.TryGetTarget(out World2D world))
+            {
+                world.SendEventToWorld(new GameEvent(eventType, entityConcerned, details));
+            }
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
@@ -403,6 +495,8 @@ namespace Metempsychoid.View
 
         public virtual void FlushEntities()
         {
+            this.focusedGraphicEntity2D = null;
+
             foreach (IObject2D object2D in this.objectToObject2Ds.Values)
             {
                 object2D.Dispose();

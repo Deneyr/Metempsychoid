@@ -225,14 +225,45 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             window.Draw(this.ObjectSprite, this.render);
         }
 
-        public void OnMousePressed(ControlEventType eventType)
+        public void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
         {
 
         }
 
-        public void OnMouseReleased(ControlEventType eventType)
+        public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
+            if (parentLayer is BoardGameLayer2D)
+            {
+                BoardGameLayer2D boardGameLayer2D = (parentLayer as BoardGameLayer2D);
+                if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
+                {
+                    if (boardGameLayer2D.CardPicked != null)
+                    {
+                        StarEntity starEntity = parentLayer.GetEntityFromEntity2D(this) as StarEntity;
+                        CardEntity cardEntity = parentLayer.GetEntityFromEntity2D(boardGameLayer2D.CardPicked) as CardEntity;
 
+                        if (starEntity.CanSocketCard(cardEntity))
+                        {
+                            boardGameLayer2D.SendEventToWorld(Model.Event.EventType.SOCKET_CARD, starEntity, null);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            StarEntity starEntity = parentLayer.GetEntityFromEntity2D(this) as StarEntity;
+
+            if (starEntity.CardSocketed != null && starEntity.CardSocketed.Card.IsAwakened)
+            {
+                parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_BOARD, starEntity.CardSocketed, null);
+            }
+        }
+
+        public void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_BOARD, null, null);
         }
 
         public enum StarState

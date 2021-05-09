@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using Metempsychoid.View.Controls;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using static Metempsychoid.View.Text2D.TextParagraph2D;
 
 namespace Metempsychoid.View.Text2D
 {
-    public class TextCanevas2D : AEntity2D
+    public class TextCanevas2D : AEntity2D, IHitRect
     {
         protected static TextParagraphFactory textParagraphFactory;
 
@@ -117,6 +118,15 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
+        public IntRect HitZone
+        {
+            get
+            {
+                Vector2f canevasPosition = this.Position;
+                IntRect canevas = this.Canevas;
+                return new IntRect((int)canevasPosition.X, (int)canevasPosition.Y, canevas.Width, canevas.Height);
+            }
+        }
 
         public void ActiveOnlyParagraph(int index)
         {
@@ -182,6 +192,26 @@ namespace Metempsychoid.View.Text2D
                     textParagraph2D.DrawIn(window, deltaTime);
                 }
             }
+        }
+
+        public void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            
+        }
+
+        public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            
+        }
+
+        public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            
+        }
+
+        public void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            
         }
     }
 }

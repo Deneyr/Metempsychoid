@@ -110,10 +110,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         private void GoOnTurnPhase(TurnPhase nextTurnPhase)
         {
-            if (this.world2D.TryGetTarget(out World2D world))
-            {
-                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase)));
-            }
+            this.SendEventToWorld(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase));
         }
 
         public override void FlushEntities()

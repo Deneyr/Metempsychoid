@@ -435,14 +435,32 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
-        public void OnMousePressed(ControlEventType eventType)
+        // Part IHitRect
+
+        public void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
         {
 
         }
 
-        public void OnMouseReleased(ControlEventType eventType)
+        public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
+            Vector2i mousePosition = parentLayer.MousePosition;
 
+            mousePosition.Y -= (int)(this.Bounds.Height / 2);
+            if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
+            {
+                parentLayer.SendEventToWorld(Model.Event.EventType.PICK_CARD, parentLayer.GetEntityFromEntity2D(this), mousePosition.X + ":" + mousePosition.Y);
+            }
+        }
+
+        public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_HAND, parentLayer.GetEntityFromEntity2D(this), null);
+        }
+
+        public void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_HAND, null, null);
         }
 
         public enum CardSideState

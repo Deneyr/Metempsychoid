@@ -78,8 +78,8 @@ namespace Metempsychoid
                 this.Window.Display();
             }
 
-            this.World2D.Dispose();
             this.World.Dispose();
+            this.World2D.Dispose();
         }      
     }
 }

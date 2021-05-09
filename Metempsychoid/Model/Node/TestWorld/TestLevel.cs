@@ -280,38 +280,50 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             cardEntity = null;
             detailsFocused = null;
+            bool encounterGameEvent = false;
 
             foreach (GameEvent gameEvent in this.pendingGameEvents)
             {
                 if (gameEvent.Type == EventType.FOCUS_CARD_HAND)
                 {
-                    cardEntity = gameEvent.Entity as CardEntity;
+                    if (cardEntity == null
+                        || gameEvent.Entity != null)
+                    {
+                        cardEntity = gameEvent.Entity as CardEntity;
 
-                    detailsFocused = gameEvent.Details;
+                        detailsFocused = gameEvent.Details;
 
-                    return true;
+                        encounterGameEvent = true;
+                    }
                 }
             }
-            return false;
+
+            return encounterGameEvent;
         }
 
         private bool CheckFocusCardBoardEvent(World world, out CardEntity cardEntity, out string detailsFocused)
         {
             cardEntity = null;
             detailsFocused = null;
+            bool encounterGameEvent = false;
 
             foreach (GameEvent gameEvent in this.pendingGameEvents)
             {
                 if (gameEvent.Type == EventType.FOCUS_CARD_BOARD)
                 {
-                    cardEntity = gameEvent.Entity as CardEntity;
+                    if (cardEntity == null
+                        || gameEvent.Entity != null)
+                    {
+                        cardEntity = gameEvent.Entity as CardEntity;
 
-                    detailsFocused = gameEvent.Details;
+                        detailsFocused = gameEvent.Details;
 
-                    return true;
+                        encounterGameEvent = true;
+                    }
                 }
             }
-            return false;
+
+            return encounterGameEvent;
         }
 
         private bool CheckMoveCardOverboardEvent(World world, out CardEntity cardEntity, out string details)
