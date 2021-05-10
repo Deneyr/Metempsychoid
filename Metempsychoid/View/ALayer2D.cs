@@ -267,6 +267,8 @@ namespace Metempsychoid.View
 
             this.object2DToObjects.Remove(entity2DToRemove);
             this.objectToObject2Ds.Remove(obj);
+
+            entity2DToRemove.Dispose();
         }
 
         protected virtual void OnEntityAdded(AEntity obj)
@@ -430,6 +432,7 @@ namespace Metempsychoid.View
                 IHitRect hitRect = entity2D as IHitRect;
 
                 if (hitRect != null
+                    && hitRect.IsFocusable(this)
                     && hitRect.HitZone.Contains(mousePosition.X, mousePosition.Y))
                 {
                     if (newFocusedEntity2D == null

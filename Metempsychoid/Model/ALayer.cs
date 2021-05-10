@@ -124,7 +124,7 @@ namespace Metempsychoid.Model
 
         public virtual void RemoveEntityFromLayer(AEntity entity)
         {
-            AObject.animationManager.StopAnimation(entity);
+            //AObject.animationManager.StopAnimation(entity);
 
             this.entities.Remove(entity);
 

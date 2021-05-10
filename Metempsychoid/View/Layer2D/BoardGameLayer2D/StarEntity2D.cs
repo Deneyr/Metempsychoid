@@ -266,6 +266,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_BOARD, null, null);
         }
 
+        public bool IsFocusable(ALayer2D parentLayer)
+        {
+            return this.IsActive;
+        }
+
         public enum StarState
         {
             NOT_ACTIVE,

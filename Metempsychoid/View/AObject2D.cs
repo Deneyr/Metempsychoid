@@ -63,7 +63,7 @@ namespace Metempsychoid.View
 
         public virtual void Dispose()
         {
-            // To override
+            AObject2D.animationManager.StopAnimation(this);
         }
 
         public abstract void DrawIn(RenderWindow window, Time deltaTime);

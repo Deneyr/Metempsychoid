@@ -213,5 +213,10 @@ namespace Metempsychoid.View.Text2D
         {
             
         }
+
+        public bool IsFocusable(ALayer2D parentLayer)
+        {
+            return true;
+        }
     }
 }

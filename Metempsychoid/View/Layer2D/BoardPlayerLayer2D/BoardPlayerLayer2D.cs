@@ -207,7 +207,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         protected override IEnumerable<AEntity2D> GetEntities2DFocusable()
         {
-            return this.cardsHand.Where(pElem => (pElem as CardEntity2D).IsFocusable);
+            return this.cardsHand;
         }
 
         private void UpdateCardsToDraw()

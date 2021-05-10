@@ -75,6 +75,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 target.EntityPropertyChanged -= this.OnEntityPropertyChanged;
             }
+            base.Dispose();
         }
 
     }

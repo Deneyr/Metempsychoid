@@ -99,14 +99,6 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
-        public bool IsFocusable
-        {
-            get
-            {
-                return this.cooldownFocus <= 0;
-            }
-        }
-
         public float RatioColor
         {
             get
@@ -444,12 +436,16 @@ namespace Metempsychoid.View.Card2D
 
         public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
-            Vector2i mousePosition = parentLayer.MousePosition;
-
-            mousePosition.Y -= (int)(this.Bounds.Height / 2);
-            if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
+            Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D boardPlayerLayer2D = parentLayer as Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D;
+            if (boardPlayerLayer2D != null && boardPlayerLayer2D.LevelTurnPhase == Model.Node.TestWorld.TurnPhase.MAIN)
             {
-                parentLayer.SendEventToWorld(Model.Event.EventType.PICK_CARD, parentLayer.GetEntityFromEntity2D(this), mousePosition.X + ":" + mousePosition.Y);
+                Vector2i mousePosition = parentLayer.MousePosition;
+
+                mousePosition.Y -= (int)(this.Bounds.Height / 2);
+                if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
+                {
+                    parentLayer.SendEventToWorld(Model.Event.EventType.PICK_CARD, parentLayer.GetEntityFromEntity2D(this), mousePosition.X + ":" + mousePosition.Y);
+                }
             }
         }
 
@@ -461,6 +457,16 @@ namespace Metempsychoid.View.Card2D
         public void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
         {
             parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_HAND, null, null);
+        }
+
+        bool IHitRect.IsFocusable(ALayer2D parentLayer)
+        {
+            Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D boardPlayerLayer2D = parentLayer as Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D;
+            if (boardPlayerLayer2D != null)
+            {
+                return this.cooldownFocus <= 0 && boardPlayerLayer2D.LevelTurnPhase == Model.Node.TestWorld.TurnPhase.MAIN;
+            }
+            return false;
         }
 
         public enum CardSideState

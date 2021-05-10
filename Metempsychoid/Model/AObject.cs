@@ -65,7 +65,7 @@ namespace Metempsychoid.Model
 
         public virtual void Dispose()
         {
-            // To override
+            AObject.animationManager.StopAnimation(this);
         }
     }
 }
