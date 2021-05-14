@@ -9,16 +9,20 @@ using SFML.System;
 
 namespace Metempsychoid.View.Text2D
 {
-    public abstract class AButton2D : TextParagraph2D, IHitRect
+    public abstract class AButton2D : TextCanevas2D, IHitRect
     {
-        public AButton2D(TextCanevas2D textCanevas2D, Vector2f positionOffsetTopLeft, Vector2f positionOffsetBotRight, Alignment alignment, uint characterSize) 
-            : base(textCanevas2D, positionOffsetTopLeft, positionOffsetBotRight, alignment, characterSize)
+        public AButton2D(ALayer2D parentLayer) : base(parentLayer)
         {
         }
 
-        public abstract IntRect HitZone
+        public IntRect HitZone
         {
-            get;
+            get
+            {
+                Vector2f canevasPosition = this.Position;
+                IntRect canevas = this.Canevas;
+                return new IntRect((int)canevasPosition.X, (int)canevasPosition.Y, canevas.Width, canevas.Height);
+            }
         }
 
         public abstract bool IsFocusable(ALayer2D parentLayer);

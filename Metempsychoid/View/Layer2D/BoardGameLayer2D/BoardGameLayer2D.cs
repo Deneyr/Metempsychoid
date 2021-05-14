@@ -20,6 +20,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
     {
         private List<CardEntity2D> cardsOnBoard;
 
+        private int maxAwakenedPriority;
+
         private CardEntity2D cardPicked;
 
         private CardEntity2D cardFocused;
@@ -87,6 +89,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         public override void InitializeLayer(IObject2DFactory factory)
         {
+            this.maxAwakenedPriority = 0;
+
             this.cardsOnBoard.Clear();
 
             this.linksFocused.Clear();
@@ -199,7 +203,10 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     (this.objectToObject2Ds[obj] as CardEntity2D).IsFliped = (obj as CardEntity).IsFliped;
                     break;
                 case "IsAwakened":
-                    (this.objectToObject2Ds[obj] as CardEntity2D).IsAwakened = (obj as CardEntity).Card.IsAwakened;
+                    CardEntity2D cardAwakened = this.objectToObject2Ds[obj] as CardEntity2D;
+                    cardAwakened.IsAwakened = (obj as CardEntity).Card.IsAwakened;
+
+                    cardAwakened.Priority = 10000 + this.maxAwakenedPriority++;
                     break;
             }
         }

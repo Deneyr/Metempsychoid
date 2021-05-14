@@ -436,15 +436,18 @@ namespace Metempsychoid.View.Card2D
 
         public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
-            Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D boardPlayerLayer2D = parentLayer as Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D;
-            if (boardPlayerLayer2D != null && boardPlayerLayer2D.LevelTurnPhase == Model.Node.TestWorld.TurnPhase.MAIN)
+            if (parentLayer.FocusedGraphicEntity2D == this)
             {
-                Vector2i mousePosition = parentLayer.MousePosition;
-
-                mousePosition.Y -= (int)(this.Bounds.Height / 2);
-                if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
+                Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D boardPlayerLayer2D = parentLayer as Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D;
+                if (boardPlayerLayer2D != null && boardPlayerLayer2D.LevelTurnPhase == Model.Node.TestWorld.TurnPhase.MAIN)
                 {
-                    parentLayer.SendEventToWorld(Model.Event.EventType.PICK_CARD, parentLayer.GetEntityFromEntity2D(this), mousePosition.X + ":" + mousePosition.Y);
+                    Vector2i mousePosition = parentLayer.MousePosition;
+
+                    mousePosition.Y -= (int)(this.Bounds.Height / 2);
+                    if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
+                    {
+                        parentLayer.SendEventToWorld(Model.Event.EventType.PICK_CARD, parentLayer.GetEntityFromEntity2D(this), mousePosition.X + ":" + mousePosition.Y);
+                    }
                 }
             }
         }

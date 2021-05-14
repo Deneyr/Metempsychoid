@@ -6,6 +6,7 @@ using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Controls;
+using Metempsychoid.View.Text2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -20,14 +21,16 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
     {
         private static float COOLDOWN_FOCUS = 2;
 
+        private List<AEntity2D> hittableEntities2D;
+
         private List<CardEntity2D> cardsDeck;
         private List<CardEntity2D> cardsCemetery;
         private List<CardEntity2D> cardsHand;
 
         private CardEntity2D cardDrew;
-        //private CardEntity2D cardFocused;
 
         private CardToolTip cardToolTip;
+        private EndTurnButton2D endTurnButton;
 
         private int maxPriority;
 
@@ -51,6 +54,12 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                     {
                         case TurnPhase.CREATE_HAND:
                             this.cardDrew = null;
+                            break;
+                        case TurnPhase.MAIN:
+                            this.endTurnButton.ActiveButton();
+                            break;
+                        case TurnPhase.END_TURN:
+                            this.endTurnButton.DeactiveButton();
                             break;
                     }
                 }
@@ -79,6 +88,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
 
+            this.hittableEntities2D = new List<AEntity2D>();
+
             layer.CardDrew += OnCardDrew;
             layer.NbCardsToDrawChanged += OnNbCardToDrawsChanged;
 
@@ -86,6 +97,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             layer.CardPicked += OnCardPicked;
             layer.CardUnpicked += OnCardUnpicked;
+
+            this.cardToolTip = new CardToolTip(this);
+            this.endTurnButton = new EndTurnButton2D(this);
         }
 
         public override void InitializeLayer(IObject2DFactory factory)
@@ -102,7 +116,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardDrew = null;
             // this.cardFocused = null;
 
-            this.cardToolTip = new CardToolTip(this);
+            IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+            this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.view.Size.Y / 2 - endTurnButtonCanvevas.Height / 2);
 
             base.InitializeLayer(factory);
 
@@ -181,13 +196,12 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         protected override void OnLevelStateChanged(string obj)
         {
             this.LevelTurnPhase = (TurnPhase)Enum.Parse(typeof(TurnPhase), obj.ToString());
-
-            this.FocusedGraphicEntity2D = null;
         }
 
         public override void UpdateGraphics(Time deltaTime)
         {
             this.cardToolTip.UpdateGraphics(deltaTime);
+            this.endTurnButton.UpdateGraphics(deltaTime);
 
             this.UpdateCardsToDraw();
 
@@ -207,7 +221,12 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         protected override IEnumerable<AEntity2D> GetEntities2DFocusable()
         {
-            return this.cardsHand;
+            this.hittableEntities2D.Clear();
+
+            this.hittableEntities2D.AddRange(this.cardsHand);
+            this.hittableEntities2D.Add(this.endTurnButton);
+
+            return this.hittableEntities2D;
         }
 
         private void UpdateCardsToDraw()
@@ -337,7 +356,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         //    return cardFocused;
         //}
 
-        private void GoOnTurnPhase(TurnPhase nextTurnPhase)
+        public void GoOnTurnPhase(TurnPhase nextTurnPhase)
         {
             this.SendEventToWorld(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase));
         }
@@ -350,6 +369,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             window.SetView(this.view);
 
             this.cardToolTip.DrawIn(window, deltaTime);
+            this.endTurnButton.DrawIn(window, deltaTime);
 
             window.SetView(defaultView);
         }

@@ -26,6 +26,7 @@ namespace Metempsychoid.View
 
         //protected HashSet<IHitRect> focusedEntity2Ds;
         protected IHitRect focusedGraphicEntity2D;
+        protected IHitRect selectedGraphicEntity2D;
 
         private bool mustUpdateMousePosition;
         private Vector2i mousePositionRelativeToWindow;
@@ -43,14 +44,14 @@ namespace Metempsychoid.View
             protected set;
         }
 
-        protected IHitRect FocusedGraphicEntity2D
+        public IHitRect FocusedGraphicEntity2D
         {
             get
             {
                 return this.focusedGraphicEntity2D;
             }
 
-            set
+            protected set
             {
                 if (this.focusedGraphicEntity2D != value)
                 {
@@ -66,6 +67,14 @@ namespace Metempsychoid.View
                         this.focusedGraphicEntity2D.OnMouseFocused(this, ControlEventType.MOUSE_MOVED);
                     }
                 }
+            }
+        }
+
+        public IHitRect SelectedGraphicEntity2D
+        {
+            get
+            {
+                return this.selectedGraphicEntity2D;
             }
         }
 
@@ -239,6 +248,7 @@ namespace Metempsychoid.View
 
             //this.focusedEntity2Ds.Clear();
             this.focusedGraphicEntity2D = null;
+            this.selectedGraphicEntity2D = null;
 
             foreach (AEntity entity in this.parentLayer.Entities)
             {
@@ -388,11 +398,15 @@ namespace Metempsychoid.View
                 {
                     if (details == "pressed")
                     {
-                        this.FocusedGraphicEntity2D.OnMousePressed(this, eventType);
+                        this.SetSelectedGraphicEntity2D(this.FocusedGraphicEntity2D, eventType);
                     }
-                    else if (details == "released")
+                }
+
+                if(this.SelectedGraphicEntity2D != null)
+                {
+                    if (details == "released")
                     {
-                        this.FocusedGraphicEntity2D.OnMouseReleased(this, eventType);
+                        this.SetSelectedGraphicEntity2D(null, eventType);
                     }
                 }
 
@@ -405,6 +419,24 @@ namespace Metempsychoid.View
             this.mousePositionRelativeToWindow = newPosition;
 
             this.UpdateMousePosition();
+        }
+
+        protected void SetSelectedGraphicEntity2D(IHitRect selectedEntity, ControlEventType eventType)
+        {
+            if (this.selectedGraphicEntity2D != selectedEntity)
+            {
+                if (this.selectedGraphicEntity2D != null)
+                {
+                    this.selectedGraphicEntity2D.OnMouseReleased(this, eventType);
+                }
+
+                this.selectedGraphicEntity2D = selectedEntity;
+
+                if (this.selectedGraphicEntity2D != null)
+                {
+                    this.selectedGraphicEntity2D.OnMousePressed(this, eventType);
+                }
+            }
         }
 
         protected void UpdateMousePosition()

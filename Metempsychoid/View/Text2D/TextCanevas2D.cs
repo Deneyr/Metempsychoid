@@ -10,11 +10,12 @@ using static Metempsychoid.View.Text2D.TextParagraph2D;
 
 namespace Metempsychoid.View.Text2D
 {
-    public class TextCanevas2D : AEntity2D, IHitRect
+    public class TextCanevas2D : AEntity2D
     {
         protected static TextParagraphFactory textParagraphFactory;
 
         protected List<TextParagraph2D> textParagraph2Ds;
+        //protected List<IHitRect> textParagraphHitRect2Ds;
 
         public override Vector2f Position
         {
@@ -118,16 +119,6 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
-        public IntRect HitZone
-        {
-            get
-            {
-                Vector2f canevasPosition = this.Position;
-                IntRect canevas = this.Canevas;
-                return new IntRect((int)canevasPosition.X, (int)canevasPosition.Y, canevas.Width, canevas.Height);
-            }
-        }
-
         public void ActiveOnlyParagraph(int index)
         {
             int i = 0;
@@ -152,6 +143,15 @@ namespace Metempsychoid.View.Text2D
             this.textParagraph2Ds.Add(textParagraph2D);
         }
 
+        //public void AddTextParagraph2D(TextParagraph2D textParagraphToAdd)
+        //{
+        //    this.textParagraph2Ds.Add(textParagraphToAdd);
+        //    if (textParagraphToAdd is IHitRect)
+        //    {
+        //        this.textParagraphHitRect2Ds.Add(textParagraphToAdd as IHitRect);
+        //    }
+        //}
+
         public void UpdateTextOfParagraph(int index, string id, params string[] parameters)
         {
             textParagraphFactory.CreateTextTokensIn(this.textParagraph2Ds[index], id, parameters);
@@ -173,6 +173,7 @@ namespace Metempsychoid.View.Text2D
             base(parentLayer, true)
         {
             this.textParagraph2Ds = new List<TextParagraph2D>();
+            //this.textParagraphHitRect2Ds = new List<IHitRect>();
         }
 
         public override void UpdateGraphics(Time deltaTime)
@@ -194,29 +195,75 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
-        public void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
-        {
-            
-        }
+        //public void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
+        //{
+        //    Vector2i mousePosition = parentLayer.MousePosition;
 
-        public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
-        {
-            
-        }
+        //    foreach (IHitRect textParagraph in this.textParagraphHitRect2Ds)
+        //    {
+        //        if (textParagraph.IsFocusable(parentLayer)
+        //            && textParagraph.HitZone.Contains(mousePosition.X, mousePosition.Y))
+        //        {
+        //            textParagraph.OnMousePressed(parentLayer, eventType);
+        //        }
+        //    }
+        //}
 
-        public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
-        {
-            
-        }
+        //public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
+        //{
+        //    Vector2i mousePosition = parentLayer.MousePosition;
 
-        public void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
-        {
-            
-        }
+        //    foreach (IHitRect textParagraph in this.textParagraphHitRect2Ds)
+        //    {
+        //        if (textParagraph.IsFocusable(parentLayer)
+        //            && textParagraph.HitZone.Contains(mousePosition.X, mousePosition.Y))
+        //        {
+        //            textParagraph.OnMouseReleased(parentLayer, eventType);
+        //        }
+        //    }
+        //}
 
-        public bool IsFocusable(ALayer2D parentLayer)
+        //public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
+        //{
+        //    Vector2i mousePosition = parentLayer.MousePosition;
+
+        //    foreach (IHitRect textParagraph in this.textParagraphHitRect2Ds)
+        //    {
+        //        if (textParagraph.IsFocusable(parentLayer)
+        //            && textParagraph.HitZone.Contains(mousePosition.X, mousePosition.Y))
+        //        {
+        //            textParagraph.OnMouseFocused(parentLayer, eventType);
+        //        }
+        //    }
+        //}
+
+        //public void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
+        //{
+        //    Vector2i mousePosition = parentLayer.MousePosition;
+
+        //    foreach (IHitRect textParagraph in this.textParagraphHitRect2Ds)
+        //    {
+        //        if (textParagraph.IsFocusable(parentLayer)
+        //            && textParagraph.HitZone.Contains(mousePosition.X, mousePosition.Y))
+        //        {
+        //            textParagraph.OnMouseUnFocused(parentLayer, eventType);
+        //        }
+        //    }
+        //}
+
+        //public bool IsFocusable(ALayer2D parentLayer)
+        //{
+        //    return true;
+        //}
+
+        public override void Dispose()
         {
-            return true;
+            foreach(TextParagraph2D textParagraph in this.textParagraph2Ds)
+            {
+                textParagraph.Dispose();
+            }
+
+            base.Dispose();
         }
     }
 }

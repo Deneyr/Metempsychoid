@@ -72,7 +72,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                     this.UpdateMainPhase(world);
                     break;
                 case TurnPhase.END_TURN:
-
+                    this.UpdateEndTurnPhase(world);
                     break;
                 case TurnPhase.END_LEVEL:
 
@@ -111,6 +111,11 @@ namespace Metempsychoid.Model.Node.TestWorld
         private void InitializeMainPhase(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.MAIN);
+        }
+
+        private void InitializeEndTurnPhase(World world)
+        {
+            this.SetCurrentTurnPhase(world, TurnPhase.END_TURN);
         }
 
         private void UpdateStartLevelPhase(World world)
@@ -226,6 +231,19 @@ namespace Metempsychoid.Model.Node.TestWorld
                 {
                     boardGameLayer.SocketCard(starEntity);
                 }
+            }
+
+            if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN))
+            {
+                this.InitializeEndTurnPhase(world);
+            }
+        }
+
+        private void UpdateEndTurnPhase(World world)
+        {
+            if (this.CheckNextTurnPhaseEvent(TurnPhase.START_TURN))
+            {
+                this.InitializeStartTurnPhase(world);
             }
         }
 

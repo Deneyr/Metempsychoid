@@ -36,6 +36,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                         case TurnPhase.START_TURN:
                             this.InitializeStartTurnPhase();
                             break;
+                        case TurnPhase.END_TURN:
+                            this.InitializeEndTurnPhase();
+                            break;
                     }
                 }
             }
@@ -71,6 +74,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 case TurnPhase.START_TURN:
                     this.UpdateStartTurnPhase(deltaTime);
                     break;
+                case TurnPhase.END_TURN:
+                    this.UpdateEndTurnPhase(deltaTime);
+                    break;
             }
         }
 
@@ -90,11 +96,21 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         private void InitializeStartTurnPhase()
         {
             this.bannerEntity2D.IsActive = true;
+            this.headerEntity2D.IsActive = true;
             this.bannerEntity2D.SpriteColor = new Color(0, 0, 0, 128);
             this.bannerEntity2D.Position = new Vector2f(-this.bannerEntity2D.ObjectSprite.TextureRect.Width, 0);
             this.bannerEntity2D.PlayAnimation(0);
 
-            this.headerEntity2D.DisplayHeader("start_player_turn");
+            this.headerEntity2D.DisplayHeader(0, 0);
+        }
+
+        private void InitializeEndTurnPhase()
+        {
+            this.bannerEntity2D.IsActive = true;
+            this.headerEntity2D.IsActive = true;
+            this.bannerEntity2D.PlayAnimation(1);
+
+            this.headerEntity2D.DisplayHeader(1, 1);
         }
 
         private void UpdateStartTurnPhase(Time deltaTime)
@@ -105,6 +121,17 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 this.headerEntity2D.IsActive = false;
 
                 this.GoOnTurnPhase(TurnPhase.DRAW);
+            }
+        }
+
+        private void UpdateEndTurnPhase(Time deltaTime)
+        {
+            if (this.bannerEntity2D.IsAnimationRunning() == false)
+            {
+                this.bannerEntity2D.IsActive = false;
+                this.headerEntity2D.IsActive = false;
+
+                this.GoOnTurnPhase(TurnPhase.START_TURN);
             }
         }
 

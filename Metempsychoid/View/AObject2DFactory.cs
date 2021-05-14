@@ -29,7 +29,7 @@ namespace Metempsychoid.View
 
             Font font = new Font(@"Assets\Graphics\Fonts\ProtectorBy7NTypes.otf");
             nameToFonts.Add("Protector", font);
-            fontToWidths.Add(font, 650);
+            fontToWidths.Add(font, 600);
 
             font = new Font(@"Assets\Graphics\Fonts\PERLS.ttf");
             nameToFonts.Add("perls", font);

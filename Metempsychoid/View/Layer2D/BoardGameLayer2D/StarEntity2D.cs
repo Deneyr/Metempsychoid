@@ -232,7 +232,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
-            if (parentLayer is BoardGameLayer2D)
+            if (parentLayer is BoardGameLayer2D
+                && parentLayer.FocusedGraphicEntity2D == this)
             {
                 BoardGameLayer2D boardGameLayer2D = (parentLayer as BoardGameLayer2D);
                 if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
