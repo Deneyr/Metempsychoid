@@ -28,6 +28,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             boardGameLayer.ParentLayer = background;
 
             BoardPlayerLayer boardPlayerLayer = new BoardPlayerLayer();
+            BoardPlayerLayer boardOpponentLayer = new BoardPlayerLayer();
 
             BoardBannerLayer bannerLayer = new BoardBannerLayer();
 
@@ -35,6 +36,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                 new Tuple<string, ALayer>("VsO7nJK", background),
                 new Tuple<string, ALayer>("gameLayer", boardGameLayer),
                 new Tuple<string, ALayer>("playerLayer", boardPlayerLayer),
+                new Tuple<string, ALayer>("opponentLayer", boardOpponentLayer),
                 new Tuple<string, ALayer>("bannerLayer", bannerLayer)
             });
 

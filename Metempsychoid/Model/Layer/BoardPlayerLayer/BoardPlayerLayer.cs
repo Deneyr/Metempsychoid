@@ -2,6 +2,8 @@
 using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Event;
+using Metempsychoid.Model.Node;
+using Metempsychoid.Model.Node.TestWorld;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -16,10 +18,9 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         private static int TOP_DECK = 3;
 
         private static Vector2f DECK_POSITION = new Vector2f(-600, -150);
-
         private static Vector2f CEMETERY_POSITION = new Vector2f(-500, -150);
-
         private static Vector2f HAND_POSITION = new Vector2f(400, -150);
+
         private static int HAND_CARD_SPACE = 100;
 
         private int nbCardsToDraw;
@@ -35,6 +36,63 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         public event Action<CardEntity> CardFocused;
 
         public event Action<int> NbCardsToDrawChanged;
+
+        public Player.Player SupportedPlayer
+        {
+            get;
+            private set;
+        }
+
+        public int IndexPlayer
+        {
+            get;
+            private set;
+        }
+
+        protected Vector2f DeckPosition
+        {
+            get
+            {
+                Vector2f result = DECK_POSITION;
+
+                if (this.IndexPlayer != 0)
+                {
+                    result.Y *= -1;
+                }
+
+                return result;
+            }
+        }
+
+        protected Vector2f CemeteryPosition
+        {
+            get
+            {
+                Vector2f result = CEMETERY_POSITION;
+
+                if (this.IndexPlayer != 0)
+                {
+                    result.Y *= -1;
+                }
+
+                return result;
+            }
+        }
+
+        protected Vector2f HandPosition
+        {
+            get
+            {
+                Vector2f result = HAND_POSITION;
+
+                if (this.IndexPlayer != 0)
+                {
+                    result.Y *= -1;
+                }
+
+                return result;
+            }
+        }
 
         public List<CardEntity> CardsDeck
         {
@@ -105,14 +163,18 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             this.TypesInChunk.Add(typeof(CardEntity));
         }
 
-        protected override void InternalInitializeLayer(World world)
+        protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
             int i = 0;
-            foreach(Card.Card card in world.Player.Deck.Cards)
+
+            this.SupportedPlayer = (levelNode as TestLevel).GetPlayerFromIndex(world, out int currentPlayerIndex);
+            this.IndexPlayer = currentPlayerIndex;
+
+            foreach (Card.Card card in this.SupportedPlayer.Deck.Cards)
             {
                 CardEntity cardEntity = new CardEntity(this, card, false);
 
-                cardEntity.Position = DECK_POSITION;
+                cardEntity.Position = this.DeckPosition;
 
                 cardEntity.IsActive = i < TOP_DECK;
 
@@ -201,7 +263,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         private void UpdateCardsHandPosition()
         {
-            float startWidth = HAND_POSITION.X + HAND_CARD_SPACE * this.CardsHand.Count / 2f;
+            float startWidth = this.HandPosition.X + HAND_CARD_SPACE * this.CardsHand.Count / 2f;
 
             int i = 0;
             bool cardFocusedEncountered = false;
@@ -215,20 +277,20 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                 {
                     if (this.cardFocused == cardEntity)
                     {
-                        newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, HAND_POSITION.Y);
+                        newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, this.HandPosition.Y);
                     }
                     else if (cardFocusedEncountered)
                     {
-                        newPosition = new Vector2f(startWidth - (i + 1) * HAND_CARD_SPACE, HAND_POSITION.Y);
+                        newPosition = new Vector2f(startWidth - (i + 1) * HAND_CARD_SPACE, this.HandPosition.Y);
                     }
                     else
                     {
-                        newPosition = new Vector2f(startWidth - (i - 1) * HAND_CARD_SPACE, HAND_POSITION.Y);
+                        newPosition = new Vector2f(startWidth - (i - 1) * HAND_CARD_SPACE, this.HandPosition.Y);
                     }
                 }
                 else
                 {
-                    newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, HAND_POSITION.Y);
+                    newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, this.HandPosition.Y);
                 }
 
                 IAnimation positionAnimation;

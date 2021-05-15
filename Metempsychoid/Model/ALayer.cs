@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Metempsychoid.Model.Event;
+using Metempsychoid.Model.Node;
 using SFML.System;
 
 namespace Metempsychoid.Model
@@ -96,16 +97,16 @@ namespace Metempsychoid.Model
             this.ParentLayer = null;
         }
 
-        public virtual void InitializeLayer(World world)
+        public virtual void InitializeLayer(World world, ALevelNode levelNode)
         {
             this.raiseEntityEvents = false;
 
-            this.InternalInitializeLayer(world);
+            this.InternalInitializeLayer(world, levelNode);
 
             this.raiseEntityEvents = true;
         }
 
-        protected abstract void InternalInitializeLayer(World world);
+        protected abstract void InternalInitializeLayer(World world, ALevelNode levelNode);
 
         public override void UpdateLogic(World world, Time deltaTime)
         {

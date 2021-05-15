@@ -75,13 +75,32 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 {
                     base.DefaultViewSize = value;
 
+                    IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+                    this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
+
                     foreach (KeyValuePair<AEntity, AEntity2D> pairEntity in this.objectToObject2Ds)
                     {
-                        pairEntity.Value.Position = new Vector2f(pairEntity.Key.Position.X, this.DefaultViewSize.Y / 2 + pairEntity.Key.Position.Y);
+                        pairEntity.Value.Position = new Vector2f(pairEntity.Key.Position.X, pairEntity.Key.Position.Y + this.OffsetCard);
                     }
                 }
             }
         }
+
+        protected float OffsetCard
+        {
+            get
+            {
+                if ((this.parentLayer as BoardPlayerLayer).IndexPlayer == 0)
+                {
+                    return this.DefaultViewSize.Y / 2;
+                }
+                else
+                {
+                    return -this.DefaultViewSize.Y / 2;
+                }
+            }
+        }
+
 
         public BoardPlayerLayer2D(World2D world2D, IObject2DFactory factory, BoardPlayerLayer layer) :
             base(world2D, layer)
@@ -100,13 +119,17 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.cardToolTip = new CardToolTip(this);
             this.endTurnButton = new EndTurnButton2D(this);
+
+            this.cardsDeck = new List<CardEntity2D>();
+            this.cardsCemetery = new List<CardEntity2D>();
+            this.cardsHand = new List<CardEntity2D>();
         }
 
         public override void InitializeLayer(IObject2DFactory factory)
         {
-            this.cardsDeck = new List<CardEntity2D>();
-            this.cardsCemetery = new List<CardEntity2D>();
-            this.cardsHand = new List<CardEntity2D>();
+            this.cardsDeck.Clear();
+            this.cardsCemetery.Clear();
+            this.cardsHand.Clear();
 
             this.maxPriority = 0;
 
@@ -116,12 +139,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardDrew = null;
             // this.cardFocused = null;
 
-            IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
-            this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.view.Size.Y / 2 - endTurnButtonCanvevas.Height / 2);
-
             base.InitializeLayer(factory);
 
-            foreach(AEntity2D entity in this.objectToObject2Ds.Values)
+            foreach (AEntity2D entity in this.objectToObject2Ds.Values)
             {
                 if(entity is CardEntity2D)
                 {
@@ -320,7 +340,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                     {
                         Vector2i mousePosition = this.MousePosition;
 
-                        mousePosition.Y -= (int)(this.view.Size.Y / 2);
+                        mousePosition.Y -= (int)this.OffsetCard;
 
                         this.SendEventToWorld(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y);
                     }
@@ -378,11 +398,6 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             CardEntity2D entity2D = base.AddEntity(obj) as CardEntity2D;
 
-            if (entity2D != null)
-            {
-                entity2D.Position = new Vector2f(obj.Position.X, obj.Position.Y + this.view.Size.Y / 2);
-            }
-
             return entity2D;
         }
 
@@ -395,7 +410,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                     break;
                 case "Position":
                     AEntity2D entity2D = this.objectToObject2Ds[obj];
-                    entity2D.Position = new Vector2f(obj.Position.X, obj.Position.Y + this.view.Size.Y / 2);
+
+                    entity2D.Position = new Vector2f(obj.Position.X, obj.Position.Y + this.OffsetCard);
 
                     if(this.cardToolTip.CardFocused != null && this.cardToolTip.CardFocused == entity2D)
                     {
@@ -424,9 +440,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             base.FlushEntities();
 
             this.cardsDeck.Clear();
-
             this.cardsCemetery.Clear();
-
             this.cardsHand.Clear();
 
             this.maxPriority = 0;

@@ -44,12 +44,6 @@ namespace Metempsychoid.Model
             private set;
         }
 
-        public Player.Player Opponent
-        {
-            get;
-            set;
-        }
-
         public List<ALayer> CurrentLayers
         {
             get
@@ -73,7 +67,6 @@ namespace Metempsychoid.Model
             this.loadedLayers = new Dictionary<string, ALayer>();
 
             this.Player = new Player.Player(SFML.Graphics.Color.Red, "Terah");
-            this.Opponent = null;
 
             this.CardLibrary = new CardFactory();
 
@@ -125,7 +118,7 @@ namespace Metempsychoid.Model
             this.LevelEnding?.Invoke(this);
         }
 
-        public void InitializeLevel(List<string> layersToAdd)
+        public void InitializeLevel(List<string> layersToAdd, ALevelNode levelNode)
         {
             this.currentLayers.Clear();
             foreach(string layerName in layersToAdd)
@@ -138,7 +131,7 @@ namespace Metempsychoid.Model
 
             foreach(ALayer layer in this.currentLayers)
             {
-                layer.InitializeLayer(this);
+                layer.InitializeLayer(this, levelNode);
             }
 
             this.NotifyLevelStarting();
@@ -170,7 +163,7 @@ namespace Metempsychoid.Model
 
         public void EndWorld()
         {
-            foreach (ALayer layer in this.currentLayers)
+            foreach (ALayer layer in this.loadedLayers.Values)
             { 
                 this.NotifyLayerRemoved(layer);
 

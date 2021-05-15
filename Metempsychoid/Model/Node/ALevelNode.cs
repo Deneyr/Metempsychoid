@@ -10,7 +10,7 @@ namespace Metempsychoid.Model.Node
 {
     public abstract class ALevelNode: ANode
     {
-        protected List<GameEvent> pendingGameEvents;
+        protected Dictionary<EventType, List<GameEvent>> pendingGameEvents;
 
         public ALevelNode(World world) : 
             base(world)
@@ -21,7 +21,7 @@ namespace Metempsychoid.Model.Node
         {
             base.VisitStart(world);
 
-            this.pendingGameEvents = new List<GameEvent>();
+            this.pendingGameEvents = new Dictionary<EventType, List<GameEvent>>();
         }
 
         public override void VisitEnd(World world)
@@ -60,7 +60,12 @@ namespace Metempsychoid.Model.Node
 
         public override void OnGameEvent(World world, GameEvent gameEvent)
         {
-            this.pendingGameEvents.Add(gameEvent);
+            if(this.pendingGameEvents.ContainsKey(gameEvent.Type) == false)
+            {
+                this.pendingGameEvents.Add(gameEvent.Type, new List<GameEvent>());
+            }
+
+            this.pendingGameEvents[gameEvent.Type].Add(gameEvent);
         }
     }
 }

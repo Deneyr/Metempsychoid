@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.Animation;
 using Metempsychoid.Model.Animation;
+using Metempsychoid.Model.Node;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -21,28 +22,9 @@ namespace Metempsychoid.Model.Layer.EntityLayer
             base.UpdateLogic(world, deltaTime);           
         }
 
-        protected override void InternalInitializeLayer(World world)
+        protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
-            //AEntity entity = new T_TeleEntity(this);
-
-            //this.AddEntityToLayer(entity);
-
-            //entity.Position = new Vector2f(-400, 0);
-
-            //SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(20), AnimationType.LOOP);
-
-            //IAnimation anim = new PositionAnimation(entity.Position, new Vector2f(400, 0), Time.FromSeconds(20), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
-            //sequence.AddAnimation(0, anim);
-
-            //anim = new RotationAnimation(entity.Rotation, 180, Time.FromSeconds(5), AnimationType.ONETIME, InterpolationMethod.LINEAR);
-            //sequence.AddAnimation(5, anim);
-
-            //anim = new RotationAnimation(180, entity.Rotation, Time.FromSeconds(5), AnimationType.ONETIME, InterpolationMethod.LINEAR);
-            //sequence.AddAnimation(10, anim);
-
-            //entity.AddAnimation(sequence);
-
-            //entity.PlayAnimation(0);
+            
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Metempsychoid.Animation;
 using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Node;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -234,7 +235,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
-        protected override void InternalInitializeLayer(World world)
+        protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
             this.CardEntityPicked = null;
 

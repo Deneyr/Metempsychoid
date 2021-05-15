@@ -19,17 +19,25 @@ namespace Metempsychoid.Model.Event
             set;
         }
 
+        public ALayer Layer
+        {
+            get;
+            set;
+        }
+
         public string Details
         {
             get;
             set;
         }
 
-        public GameEvent(EventType type, AEntity entity, string details)
+        public GameEvent(EventType type, ALayer Layer, AEntity entity, string details)
         {
             this.Type = type;
 
             this.Details = details;
+
+            this.Layer = Layer;
 
             this.Entity = entity;
         }

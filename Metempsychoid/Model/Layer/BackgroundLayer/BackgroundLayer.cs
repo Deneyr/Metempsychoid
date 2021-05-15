@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Metempsychoid.Model.Node;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace Metempsychoid.Model.Layer.BackgroundLayer
         {
         }
 
-        protected override void InternalInitializeLayer(World world)
+        protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
 
         }

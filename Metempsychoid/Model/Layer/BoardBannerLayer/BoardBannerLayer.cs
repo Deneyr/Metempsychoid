@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Metempsychoid.Model.Node;
+using Metempsychoid.Model.Node.TestWorld;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,12 +22,10 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
             private set;
         }
 
-        public override void InitializeLayer(World world)
+        protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
-            base.InitializeLayer(world);
-
             this.Player = world.Player;
-            this.Opponent = world.Opponent;
+            this.Opponent = (levelNode as TestLevel).Opponent;
         }
     }
 }

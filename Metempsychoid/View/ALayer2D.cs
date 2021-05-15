@@ -208,6 +208,7 @@ namespace Metempsychoid.View
 
             this.view = new SFML.Graphics.View();
             this.defaultViewSize = this.view.Size;
+
             this.Position = new Vector2f(0, 0);
             this.Area = new Vector2i(0, 0);
 
@@ -244,6 +245,8 @@ namespace Metempsychoid.View
 
         public virtual void InitializeLayer(IObject2DFactory factory)
         {
+            this.DefaultViewSize = this.view.Size;
+
             this.mustUpdateMousePosition = false;
 
             //this.focusedEntity2Ds.Clear();
@@ -488,7 +491,7 @@ namespace Metempsychoid.View
         {
             if (this.world2D.TryGetTarget(out World2D world))
             {
-                world.SendEventToWorld(new GameEvent(eventType, entityConcerned, details));
+                world.SendEventToWorld(new GameEvent(eventType, this.parentLayer, entityConcerned, details));
             }
         }
 
