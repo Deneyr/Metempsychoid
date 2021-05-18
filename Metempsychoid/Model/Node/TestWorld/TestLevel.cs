@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Event;
+using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using SFML.System;
@@ -144,7 +145,15 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             this.TurnIndex++;
 
+            BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer;
+
+            BoardBannerLayer bannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
+            bannerLayer.PlayerTurn = boardPlayerLayer.SupportedPlayer;
+            bannerLayer.TurnIndex = this.TurnIndex;
+
             this.SetCurrentTurnPhase(world, TurnPhase.START_TURN);
+
+            boardPlayerLayer.OnStartTurn();
         }
 
         private void InitializeDrawPhase(World world)
@@ -163,7 +172,11 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         private void InitializeEndTurnPhase(World world)
         {
+            BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer;
+
             this.SetCurrentTurnPhase(world, TurnPhase.END_TURN);
+
+            boardPlayerLayer.OnEndTurn();
         }
 
         private void UpdateStartLevelPhase(World world)
@@ -186,7 +199,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             if (this.CheckDrawCardEvent(world, boardOpponentLayer))
             {
-                boardOpponentLayer.DrawCard();
+                boardOpponentLayer.DrawCard(false);
             }
 
             if (this.CheckNextTurnPhaseEvent(TurnPhase.START_TURN, null))

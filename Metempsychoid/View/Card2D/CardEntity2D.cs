@@ -462,7 +462,7 @@ namespace Metempsychoid.View.Card2D
             parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_HAND, null, null);
         }
 
-        bool IHitRect.IsFocusable(ALayer2D parentLayer)
+        public bool IsFocusable(ALayer2D parentLayer)
         {
             Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D boardPlayerLayer2D = parentLayer as Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D;
             if (boardPlayerLayer2D != null)

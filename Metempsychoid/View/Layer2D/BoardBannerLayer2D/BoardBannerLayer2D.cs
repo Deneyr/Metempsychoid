@@ -101,7 +101,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.bannerEntity2D.Position = new Vector2f(-this.bannerEntity2D.ObjectSprite.TextureRect.Width, 0);
             this.bannerEntity2D.PlayAnimation(0);
 
-            this.headerEntity2D.DisplayHeader(0, 0);
+            this.headerEntity2D.DisplayHeader((this.parentLayer as BoardBannerLayer).PlayerTurn.PlayerName, 0, 0);
         }
 
         private void InitializeEndTurnPhase()
@@ -110,7 +110,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.headerEntity2D.IsActive = true;
             this.bannerEntity2D.PlayAnimation(1);
 
-            this.headerEntity2D.DisplayHeader(1, 1);
+            this.headerEntity2D.DisplayHeader((this.parentLayer as BoardBannerLayer).PlayerTurn.PlayerName, 1, 1);
         }
 
         private void UpdateStartTurnPhase(Time deltaTime)

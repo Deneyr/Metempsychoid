@@ -20,6 +20,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
     public class BoardPlayerLayer2D: ALayer2D
     {
         private static float COOLDOWN_FOCUS = 2;
+        private static float COOLDOWN_DRAW = 1;
+        private float currentCooldownDraw;
 
         private List<AEntity2D> hittableEntities2D;
 
@@ -135,6 +137,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.nbCardsToDraw = 0;
 
+            this.currentCooldownDraw = 0;
+
             this.LevelTurnPhase = TurnPhase.VOID;
             this.cardDrew = null;
             // this.cardFocused = null;
@@ -223,7 +227,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardToolTip.UpdateGraphics(deltaTime);
             this.endTurnButton.UpdateGraphics(deltaTime);
 
-            this.UpdateCardsToDraw();
+            this.UpdateCardsToDraw(deltaTime);
 
             switch (this.LevelTurnPhase)
             {
@@ -249,17 +253,22 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             return this.hittableEntities2D;
         }
 
-        private void UpdateCardsToDraw()
+        private void UpdateCardsToDraw(Time deltaTime)
         {
             if (this.cardDrew != null
-                && this.cardDrew.IsFliped)
+                && this.currentCooldownDraw <= 0)
             {
                 this.cardDrew = null;
+            }
+            else
+            {
+                this.currentCooldownDraw -= deltaTime.AsSeconds();
             }
 
             if (this.nbCardsToDraw > 0
                 && this.cardDrew == null)
             {
+                this.currentCooldownDraw = COOLDOWN_DRAW;
                 this.SendEventToWorld(Model.Event.EventType.DRAW_CARD, null, string.Empty);
             }
         }

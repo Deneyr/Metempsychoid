@@ -209,11 +209,13 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
         {
             if(this.CardEntityPicked != null)
             {
+                this.CardEntityPicked.IsFliped = true;
+
                 starEntity.CardSocketed = this.CardEntityPicked;
 
                 this.CardEntityPicked = null;
 
-                // Run events
+                // Run awakened events
                 starEntity.CardSocketed.Card.CardSocketed(this, starEntity);
 
                 foreach(StarEntity star in this.StarSystem)

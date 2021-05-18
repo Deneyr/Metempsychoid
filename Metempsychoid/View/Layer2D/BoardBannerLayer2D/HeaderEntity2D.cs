@@ -14,6 +14,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
     public class HeaderEntity2D : TextCanevas2D
     {
 
+        private Dictionary<string, int> playerNameToIndex;
+
         public override bool IsActive
         {
             get
@@ -27,12 +29,20 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 60);
             this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 60);
             this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 60);
+            this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 60);
 
             this.Canevas = new IntRect(0, 0, 2000, 500);
             this.Position = new Vector2f(-1000, -50);
 
+            this.playerNameToIndex = new Dictionary<string, int>();
+
             this.UpdateTextOfParagraph(0, "start_player_turn", playerName);
             this.UpdateTextOfParagraph(1, "end_player_turn", playerName);
+            this.playerNameToIndex.Add(playerName, 0);
+
+            this.UpdateTextOfParagraph(2, "start_opponent_turn", opponentName);
+            this.UpdateTextOfParagraph(3, "end_opponent_turn", opponentName);
+            this.playerNameToIndex.Add(opponentName, 2);
 
             SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(6), AnimationType.ONETIME);
 
@@ -57,9 +67,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.IsActive = false;
         }
 
-        public void DisplayHeader(int indexParagraph, int indexAnimation)
+        public void DisplayHeader(string playerName, int indexParagraph, int indexAnimation)
         {
-            this.ActiveOnlyParagraph(indexParagraph);
+            this.ActiveOnlyParagraph(this.playerNameToIndex[playerName] + indexParagraph);
 
             this.IsActive = true;
             this.PlayAnimation(indexAnimation);

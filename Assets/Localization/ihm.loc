@@ -1,0 +1,27 @@
+<localization>
+    <paragraphEntry>
+        <key>start_player_turn</key>
+        <paragraph culture="fr"><BannerTitle>Tour de {0} !</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0} 's turn !</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>end_player_turn</key>
+        <paragraph culture="fr"><BannerTitle>Fin du tour de {0} !</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>End of {0} 's turn !</BannerTitle></paragraph>
+    </paragraphEntry>
+     <paragraphEntry>
+        <key>start_opponent_turn</key>
+        <paragraph culture="fr"><BannerTitle>C'est à {0} de jouer !</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0} will play !</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>end_opponent_turn</key>
+        <paragraph culture="fr"><BannerTitle>{0} a fini !</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0} finished !</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>end_turn</key>
+        <paragraph culture="fr"><BannerTitle>Fin du tour</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>End turn</BannerTitle></paragraph>
+    </paragraphEntry>
+</localization>

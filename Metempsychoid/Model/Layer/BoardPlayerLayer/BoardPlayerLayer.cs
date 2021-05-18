@@ -189,7 +189,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             this.cardFocused = null;
         }
 
-        public bool DrawCard()
+        public bool DrawCard(bool isFliped = true)
         {
             if (this.CardsDeck.Any()
                 && this.NbCardsToDraw > 0)
@@ -197,7 +197,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                 CardEntity cardEntity = this.CardsDeck.FirstOrDefault();
                 this.CardsDeck.RemoveAt(0);
 
-                cardEntity.IsFliped = true;
+                cardEntity.IsFliped = isFliped;
 
                 this.CardsHand.Add(cardEntity);
 
@@ -214,6 +214,22 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             }
 
             return false;
+        }
+
+        public void OnStartTurn()
+        {
+            foreach(CardEntity cardInHand in this.CardsHand)
+            {
+                cardInHand.IsFliped = true;
+            }
+        }
+
+        public void OnEndTurn()
+        {
+            foreach (CardEntity cardInHand in this.CardsHand)
+            {
+                cardInHand.IsFliped = false;
+            }
         }
 
         public bool PickCard(CardEntity cardToPick)

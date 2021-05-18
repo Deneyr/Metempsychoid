@@ -1,0 +1,26 @@
+<localization>
+    <paragraphEntry>
+        <key>wheel_of_fortune_title</key>
+        <paragraph culture="fr"><Normal>Roue de la Fortune</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>wheel_of_fortune_poem</key>
+        <paragraph culture="fr"><Normal>Agent immuable du changement &#10; Cercle d'or et d'arain &#10; Voici, pressement, le destin &#10; dans la farandole du temps</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; poem</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>the_world_title</key>
+        <paragraph culture="fr"><Normal>Le Monde</Normal></paragraph>
+        <paragraph culture="en"><Normal>The world</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>the_world_poem</key>
+        <paragraph culture="fr"><Normal>Le voyage touche a sa fin &#10; sous un soleil cramoisi &#10; Toutes les questions nees au matin &#10; trouvent leur reponse dans la nuit &#10; Car voici la plenitude du monde</Normal></paragraph>
+        <paragraph culture="en"><Normal>The world &#10; poem</Normal></paragraph>
+    </paragraphEntry>
+</localization>

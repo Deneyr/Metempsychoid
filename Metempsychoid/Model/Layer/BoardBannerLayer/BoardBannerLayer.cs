@@ -22,10 +22,25 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
             private set;
         }
 
+        public Player.Player PlayerTurn
+        {
+            get;
+            set;
+        }
+
+        public int TurnIndex
+        {
+            get;
+            set;
+        }
+
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
             this.Player = world.Player;
             this.Opponent = (levelNode as TestLevel).Opponent;
+
+            this.PlayerTurn = this.Player;
+            this.TurnIndex = 0;
         }
     }
 }
