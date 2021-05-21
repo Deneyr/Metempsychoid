@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Metempsychoid.Model;
+using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Node.TestWorld;
+using Metempsychoid.View.Card2D;
+using Metempsychoid.View.Layer2D.BoardGameLayer2D;
 using SFML.Graphics;
 using SFML.System;
 
@@ -17,7 +20,13 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         private HeaderEntity2D headerEntity2D;
 
+        private CardToolTip2D cardToolTip;
+
         private TurnPhase levelTurnPhase;
+
+        private HashSet<ICardFocusedLayer> cardFocusedLayers;
+
+        private CardEntity2D cardFocused;   
 
         public TurnPhase LevelTurnPhase
         {
@@ -60,6 +69,40 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             BoardBannerLayer boardBannerLayer = this.parentLayer as BoardBannerLayer;
             this.headerEntity2D = new HeaderEntity2D(this, boardBannerLayer.Player.PlayerName, boardBannerLayer.Opponent.PlayerName);
+
+            this.cardFocused = null;
+            this.cardFocusedLayers = new HashSet<ICardFocusedLayer>();
+            if (this.world2D.TryGetTarget(out World2D world2D))
+            {
+                foreach(ALayer2D layer in world2D.LayersList)
+                {
+                    ICardFocusedLayer cardFocusedLayer = layer as ICardFocusedLayer;
+
+                    if(cardFocusedLayer != null)
+                    {
+                        //cardFocusedLayer.CardFocusedChanged += OnCardFocusedChanged;
+
+                        this.cardFocusedLayers.Add(cardFocusedLayer);
+                    }
+                }
+            }
+        }
+
+        //private void OnCardFocusedChanged(ICardFocusedLayer cardFocusedLayer)
+        //{
+        //    this.layerToCardFocused[cardFocusedLayer] = cardFocusedLayer.CardFocused;
+        //}
+
+        protected override AEntity2D AddEntity(AEntity obj)
+        {
+            AEntity2D entityToAdd = base.AddEntity(obj);
+
+            if(entityToAdd is CardToolTip2D)
+            {
+                this.cardToolTip = entityToAdd as CardToolTip2D;
+            }
+
+            return entityToAdd;
         }
 
         protected override void OnLevelStateChanged(string obj)
@@ -69,6 +112,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         public override void UpdateGraphics(Time deltaTime)
         {
+            this.UpdateFocusedEntity();
+
             switch (this.LevelTurnPhase)
             {
                 case TurnPhase.START_TURN:
@@ -77,6 +122,58 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 case TurnPhase.END_TURN:
                     this.UpdateEndTurnPhase(deltaTime);
                     break;
+            }
+        }
+
+        private void UpdateFocusedEntity()
+        {
+            ICardFocusedLayer firstCardLayerFocused = this.cardFocusedLayers.FirstOrDefault(pElem => pElem.CardFocused != null);
+            ALayer2D layer2D = firstCardLayerFocused as ALayer2D;
+
+            if (firstCardLayerFocused != null)
+            {
+                CardEntity2D cardFocused = firstCardLayerFocused.CardFocused;
+                if (this.cardFocused != cardFocused)
+                {
+                    CardEntity cardEntity = layer2D.GetEntityFromEntity2D(cardFocused) as CardEntity;
+
+                    this.cardToolTip.DisplayToolTip(cardEntity.Card, cardFocused);
+
+                    this.cardFocused = cardFocused;
+                }
+
+                if (this.cardToolTip.IsActive)
+                {
+                    Vector2f cardFocusedPosition = this.cardFocused.Position;
+
+                    Vector2f cardPositionInWindow = layer2D.GetPositionInWindow(cardFocusedPosition);
+
+                    if (cardPositionInWindow.Y > this.defaultViewSize.Y / 2)
+                    {
+                        cardFocusedPosition.Y -= this.cardFocused.Canevas.Height / 2;
+
+                        cardFocusedPosition = this.GetPositionInScene(layer2D.GetPositionInWindow(cardFocusedPosition));
+
+                        cardFocusedPosition.X -= this.cardToolTip.Canevas.Width / 2;
+                        cardFocusedPosition.Y -= this.cardToolTip.Canevas.Height;
+                    }
+                    else
+                    {
+                        cardFocusedPosition.Y += this.cardFocused.Canevas.Height / 2;
+
+                        cardFocusedPosition = this.GetPositionInScene(layer2D.GetPositionInWindow(cardFocusedPosition));
+
+                        cardFocusedPosition.X -= this.cardToolTip.Canevas.Width / 2;
+                    }
+
+                    this.cardToolTip.Position = cardFocusedPosition;
+                }
+            }
+            else
+            {
+                this.cardToolTip.HideToolTip();
+
+                this.cardFocused = null;
             }
         }
 
@@ -148,6 +245,12 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.bannerEntity2D.IsActive = false;
             this.headerEntity2D.IsActive = false;
+
+            //foreach(ICardFocusedLayer cardFocusedLayer in this.layerToCardFocused.Keys)
+            //{
+            //    cardFocusedLayer.CardFocusedChanged -= this.OnCardFocusedChanged;
+            //}
+            this.cardFocusedLayers.Clear();
         }
     }
 }

@@ -6,6 +6,7 @@ using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Controls;
+using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
 using Metempsychoid.View.Text2D;
 using SFML.Graphics;
 using SFML.System;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 {
-    public class BoardPlayerLayer2D: ALayer2D
+    public class BoardPlayerLayer2D: ALayer2D, ICardFocusedLayer
     {
         private static float COOLDOWN_FOCUS = 2;
         private static float COOLDOWN_DRAW = 1;
@@ -31,7 +32,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private CardEntity2D cardDrew;
 
-        private CardToolTip cardToolTip;
+        private CardEntity2D cardFocused;
+
+        //private CardToolTip cardToolTip;
         private EndTurnButton2D endTurnButton;
 
         private int maxPriority;
@@ -39,6 +42,25 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         private int nbCardsToDraw;
 
         private TurnPhase levelTurnPhase;
+
+        public event Action<ICardFocusedLayer> CardFocusedChanged;
+
+        public CardEntity2D CardFocused
+        {
+            get
+            {
+                return this.cardFocused;
+            }
+            set
+            {
+                if (this.cardFocused != value)
+                {
+                    this.cardFocused = value;
+
+                    this.CardFocusedChanged?.Invoke(this);
+                }
+            }
+        }
 
         public TurnPhase LevelTurnPhase
         {
@@ -119,7 +141,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             layer.CardPicked += OnCardPicked;
             layer.CardUnpicked += OnCardUnpicked;
 
-            this.cardToolTip = new CardToolTip(this);
+            //this.cardToolTip = new CardToolTip(this);
             this.endTurnButton = new EndTurnButton2D(this);
 
             this.cardsDeck = new List<CardEntity2D>();
@@ -141,7 +163,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.LevelTurnPhase = TurnPhase.VOID;
             this.cardDrew = null;
-            // this.cardFocused = null;
+            this.cardFocused = null;
 
             base.InitializeLayer(factory);
 
@@ -169,11 +191,13 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             {
                 CardEntity2D cardFocused = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
-                this.cardToolTip.DisplayToolTip(obj.Card, cardFocused);
+                this.CardFocused = cardFocused;
+                //this.cardToolTip.DisplayToolTip(obj.Card, cardFocused);
             }
             else
             {
-                this.cardToolTip.HideToolTip();
+                this.CardFocused = null;
+                //this.cardToolTip.HideToolTip();
             }
         }
 
@@ -224,7 +248,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         public override void UpdateGraphics(Time deltaTime)
         {
-            this.cardToolTip.UpdateGraphics(deltaTime);
+            //this.cardToolTip.UpdateGraphics(deltaTime);
             this.endTurnButton.UpdateGraphics(deltaTime);
 
             this.UpdateCardsToDraw(deltaTime);
@@ -397,7 +421,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             SFML.Graphics.View defaultView = window.DefaultView;
             window.SetView(this.view);
 
-            this.cardToolTip.DrawIn(window, deltaTime);
+            //this.cardToolTip.DrawIn(window, deltaTime);
             this.endTurnButton.DrawIn(window, deltaTime);
 
             window.SetView(defaultView);
@@ -422,10 +446,10 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
                     entity2D.Position = new Vector2f(obj.Position.X, obj.Position.Y + this.OffsetCard);
 
-                    if(this.cardToolTip.CardFocused != null && this.cardToolTip.CardFocused == entity2D)
-                    {
-                        this.cardToolTip.UpdatePosition();
-                    }
+                    //if(this.cardToolTip.CardFocused != null && this.cardToolTip.CardFocused == entity2D)
+                    //{
+                    //    this.cardToolTip.UpdatePosition();
+                    //}
                     break;
                 case "IsActive":
                     this.objectToObject2Ds[obj].IsActive = obj.IsActive;

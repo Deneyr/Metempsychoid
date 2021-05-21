@@ -6,6 +6,7 @@ using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.Model.Player;
 using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Controls;
+using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
-    public class BoardGameLayer2D : ALayer2D
+    public class BoardGameLayer2D : ALayer2D, ICardFocusedLayer
     {
         private List<CardEntity2D> cardsOnBoard;
 
@@ -27,6 +28,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         private CardEntity2D cardFocused;
 
         private List<StarLinkEntity2D> linksFocused;
+
+        public event Action<ICardFocusedLayer> CardFocusedChanged;
 
         public CardEntity2D CardPicked
         {
@@ -54,6 +57,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 if(this.cardFocused != value)
                 {
                     this.cardFocused = value;
+
+                    this.CardFocusedChanged?.Invoke(this);
                 }
             }
         }

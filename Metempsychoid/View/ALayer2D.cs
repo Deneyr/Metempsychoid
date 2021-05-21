@@ -243,6 +243,22 @@ namespace Metempsychoid.View
             return this.object2DToObjects[entity2D];
         }
 
+        public Vector2f GetPositionInWindow(Vector2f positionInScene)
+        {
+            Vector2f windowPosition = new Vector2f(this.Position.X - this.view.Size.X / 2, this.Position.Y - this.view.Size.Y / 2);
+
+            Vector2f result = new Vector2f((positionInScene.X - windowPosition.X) / this.Zoom, (positionInScene.Y - windowPosition.Y) / this.Zoom);
+            return result;
+        }
+
+        public Vector2f GetPositionInScene(Vector2f positionInScene)
+        {
+            Vector2f windowPosition = new Vector2f(this.Position.X - this.view.Size.X / 2, this.Position.Y - this.view.Size.Y / 2);
+
+            Vector2f result = new Vector2f(positionInScene.X * this.Zoom + windowPosition.X, positionInScene.Y * this.Zoom + windowPosition.Y);
+            return result;
+        }
+
         public virtual void InitializeLayer(IObject2DFactory factory)
         {
             this.DefaultViewSize = this.view.Size;

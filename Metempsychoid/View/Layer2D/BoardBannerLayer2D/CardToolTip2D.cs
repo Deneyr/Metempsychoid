@@ -11,9 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
+namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 {
-    public class CardToolTip : TextCanevas2D
+    public class CardToolTip2D : TextCanevas2D
     {
         private RectangleShape bannerShape;
 
@@ -31,6 +31,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
             set
             {
+                value.X = (int)value.X;
+                value.Y = (int)value.Y;
+
                 base.Position = value;
 
                 this.bannerShape.Position = value * MainWindow.MODEL_TO_VIEW;
@@ -76,7 +79,15 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
-        public CardToolTip(ALayer2D parentLayer) 
+        public override FloatRect Bounds
+        {
+            get
+            {
+                return this.bannerShape.GetGlobalBounds();
+            }
+        }
+
+        public CardToolTip2D(ALayer2D parentLayer) 
             : base(parentLayer)
         {
             this.bannerShape = new RectangleShape(new Vector2f(200, 400));
@@ -100,6 +111,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             this.CardFocused = cardFocused;
 
+            this.SpriteColor = new Color(0, 0, 0, 0);
             this.PlayAnimation(0);
 
             this.IsActive = true;
@@ -107,8 +119,6 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.UpdateTextOfParagraph(1, card.PoemIdLoc);
             this.LaunchTextOfParagraphScrolling(1, 20);
-
-            this.UpdatePosition();
         }
 
         public void HideToolTip()
@@ -124,27 +134,6 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
 
             base.DrawIn(window, deltaTime);
-
-            //this.text.FillColor = Color.White;
-            //this.text.OutlineThickness = 2;
-            //this.text.OutlineColor = Color.Black;
-            //window.Draw(text);
-        }
-
-        //private Text text = new Text("Dans la farandole du temps", AObject2DFactory.GetFontByName("Sans"), 14);
-
-        public void UpdatePosition()
-        {
-            if(this.CardFocused != null)
-            {
-                Vector2f cardFocusedPosition = this.CardFocused.Position;
-
-                cardFocusedPosition.X -= this.Canevas.Width / 2;
-
-                cardFocusedPosition.Y -= this.CardFocused.Canevas.Height /2 + this.Canevas.Height;
-
-                this.Position = cardFocusedPosition;
-            }
         }
     }
 }

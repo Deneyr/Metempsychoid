@@ -34,6 +34,12 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
             set;
         }
 
+        public ToolTipEntity ToolTip
+        {
+            get;
+            private set;
+        }
+
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
             this.Player = world.Player;
@@ -41,6 +47,9 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
 
             this.PlayerTurn = this.Player;
             this.TurnIndex = 0;
+
+            this.ToolTip = new ToolTipEntity(this);
+            this.AddEntityToLayer(this.ToolTip);
         }
     }
 }
