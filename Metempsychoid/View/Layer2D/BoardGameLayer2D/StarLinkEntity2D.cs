@@ -239,7 +239,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.CurrentColorTo = this.starEntityTo.ObjectSprite.Color;
             this.RatioColorTo = 0.33f;
 
-            this.FillRatio = 1;
+            this.FillRatio = 0;
             this.FillRatioState = TargetedFillRatioState.STOP;
 
             this.isActive = entity.IsActive;

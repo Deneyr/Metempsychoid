@@ -173,14 +173,14 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                 foreach (StarLinkEntity2D starLinkEntity2D in this.linksFocused)
                 {
-                    starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.DOWN;
+                    starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.UP;
                 }
             }
             else
             {
                 foreach(StarLinkEntity2D starLinkEntity2D in this.linksFocused)
                 {
-                    starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.UP;
+                    starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.DOWN;
                 }
                 this.linksFocused.Clear();
             }
