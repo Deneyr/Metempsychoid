@@ -10,25 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
+namespace Metempsychoid.View.Layer2D.MenuLayer2D
 {
-    public class EndTurnButton2D : AButton2D
+    public abstract class ACJButton2D : AButton2D
     {
         private RectangleShape bannerShape;
-
-        private bool isActive;
-
-        public override bool IsActive
-        {
-            get
-            {
-                return this.isActive || this.IsAnimationRunning();
-            }
-            set
-            {
-                this.isActive = value;
-            }
-        }
 
         public override Vector2f Position
         {
@@ -38,9 +24,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
             set
             {
-                base.Position = value;
+                Vector2f realPosition = new Vector2f(value.X - this.bannerShape.Size.X / 2, value.Y - this.bannerShape.Size.Y / 2);
 
-                this.bannerShape.Position = value * MainWindow.MODEL_TO_VIEW;
+                base.Position = realPosition;
+
+                this.bannerShape.Position = realPosition * MainWindow.MODEL_TO_VIEW;
             }
         }
 
@@ -82,37 +70,37 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
-        public EndTurnButton2D(ALayer2D parentLayer) 
+        public ACJButton2D(ALayer2D parentLayer, int width, string idLabel)
             : base(parentLayer)
         {
-            this.bannerShape = new RectangleShape(new Vector2f(200, 75));
-            this.SpriteColor = new Color(0, 0, 0, 255);
+            this.bannerShape = new RectangleShape(new Vector2f(width, 75));
+            this.SpriteColor = new Color(128, 128, 128, 255);
 
             this.Position = new Vector2f(0, 0);
 
             this.CreateTextParagraph2D(new Vector2f(0, 25), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
-            this.UpdateTextOfParagraph(0, "end_turn");
+            this.UpdateTextOfParagraph(0, idLabel);
 
-            IAnimation showAnimation = new ColorAnimation(new Color(0, 0, 0, 0), new Color(0, 0, 0, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            IAnimation showAnimation = new ColorAnimation(new Color(128, 128, 128, 255), new Color(255, 255, 255, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(showAnimation);
 
             SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(2), AnimationType.LOOP);
-            IAnimation focusedAnimation = new ColorAnimation(new Color(0, 0, 0, 255), new Color(125, 125, 125, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.LINEAR);
-            sequence.AddAnimation(0,  focusedAnimation);
+            IAnimation focusedAnimation = new ColorAnimation(new Color(128, 128, 128, 255), new Color(255, 255, 255, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            sequence.AddAnimation(0, focusedAnimation);
 
-            focusedAnimation = new ColorAnimation(new Color(125, 125, 125, 255), new Color(0, 0, 0, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            focusedAnimation = new ColorAnimation(new Color(255, 255, 255, 255), new Color(128, 128, 128, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             sequence.AddAnimation(1, focusedAnimation);
             this.animationsList.Add(sequence);
 
-            IAnimation hideAnimation = new ColorAnimation(new Color(0, 0, 0, 255), new Color(0, 0, 0, 0), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            IAnimation hideAnimation = new ColorAnimation(new Color(255, 255, 255, 255), new Color(128, 128, 128, 128), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(hideAnimation);
 
-            this.IsActive = false;
+            this.IsActive = true;
         }
 
         public override bool IsFocusable(ALayer2D parentLayer)
         {
-            return this.isActive;
+            return true;
         }
 
         public void ActiveButton()
@@ -139,21 +127,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.Zoom = 1.1f;
         }
 
-        public override void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
-        {
-            if (parentLayer.FocusedGraphicEntity2D == this)
-            {
-                (parentLayer as BoardPlayerLayer2D).GoOnTurnPhase(Model.Node.TestWorld.TurnPhase.END_TURN);
-            }
-
-            this.Zoom = 1;
-        }
-
         public override void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
         {
             AObject2D.animationManager.StopAnimation(this);
 
-            this.SpriteColor = new Color(0, 0, 0, 255);
+            this.SpriteColor = new Color(128, 128, 128, 255);
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

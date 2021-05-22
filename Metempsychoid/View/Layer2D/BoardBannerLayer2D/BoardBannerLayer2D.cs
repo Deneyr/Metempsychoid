@@ -57,21 +57,23 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             base(world2D, layer)
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
+
+            this.bannerEntity2D = new BannerEntity2D(this);
+
+            this.cardFocusedLayers = new HashSet<ICardFocusedLayer>();
         }
 
         public override void InitializeLayer(IObject2DFactory factory)
         {
             base.InitializeLayer(factory);
 
-            this.LevelTurnPhase = TurnPhase.VOID;
-
-            this.bannerEntity2D = new BannerEntity2D(this);
+            this.LevelTurnPhase = TurnPhase.VOID;         
 
             BoardBannerLayer boardBannerLayer = this.parentLayer as BoardBannerLayer;
             this.headerEntity2D = new HeaderEntity2D(this, boardBannerLayer.Player.PlayerName, boardBannerLayer.Opponent.PlayerName);
 
             this.cardFocused = null;
-            this.cardFocusedLayers = new HashSet<ICardFocusedLayer>();
+            this.cardFocusedLayers.Clear();
             if (this.world2D.TryGetTarget(out World2D world2D))
             {
                 foreach(ALayer2D layer in world2D.LayersList)
@@ -243,8 +245,17 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.LevelTurnPhase = TurnPhase.VOID;
 
-            this.bannerEntity2D.IsActive = false;
-            this.headerEntity2D.IsActive = false;
+            if (this.bannerEntity2D != null)
+            {
+                this.bannerEntity2D.IsActive = false;
+                this.bannerEntity2D.Dispose();
+            }
+
+            if (this.headerEntity2D != null)
+            {
+                this.headerEntity2D.IsActive = false;
+                this.headerEntity2D.Dispose();
+            }
 
             //foreach(ICardFocusedLayer cardFocusedLayer in this.layerToCardFocused.Keys)
             //{

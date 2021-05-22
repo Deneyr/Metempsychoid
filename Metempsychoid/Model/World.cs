@@ -44,6 +44,12 @@ namespace Metempsychoid.Model
             private set;
         }
 
+        public Player.Player Opponent
+        {
+            get;
+            private set;
+        }
+
         public List<ALayer> CurrentLayers
         {
             get
@@ -67,6 +73,7 @@ namespace Metempsychoid.Model
             this.loadedLayers = new Dictionary<string, ALayer>();
 
             this.Player = new Player.Player(SFML.Graphics.Color.Red, "Terah");
+            this.Opponent = new Player.Player(SFML.Graphics.Color.Green, "Seth");
 
             this.CardLibrary = new CardFactory();
 
@@ -190,6 +197,11 @@ namespace Metempsychoid.Model
             for (int i = 0; i < 30; i++)
             {
                 this.Player.Deck.Cards.Add(this.CardLibrary.CreateCard("wheel", this.Player));
+            }
+
+            for (int i = 0; i < 30; i++)
+            {
+                this.Opponent.Deck.Cards.Add(this.CardLibrary.CreateCard("wheel", this.Opponent));
             }
 
             this.gameNode.VisitStart(this);

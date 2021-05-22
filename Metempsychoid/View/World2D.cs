@@ -6,6 +6,7 @@ using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
+using Metempsychoid.Model.MenuLayer;
 using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.BackgroundLayer2D;
@@ -13,6 +14,7 @@ using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
 using Metempsychoid.View.Layer2D.BoardGameLayer2D;
 using Metempsychoid.View.Layer2D.BoardPlayerLayer2D;
 using Metempsychoid.View.Layer2D.EntityLayer2D;
+using Metempsychoid.View.Layer2D.MenuLayer2D;
 using Metempsychoid.View.ResourcesManager;
 using SFML.Graphics;
 using SFML.System;
@@ -41,6 +43,9 @@ namespace Metempsychoid.View
             TextureManager = new TextureManager();
 
             MappingObjectModelView = new Dictionary<Type, IObject2DFactory>();
+
+            // Layer menu mapping
+            MappingObjectModelView.Add(typeof(CJMenuLayer), new CJMenuLayer2DFactory());
 
             // Layer background mapping
             MappingObjectModelView.Add(typeof(BackgroundLayer), new BackgroundLayer2DFactory("VsO7nJK"));

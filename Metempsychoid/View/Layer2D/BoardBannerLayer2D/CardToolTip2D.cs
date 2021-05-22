@@ -50,8 +50,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             {
                 base.SpriteColor = value;
 
-                this.bannerShape.FillColor = value;
-                this.bannerShape.FillColor = new Color(this.bannerShape.FillColor.R, this.bannerShape.FillColor.G, this.bannerShape.FillColor.B, (byte) (this.bannerShape.FillColor.A / 2));
+                this.bannerShape.FillColor = new Color(value.R, value.G, value.B, (byte) (value.A / 2));
             }
         }
 

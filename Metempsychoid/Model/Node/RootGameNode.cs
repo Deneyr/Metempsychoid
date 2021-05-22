@@ -67,6 +67,10 @@ namespace Metempsychoid.Model.Node
             {
                 this.nextWorldNodeName = internalGameEvent.Details;
             }
+            else
+            {
+                this.currentWorldNode.OnInternalGameEvent(world, internalGameEvent);
+            }
         }
 
         public override void OnGameEvent(World world, GameEvent gameEvent)

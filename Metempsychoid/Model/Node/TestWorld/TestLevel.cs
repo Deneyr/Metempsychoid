@@ -57,11 +57,7 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             base.VisitStart(world);
 
-            this.Opponent = new Player.Player(SFML.Graphics.Color.Green, "Seth");
-            for (int i = 0; i < 30; i++)
-            {
-                this.Opponent.Deck.Cards.Add(world.CardLibrary.CreateCard("wheel", this.Opponent));
-            }
+            this.Opponent = world.Opponent;
 
             this.playerIndex = 0;
             world.InitializeLevel(new List<string>()

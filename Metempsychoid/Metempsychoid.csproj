@@ -88,10 +88,12 @@
     <Compile Include="Model\IUpdatable.cs" />
     <Compile Include="Model\Layer\BackgroundLayer\BackgroundLayer.cs" />
     <Compile Include="Model\Layer\EntityLayer\EntityLayer.cs" />
+    <Compile Include="Model\MenuLayer\CJMenuLayer.cs" />
     <Compile Include="Model\Node\ANode.cs" />
     <Compile Include="Model\Node\AWorldNode.cs" />
     <Compile Include="Model\Node\ALevelNode.cs" />
     <Compile Include="Model\Node\RootGameNode.cs" />
+    <Compile Include="Model\Node\TestWorld\CJMenuLevel.cs" />
     <Compile Include="Model\Node\TestWorld\TestLevel.cs" />
     <Compile Include="Model\Node\TestWorld\TestWorld.cs" />
     <Compile Include="Model\Player\Player.cs" />
@@ -147,6 +149,11 @@
     <Compile Include="View\Layer2D\EntityLayer2D\EntityLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\T_TeleEntity2D.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\T_TeleEntity2DFactory.cs" />
+    <Compile Include="View\Layer2D\MenuLayer2D\CJDeckBuildingButton2D.cs" />
+    <Compile Include="View\Layer2D\MenuLayer2D\CJMenuLayer2D.cs" />
+    <Compile Include="View\Layer2D\MenuLayer2D\CJMenuLayer2DFactory.cs" />
+    <Compile Include="View\Layer2D\MenuLayer2D\ACJButton2D.cs" />
+    <Compile Include="View\Layer2D\MenuLayer2D\CJStartButton2D.cs" />
     <Compile Include="View\ResourcesManager\LayerResourcesLoader.cs" />
     <Compile Include="View\ResourcesManager\TextureManager.cs" />
     <Compile Include="View\Text2D\AButton2D.cs" />
