@@ -16,9 +16,13 @@ namespace Metempsychoid.Model.Card
 
         private bool isAwakened;
 
-        public event Action CardAwakened;
+        private int valueModificator;
 
-        public event Action CardUnAwakened;
+        //public event Action CardAwakened;
+
+        //public event Action CardUnAwakened;
+
+        public event Action<string> PropertyChanged;
 
         public bool IsAwakened
         {
@@ -32,14 +36,15 @@ namespace Metempsychoid.Model.Card
                 {
                     this.isAwakened = value;
 
-                    if (this.isAwakened)
-                    {
-                        this.CardAwakened?.Invoke();
-                    }
-                    else
-                    {
-                        this.CardUnAwakened?.Invoke();
-                    }
+                    //if (this.isAwakened)
+                    //{
+                    //    this.CardAwakened?.Invoke();
+                    //}
+                    //else
+                    //{
+                    //    this.CardUnAwakened?.Invoke();
+                    //}
+                    this.PropertyChanged.Invoke("IsAwakened");
                 }
             }
         }
@@ -50,11 +55,19 @@ namespace Metempsychoid.Model.Card
             set;
         }
 
-        public override int Value
+        public int Value
         {
             get
             {
-                return this.cardTemplate.Value + this.ValueModificator;
+                return this.cardTemplate.DefaultValue + this.ValueModificator;
+            }
+        }
+
+        public override int BonusValue
+        {
+            get
+            {
+                return this.cardTemplate.BonusValue;
             }
         }
 
@@ -92,8 +105,19 @@ namespace Metempsychoid.Model.Card
 
         public int ValueModificator
         {
-            get;
-            set;
+            get
+            {
+                return this.valueModificator;
+            }
+            set
+            {
+                if(this.valueModificator != value)
+                {
+                    this.valueModificator = value;
+
+                    this.PropertyChanged?.Invoke("ValueModificator");
+                }
+            }
         }
 
         public Card(CardTemplate cardTemplate, Player.Player player)
@@ -102,7 +126,7 @@ namespace Metempsychoid.Model.Card
 
             this.Player = player;
 
-            this.ValueModificator = 0;
+            this.valueModificator = 0;
 
             this.isAwakened = false;
 
@@ -176,6 +200,16 @@ namespace Metempsychoid.Model.Card
         public virtual void CardQuittedBoard(BoardGameLayer layer)
         {
             
+        }
+
+        public void ApplyCardAwakened(BoardGameLayer layer)
+        {
+            this.cardTemplate.HandlingCardAwakened(this, layer);
+        }
+
+        public void ApplyCardUnAwakened(BoardGameLayer layer)
+        {
+            this.cardTemplate.HandlingCardUnAwakened(this, layer);
         }
     }
 }

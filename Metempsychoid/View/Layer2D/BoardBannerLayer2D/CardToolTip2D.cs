@@ -31,12 +31,12 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
             set
             {
+                this.bannerShape.Position = value * MainWindow.MODEL_TO_VIEW;
+
                 value.X = (int)value.X;
                 value.Y = (int)value.Y;
 
                 base.Position = value;
-
-                this.bannerShape.Position = value * MainWindow.MODEL_TO_VIEW;
             }
         }
 

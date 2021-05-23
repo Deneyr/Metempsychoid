@@ -74,17 +74,22 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 {
                     this.levelTurnPhase = value;
 
-                    switch (this.levelTurnPhase)
+                    if ((this.parentLayer as BoardPlayerLayer).IsActiveTurn)
                     {
-                        case TurnPhase.CREATE_HAND:
-                            this.cardDrew = null;
-                            break;
-                        case TurnPhase.MAIN:
-                            this.endTurnButton.ActiveButton();
-                            break;
-                        case TurnPhase.END_TURN:
-                            this.endTurnButton.DeactiveButton();
-                            break;
+                        switch (this.levelTurnPhase)
+                        {
+                            case TurnPhase.CREATE_HAND:
+                                this.cardDrew = null;
+                                break;
+                            case TurnPhase.MAIN:
+                                this.endTurnButton.ActiveButton();
+                                break;
+                            case TurnPhase.END_TURN:
+                                this.FocusedGraphicEntity2D = null;
+
+                                this.endTurnButton.DeactiveButton();
+                                break;
+                        }
                     }
                 }
             }

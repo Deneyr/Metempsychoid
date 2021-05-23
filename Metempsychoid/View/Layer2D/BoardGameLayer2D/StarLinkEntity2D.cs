@@ -147,11 +147,6 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 if (this.isActive != value)
                 {
                     this.isActive = value;
-
-                    if (this.starLinkState == StarLinkState.TRANSITIONING)
-                    {
-
-                    }
                 }
             }
         }

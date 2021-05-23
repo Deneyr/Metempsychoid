@@ -117,6 +117,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         public void ActiveButton()
         {
+            this.SpriteColor = new Color(0, 0, 0, 0);
+
             this.IsActive = true;
 
             this.PlayAnimation(0);
@@ -151,9 +153,12 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         public override void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
         {
-            AObject2D.animationManager.StopAnimation(this);
+            if (this.isActive)
+            {
+                AObject2D.animationManager.StopAnimation(this);
 
-            this.SpriteColor = new Color(0, 0, 0, 255);
+                this.SpriteColor = new Color(0, 0, 0, 255);
+            }
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

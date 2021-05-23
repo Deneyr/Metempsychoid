@@ -25,6 +25,7 @@ namespace Metempsychoid.View.Card2D
 
         private Sprite canevasSprite;
         private CardHalo2D cardHalo;
+        private CardLabel2D cardLabel;
 
         private bool isSocketed;
         private Color playerColor;
@@ -151,6 +152,8 @@ namespace Metempsychoid.View.Card2D
                 this.canevasSprite.Position = value * MainWindow.MODEL_TO_VIEW;
 
                 this.cardHalo.Position = this.Position;
+
+                this.cardLabel.Position = new Vector2f(this.Position.X, this.Position.Y - this.Canevas.Height / 2 + WIDTH_BORDER);
             }
         }
 
@@ -233,6 +236,19 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
+        public int CardValue
+        {
+            get
+            {
+                return this.cardLabel.Label;
+            }
+
+            set
+            {
+                this.cardLabel.Label = value;
+            }
+        }
+
 
         public CardEntity2D(IObject2DFactory factory, ALayer2D layer2D, CardEntity entity) :
             base(layer2D, true)
@@ -240,6 +256,7 @@ namespace Metempsychoid.View.Card2D
             this.factory = factory as CardEntity2DFactory;
 
             this.cardHalo = new CardHalo2D(factory, layer2D, this);
+            this.cardLabel = new CardLabel2D(layer2D, entity.Card.Value);
 
             this.ObjectSprite.Texture = factory.GetTextureByIndex(1);
 
@@ -375,6 +392,8 @@ namespace Metempsychoid.View.Card2D
 
             window.Draw(this.ObjectSprite);
 
+            this.cardLabel.DrawIn(window, deltaTime);
+
             window.Draw(this.canevasSprite, this.render);
         }
 
@@ -384,6 +403,11 @@ namespace Metempsychoid.View.Card2D
             this.ObjectSprite.Texture = this.factory.GetTextureByIndex(this.cardIndex);
 
             this.sideState = CardSideState.FACE;
+
+            if (this.IsFliped)
+            {
+                this.cardLabel.ShowLabel();
+            }
         }
 
         private void InitializeFaceTransState(int cardIndex)
@@ -393,6 +417,8 @@ namespace Metempsychoid.View.Card2D
             this.sideState = CardSideState.TRANSITIONING_START;
 
             this.PlayAnimation(0);
+
+            this.cardLabel.HideLabel();
         }
 
         private void InitializeTransitioningEndState()

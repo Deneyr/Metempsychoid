@@ -49,6 +49,12 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             private set;
         }
 
+        public bool IsActiveTurn
+        {
+            get;
+            private set;
+        }
+
         protected Vector2f DeckPosition
         {
             get
@@ -167,6 +173,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         {
             int i = 0;
 
+            this.IsActiveTurn = false;
+
             this.SupportedPlayer = (levelNode as TestLevel).GetPlayerFromIndex(world, out int currentPlayerIndex);
             this.IndexPlayer = currentPlayerIndex;
 
@@ -218,6 +226,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         public void OnStartTurn()
         {
+            this.IsActiveTurn = true;
+
             foreach(CardEntity cardInHand in this.CardsHand)
             {
                 cardInHand.IsFliped = true;
@@ -226,6 +236,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         public void OnEndTurn()
         {
+            this.IsActiveTurn = false;
+
             foreach (CardEntity cardInHand in this.CardsHand)
             {
                 cardInHand.IsFliped = false;

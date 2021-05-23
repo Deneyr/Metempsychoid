@@ -56,7 +56,17 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 if(this.cardFocused != value)
                 {
+                    if(this.cardFocused != null)
+                    {
+                        this.ClearCardFocusedFillLink();
+                    }
+
                     this.cardFocused = value;
+
+                    if (this.cardFocused != null)
+                    {
+                        this.AddCardFocusedFillLink();
+                    }
 
                     this.CardFocusedChanged?.Invoke(this);
                 }
@@ -153,19 +163,63 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 this.CardFocused = null;
             }
 
-            this.UpdateCardFocusedFillLink();
+            //this.UpdateCardFocusedFillLink();
         }
 
-        private void UpdateCardFocusedFillLink()
+        //private void UpdateCardFocusedFillLink()
+        //{
+        //    if(this.CardFocused != null && this.CardFocused.IsAwakened)
+        //    {
+        //        CardEntity cardEntity = this.object2DToObjects[this.CardFocused] as CardEntity;
+
+        //        this.linksFocused.Clear();
+        //        foreach (Constellation constellation in cardEntity.Card.Constellations)
+        //        {
+        //            foreach(List<StarLinkEntity> listStarLinks in constellation.LinkToStarLinkEntity.Values)
+        //            {
+        //                this.linksFocused.AddRange(listStarLinks.Select(pElem => this.objectToObject2Ds[pElem] as StarLinkEntity2D));
+        //            }
+        //        }
+
+        //        foreach (StarLinkEntity2D starLinkEntity2D in this.linksFocused)
+        //        {
+        //            starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.UP;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("---");
+        //        foreach(StarLinkEntity2D starLinkEntity2D in this.linksFocused)
+        //        {
+        //            starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.DOWN;
+        //            Console.WriteLine("link down");
+        //        }
+        //        this.linksFocused.Clear();
+        //    }
+        //}
+
+        private void ClearCardFocusedFillLink()
         {
-            if(this.CardFocused != null && this.CardFocused.IsAwakened)
+            if (this.CardFocused.IsAwakened)
+            {
+                foreach (StarLinkEntity2D starLinkEntity2D in this.linksFocused)
+                {
+                    starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.DOWN;
+                }
+                this.linksFocused.Clear();
+            }
+        }
+
+        private void AddCardFocusedFillLink()
+        {
+            if (this.CardFocused.IsAwakened)
             {
                 CardEntity cardEntity = this.object2DToObjects[this.CardFocused] as CardEntity;
 
                 this.linksFocused.Clear();
                 foreach (Constellation constellation in cardEntity.Card.Constellations)
                 {
-                    foreach(List<StarLinkEntity> listStarLinks in constellation.LinkToStarLinkEntity.Values)
+                    foreach (List<StarLinkEntity> listStarLinks in constellation.LinkToStarLinkEntity.Values)
                     {
                         this.linksFocused.AddRange(listStarLinks.Select(pElem => this.objectToObject2Ds[pElem] as StarLinkEntity2D));
                     }
@@ -175,14 +229,6 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 {
                     starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.UP;
                 }
-            }
-            else
-            {
-                foreach(StarLinkEntity2D starLinkEntity2D in this.linksFocused)
-                {
-                    starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.DOWN;
-                }
-                this.linksFocused.Clear();
             }
         }
 
@@ -213,6 +259,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                     cardAwakened.Priority = 10000 + this.maxAwakenedPriority++;
                     break;
+                case "ValueModificator":
+                    CardEntity2D cardValueChanged = this.objectToObject2Ds[obj] as CardEntity2D;
+                    cardValueChanged.CardValue = (obj as CardEntity).Card.Value;
+                    break;
+
             }
         }
 

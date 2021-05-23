@@ -60,6 +60,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
+        public List<CJStarDomain> StarDomains
+        {
+            get;
+            protected set;
+        }
+
         public event Action<CardEntity> CardPicked;
 
         public event Action<CardEntity> CardUnpicked;
@@ -72,6 +78,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarLinkSystem = new HashSet<StarLinkEntity>();
 
             this.StarToLinks = new Dictionary<StarEntity, HashSet<StarLinkEntity>>();
+
+            this.StarDomains = new List<CJStarDomain>();
 
             this.TypesInChunk.Add(typeof(StarEntity));
             this.TypesInChunk.Add(typeof(StarLinkEntity));
@@ -126,6 +134,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarToLinks[starEntityTo].Add(link);
 
             return link;
+        }
+
+        protected void AddStarDomain(CJStarDomain domainToAdd)
+        {
+            this.AddEntityToLayer(domainToAdd);
+            this.StarDomains.Add(domainToAdd);
         }
 
         protected void RemoveStarLink(StarLinkEntity starLinkEntity)
@@ -241,6 +255,11 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
         {
             this.CardEntityPicked = null;
 
+            this.StarSystem.Clear();
+            this.StarLinkSystem.Clear();
+            this.StarToLinks.Clear();
+            this.StarDomains.Clear();
+
             float cosPi4 = (float) Math.Cos(Math.PI / 4);
 
             // Inner circle
@@ -340,7 +359,18 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.AddCurvedStarLink(star13, star14, 1200);
             this.AddCurvedStarLink(star14, star11, 1200);
 
-            //// Cards
+            // Star Domains
+            CJStarDomain domain1 = new CJStarDomain(this, new HashSet<StarEntity>()
+            {
+                star1,
+                star2,
+                star3,
+                star
+            });
+            this.AddStarDomain(domain1);
+
+
+            // Cards
             this.cardFocused = null;
         }
 

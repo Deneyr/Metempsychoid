@@ -65,6 +65,8 @@ namespace Metempsychoid.View
             MappingObjectModelView.Add(typeof(StarLinkEntity), new StarLinkEntity2DFactory());
             MappingObjectModelView.Add(typeof(CurvedStarLinkEntity), new CurvedStarLinkEntity2DFactory());
 
+            MappingObjectModelView.Add(typeof(CJStarDomain), new CJStarDomain2DFactory());
+
             // Card entities
             MappingObjectModelView.Add(typeof(CardEntity), new CardEntity2DFactory());
             MappingObjectModelView.Add(typeof(ToolTipEntity), new CardToolTip2DFactory());

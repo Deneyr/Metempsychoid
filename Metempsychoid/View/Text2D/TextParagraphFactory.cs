@@ -128,7 +128,7 @@ namespace Metempsychoid.View.Text2D
             return tokens;
         }
 
-        private void AppendTextTokens(List<TextToken2D> tokenListToAppend, string text, string tokenType)
+        public void AppendTextTokens(List<TextToken2D> tokenListToAppend, string text, string tokenType)
         {
             string[] textTokens = text.Split(' ');
 

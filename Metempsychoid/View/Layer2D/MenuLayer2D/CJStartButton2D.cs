@@ -15,7 +15,10 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
 
         public override void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
-            parentLayer.SendEventToWorld(Model.Event.EventType.LEVEL_CHANGE, null, "TestLevel");
+            if (parentLayer.FocusedGraphicEntity2D == this)
+            {
+                parentLayer.SendEventToWorld(Model.Event.EventType.LEVEL_CHANGE, null, "TestLevel");
+            }
 
             this.Zoom = 1f;
         }

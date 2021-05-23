@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model.Constellations;
+using Metempsychoid.Model.Layer.BoardGameLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,21 @@ namespace Metempsychoid.Model.Card
 {
     public class CardTemplate
     {
-        private int defaultValue;
+        public delegate void HandlingFunction(Card card, BoardGameLayer layer);
 
-        public virtual int Value
+        public HandlingFunction HandlingCardAwakened;
+        public HandlingFunction HandlingCardUnAwakened;
+
+        public virtual int DefaultValue
         {
-            get
-            {
-                return this.defaultValue;
-            }
+            get;
+            private set;
+        }
+
+        public virtual int BonusValue
+        {
+            get;
+            private set;
         }
 
         public virtual string Name
@@ -43,9 +51,10 @@ namespace Metempsychoid.Model.Card
             private set;
         }
 
-        public CardTemplate(string name, string nameIdLoc, string poemIdLoc, int defaultValue)
+        public CardTemplate(string name, string nameIdLoc, string poemIdLoc, int defaultValue, int bonusValue)
         {
-            this.defaultValue = defaultValue;
+            this.DefaultValue = defaultValue;
+            this.BonusValue = bonusValue;
 
             this.Name = name;
 
@@ -57,6 +66,9 @@ namespace Metempsychoid.Model.Card
             {
                 ConstellationPatternFactory.CreateDefaultConstellation()
             };
+
+            this.HandlingCardAwakened = this.DefaultHandlingFunction;
+            this.HandlingCardUnAwakened = this.DefaultHandlingFunction;
         }
 
         public CardTemplate()
@@ -64,19 +76,9 @@ namespace Metempsychoid.Model.Card
             this.NameIdLoc = string.Empty;
         }
 
-        //public virtual void CardEnteredBoard(Layer.BoardGameLayer.BoardGameLayer layer, Player.Player player)
-        //{
-
-        //}
-
-        //public virtual void UpdateCard(Layer.BoardGameLayer.BoardGameLayer layer, Player.Player player)
-        //{
-
-        //}
-
-        //public virtual void CardQuitBoard(Layer.BoardGameLayer.BoardGameLayer layer, Player.Player player)
-        //{
-
-        //}
+        private void DefaultHandlingFunction(Card card, BoardGameLayer layer)
+        {
+            
+        }
     }
 }

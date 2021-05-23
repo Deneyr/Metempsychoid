@@ -65,34 +65,36 @@ namespace Metempsychoid.Model.Card
         {
             this.Card = card;
 
-            this.Card.CardAwakened += OnCardAwakened;
-            this.Card.CardUnAwakened += OnCardUnAwakened;
+            this.Card.PropertyChanged += OnPropertyChanged;
 
             this.parentStar = null;
 
             this.isFliped = isFliped;
         }
 
-        private void OnCardUnAwakened()
+        private void OnPropertyChanged(string propertyName)
         {
             if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
             {
-                entityLayer.NotifyObjectPropertyChanged(this, "IsAwakened");
+                if (propertyName == "IsAwakened")
+                {
+                    if (this.Card.IsAwakened)
+                    {
+                        this.Card.ApplyCardAwakened(entityLayer as BoardGameLayer);
+                    }
+                    else
+                    {
+                        this.Card.ApplyCardUnAwakened(entityLayer as BoardGameLayer);
+                    }
+                }
+
+                entityLayer.NotifyObjectPropertyChanged(this, propertyName);
             }
         }
-
-        private void OnCardAwakened()
-        {
-            if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
-            {
-                entityLayer.NotifyObjectPropertyChanged(this, "IsAwakened");
-            }
-        }
-
+        
         public override void Dispose()
         {
-            this.Card.CardAwakened -= OnCardAwakened;
-            this.Card.CardUnAwakened -= OnCardUnAwakened;
+            this.Card.PropertyChanged -= this.OnPropertyChanged;
 
             base.Dispose();
         }
