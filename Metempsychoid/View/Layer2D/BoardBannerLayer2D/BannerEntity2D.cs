@@ -67,6 +67,12 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             anim = new ColorAnimation(new Color(0, 0, 0, 128), new Color(0, 0, 0, 0), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             sequence.AddAnimation(3, anim);
             this.animationsList.Add(sequence);
+
+            anim = new ColorAnimation(new Color(0, 0, 0, 0), new Color(0, 0, 0, 128), Time.FromSeconds(0.5f), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            this.animationsList.Add(anim);
+
+            anim = new ColorAnimation(new Color(0, 0, 0, 128), new Color(0, 0, 0, 0), Time.FromSeconds(0.5f), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            this.animationsList.Add(anim);
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

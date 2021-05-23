@@ -50,12 +50,20 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             private set;
         }
 
+        public int Priority
+        {
+            get;
+            private set;
+        }
 
-        public CJStarDomain(EntityLayer.EntityLayer entityLayer, HashSet<StarEntity> starDomain, bool isFilled = true) : base(entityLayer)
+
+        public CJStarDomain(EntityLayer.EntityLayer entityLayer, HashSet<StarEntity> starDomain, int priority, bool isFilled = true) : base(entityLayer)
         {
             this.Domain = starDomain;
 
             this.IsFilled = isFilled;
+
+            this.Priority = priority;
 
             this.domainOwner = null;
 

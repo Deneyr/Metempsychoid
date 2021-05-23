@@ -137,6 +137,11 @@
     <Compile Include="View\Layer2D\BoardBannerLayer2D\CardToolTip2DFactory.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\HeaderEntity2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\ICardFocusedLayer.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\IDomainsLayer.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\IScoreLayer.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\ScoreDomainLabel2D.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\ScoreDomainPlayerLabel2D.cs" />
+    <Compile Include="View\Layer2D\BoardPlayerLayer2D\ScoreLabel2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\TitleBannerTextToken2D.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2D.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2DFactory.cs" />

@@ -13,7 +13,6 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 {
     public class HeaderEntity2D : TextCanevas2D
     {
-
         private Dictionary<string, int> playerNameToIndex;
 
         public override bool IsActive

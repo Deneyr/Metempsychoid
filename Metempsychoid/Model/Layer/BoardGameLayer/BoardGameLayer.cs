@@ -372,8 +372,17 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 star2,
                 star3,
                 star
-            });
+            }, -1);
             this.AddStarDomain(domain1);
+
+            CJStarDomain domain2 = new CJStarDomain(this, new HashSet<StarEntity>()
+            {
+                star7,
+                star8,
+                star9,
+                star10
+            }, -2, false);
+            this.AddStarDomain(domain2);
 
 
             // Cards

@@ -136,6 +136,14 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
+        public void ActiveAllParagraphs()
+        {
+            foreach (TextParagraph2D paragraph in this.textParagraph2Ds)
+            {
+                paragraph.IsActive = true;
+            }
+        }
+
         public void CreateTextParagraph2D(Vector2f positionOffsetTopLeft, Vector2f positionOffsetBotRight, Alignment alignment, uint characterSize)
         {
             TextParagraph2D textParagraph2D = new TextParagraph2D(this, positionOffsetTopLeft, positionOffsetBotRight, alignment, characterSize);

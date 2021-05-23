@@ -7,6 +7,7 @@ using Metempsychoid.Model;
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Node.TestWorld;
+using Metempsychoid.Model.Player;
 using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Layer2D.BoardGameLayer2D;
 using SFML.Graphics;
@@ -20,13 +21,19 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         private HeaderEntity2D headerEntity2D;
 
+        private ScoreDomainLabel2D scoreDomainLabel2D;
+
         private CardToolTip2D cardToolTip;
 
         private TurnPhase levelTurnPhase;
 
         private HashSet<ICardFocusedLayer> cardFocusedLayers;
+        private HashSet<IDomainsLayer> domainsLayers;
+        private Dictionary<string, IScoreLayer> scoreLayers;
 
-        private CardEntity2D cardFocused;   
+        private CardEntity2D cardFocused;
+
+        private bool endDomainsEvaluated;
 
         public TurnPhase LevelTurnPhase
         {
@@ -48,6 +55,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                         case TurnPhase.END_TURN:
                             this.InitializeEndTurnPhase();
                             break;
+                        case TurnPhase.COUNT_POINTS:
+                            this.endDomainsEvaluated = false;
+                            break;
                     }
                 }
             }
@@ -61,6 +71,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.bannerEntity2D = new BannerEntity2D(this);
 
             this.cardFocusedLayers = new HashSet<ICardFocusedLayer>();
+            this.domainsLayers = new HashSet<IDomainsLayer>();
+            this.scoreLayers = new Dictionary<string, IScoreLayer>();
         }
 
         public override void InitializeLayer(IObject2DFactory factory)
@@ -71,9 +83,13 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             BoardBannerLayer boardBannerLayer = this.parentLayer as BoardBannerLayer;
             this.headerEntity2D = new HeaderEntity2D(this, boardBannerLayer.Player.PlayerName, boardBannerLayer.Opponent.PlayerName);
+            this.scoreDomainLabel2D = new ScoreDomainLabel2D(this, boardBannerLayer.Player.PlayerName, boardBannerLayer.Opponent.PlayerName);
 
             this.cardFocused = null;
+
             this.cardFocusedLayers.Clear();
+            this.domainsLayers.Clear();
+            this.scoreLayers.Clear();
             if (this.world2D.TryGetTarget(out World2D world2D))
             {
                 foreach(ALayer2D layer in world2D.LayersList)
@@ -82,18 +98,79 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
                     if(cardFocusedLayer != null)
                     {
-                        //cardFocusedLayer.CardFocusedChanged += OnCardFocusedChanged;
-
                         this.cardFocusedLayers.Add(cardFocusedLayer);
+                    }
+
+                    IDomainsLayer domainLayer = layer as IDomainsLayer;
+                    if (domainLayer != null)
+                    {
+                        this.domainsLayers.Add(domainLayer);
+
+                        domainLayer.StartDomainEvaluated += OnStartDomainsEvaluated;
+                        domainLayer.DomainEvaluated += OnDomainEvaluated;
+                        domainLayer.EndDomainEvaluated += OnEndDomainsEvaluated;
+                    }
+
+                    IScoreLayer scoreLayer = layer as IScoreLayer;
+                    if(scoreLayer != null)
+                    {
+                        this.scoreLayers.Add(scoreLayer.PlayerName, scoreLayer);
                     }
                 }
             }
         }
 
-        //private void OnCardFocusedChanged(ICardFocusedLayer cardFocusedLayer)
-        //{
-        //    this.layerToCardFocused[cardFocusedLayer] = cardFocusedLayer.CardFocused;
-        //}
+        private void OnStartDomainsEvaluated()
+        {
+            foreach(IScoreLayer scoreLayer in this.scoreLayers.Values)
+            {
+                scoreLayer.PlayerScore = 0;
+            }
+
+            this.bannerEntity2D.IsActive = true;
+            this.bannerEntity2D.PlayAnimation(2);
+        }
+
+        private void OnEndDomainsEvaluated()
+        {
+            if (this.scoreDomainLabel2D.IsActive)
+            {
+                this.bannerEntity2D.PlayAnimation(3);
+                this.scoreDomainLabel2D.IsActive = false;
+            }
+
+            this.endDomainsEvaluated = true;
+        }
+
+        private void OnDomainEvaluated(Model.Layer.BoardGameLayer.CJStarDomain domain)
+        {
+            string domainOwnerName = null;
+            if (domain.DomainOwner != null)
+            {
+                domainOwnerName = domain.DomainOwner.PlayerName;
+            }
+
+            this.scoreDomainLabel2D.DisplayScoreDomainLabel(domainOwnerName);
+            foreach (KeyValuePair<Player, int> keyValuePair in domain.PlayerToPoints)
+            {
+                this.scoreDomainLabel2D.UpdateScoreDomainLabel(keyValuePair.Key.PlayerName, keyValuePair.Value);
+            }
+        }
+
+        public void OnDomainEvaluationFinished(string domainOwnerName)
+        {
+            if (domainOwnerName != null)
+            {
+                this.scoreLayers[domainOwnerName].PlayerScore++;
+            }
+            else
+            {
+                foreach (IScoreLayer scoreLayer in this.scoreLayers.Values)
+                {
+                    scoreLayer.PlayerScore++;
+                }
+            }
+        }
 
         protected override AEntity2D AddEntity(AEntity obj)
         {
@@ -123,6 +200,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                     break;
                 case TurnPhase.END_TURN:
                     this.UpdateEndTurnPhase(deltaTime);
+                    break;
+                case TurnPhase.COUNT_POINTS:
+                    this.UpdateCountPointsPhase(deltaTime);
                     break;
             }
         }
@@ -187,7 +267,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             window.SetView(this.view);
 
             this.bannerEntity2D.DrawIn(window, deltaTime);
+
             this.headerEntity2D.DrawIn(window, deltaTime);
+            this.scoreDomainLabel2D.DrawIn(window, deltaTime);
 
             window.SetView(defaultView);
         }
@@ -230,6 +312,18 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 this.bannerEntity2D.IsActive = false;
                 this.headerEntity2D.IsActive = false;
 
+                this.GoOnTurnPhase(TurnPhase.COUNT_POINTS);
+            }
+        }
+
+        private void UpdateCountPointsPhase(Time deltaTime)
+        {
+            this.scoreDomainLabel2D.UpdateGraphics(deltaTime);
+
+            if (this.endDomainsEvaluated && this.bannerEntity2D.IsAnimationRunning() == false)
+            {
+                this.bannerEntity2D.IsActive = false;
+
                 this.GoOnTurnPhase(TurnPhase.START_TURN);
             }
         }
@@ -257,10 +351,22 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 this.headerEntity2D.Dispose();
             }
 
-            //foreach(ICardFocusedLayer cardFocusedLayer in this.layerToCardFocused.Keys)
-            //{
-            //    cardFocusedLayer.CardFocusedChanged -= this.OnCardFocusedChanged;
-            //}
+            foreach (IDomainsLayer domainLayer in this.domainsLayers)
+            {
+                domainLayer.StartDomainEvaluated -= this.OnStartDomainsEvaluated;
+                domainLayer.DomainEvaluated -= OnDomainEvaluated;
+                domainLayer.EndDomainEvaluated -= OnEndDomainsEvaluated;
+            }
+
+            if (this.scoreDomainLabel2D != null)
+            {
+                this.scoreDomainLabel2D.Dispose();
+            }
+
+            this.domainsLayers.Clear();
+
+            this.scoreLayers.Clear();
+
             this.cardFocusedLayers.Clear();
         }
     }

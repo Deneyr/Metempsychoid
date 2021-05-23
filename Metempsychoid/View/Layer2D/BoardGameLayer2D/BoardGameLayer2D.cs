@@ -17,19 +17,27 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
-    public class BoardGameLayer2D : ALayer2D, ICardFocusedLayer
+    public class BoardGameLayer2D : ALayer2D, ICardFocusedLayer, IDomainsLayer
     {
         private List<CardEntity2D> cardsOnBoard;
+
+        private List<CJStarDomain2D> domainsOwnedByPlayers;
+        private int currenDomainEvaluatedIndex;
 
         private int maxAwakenedPriority;
 
         private CardEntity2D cardPicked;
-
         private CardEntity2D cardFocused;
 
         private List<StarLinkEntity2D> linksFocused;
 
+        private TurnPhase levelTurnPhase;
+
         public event Action<ICardFocusedLayer> CardFocusedChanged;
+
+        public event Action StartDomainEvaluated;
+        public event Action<CJStarDomain> DomainEvaluated;
+        public event Action EndDomainEvaluated;
 
         public CardEntity2D CardPicked
         {
@@ -75,8 +83,24 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         public TurnPhase LevelTurnPhase
         {
-            get;
-            private set;
+            get
+            {
+                return this.levelTurnPhase;
+            }
+            private set
+            {
+                if (this.levelTurnPhase != value)
+                {
+                    this.levelTurnPhase = value;
+
+                    switch (this.levelTurnPhase)
+                    {
+                        case TurnPhase.COUNT_POINTS:
+                            this.InitializeCountPointsPhase();
+                            break;
+                    }
+                }
+            }
         }
 
         public override Vector2f Position
@@ -93,6 +117,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
 
             this.cardsOnBoard = new List<CardEntity2D>();
+            this.domainsOwnedByPlayers = new List<CJStarDomain2D>();
 
             this.linksFocused = new List<StarLinkEntity2D>();
 
@@ -107,6 +132,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.maxAwakenedPriority = 0;
 
             this.cardsOnBoard.Clear();
+            this.domainsOwnedByPlayers.Clear();
 
             this.linksFocused.Clear();
 
@@ -162,41 +188,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 this.CardFocused = null;
             }
-
-            //this.UpdateCardFocusedFillLink();
         }
-
-        //private void UpdateCardFocusedFillLink()
-        //{
-        //    if(this.CardFocused != null && this.CardFocused.IsAwakened)
-        //    {
-        //        CardEntity cardEntity = this.object2DToObjects[this.CardFocused] as CardEntity;
-
-        //        this.linksFocused.Clear();
-        //        foreach (Constellation constellation in cardEntity.Card.Constellations)
-        //        {
-        //            foreach(List<StarLinkEntity> listStarLinks in constellation.LinkToStarLinkEntity.Values)
-        //            {
-        //                this.linksFocused.AddRange(listStarLinks.Select(pElem => this.objectToObject2Ds[pElem] as StarLinkEntity2D));
-        //            }
-        //        }
-
-        //        foreach (StarLinkEntity2D starLinkEntity2D in this.linksFocused)
-        //        {
-        //            starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.UP;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("---");
-        //        foreach(StarLinkEntity2D starLinkEntity2D in this.linksFocused)
-        //        {
-        //            starLinkEntity2D.FillRatioState = StarLinkEntity2D.TargetedFillRatioState.DOWN;
-        //            Console.WriteLine("link down");
-        //        }
-        //        this.linksFocused.Clear();
-        //    }
-        //}
 
         private void ClearCardFocusedFillLink()
         {
@@ -299,6 +291,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     break;
                 case TurnPhase.MAIN:
                     this.UpdateMainPhase(deltaTime);
+                    break;
+                case TurnPhase.COUNT_POINTS:
+                    this.UpdateCountPointsPhase(deltaTime);
                     break;
             }
         }
@@ -421,6 +416,56 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         //    return starEntityResult;
         //}
 
+        private void InitializeCountPointsPhase()
+        {
+            this.currenDomainEvaluatedIndex = -1;
+            this.domainsOwnedByPlayers = this.objectToObject2Ds.Where(pElem => pElem.Value is CJStarDomain2D && (pElem.Key as CJStarDomain).PlayerToPoints.Count > 0).Select(pElem => pElem.Value as CJStarDomain2D).ToList();
+
+            if (this.domainsOwnedByPlayers.Count > 0)
+            {
+                this.StartDomainEvaluated?.Invoke();
+                this.EvaluateDomain(0);
+            }
+        }
+
+        private void UpdateCountPointsPhase(Time deltaTime)
+        {
+            if(this.currenDomainEvaluatedIndex >= 0)
+            {
+                CJStarDomain2D currentDomainEvaluated = this.domainsOwnedByPlayers[this.currenDomainEvaluatedIndex];
+
+                if(currentDomainEvaluated.IsAnimationRunning() == false)
+                {
+                    currentDomainEvaluated.Priority = (this.object2DToObjects[currentDomainEvaluated] as CJStarDomain).Priority;
+
+                    this.currenDomainEvaluatedIndex++;
+                    if (this.currenDomainEvaluatedIndex < this.domainsOwnedByPlayers.Count)
+                    {
+                        this.EvaluateDomain(this.currenDomainEvaluatedIndex);
+                    }
+                    else
+                    {
+                        this.currenDomainEvaluatedIndex = -1;
+                    }
+                }
+            }
+            else
+            {
+                this.EndDomainEvaluated?.Invoke();
+            }
+        }
+
+        private void EvaluateDomain(int index)
+        {
+            this.currenDomainEvaluatedIndex = index;
+            CJStarDomain2D domainToEvaluate = this.domainsOwnedByPlayers[index];
+
+            domainToEvaluate.Priority = 2000;
+            this.domainsOwnedByPlayers[index].PlayAnimation(0);
+
+            this.DomainEvaluated?.Invoke(this.object2DToObjects[domainToEvaluate] as CJStarDomain);
+        }
+
         private void GoOnTurnPhase(TurnPhase nextTurnPhase)
         {
             this.SendEventToWorld(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase));
@@ -511,6 +556,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             base.FlushEntities();
 
             this.cardsOnBoard.Clear();
+            this.domainsOwnedByPlayers.Clear();
 
             this.LevelTurnPhase = TurnPhase.VOID;
         }

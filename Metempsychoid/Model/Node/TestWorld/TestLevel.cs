@@ -115,6 +115,9 @@ namespace Metempsychoid.Model.Node.TestWorld
                 case TurnPhase.END_TURN:
                     this.UpdateEndTurnPhase(world);
                     break;
+                case TurnPhase.COUNT_POINTS:
+                    this.UpdateCountPointsLevelPhase(world);
+                    break;
                 case TurnPhase.END_LEVEL:
 
                     break;
@@ -173,6 +176,11 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.SetCurrentTurnPhase(world, TurnPhase.END_TURN);
 
             boardPlayerLayer.OnEndTurn();
+        }
+
+        private void InitializeCountPointsPhase(World world)
+        {
+            this.SetCurrentTurnPhase(world, TurnPhase.COUNT_POINTS);
         }
 
         private void UpdateStartLevelPhase(World world)
@@ -305,6 +313,14 @@ namespace Metempsychoid.Model.Node.TestWorld
         }
 
         private void UpdateEndTurnPhase(World world)
+        {
+            if (this.CheckNextTurnPhaseEvent(TurnPhase.COUNT_POINTS, null))
+            {
+                this.InitializeCountPointsPhase(world);
+            }
+        }
+
+        private void UpdateCountPointsLevelPhase(World world)
         {
             if (this.CheckNextTurnPhaseEvent(TurnPhase.START_TURN, null))
             {
@@ -494,6 +510,7 @@ namespace Metempsychoid.Model.Node.TestWorld
         DRAW,
         MAIN,
         END_TURN,
+        COUNT_POINTS,
         END_LEVEL
     }
 }

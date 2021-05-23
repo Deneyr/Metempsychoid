@@ -1,4 +1,5 @@
-﻿using Metempsychoid.Model.Layer.BoardGameLayer;
+﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.View.Animation;
 using SFML.Graphics;
 using SFML.Graphics.Glsl;
@@ -106,9 +107,10 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                 Vec2[] points = new Vec2[NB_MAX_POINTS];
                 int i = 0;
+                IntRect canevas = this.Canevas;
                 foreach(Vector2f point in this.domainPoints)
                 {
-                    points[i] = new Vec2((point.X - this.Position.X) / this.ObjectSprite.Texture.Size.X, (point.Y - this.Position.Y) / this.ObjectSprite.Texture.Size.Y);
+                    points[i] = new Vec2((point.X - this.Position.X + canevas.Width / 2) / this.ObjectSprite.Texture.Size.X, (point.Y - this.Position.Y + canevas.Height / 2) / this.ObjectSprite.Texture.Size.Y);
                     i++;
                 }
 
@@ -138,10 +140,18 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             render = new RenderStates(BlendMode.Alpha);
             render.Shader = shader;
 
-            this.Priority = -1;
+            this.Priority = entity.Priority;
 
             this.domainStars = entity.Domain.Select(pElem => layer2D.GetEntity2DFromEntity(pElem) as StarEntity2D).ToList();
             shader.SetUniform("isFilled", entity.IsFilled);
+
+            SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(6), AnimationType.ONETIME);
+            IAnimation anim = new ZoomAnimation(1f, 2f, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            sequence.AddAnimation(0, anim);
+
+            anim = new ZoomAnimation(2f, 1f, Time.FromSeconds(3), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            sequence.AddAnimation(2, anim);
+            this.animationsList.Add(sequence);
 
             this.UpdateScaling(entity);
 
@@ -185,7 +195,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             topLeft -= new Vector2f(MARGIN_DOMAIN, MARGIN_DOMAIN);
 
             this.ObjectSprite.TextureRect = new IntRect(0, 0, (int) width, (int) height);
-            this.ObjectSprite.Position = topLeft;
+            this.ObjectSprite.Origin = new Vector2f(width / 2, height / 2);
+
+            this.ObjectSprite.Position = (bottomRight + topLeft) / 2;
 
             //this.WidthRatio = ((float)width) / this.ObjectSprite.Texture.Size.X;
             //this.HeightRatio = ((float)height) / this.ObjectSprite.Texture.Size.Y;

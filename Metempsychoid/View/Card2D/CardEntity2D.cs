@@ -511,6 +511,14 @@ namespace Metempsychoid.View.Card2D
             return false;
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            this.cardHalo.Dispose();
+            this.cardLabel.Dispose();
+        }
+
         public enum CardSideState
         {
             FACE,

@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 {
-    public class BoardPlayerLayer2D: ALayer2D, ICardFocusedLayer
+    public class BoardPlayerLayer2D: ALayer2D, ICardFocusedLayer, IScoreLayer
     {
         private static float COOLDOWN_FOCUS = 2;
         private static float COOLDOWN_DRAW = 1;
@@ -36,6 +36,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         //private CardToolTip cardToolTip;
         private EndTurnButton2D endTurnButton;
+        private ScoreLabel2D scoreLabel;
 
         private int maxPriority;
 
@@ -105,7 +106,10 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                     base.DefaultViewSize = value;
 
                     IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+                    IntRect scoreLabelCanevas = this.scoreLabel.Canevas;
+
                     this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
+                    this.scoreLabel.Position = new Vector2f(scoreLabelCanevas.Width / 2 - this.DefaultViewSize.X / 2 + 20, this.OffsetCard * 3/4);
 
                     foreach (KeyValuePair<AEntity, AEntity2D> pairEntity in this.objectToObject2Ds)
                     {
@@ -130,6 +134,26 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
+        public string PlayerName
+        {
+            get
+            {
+                return (this.parentLayer as BoardPlayerLayer).SupportedPlayer.PlayerName;
+            }
+        }
+
+        public int PlayerScore
+        {
+            get
+            {
+                return this.scoreLabel.Score;
+            }
+
+            set
+            {
+                this.scoreLabel.Score = value;
+            }
+        }
 
         public BoardPlayerLayer2D(World2D world2D, IObject2DFactory factory, BoardPlayerLayer layer) :
             base(world2D, layer)
@@ -148,6 +172,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             //this.cardToolTip = new CardToolTip(this);
             this.endTurnButton = new EndTurnButton2D(this);
+            this.scoreLabel = new ScoreLabel2D(this);
 
             this.cardsDeck = new List<CardEntity2D>();
             this.cardsCemetery = new List<CardEntity2D>();
@@ -171,6 +196,10 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardFocused = null;
 
             base.InitializeLayer(factory);
+
+            BoardPlayerLayer parentBoardPlayerLayer = (this.parentLayer as BoardPlayerLayer);
+            this.scoreLabel.DisplayScore(parentBoardPlayerLayer.IndexPlayer, parentBoardPlayerLayer.SupportedPlayer.PlayerName);
+            this.scoreLabel.Score = 0;
 
             foreach (AEntity2D entity in this.objectToObject2Ds.Values)
             {
@@ -428,6 +457,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             //this.cardToolTip.DrawIn(window, deltaTime);
             this.endTurnButton.DrawIn(window, deltaTime);
+            this.scoreLabel.DrawIn(window, deltaTime);
 
             window.SetView(defaultView);
         }
