@@ -98,6 +98,7 @@
     <Compile Include="Model\Node\TestWorld\TestLevel.cs" />
     <Compile Include="Model\Node\TestWorld\TestWorld.cs" />
     <Compile Include="Model\Player\Player.cs" />
+    <Compile Include="Model\Player\PlayerSerializer.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

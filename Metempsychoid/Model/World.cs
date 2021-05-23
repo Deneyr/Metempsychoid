@@ -10,6 +10,7 @@ using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
 using Metempsychoid.Model.Node;
 using Metempsychoid.Model.Node.TestWorld;
+using Metempsychoid.Model.Player;
 using SFML.System;
 
 namespace Metempsychoid.Model
@@ -72,8 +73,8 @@ namespace Metempsychoid.Model
 
             this.loadedLayers = new Dictionary<string, ALayer>();
 
-            this.Player = new Player.Player(SFML.Graphics.Color.Red, "Terah");
-            this.Opponent = new Player.Player(SFML.Graphics.Color.Green, "Seth");
+            //this.Player = new Player.Player(SFML.Graphics.Color.Red, "Terah");
+            //this.Opponent = new Player.Player(SFML.Graphics.Color.Green, "Seth");
 
             this.CardLibrary = new CardFactory();
 
@@ -194,15 +195,19 @@ namespace Metempsychoid.Model
 
         public void InitializeGameNode()
         {
-            for (int i = 0; i < 30; i++)
-            {
-                this.Player.Deck.Cards.Add(this.CardLibrary.CreateCard("wheel", this.Player));
-            }
+            //for (int i = 0; i < 30; i++)
+            //{
+            //    this.Player.Deck.Cards.Add(this.CardLibrary.CreateCard("wheel", this.Player));
+            //}
 
-            for (int i = 0; i < 30; i++)
-            {
-                this.Opponent.Deck.Cards.Add(this.CardLibrary.CreateCard("wheel", this.Opponent));
-            }
+            //for (int i = 0; i < 30; i++)
+            //{
+            //    this.Opponent.Deck.Cards.Add(this.CardLibrary.CreateCard("wheel", this.Opponent));
+            //}
+
+
+            this.Player = PlayerSerializer.Deserialize("player.xml", this.CardLibrary);
+            this.Opponent = PlayerSerializer.Deserialize("opponent.xml", this.CardLibrary);
 
             this.gameNode.VisitStart(this);
         }
