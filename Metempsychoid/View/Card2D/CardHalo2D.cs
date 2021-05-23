@@ -12,6 +12,8 @@ namespace Metempsychoid.View.Card2D
 {
     public class CardHalo2D : AEntity2D
     {
+        private static float ZOOM_AWAKENED = 2;
+
         RenderStates render;
 
         Clock timer = new Clock();
@@ -68,10 +70,10 @@ namespace Metempsychoid.View.Card2D
             // Active animation
             SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(4), AnimationType.LOOP);
 
-            IAnimation anim = new ZoomAnimation(3, 3.5f, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            IAnimation anim = new ZoomAnimation(ZOOM_AWAKENED, ZOOM_AWAKENED + .5f, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             sequence.AddAnimation(0, anim);
 
-            anim = new ZoomAnimation(3.5f, 3, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            anim = new ZoomAnimation(ZOOM_AWAKENED + .5f, ZOOM_AWAKENED, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             sequence.AddAnimation(2, anim);
 
             this.animationsList.Add(sequence);
@@ -91,7 +93,7 @@ namespace Metempsychoid.View.Card2D
             if (this.isActive)
             {
                 float time = Math.Abs(3 - this.Zoom);
-                result = new ZoomAnimation(this.Zoom, 3f, Time.FromSeconds(time), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
+                result = new ZoomAnimation(this.Zoom, ZOOM_AWAKENED, Time.FromSeconds(time), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
             }
             else
             {

@@ -55,11 +55,11 @@ namespace Metempsychoid.Model.Card
         {
             if (isApplied)
             {
-                card.ValueModificator = card.BonusValue;
+                card.ValueModificator += card.BonusValue;
             }
             else
             {
-                card.ValueModificator = 0;
+                card.ValueModificator -= card.BonusValue;
             }
         }
     }

@@ -239,6 +239,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                         star.CardSocketed.Card.OtherCardSocketed(this, star, starEntity);
                     }
                 }
+
+                // Reevaluate domains
+                foreach(CJStarDomain domain in this.StarDomains)
+                {
+                    domain.EvaluateDomainOwner();
+                }
             }
         }
 

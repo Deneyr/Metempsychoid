@@ -249,6 +249,19 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
+        public int CardBonus
+        {
+            get
+            {
+                return this.cardLabel.Bonus;
+            }
+
+            set
+            {
+                this.cardLabel.Bonus = value;
+            }
+        }
+
 
         public CardEntity2D(IObject2DFactory factory, ALayer2D layer2D, CardEntity entity) :
             base(layer2D, true)

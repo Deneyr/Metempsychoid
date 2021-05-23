@@ -4,18 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Metempsychoid.Model.Layer.EntityLayer;
+using Metempsychoid.Model.Player;
 
 namespace Metempsychoid.Model.Layer.BoardGameLayer
 {
     public class CJStarDomain : AEntity
     {
+        private Player.Player domainOwner;
+
         public Player.Player DomainOwner
         {
-            get;
-            private set;
+            get
+            {
+                return this.domainOwner;
+            }
+            private set
+            {
+                if (this.domainOwner != value)
+                {
+                    this.domainOwner = value;
+
+                    if (this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
+                    {
+                        entityLayer.NotifyObjectPropertyChanged(this, "DomainOwner");
+                    }
+                }
+            }
         }
 
-        public Dictionary<Player.Player, int> playerToPoints
+        public Dictionary<Player.Player, int> PlayerToPoints
         {
             get;
             private set;
@@ -40,21 +57,53 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
             this.IsFilled = isFilled;
 
-            this.playerToPoints = new Dictionary<Player.Player, int>();
+            this.domainOwner = null;
+
+            this.PlayerToPoints = new Dictionary<Player.Player, int>();
         }
 
         public void EvaluateDomainOwner()
         {
-            this.playerToPoints.Clear();
+            this.PlayerToPoints.Clear();
             foreach (StarEntity starEntity in this.Domain)
             {
                 if(starEntity.CardSocketed != null)
                 {
-                    if (this.playerToPoints.ContainsKey(starEntity.CardSocketed.Card.Player) == false)
+                    if (this.PlayerToPoints.ContainsKey(starEntity.CardSocketed.Card.Player) == false)
                     {
-                        this.playerToPoints.Add(starEntity.CardSocketed.Card.Player, starEntity.CardSocketed.Card.DefaultValue);
+                        this.PlayerToPoints.Add(starEntity.CardSocketed.Card.Player, starEntity.CardSocketed.Card.Value);
+                    }
+                    else
+                    {
+                        this.PlayerToPoints[starEntity.CardSocketed.Card.Player] += starEntity.CardSocketed.Card.Value;
                     }
                 }
+            }
+
+            List<KeyValuePair<Player.Player, int>> playerPointsSorted = this.PlayerToPoints.ToList();
+            playerPointsSorted.Sort(new PlayerValueComparer());
+
+            if(playerPointsSorted.Count == 1
+                || (playerPointsSorted.Count > 1 && playerPointsSorted[0].Value > playerPointsSorted[1].Value))
+            {
+                this.DomainOwner = playerPointsSorted[0].Key;
+            }
+            else
+            {
+                this.DomainOwner = null;
+            }
+
+            if (this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
+            {
+                entityLayer.NotifyObjectPropertyChanged(this, "PlayerToPoints");
+            }
+        }
+
+        private class PlayerValueComparer : IComparer<KeyValuePair<Player.Player, int>>
+        {
+            public int Compare(KeyValuePair<Player.Player, int> x, KeyValuePair<Player.Player, int> y)
+            {
+                return y.Value - x.Value;
             }
         }
     }

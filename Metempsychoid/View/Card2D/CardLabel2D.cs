@@ -18,6 +18,8 @@ namespace Metempsychoid.View.Card2D
 
         private int label;
 
+        private int bonus;
+
         public override bool IsActive
         {
             get
@@ -38,7 +40,40 @@ namespace Metempsychoid.View.Card2D
                 {
                     this.label = value;
 
-                    this.CreateTextOfParagraph(0, this.label.ToString(), "Normal");
+                    this.CreateTextOfParagraph(0, this.label.ToString(), "CardLabel");
+
+                    if (this.IsActive)
+                    {
+                        this.PlayAnimation(2);
+                    }
+                }
+            }
+        }
+
+        public int Bonus
+        {
+            get
+            {
+                return this.bonus;
+            }
+            set
+            {
+                if (this.bonus != value)
+                {
+                    this.bonus = value;
+
+                    if (this.bonus > 0)
+                    {
+                        this.SpriteColor = Color.Green;
+                    }
+                    else if(this.bonus < 0)
+                    {
+                        this.SpriteColor = Color.Red;
+                    }
+                    else
+                    {
+                        this.SpriteColor = Color.Yellow;
+                    }
                 }
             }
         }
@@ -69,7 +104,7 @@ namespace Metempsychoid.View.Card2D
             {
                 base.SpriteColor = value;
 
-                this.bannerShape.FillColor = new Color(value.R, value.G, value.B, (byte)(value.A / 2));
+                this.bannerShape.FillColor = new Color(0, 0, 0, (byte)(value.A / 2));
             }
         }
 
@@ -101,16 +136,16 @@ namespace Metempsychoid.View.Card2D
             : base(parentLayer)
         {
             this.label = int.MinValue;
+            this.Bonus = 0;
 
             this.bannerShape = new RectangleShape(new Vector2f(50, 25));
             this.Position = new Vector2f(0, 0);
 
             this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
-            this.Label = label;
 
-            this.SpriteColor = new Color(0, 0, 0, 0);
+            this.SpriteColor = new Color(255, 255, 255, 0);
 
-            IAnimation showAnimation = new ColorAnimation(new Color(0, 0, 0, 0), new Color(0, 0, 0, 255), Time.FromSeconds(0.5f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            IAnimation showAnimation = new ColorAnimation(new Color(255, 255, 255, 0), new Color(255, 255, 255, 255), Time.FromSeconds(0.5f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             this.animationsList.Add(showAnimation);
 
             //SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(2), AnimationType.LOOP);
@@ -121,8 +156,13 @@ namespace Metempsychoid.View.Card2D
             //sequence.AddAnimation(1, focusedAnimation);
             //this.animationsList.Add(sequence);
 
-            IAnimation hideAnimation = new ColorAnimation(new Color(0, 0, 0, 255), new Color(0, 0, 0, 0), Time.FromSeconds(0.5f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            IAnimation hideAnimation = new ColorAnimation(new Color(255, 255, 255, 255), new Color(255, 255, 255, 0), Time.FromSeconds(0.5f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             this.animationsList.Add(hideAnimation);
+
+            IAnimation labelChangedAnimation = new ZoomAnimation(3, 1, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            this.animationsList.Add(labelChangedAnimation);
+
+            this.Label = label;
 
             this.IsActive = false;
         }

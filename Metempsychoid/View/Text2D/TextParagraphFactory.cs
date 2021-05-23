@@ -1,4 +1,5 @@
-﻿using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
+﻿using Metempsychoid.View.Card2D;
+using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -144,6 +145,9 @@ namespace Metempsychoid.View.Text2D
                             break;
                         case "BannerTitle":
                             textToken2D = new TitleBannerTextToken2D(textToken);
+                            break;
+                        case "CardLabel":
+                            textToken2D = new CardLabelTextToken2D(textToken);
                             break;
                         default:
                             textToken2D = new TextToken2D(textToken);
