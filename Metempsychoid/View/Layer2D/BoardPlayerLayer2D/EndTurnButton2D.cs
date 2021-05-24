@@ -145,7 +145,10 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             if (parentLayer.FocusedGraphicEntity2D == this)
             {
-                (parentLayer as BoardPlayerLayer2D).GoOnTurnPhase(Model.Node.TestWorld.TurnPhase.END_TURN);
+                BoardPlayerLayer2D boardPlayerLayer2D = (parentLayer as BoardPlayerLayer2D);
+
+                boardPlayerLayer2D.SendUnpickEvent();
+                boardPlayerLayer2D.GoOnTurnPhase(Model.Node.TestWorld.TurnPhase.END_TURN);
             }
 
             this.Zoom = 1;

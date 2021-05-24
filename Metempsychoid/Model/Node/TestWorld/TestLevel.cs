@@ -150,6 +150,9 @@ namespace Metempsychoid.Model.Node.TestWorld
             bannerLayer.PlayerTurn = boardPlayerLayer.SupportedPlayer;
             bannerLayer.TurnIndex = this.TurnIndex;
 
+            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+            boardGameLayer.PlayerTurn = boardPlayerLayer.SupportedPlayer;
+
             this.SetCurrentTurnPhase(world, TurnPhase.START_TURN);
 
             boardPlayerLayer.OnStartTurn();
@@ -308,15 +311,25 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN, boardPlayerLayer))
             {
-                this.InitializeEndTurnPhase(world);
+                if (boardGameLayer.CardEntityPicked == null)
+                {
+                    this.InitializeEndTurnPhase(world);
+                }
             }
         }
 
         private void UpdateEndTurnPhase(World world)
         {
-            if (this.CheckNextTurnPhaseEvent(TurnPhase.COUNT_POINTS, null))
+            if (this.CheckNextTurnPhaseEvent(TurnPhase.START_TURN, null))
             {
-                this.InitializeCountPointsPhase(world);
+                if (this.TurnIndex % 2 == 0)
+                {
+                    this.InitializeStartTurnPhase(world);
+                }
+                else
+                {
+                    this.InitializeCountPointsPhase(world);
+                }
             }
         }
 

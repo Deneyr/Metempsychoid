@@ -405,11 +405,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
                     if (eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
                     {
-                        Vector2i mousePosition = this.MousePosition;
-
-                        mousePosition.Y -= (int)this.OffsetCard;
-
-                        this.SendEventToWorld(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y);
+                        this.SendUnpickEvent();
                     }
                     base.OnControlActivated(eventType, details);
 
@@ -417,6 +413,15 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
 
             return true;
+        }
+
+        public void SendUnpickEvent()
+        {
+            Vector2i mousePosition = this.MousePosition;
+
+            mousePosition.Y -= (int)this.OffsetCard;
+
+            this.SendEventToWorld(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y);
         }
 
         //private CardEntity2D GetCardFocused()

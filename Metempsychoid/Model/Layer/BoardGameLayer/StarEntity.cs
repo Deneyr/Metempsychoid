@@ -56,7 +56,14 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public bool CanSocketCard(CardEntity cardToSocket)
         {
-            return this.IsActive && this.CardSocketed == null;
+            bool canSocketOnBoard = true;
+
+            if(this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
+            {
+                canSocketOnBoard = (entityLayer as BoardGameLayer).NbCardsAbleToBeSocketed > 0;
+            }
+
+            return this.IsActive && this.CardSocketed == null && canSocketOnBoard;
         }
 
         public bool CanMoveCard(CardEntity cardToMove)

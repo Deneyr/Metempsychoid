@@ -15,6 +15,31 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
     {
         private CardEntity cardFocused;
 
+        private Player.Player playerTurn;
+
+        public int NbCardsAbleToBeSocketed
+        {
+            get;
+            private set;
+        }
+
+        public Player.Player PlayerTurn
+        {
+            get
+            {
+                return this.playerTurn;
+            }
+            set
+            {
+                if (this.playerTurn != value)
+                {
+                    this.playerTurn = value;
+
+                    this.NbCardsAbleToBeSocketed = 1;
+                }
+            }
+        }
+
         public Dictionary<StarEntity, HashSet<StarLinkEntity>> StarToLinks
         {
             get;
@@ -221,13 +246,15 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public void SocketCard(StarEntity starEntity)
         {
-            if(this.CardEntityPicked != null)
+            if(this.CardEntityPicked != null && this.NbCardsAbleToBeSocketed > 0)
             {
                 this.CardEntityPicked.IsFliped = true;
 
                 starEntity.CardSocketed = this.CardEntityPicked;
 
                 this.CardEntityPicked = null;
+
+                this.NbCardsAbleToBeSocketed--;
 
                 // Run awakened events
                 starEntity.CardSocketed.Card.CardSocketed(this, starEntity);
@@ -260,6 +287,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
             this.CardEntityPicked = null;
+            this.playerTurn = null;
 
             this.StarSystem.Clear();
             this.StarLinkSystem.Clear();

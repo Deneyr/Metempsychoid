@@ -312,7 +312,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 this.bannerEntity2D.IsActive = false;
                 this.headerEntity2D.IsActive = false;
 
-                this.GoOnTurnPhase(TurnPhase.COUNT_POINTS);
+                this.GoOnTurnPhase(TurnPhase.START_TURN);
             }
         }
 
