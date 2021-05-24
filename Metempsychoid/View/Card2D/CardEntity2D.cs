@@ -491,6 +491,11 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
+        public void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
+        {
+
+        }
+
         public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
         {
             parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_HAND, parentLayer.GetEntityFromEntity2D(this), null);

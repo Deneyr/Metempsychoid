@@ -230,7 +230,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         }
 
-        public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
+        public void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
         {
             if (parentLayer is BoardGameLayer2D
                 && parentLayer.FocusedGraphicEntity2D == this)
@@ -250,6 +250,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     }
                 }
             }
+        }
+
+        public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
+        {
+
         }
 
         public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)

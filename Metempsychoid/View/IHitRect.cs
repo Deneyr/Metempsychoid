@@ -21,6 +21,8 @@ namespace Metempsychoid.View
 
         void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType);
 
+        void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType);
+
         void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType);
 
         void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType);

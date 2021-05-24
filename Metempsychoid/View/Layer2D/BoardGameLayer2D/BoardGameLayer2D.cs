@@ -169,12 +169,12 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         private void OnCardPicked(CardEntity obj)
         {
             this.CardPicked = this.objectToObject2Ds[obj] as CardEntity2D;
-            this.CardPicked.Priority = 1001;
+            this.CardPicked.Priority = 3001;
         }
 
         private void OnCardUnPicked(CardEntity obj)
         {
-            this.CardPicked.Priority = 1000;
+            this.CardPicked.Priority = 3000;
             this.CardPicked = null;
         }
 
@@ -249,7 +249,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     CardEntity2D cardAwakened = this.objectToObject2Ds[obj] as CardEntity2D;
                     cardAwakened.IsAwakened = (obj as CardEntity).Card.IsAwakened;
 
-                    cardAwakened.Priority = 10000 + this.maxAwakenedPriority++;
+                    cardAwakened.Priority = 2000 + this.maxAwakenedPriority++;
                     break;
                 case "ValueModificator":
                     CardEntity2D card2DChanged = this.objectToObject2Ds[obj] as CardEntity2D;
@@ -460,7 +460,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.currenDomainEvaluatedIndex = index;
             CJStarDomain2D domainToEvaluate = this.domainsOwnedByPlayers[index];
 
-            domainToEvaluate.Priority = 2000;
+            domainToEvaluate.Priority = 4000;
             this.domainsOwnedByPlayers[index].PlayAnimation(0);
 
             this.DomainEvaluated?.Invoke(this.object2DToObjects[domainToEvaluate] as CJStarDomain);

@@ -141,6 +141,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.Zoom = 1.1f;
         }
 
+        public override void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
+        {
+
+        }
+
         public override void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
             if (parentLayer.FocusedGraphicEntity2D == this)

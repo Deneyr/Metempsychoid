@@ -183,6 +183,42 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         private void InitializeCountPointsPhase(World world)
         {
+            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+            BoardBannerLayer bannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
+
+            int playerScore = 0;
+            int opponentScore = 0;
+            foreach(CJStarDomain domain in boardGameLayer.StarDomains)
+            {
+                if(domain.PlayerToPoints.Count > 0)
+                {
+                    if(domain.DomainOwner == null)
+                    {
+                        playerScore++;
+                        opponentScore++;
+                    }
+                    else if(domain.DomainOwner == world.Player)
+                    {
+                        playerScore++;
+                    }
+                    else
+                    {
+                        opponentScore++;
+                    }
+                }
+            }
+
+            List<int> scoresPlayer = bannerLayer.PlayerNameToTotalScores[world.Player.PlayerName];
+            List<int> scoresOpponent = bannerLayer.PlayerNameToTotalScores[world.Opponent.PlayerName];
+            if (scoresPlayer.Count > 0)
+            {
+                playerScore += scoresPlayer.Last();
+                opponentScore += scoresOpponent.Last();
+            }
+
+            scoresPlayer.Add(playerScore);
+            scoresOpponent.Add(opponentScore);
+
             this.SetCurrentTurnPhase(world, TurnPhase.COUNT_POINTS);
         }
 
@@ -253,67 +289,122 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             if (this.CheckFocusCardHandEvent(world, boardPlayerLayer, out CardEntity cardHandFocused, out string detailsHandFocused))
             {
-                if (boardGameLayer.CardEntityPicked == null)
-                {
+                //if (boardGameLayer.CardEntityPicked == null)
+                //{
                     boardPlayerLayer.CardEntityFocused = cardHandFocused;
 
                     boardGameLayer.CardEntityFocused = null;
-                }
+                //}
             }
 
 
             if (this.CheckFocusCardBoardEvent(world, null, out CardEntity cardBoardFocused, out string detailsBoardFocused))
             {
-                if (boardGameLayer.CardEntityPicked == null && boardPlayerLayer.CardEntityFocused == null)
+                if (/*boardGameLayer.CardEntityPicked == null && */boardPlayerLayer.CardEntityFocused == null)
                 {
                     boardGameLayer.CardEntityFocused = cardBoardFocused;
                 }
             }
 
-            if (this.CheckPickCardEvent(world, boardPlayerLayer, out CardEntity cardPicked, out string detailsPicked))
-            {
-                if (cardPicked != null)
-                {
-                    if (boardGameLayer.CardEntityPicked == null)
-                    {
-                        if (boardPlayerLayer.PickCard(cardPicked))
-                        {
-                            boardGameLayer.PickCard(cardPicked.Card);
-                        }
-                        else
-                        {
-                            boardGameLayer.PickCard(cardPicked);
-                        }
-                    }
-                }
-                else
-                {
-                    if (boardGameLayer.CardEntityPicked != null)
-                    {
-                        Card.Card cardToUnpick = boardGameLayer.CardEntityPicked.Card;
-                        Vector2f startPosition = GetPositionFrom(detailsPicked);
-
-                        if (boardGameLayer.UnPickCard())
-                        {
-                            boardPlayerLayer.UnpickCard(cardToUnpick, startPosition);
-                        }
-                    }
-                }
-            }
-
             if (this.CheckSocketCardEvent(world, null, out StarEntity starEntity))
             {
-                if(starEntity != null)
+                if (starEntity != null)
                 {
                     boardGameLayer.SocketCard(starEntity);
                 }
             }
+
+            bool IsTherePickCardEvent = this.CheckPickCardEvent(world, boardPlayerLayer, out CardEntity cardPicked, out string detailsPicked);
+            bool IsThereUnpickCardEvent = this.CheckUnPickCardEvent(world, boardPlayerLayer, out CardEntity cardUnpicked, out string detailsUnpicked);
+
+            if(boardGameLayer.CardEntityPicked == null)
+            {
+                if (IsTherePickCardEvent)
+                {
+                    this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                }
+            }
+            else
+            {
+                if (IsThereUnpickCardEvent)
+                {
+                    this.UnpickCard(boardPlayerLayer, boardGameLayer, detailsUnpicked);
+                }
+
+                if (IsTherePickCardEvent)
+                {
+                    this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                }
+            }
+
+            //if (this.CheckPickCardEvent(world, boardPlayerLayer, out CardEntity cardPicked, out string detailsPicked))
+            //{
+            //    if (cardPicked != null)
+            //    {
+            //        if (boardGameLayer.CardEntityPicked == null)
+            //        {
+            //            if (boardPlayerLayer.PickCard(cardPicked))
+            //            {
+            //                boardGameLayer.PickCard(cardPicked.Card);
+            //            }
+            //            else
+            //            {
+            //                boardGameLayer.PickCard(cardPicked);
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (boardGameLayer.CardEntityPicked != null)
+            //        {
+            //            Card.Card cardToUnpick = boardGameLayer.CardEntityPicked.Card;
+            //            Vector2f startPosition = GetPositionFrom(detailsPicked);
+
+            //            if (boardGameLayer.UnPickCard())
+            //            {
+            //                boardPlayerLayer.UnpickCard(cardToUnpick, startPosition);
+            //            }
+            //        }
+            //    }
+            //}
 
             if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN, boardPlayerLayer))
             {
                 if (boardGameLayer.CardEntityPicked == null)
                 {
                     this.InitializeEndTurnPhase(world);
+                }
+            }
+        }
+
+        private void PickCard(BoardPlayerLayer boardPlayerLayer, BoardGameLayer boardGameLayer, CardEntity cardPicked)
+        {
+            //boardGameLayer.CardEntityFocused = cardPicked;
+            //boardPlayerLayer.CardEntityFocused = cardPicked;
+
+            if (boardGameLayer.CardEntityPicked == null)
+            {
+                if (boardPlayerLayer.PickCard(cardPicked))
+                {
+                    boardGameLayer.PickCard(cardPicked.Card);
+                }
+                else
+                {
+                    boardGameLayer.PickCard(cardPicked);
+                }
+            }
+        }
+
+        private void UnpickCard(BoardPlayerLayer boardPlayerLayer, BoardGameLayer boardGameLayer, string detailUnpicked)
+        {
+            if (boardGameLayer.CardEntityPicked != null)
+            {
+                Card.Card cardToUnpick = boardGameLayer.CardEntityPicked.Card;
+                Vector2f startPosition = GetPositionFrom(detailUnpicked);
+
+                if (boardGameLayer.UnPickCard())
+                {
+                    boardPlayerLayer.UnpickCard(cardToUnpick, startPosition);
                 }
             }
         }
@@ -368,9 +459,36 @@ namespace Metempsychoid.Model.Node.TestWorld
                     if (boardPlayerLayer == null || gameEvent.Layer == boardPlayerLayer)
                     {
                         cardEntity = gameEvent.Entity as CardEntity;
-                        details = gameEvent.Details;
+                        if (cardEntity != null)
+                        {
+                            details = gameEvent.Details;
 
-                        return true;
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool CheckUnPickCardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string details)
+        {
+            cardEntity = null;
+            details = null;
+
+            if (this.pendingGameEvents.TryGetValue(EventType.PICK_CARD, out List<GameEvent> gameEventsList))
+            {
+                foreach (GameEvent gameEvent in gameEventsList)
+                {
+                    if (boardPlayerLayer == null || gameEvent.Layer == boardPlayerLayer)
+                    {
+                        cardEntity = gameEvent.Entity as CardEntity;
+                        if (cardEntity == null)
+                        {
+                            details = gameEvent.Details;
+
+                            return true;
+                        }
                     }
                 }
             }

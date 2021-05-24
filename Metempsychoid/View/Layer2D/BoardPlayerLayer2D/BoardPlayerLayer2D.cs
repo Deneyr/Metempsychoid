@@ -31,8 +31,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         private List<CardEntity2D> cardsHand;
 
         private CardEntity2D cardDrew;
-
         private CardEntity2D cardFocused;
+        //private CardEntity2D cardPicked;
 
         //private CardToolTip cardToolTip;
         private EndTurnButton2D endTurnButton;
@@ -192,8 +192,10 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.currentCooldownDraw = 0;
 
             this.LevelTurnPhase = TurnPhase.VOID;
+
             this.cardDrew = null;
             this.cardFocused = null;
+            //this.cardPicked = null;
 
             base.InitializeLayer(factory);
 
@@ -249,6 +251,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private void OnCardPicked(CardEntity obj)
         {
+            //this.cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+
             this.cardsHand.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
 
             this.UpdateCardEntitiesPriority();
@@ -263,6 +267,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             cardPicked.SetCooldownFocus(COOLDOWN_FOCUS);
 
             this.UpdateCardEntitiesPriority();
+
+            //this.cardPicked = null;
         }
 
         private void UpdateCardEntitiesPriority()
@@ -403,7 +409,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                     //    }
                     //}
 
-                    if (eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
+                    if (eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed"
+                        || eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "click")
                     {
                         this.SendUnpickEvent();
                     }

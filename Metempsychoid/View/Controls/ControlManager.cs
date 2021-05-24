@@ -3,6 +3,7 @@ using SFML.System;
 using SFML.Window;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +16,16 @@ namespace Metempsychoid.View.Controls
     {
         private Vector2i previousMousePosition;
 
+        private Dictionary<Button, Stopwatch> buttonToStopwatch;
+
         public event Action<ControlEventType, string> ControlActivated;
 
         public event Action<Vector2i, Vector2i> MouseMoved;
 
         public ControlManager(RenderWindow window)
         {
+            this.buttonToStopwatch = new Dictionary<Button, Stopwatch>();
+
             this.previousMousePosition = Mouse.GetPosition(window);
 
             window.KeyPressed += OnKeyPressed;
@@ -29,6 +34,7 @@ namespace Metempsychoid.View.Controls
 
             window.MouseButtonPressed += OnMouseButtonPressed;
             window.MouseButtonReleased += OnMouseButtonReleased;
+
             window.MouseMoved += OnMouseMoved;
         }
 
@@ -58,18 +64,38 @@ namespace Metempsychoid.View.Controls
 
         private void OnMouseButtonReleased(object sender, SFML.Window.MouseButtonEventArgs e)
         {
+            Stopwatch stopwatch = this.buttonToStopwatch[e.Button];
+            stopwatch.Stop();
+            if (stopwatch.ElapsedMilliseconds < 200)
+            {
+                if (e.Button == Button.Left)
+                {
+                    this.NotifyControlActivated(ControlEventType.MOUSE_LEFT_CLICK, "click");
+                }
+                else if (e.Button == Button.Right)
+                {
+                    this.NotifyControlActivated(ControlEventType.MOUSE_RIGHT_CLICK, "click");
+                }
+            }
+
             if (e.Button == Button.Left)
             {
                 this.NotifyControlActivated(ControlEventType.MOUSE_LEFT_CLICK, "released");
             }
-            else if(e.Button == Button.Right)
+            else if (e.Button == Button.Right)
             {
                 this.NotifyControlActivated(ControlEventType.MOUSE_RIGHT_CLICK, "released");
             }
+
+            this.buttonToStopwatch.Remove(e.Button);
         }
 
         private void OnMouseButtonPressed(object sender, SFML.Window.MouseButtonEventArgs e)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            this.buttonToStopwatch.Add(e.Button, stopwatch);
+            stopwatch.Start();
+
             if (e.Button == Button.Left)
             {
                 this.NotifyControlActivated(ControlEventType.MOUSE_LEFT_CLICK, "pressed");

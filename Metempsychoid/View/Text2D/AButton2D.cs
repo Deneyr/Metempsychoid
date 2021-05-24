@@ -31,6 +31,8 @@ namespace Metempsychoid.View.Text2D
 
         public abstract void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType);
 
+        public abstract void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType);
+
         public abstract void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType);
 
         public abstract void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType);

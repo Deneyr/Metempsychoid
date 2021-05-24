@@ -10,6 +10,12 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
 {
     public class BoardBannerLayer: EntityLayer.EntityLayer
     {
+        public Dictionary<string, List<int>> PlayerNameToTotalScores
+        {
+            get;
+            private set;
+        }
+
         public Player.Player Player
         {
             get;
@@ -50,6 +56,10 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
 
             this.ToolTip = new ToolTipEntity(this);
             this.AddEntityToLayer(this.ToolTip);
+
+            this.PlayerNameToTotalScores = new Dictionary<string, List<int>>();
+            this.PlayerNameToTotalScores.Add(this.Player.PlayerName, new List<int>());
+            this.PlayerNameToTotalScores.Add(this.Opponent.PlayerName, new List<int>());
         }
     }
 }

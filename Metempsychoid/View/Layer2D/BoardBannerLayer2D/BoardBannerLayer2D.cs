@@ -122,11 +122,6 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         private void OnStartDomainsEvaluated()
         {
-            foreach(IScoreLayer scoreLayer in this.scoreLayers.Values)
-            {
-                scoreLayer.PlayerScore = 0;
-            }
-
             this.bannerEntity2D.IsActive = true;
             this.bannerEntity2D.PlayAnimation(2);
         }
@@ -137,6 +132,15 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             {
                 this.bannerEntity2D.PlayAnimation(3);
                 this.scoreDomainLabel2D.IsActive = false;
+            }
+
+            BoardBannerLayer parentLayer = this.parentLayer as BoardBannerLayer;
+            foreach (KeyValuePair<string, IScoreLayer> scoreLayerPairValue in this.scoreLayers)
+            {
+                if(scoreLayerPairValue.Value.PlayerScore != parentLayer.PlayerNameToTotalScores[scoreLayerPairValue.Key].Last())
+                {
+                    throw new Exception("The score at the end of a game turn is not the same as the one computed by the view");
+                }
             }
 
             this.endDomainsEvaluated = true;
