@@ -162,33 +162,41 @@ namespace Metempsychoid.Model.Card
 
         public virtual void CardSocketed(BoardGameLayer layer, StarEntity parentStarEntity)
         {
-            foreach(Constellation constellation in this.constellations)
-            {
-                constellation.OnCardSocketed(layer, parentStarEntity);
-            }
+            //foreach(Constellation constellation in this.constellations)
+            //{
+            //    constellation.OnCardSocketed(layer, parentStarEntity);
+            //}
         }
 
         public void CardUnsocketed(BoardGameLayer layer, StarEntity oldParentStarEntity)
         {
-            foreach (Constellation constellation in this.constellations)
-            {
-                constellation.OnCardUnsocketed(layer, oldParentStarEntity);
-            }
+            //foreach (Constellation constellation in this.constellations)
+            //{
+            //    constellation.OnCardUnsocketed(layer, oldParentStarEntity);
+            //}
         }
 
         public virtual void OtherCardSocketed(BoardGameLayer layer, StarEntity starEntity, StarEntity starFromUnsocketedCard)
         {
-            foreach (Constellation constellation in this.constellations)
-            {
-                constellation.OnOtherCardSocketed(layer, starEntity, starFromUnsocketedCard);
-            }
+            //foreach (Constellation constellation in this.constellations)
+            //{
+            //    constellation.OnOtherCardSocketed(layer, starEntity, starFromUnsocketedCard);
+            //}
         }
 
         public void OtherCardUnsocketed(BoardGameLayer layer, StarEntity starEntity, StarEntity starFromUnsocketedCard)
         {
+            //foreach (Constellation constellation in this.constellations)
+            //{
+            //    constellation.OnOtherCardUnsocketed(layer, starEntity, starFromUnsocketedCard);
+            //}
+        }
+
+        public void OtherStarEntitiesChanged(BoardGameLayer layer, StarEntity starEntity, HashSet<StarEntity> starEntitiesChanged)
+        {         
             foreach (Constellation constellation in this.constellations)
             {
-                constellation.OnOtherCardUnsocketed(layer, starEntity, starFromUnsocketedCard);
+                constellation.OnOtherStarEntitiesChanged(layer, starEntity, starEntitiesChanged);
             }
         }
 

@@ -281,6 +281,8 @@ namespace Metempsychoid.Model.Node.TestWorld
             BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer; // world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
             BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
 
+            boardGameLayer.InitCardOperation();
+
             if (this.CheckMoveCardOverboardEvent(world, boardPlayerLayer, out CardEntity cardToMove, out string detailsMove))
             {
                 Vector2f startPosition = GetPositionFrom(detailsMove);
@@ -368,8 +370,13 @@ namespace Metempsychoid.Model.Node.TestWorld
             //    }
             //}
 
+            boardGameLayer.UpdateBoard();
+
             if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN, boardPlayerLayer))
             {
+                boardPlayerLayer.CardEntityFocused = null;
+                boardGameLayer.CardEntityFocused = null;
+
                 if (boardGameLayer.CardEntityPicked == null)
                 {
                     this.InitializeEndTurnPhase(world);

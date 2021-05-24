@@ -17,6 +17,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         private Player.Player playerTurn;
 
+        private HashSet<StarEntity> starsChanged;
+
         public int NbCardsAbleToBeSocketed
         {
             get;
@@ -105,6 +107,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarToLinks = new Dictionary<StarEntity, HashSet<StarLinkEntity>>();
 
             this.StarDomains = new List<CJStarDomain>();
+
+            this.starsChanged = new HashSet<StarEntity>();
 
             this.TypesInChunk.Add(typeof(StarEntity));
             this.TypesInChunk.Add(typeof(StarLinkEntity));
@@ -250,29 +254,59 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 this.CardEntityPicked.IsFliped = true;
 
-                starEntity.CardSocketed = this.CardEntityPicked;
-
-                this.CardEntityPicked = null;
-
                 this.NbCardsAbleToBeSocketed--;
 
-                // Run awakened events
-                starEntity.CardSocketed.Card.CardSocketed(this, starEntity);
+                this.MoveCard(null, starEntity, this.CardEntityPicked);
 
-                foreach(StarEntity star in this.StarSystem)
+                this.CardEntityPicked = null;
+            }
+        }
+
+        public void InitCardOperation()
+        {
+            this.starsChanged.Clear();
+        }
+
+        private void MoveCard(StarEntity fromStarEntity, StarEntity toStarEntity, CardEntity cardConcerned)
+        {
+            if (fromStarEntity != null)
+            {
+                cardConcerned.Card.CardUnsocketed(this, toStarEntity);
+                fromStarEntity.CardSocketed = null;
+
+                this.starsChanged.Add(fromStarEntity);
+            }
+
+            if (toStarEntity != null)
+            {
+                cardConcerned.Card.CardSocketed(this, toStarEntity);
+                toStarEntity.CardSocketed = cardConcerned;
+
+                this.starsChanged.Add(toStarEntity);
+            }
+        }
+
+        public void UpdateBoard()
+        {
+            // Update awaken state
+            if (this.starsChanged.Count > 0)
+            {
+                foreach (StarEntity star in this.StarSystem)
                 {
-                    if(star != starEntity && star.CardSocketed != null)
+                    if (star.CardSocketed != null)
                     {
-                        star.CardSocketed.Card.OtherCardSocketed(this, star, starEntity);
+                        star.CardSocketed.Card.OtherStarEntitiesChanged(this, star, this.starsChanged);
                     }
                 }
-
-                // Reevaluate domains
-                foreach(CJStarDomain domain in this.StarDomains)
-                {
-                    domain.EvaluateDomainOwner();
-                }
             }
+
+            // Reevaluate domains
+            foreach (CJStarDomain domain in this.StarDomains)
+            {
+                domain.EvaluateDomainOwner();
+            }
+
+            this.starsChanged.Clear();
         }
 
         public void MoveCardOverBoard(CardEntity cardEntity, Vector2f positionToMove)
