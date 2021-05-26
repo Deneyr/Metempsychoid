@@ -71,5 +71,16 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             return this.IsActive 
                 && (this.CardSocketed == null || this.CardSocketed.Card.Player != cardToMove.Card.Player);
         }
+
+        public override void Dispose()
+        {
+            if(this.CardSocketed != null)
+            {
+                this.CardSocketed.ParentStar = null;
+                this.CardSocketed = null;
+            }
+
+            base.Dispose();
+        }
     }
 }

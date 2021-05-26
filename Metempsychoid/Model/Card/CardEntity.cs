@@ -80,11 +80,11 @@ namespace Metempsychoid.Model.Card
                 {
                     if (this.Card.IsAwakened)
                     {
-                        this.Card.ApplyCardAwakened(entityLayer as BoardGameLayer);
+                        this.Card.NotifyCardAwakened(entityLayer as BoardGameLayer, this.ParentStar);
                     }
                     else
                     {
-                        this.Card.ApplyCardUnAwakened(entityLayer as BoardGameLayer);
+                        this.Card.NotifyCardUnawakened(entityLayer as BoardGameLayer, this.ParentStar);
                     }
                 }
 

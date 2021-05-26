@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.Model.Constellations;
 using Metempsychoid.Model.Layer.BoardGameLayer;
+using Metempsychoid.Model.Layer.BoardGameLayer.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,7 @@ namespace Metempsychoid.Model.Card
         private bool isAwakened;
 
         private int valueModificator;
-
-        //public event Action CardAwakened;
-
-        //public event Action CardUnAwakened;
+        private Dictionary<AEntity, int> entityToValueModifier;
 
         public event Action<string> PropertyChanged;
 
@@ -59,7 +57,7 @@ namespace Metempsychoid.Model.Card
         {
             get
             {
-                return this.cardTemplate.DefaultValue + this.ValueModificator;
+                return this.cardTemplate.DefaultValue + this.ValueModifier;
             }
         }
 
@@ -103,7 +101,7 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public int ValueModificator
+        public int ValueModifier
         {
             get
             {
@@ -115,7 +113,7 @@ namespace Metempsychoid.Model.Card
                 {
                     this.valueModificator = value;
 
-                    this.PropertyChanged?.Invoke("ValueModificator");
+                    this.PropertyChanged?.Invoke("Value");
                 }
             }
         }
@@ -127,10 +125,66 @@ namespace Metempsychoid.Model.Card
             this.Player = player;
 
             this.valueModificator = 0;
+            this.entityToValueModifier = new Dictionary<AEntity, int>();
 
             this.isAwakened = false;
 
             this.InitConstellations();
+        }
+
+        public void AddValueModifier(AEntity entityFrom, int valueModifier, bool mustDeleteIfNull)
+        {
+            if (this.entityToValueModifier.TryGetValue(entityFrom, out int value))
+            {
+                value += valueModifier;
+                this.entityToValueModifier[entityFrom] = value;
+
+                if(mustDeleteIfNull && value == 0)
+                {
+                    this.entityToValueModifier.Remove(entityFrom);
+                }
+            }
+            else
+            {
+                this.entityToValueModifier.Add(entityFrom, valueModifier);
+            }
+
+            this.ValueModifier += valueModifier;
+        }
+
+        //public void RemoveValueModifier(AEntity entityFrom, int valueModifier)
+        //{
+        //    if (this.entityToValueModifier.ContainsKey(entityFrom))
+        //    {
+        //        this.entityToValueModifier[entityFrom] -= valueModifier;
+
+        //        int currentValue = this.entityToValueModifier[entityFrom];
+
+        //        if (currentValue <= 0)
+        //        {
+        //            this.entityToValueModifier.Remove(entityFrom);
+        //            currentValue = 0;
+        //        }
+
+        //        this.ValueModifier = currentValue;
+
+        //        this.ValueModifier -= valueModifier;
+        //    }
+        //}
+
+        public void ClearValueModifier(AEntity entityFrom)
+        {
+            if (this.entityToValueModifier.TryGetValue(entityFrom, out int value))
+            {
+                this.ValueModifier -= value;
+
+                this.entityToValueModifier.Remove(entityFrom);
+            }
+        }
+
+        public bool GetValueModificatorFor(AEntity entityFrom, out int valueModificator)
+        {
+            return this.entityToValueModifier.TryGetValue(entityFrom, out valueModificator);
         }
 
         private void InitConstellations()
@@ -160,39 +214,36 @@ namespace Metempsychoid.Model.Card
             this.IsAwakened = false;
         }
 
-        public virtual void CardSocketed(BoardGameLayer layer, StarEntity parentStarEntity)
+        //public virtual void CardSocketed(BoardGameLayer layer, StarEntity parentStarEntity)
+        //{
+        //    //foreach(Constellation constellation in this.constellations)
+        //    //{
+        //    //    constellation.OnCardSocketed(layer, parentStarEntity);
+        //    //}
+        //}
+
+        //public void CardUnsocketed(BoardGameLayer layer, StarEntity oldParentStarEntity)
+        //{
+        //    //foreach (Constellation constellation in this.constellations)
+        //    //{
+        //    //    constellation.OnCardUnsocketed(layer, oldParentStarEntity);
+        //    //}
+        //}
+
+        //public virtual void OtherCardSocketed(BoardGameLayer layer, StarEntity starEntity, StarEntity starFromUnsocketedCard)
+        //{
+        //    //foreach (Constellation constellation in this.constellations)
+        //    //{
+        //    //    constellation.OnOtherCardSocketed(layer, starEntity, starFromUnsocketedCard);
+        //    //}
+        //}
+
+        public void NotifyActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionOccured)
         {
-            //foreach(Constellation constellation in this.constellations)
-            //{
-            //    constellation.OnCardSocketed(layer, parentStarEntity);
-            //}
+            this.cardTemplate.OnActionsOccured(layer, starEntity, actionOccured);
         }
 
-        public void CardUnsocketed(BoardGameLayer layer, StarEntity oldParentStarEntity)
-        {
-            //foreach (Constellation constellation in this.constellations)
-            //{
-            //    constellation.OnCardUnsocketed(layer, oldParentStarEntity);
-            //}
-        }
-
-        public virtual void OtherCardSocketed(BoardGameLayer layer, StarEntity starEntity, StarEntity starFromUnsocketedCard)
-        {
-            //foreach (Constellation constellation in this.constellations)
-            //{
-            //    constellation.OnOtherCardSocketed(layer, starEntity, starFromUnsocketedCard);
-            //}
-        }
-
-        public void OtherCardUnsocketed(BoardGameLayer layer, StarEntity starEntity, StarEntity starFromUnsocketedCard)
-        {
-            //foreach (Constellation constellation in this.constellations)
-            //{
-            //    constellation.OnOtherCardUnsocketed(layer, starEntity, starFromUnsocketedCard);
-            //}
-        }
-
-        public void OtherStarEntitiesChanged(BoardGameLayer layer, StarEntity starEntity, HashSet<StarEntity> starEntitiesChanged)
+        public void ReevaluateAwakening(BoardGameLayer layer, StarEntity starEntity, HashSet<StarEntity> starEntitiesChanged)
         {         
             foreach (Constellation constellation in this.constellations)
             {
@@ -200,24 +251,24 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public virtual void CardEnteredBoard(BoardGameLayer layer)
-        {
+        //public virtual void CardEnteredBoard(BoardGameLayer layer)
+        //{
 
-        }
+        //}
 
-        public virtual void CardQuittedBoard(BoardGameLayer layer)
-        {
+        //public virtual void CardQuittedBoard(BoardGameLayer layer)
+        //{
             
+        //}
+
+        public void NotifyCardAwakened(BoardGameLayer layer, StarEntity parentStarEntity)
+        {
+            this.cardTemplate.OnCardAwakened(layer, parentStarEntity);
         }
 
-        public void ApplyCardAwakened(BoardGameLayer layer)
+        public void NotifyCardUnawakened(BoardGameLayer layer, StarEntity parentStarEntity)
         {
-            this.cardTemplate.HandlingCardAwakened(this, layer);
-        }
-
-        public void ApplyCardUnAwakened(BoardGameLayer layer)
-        {
-            this.cardTemplate.HandlingCardUnAwakened(this, layer);
+            this.cardTemplate.OnCardUnawakened(layer, parentStarEntity);
         }
     }
 }

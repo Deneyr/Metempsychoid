@@ -93,6 +93,14 @@ namespace Metempsychoid.Model.Node.TestWorld
             return result;
         }
 
+        public override void UpdateLogic(World world, Time timeElapsed)
+        {
+            base.UpdateLogic(world, timeElapsed);
+
+            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+            boardGameLayer.UpdateLogic(world, timeElapsed);
+        }
+
         protected override void InternalUpdateLogic(World world, Time timeElapsed)
         {
             switch (this.CurrentTurnPhase)
@@ -281,8 +289,6 @@ namespace Metempsychoid.Model.Node.TestWorld
             BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer; // world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
             BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
 
-            boardGameLayer.InitCardOperation();
-
             if (this.CheckMoveCardOverboardEvent(world, boardPlayerLayer, out CardEntity cardToMove, out string detailsMove))
             {
                 Vector2f startPosition = GetPositionFrom(detailsMove);
@@ -369,8 +375,6 @@ namespace Metempsychoid.Model.Node.TestWorld
             //        }
             //    }
             //}
-
-            boardGameLayer.UpdateBoard();
 
             if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN, boardPlayerLayer))
             {

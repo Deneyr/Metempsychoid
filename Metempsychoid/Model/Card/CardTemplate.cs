@@ -1,5 +1,7 @@
-﻿using Metempsychoid.Model.Constellations;
+﻿using Metempsychoid.Model.Card.Behaviors;
+using Metempsychoid.Model.Constellations;
 using Metempsychoid.Model.Layer.BoardGameLayer;
+using Metempsychoid.Model.Layer.BoardGameLayer.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,14 @@ namespace Metempsychoid.Model.Card
     {
         public delegate void HandlingFunction(Card card, BoardGameLayer layer);
 
-        public HandlingFunction HandlingCardAwakened;
-        public HandlingFunction HandlingCardUnAwakened;
+        //public HandlingFunction HandlingCardAwakened;
+        //public HandlingFunction HandlingCardUnAwakened;
+
+        public List<ICardBehavior> CardBehaviors
+        {
+            get;
+            private set;
+        }
 
         public virtual int DefaultValue
         {
@@ -62,13 +70,12 @@ namespace Metempsychoid.Model.Card
 
             this.PoemIdLoc = poemIdLoc;
 
+            this.CardBehaviors = new List<ICardBehavior>();
+
             this.Patterns = new List<ConstellationPattern>()
             {
                 ConstellationPatternFactory.CreateDefaultConstellation()
             };
-
-            this.HandlingCardAwakened = this.DefaultHandlingFunction;
-            this.HandlingCardUnAwakened = this.DefaultHandlingFunction;
         }
 
         public CardTemplate()
@@ -76,9 +83,33 @@ namespace Metempsychoid.Model.Card
             this.NameIdLoc = string.Empty;
         }
 
-        private void DefaultHandlingFunction(Card card, BoardGameLayer layer)
+        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionOccured)
         {
-            
+            foreach(ICardBehavior cardBehavior in this.CardBehaviors)
+            {
+                cardBehavior.OnActionsOccured(layer, starEntity, actionOccured);
+            }
         }
+
+        public void OnCardAwakened(BoardGameLayer layer, StarEntity starEntity)
+        {
+            foreach (ICardBehavior cardBehavior in this.CardBehaviors)
+            {
+                cardBehavior.OnAwakened(layer, starEntity);
+            }
+        }
+
+        public void OnCardUnawakened(BoardGameLayer layer, StarEntity starEntity)
+        {
+            foreach (ICardBehavior cardBehavior in this.CardBehaviors)
+            {
+                cardBehavior.OnUnawakened(layer, starEntity);
+            }
+        }
+
+        //private void DefaultHandlingFunction(Card card, BoardGameLayer layer)
+        //{
+
+        //}
     }
 }

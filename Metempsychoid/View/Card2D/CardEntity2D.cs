@@ -249,7 +249,7 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
-        public int CardBonus
+        public int CardValueModifier
         {
             get
             {
