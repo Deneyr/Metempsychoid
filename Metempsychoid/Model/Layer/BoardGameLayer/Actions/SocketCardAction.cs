@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 {
-    public struct SocketCardAction : IModifyStarEntityAction
+    public class SocketCardAction : IModifyStarEntityAction
     {
         public CardEntity CardToSocket
         {
@@ -32,6 +32,15 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
         {
             //this.CardToSocket.Card.CardSocketed(layerToPerform, this.OwnerStar);
             this.OwnerStar.CardSocketed = this.CardToSocket;
+
+            if(layerToPerform.NameToOnBoardCardEntities.TryGetValue(this.CardToSocket.Card.Name, out HashSet<CardEntity> cardEntities))
+            {
+                cardEntities.Add(this.CardToSocket);
+            }
+            else
+            {
+                layerToPerform.NameToOnBoardCardEntities.Add(this.CardToSocket.Card.Name, new HashSet<CardEntity>() { this.CardToSocket });
+            }
         }
     }
 }

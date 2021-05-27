@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 {
-    public struct UnsocketCardAction : IModifyStarEntityAction
+    public class UnsocketCardAction : IModifyStarEntityAction
     {
-        public CardEntity CardToSocket
+        public CardEntity CardToUnsocket
         {
             get;
             private set;
@@ -21,17 +21,39 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
             private set;
         }
 
-        public UnsocketCardAction(CardEntity cardEntity, StarEntity starEntity)
+        public bool OffBoard
         {
-            this.CardToSocket = cardEntity;
+            get;
+            private set;
+        }
+
+        public UnsocketCardAction(CardEntity cardEntity, StarEntity starEntity, bool offBoard)
+        {
+            this.CardToUnsocket = cardEntity;
 
             this.OwnerStar = starEntity;
+
+            this.OffBoard = offBoard;
         }
 
         public void ExecuteAction(BoardGameLayer layerToPerform)
         {
             //this.CardToSocket.Card.CardUnsocketed(layerToPerform, this.OwnerStar);
             this.OwnerStar.CardSocketed = null;
+
+            if (this.OffBoard)
+            {
+                HashSet<CardEntity> cardEntities = layerToPerform.NameToOnBoardCardEntities[this.CardToUnsocket.Card.Name];
+
+                cardEntities.Remove(this.CardToUnsocket);
+
+                if (cardEntities.Count == 0)
+                {
+                    layerToPerform.NameToOnBoardCardEntities.Remove(this.CardToUnsocket.Card.Name);
+                }
+
+                layerToPerform.CardsOffBoard.Add(this.CardToUnsocket);
+            }
         }
     }
 }

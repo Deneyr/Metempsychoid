@@ -64,6 +64,7 @@
     <Compile Include="Model\AObject.cs" />
     <Compile Include="Model\Card\Behaviors\AddValueToSelfBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\ICardBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\PriestessBehavior.cs" />
     <Compile Include="Model\Card\Card.cs" />
     <Compile Include="Model\Card\CardDeck.cs" />
     <Compile Include="Model\Card\CardEntity.cs" />

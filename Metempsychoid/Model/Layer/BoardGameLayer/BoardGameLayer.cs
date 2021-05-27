@@ -18,6 +18,18 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         private Player.Player playerTurn;
 
+        public Dictionary<string, HashSet<CardEntity>> NameToOnBoardCardEntities
+        {
+            get;
+            private set;
+        }
+
+        public List<CardEntity> CardsOffBoard
+        {
+            get;
+            private set;
+        }
+
         public List<IBoardGameAction> PendingActions
         {
             get;
@@ -113,7 +125,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
             this.StarDomains = new List<CJStarDomain>();
 
+            this.CardsOffBoard = new List<CardEntity>();
             this.PendingActions = new List<IBoardGameAction>();
+            this.NameToOnBoardCardEntities = new Dictionary<string, HashSet<CardEntity>>();
 
             this.TypesInChunk.Add(typeof(StarEntity));
             this.TypesInChunk.Add(typeof(StarLinkEntity));
@@ -307,6 +321,28 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                     actionToResolve.ExecuteAction(this);
                 }
 
+                HashSet<StarEntity> starModifiedActions = new HashSet<StarEntity>(currentPendingActions.Where(pElem => pElem is IModifyStarEntityAction).Select(pElem => (pElem as IModifyStarEntityAction).OwnerStar));
+                // Update awaken states
+                if (this.CardsOffBoard.Count > 0)
+                {
+                    foreach (CardEntity cardEntity in this.CardsOffBoard)
+                    {
+                        cardEntity.Card.ResetConstellations();
+                    }
+                    this.CardsOffBoard.Clear();
+                }
+
+                if (starModifiedActions.Count > 0)
+                {
+                    foreach (StarEntity star in this.StarSystem)
+                    {
+                        if (star.CardSocketed != null)
+                        {
+                            star.CardSocketed.Card.ReevaluateAwakening(this, star, starModifiedActions);
+                        }
+                    }
+                }
+
                 // Notify all cards of actions been executed.
                 if (currentPendingActions.Count > 0)
                 {
@@ -315,19 +351,6 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                         if (star.CardSocketed != null)
                         {
                             star.CardSocketed.Card.NotifyActionsOccured(this, star, currentPendingActions);
-                        }
-                    }
-                }
-
-                HashSet<StarEntity> starModifiedActions = new HashSet<StarEntity>(currentPendingActions.Where(pElem => pElem is IModifyStarEntityAction).Select(pElem => (pElem as IModifyStarEntityAction).OwnerStar));
-                // Update awaken states
-                if (starModifiedActions.Count > 0)
-                {
-                    foreach (StarEntity star in this.StarSystem)
-                    {
-                        if (star.CardSocketed != null)
-                        {
-                            star.CardSocketed.Card.ReevaluateAwakening(this, star, starModifiedActions);
                         }
                     }
                 }
@@ -359,7 +382,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarToLinks.Clear();
             this.StarDomains.Clear();
 
+            this.CardsOffBoard.Clear();
             this.PendingActions.Clear();
+            this.NameToOnBoardCardEntities.Clear();
 
             float cosPi4 = (float) Math.Cos(Math.PI / 4);
 

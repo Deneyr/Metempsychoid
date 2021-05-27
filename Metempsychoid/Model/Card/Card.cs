@@ -1,4 +1,5 @@
-﻿using Metempsychoid.Model.Constellations;
+﻿using Metempsychoid.Model.Card.Behaviors;
+using Metempsychoid.Model.Constellations;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer.Actions;
 using System;
@@ -17,10 +18,14 @@ namespace Metempsychoid.Model.Card
 
         private bool isAwakened;
 
-        private int valueModificator;
-        private Dictionary<AEntity, int> entityToValueModifier;
-
         public event Action<string> PropertyChanged;
+
+        private int valueModificator;
+        public Dictionary<ICardBehavior, int> BehaviorToValueModifier
+        {
+            get;
+            private set;
+        }
 
         public bool IsAwakened
         {
@@ -125,28 +130,28 @@ namespace Metempsychoid.Model.Card
             this.Player = player;
 
             this.valueModificator = 0;
-            this.entityToValueModifier = new Dictionary<AEntity, int>();
+            this.BehaviorToValueModifier = new Dictionary<ICardBehavior, int>();
 
             this.isAwakened = false;
 
             this.InitConstellations();
         }
 
-        public void AddValueModifier(AEntity entityFrom, int valueModifier, bool mustDeleteIfNull)
+        public void AddValueModifier(ICardBehavior behaviorFrom, int valueModifier, bool mustDeleteIfNull)
         {
-            if (this.entityToValueModifier.TryGetValue(entityFrom, out int value))
+            if (this.BehaviorToValueModifier.TryGetValue(behaviorFrom, out int value))
             {
                 value += valueModifier;
-                this.entityToValueModifier[entityFrom] = value;
+                this.BehaviorToValueModifier[behaviorFrom] = value;
 
                 if(mustDeleteIfNull && value == 0)
                 {
-                    this.entityToValueModifier.Remove(entityFrom);
+                    this.BehaviorToValueModifier.Remove(behaviorFrom);
                 }
             }
             else
             {
-                this.entityToValueModifier.Add(entityFrom, valueModifier);
+                this.BehaviorToValueModifier.Add(behaviorFrom, valueModifier);
             }
 
             this.ValueModifier += valueModifier;
@@ -172,19 +177,19 @@ namespace Metempsychoid.Model.Card
         //    }
         //}
 
-        public void ClearValueModifier(AEntity entityFrom)
+        public void ClearValueModifier(ICardBehavior behaviorFrom)
         {
-            if (this.entityToValueModifier.TryGetValue(entityFrom, out int value))
+            if (this.BehaviorToValueModifier.TryGetValue(behaviorFrom, out int value))
             {
                 this.ValueModifier -= value;
 
-                this.entityToValueModifier.Remove(entityFrom);
+                this.BehaviorToValueModifier.Remove(behaviorFrom);
             }
         }
 
-        public bool GetValueModificatorFor(AEntity entityFrom, out int valueModificator)
+        public bool GetValueModificatorFor(Behaviors.ICardBehavior behaviorFrom, out int valueModificator)
         {
-            return this.entityToValueModifier.TryGetValue(entityFrom, out valueModificator);
+            return this.BehaviorToValueModifier.TryGetValue(behaviorFrom, out valueModificator);
         }
 
         private void InitConstellations()
@@ -195,6 +200,16 @@ namespace Metempsychoid.Model.Card
                 Constellation constellation = new Constellation(this, pattern);
                 this.constellations.Add(constellation);
             }
+        }
+
+        public void ResetConstellations()
+        {
+            foreach (Constellation constellation in this.constellations)
+            {
+                constellation.ResetConstellation();
+            }
+
+            this.IsAwakened = false;
         }
 
         internal void OnConstellationAwakened(Constellation constellationAwakened)

@@ -67,6 +67,13 @@ namespace Metempsychoid.Model.Constellations
             this.isAwakened = false;
         }
 
+        public void ResetConstellation()
+        {
+            this.NodeToStarEntity.Clear();
+            this.LinkToStarLinkEntity.Clear();
+            this.isAwakened = false;
+        }
+
         public void OnOtherCardSocketed(BoardGameLayer boardGameLayer, StarEntity starEntity, StarEntity starFromSocketedCard)
         {
             if(this.isAwakened == false)

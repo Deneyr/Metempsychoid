@@ -21,24 +21,27 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.Value = value;
         }
 
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionOccured)
+        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
         {
-            IBoardGameAction removeCardAction = actionOccured.FirstOrDefault(pElem => (pElem is UnsocketCardAction) && ((UnsocketCardAction)pElem).OwnerStar == starEntity);
+            //if (starEntity.CardSocketed.Card.IsAwakened)
+            //{
+            //    IBoardGameAction socketCardAction = actionsOccured.FirstOrDefault(pElem => (pElem is SocketCardAction) && ((SocketCardAction)pElem).OwnerStar == starEntity);
 
-            if (removeCardAction is default(IBoardGameAction) == false)
-            {
-                layer.PendingActions.Add(new AddCardValueModifier(starEntity.CardSocketed.Card, starEntity.CardSocketed, -this.Value, true));
-            }
+            //    if (socketCardAction is default(IBoardGameAction) == false)
+            //    {
+            //        layer.PendingActions.Add(new AddCardValueModifier(starEntity.CardSocketed.Card, starEntity.CardSocketed, -this.Value, true));
+            //    }
+            //}
         }
 
         public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            layer.PendingActions.Add(new AddCardValueModifier(starEntity.CardSocketed.Card, starEntity.CardSocketed, this.Value));
+            layer.PendingActions.Add(new AddCardValueModifier(starEntity.CardSocketed.Card, this, this.Value));
         }
 
         public void OnUnawakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            layer.PendingActions.Add(new AddCardValueModifier(starEntity.CardSocketed.Card, starEntity.CardSocketed, -this.Value, true));
+            layer.PendingActions.Add(new ClearCardValueModifier(starEntity.CardSocketed.Card, this));
         }
     }
 }

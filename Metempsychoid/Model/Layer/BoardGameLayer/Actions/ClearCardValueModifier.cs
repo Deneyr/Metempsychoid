@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Metempsychoid.Model.Card.Behaviors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 {
-    public struct ClearCardValueModifier : IBoardGameAction
+    public class ClearCardValueModifier : IBoardGameAction
     {
         public Card.Card CardToRemoveValue
         {
@@ -14,22 +15,22 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
             private set;
         }
 
-        public AEntity EntityFrom
+        public ICardBehavior BehaviorFrom
         {
             get;
             private set;
         }
 
-        public ClearCardValueModifier(Card.Card cardToRemoveValue, AEntity entityFrom)
+        public ClearCardValueModifier(Card.Card cardToRemoveValue, ICardBehavior behaviorFrom)
         {
             this.CardToRemoveValue = cardToRemoveValue;
 
-            this.EntityFrom = entityFrom;
+            this.BehaviorFrom = behaviorFrom;
         }
 
         public void ExecuteAction(BoardGameLayer layerToPerform)
         {
-            this.CardToRemoveValue.ClearValueModifier(this.EntityFrom);
+            this.CardToRemoveValue.ClearValueModifier(this.BehaviorFrom);
         }
     }
 }
