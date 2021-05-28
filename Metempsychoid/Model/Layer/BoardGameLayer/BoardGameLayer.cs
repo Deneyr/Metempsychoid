@@ -54,7 +54,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 {
                     this.playerTurn = value;
 
-                    this.NbCardsAbleToBeSocketed = 1;
+                    this.NbCardsAbleToBeSocketed = 100;
                 }
             }
         }

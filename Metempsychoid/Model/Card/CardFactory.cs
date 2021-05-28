@@ -31,7 +31,7 @@ namespace Metempsychoid.Model.Card
             CardTemplate cardTemplate = new CardTemplate("wheel", "wheel_of_fortune_title", "wheel_of_fortune_poem", 2, 1);
 
             //cardTemplate.CardBehaviors.Add(new AddValueToSelfBehavior(1));
-            cardTemplate.CardBehaviors.Add(new PriestessBehavior(1, "wheel"));
+            cardTemplate.CardBehaviors.Add(new HermitePassiveBehavior(1));
 
             //cardTemplate.HandlingCardAwakened = this.DefaultAwakenedFunction;
             //cardTemplate.HandlingCardUnAwakened = this.DefaultUnAwakenedFunction;

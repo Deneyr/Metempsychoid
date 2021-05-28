@@ -381,7 +381,8 @@ namespace Metempsychoid.Model.Node.TestWorld
                 boardPlayerLayer.CardEntityFocused = null;
                 boardGameLayer.CardEntityFocused = null;
 
-                if (boardGameLayer.CardEntityPicked == null)
+                if (boardGameLayer.CardEntityPicked == null
+                    && boardGameLayer.PendingActions.Count == 0)
                 {
                     this.InitializeEndTurnPhase(world);
                 }

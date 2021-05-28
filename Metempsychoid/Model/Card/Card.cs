@@ -157,6 +157,23 @@ namespace Metempsychoid.Model.Card
             this.ValueModifier += valueModifier;
         }
 
+        public void SetValueModifier(ICardBehavior behaviorFrom, int valueModifier)
+        {
+            int previousValue = 0;
+            if (this.BehaviorToValueModifier.ContainsKey(behaviorFrom))
+            {
+                previousValue = this.BehaviorToValueModifier[behaviorFrom];
+
+                this.BehaviorToValueModifier[behaviorFrom] = valueModifier;
+            }
+            else
+            {
+                this.BehaviorToValueModifier.Add(behaviorFrom, valueModifier);
+            }
+
+            this.ValueModifier += (valueModifier - previousValue);
+        }
+
         //public void RemoveValueModifier(AEntity entityFrom, int valueModifier)
         //{
         //    if (this.entityToValueModifier.ContainsKey(entityFrom))

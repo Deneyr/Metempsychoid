@@ -63,8 +63,9 @@
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
     <Compile Include="Model\Card\Behaviors\AddValueToSelfBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\HermitePassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\ICardBehavior.cs" />
-    <Compile Include="Model\Card\Behaviors\PriestessBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\PriestessPassiveBehavior.cs" />
     <Compile Include="Model\Card\Card.cs" />
     <Compile Include="Model\Card\CardDeck.cs" />
     <Compile Include="Model\Card\CardEntity.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Model\Layer\BoardGameLayer\Actions\ClearCardValueModifier.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\IBoardGameAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\IModifyStarEntityAction.cs" />
+    <Compile Include="Model\Layer\BoardGameLayer\Actions\SetCardValueModifier.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\SocketCardAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\UnsocketCardAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\BoardGameLayer.cs" />

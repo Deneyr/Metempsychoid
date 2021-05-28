@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class PriestessBehavior : ICardBehavior
+    public class PriestessPassiveBehavior : ICardBehavior
     {
         public string[] CardNames
         {
@@ -22,7 +22,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             private set;
         }
 
-        public PriestessBehavior(int value, params string[] cardNames)
+        public PriestessPassiveBehavior(int value, params string[] cardNames)
         {
             this.CardNames = cardNames;
 
@@ -33,7 +33,7 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             if (starEntity.CardSocketed.Card.IsAwakened)
             {
-                if (actionsOccured.Any(pElem => pElem is SocketCardAction || pElem is UnsocketCardAction))
+                if (actionsOccured.Any(pElem => pElem is IModifyStarEntityAction))
                 {
                     this.UpdateValue(layer, starEntity);
                 }
@@ -61,14 +61,11 @@ namespace Metempsychoid.Model.Card.Behaviors
                 }
             }
 
-            if(starEntity.CardSocketed.Card.BehaviorToValueModifier.TryGetValue(this, out int currentValue))
-            {
-                bonus -= currentValue;
-            }
+            bool mustSetValue = starEntity.CardSocketed.Card.BehaviorToValueModifier.TryGetValue(this, out int currentValue) == false || currentValue != bonus;
 
-            if (bonus != 0)
+            if (mustSetValue)
             {
-                layer.PendingActions.Add(new AddCardValueModifier(starEntity.CardSocketed.Card, this, bonus));
+                layer.PendingActions.Add(new SetCardValueModifier(starEntity.CardSocketed.Card, this, bonus));
             }
         }
 
