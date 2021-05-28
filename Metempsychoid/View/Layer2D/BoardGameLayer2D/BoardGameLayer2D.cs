@@ -419,7 +419,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         private void InitializeCountPointsPhase()
         {
             this.currenDomainEvaluatedIndex = -1;
-            this.domainsOwnedByPlayers = this.objectToObject2Ds.Where(pElem => pElem.Value is CJStarDomain2D && (pElem.Key as CJStarDomain).PlayerToPoints.Count > 0).Select(pElem => pElem.Value as CJStarDomain2D).ToList();
+            this.domainsOwnedByPlayers = this.objectToObject2Ds.Where(pElem => pElem.Value is CJStarDomain2D && (pElem.Key as CJStarDomain).IsThereAtLeastOneCard).Select(pElem => pElem.Value as CJStarDomain2D).ToList();
 
             if (this.domainsOwnedByPlayers.Count > 0)
             {

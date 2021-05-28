@@ -66,6 +66,7 @@
     <Compile Include="Model\Card\Behaviors\HermitePassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\ICardBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\PriestessPassiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\StrengthPassiveBehavior.cs" />
     <Compile Include="Model\Card\Card.cs" />
     <Compile Include="Model\Card\CardDeck.cs" />
     <Compile Include="Model\Card\CardEntity.cs" />

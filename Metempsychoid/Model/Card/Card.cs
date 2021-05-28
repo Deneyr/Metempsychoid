@@ -62,7 +62,7 @@ namespace Metempsychoid.Model.Card
         {
             get
             {
-                return this.cardTemplate.DefaultValue + this.ValueModifier;
+                return Math.Max(0, this.cardTemplate.DefaultValue + this.ValueModifier);
             }
         }
 

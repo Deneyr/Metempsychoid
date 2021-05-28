@@ -198,7 +198,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             int opponentScore = 0;
             foreach(CJStarDomain domain in boardGameLayer.StarDomains)
             {
-                if(domain.PlayerToPoints.Count > 0)
+                if(domain.IsThereAtLeastOneCard)
                 {
                     if(domain.DomainOwner == null)
                     {

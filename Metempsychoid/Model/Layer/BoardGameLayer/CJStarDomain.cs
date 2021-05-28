@@ -32,6 +32,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
+        public bool IsThereAtLeastOneCard
+        {
+            get;
+            private set;
+        }
+
         public Dictionary<Player.Player, int> PlayerToPoints
         {
             get;
@@ -63,6 +69,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
             this.IsFilled = isFilled;
 
+            this.IsThereAtLeastOneCard = false;
+
             this.Priority = priority;
 
             this.domainOwner = null;
@@ -91,14 +99,26 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             List<KeyValuePair<Player.Player, int>> playerPointsSorted = this.PlayerToPoints.ToList();
             playerPointsSorted.Sort(new PlayerValueComparer());
 
-            if(playerPointsSorted.Count == 1
-                || (playerPointsSorted.Count > 1 && playerPointsSorted[0].Value > playerPointsSorted[1].Value))
+            if(playerPointsSorted.Count == 0
+                || playerPointsSorted[0].Value == 0)
             {
-                this.DomainOwner = playerPointsSorted[0].Key;
+                this.IsThereAtLeastOneCard = false;
+
+                this.DomainOwner = null;
             }
             else
             {
-                this.DomainOwner = null;
+                this.IsThereAtLeastOneCard = true;
+
+                if (playerPointsSorted.Count == 1
+                    || playerPointsSorted[0].Value > playerPointsSorted[1].Value)
+                {
+                    this.DomainOwner = playerPointsSorted[0].Key;
+                }
+                else
+                {
+                    this.DomainOwner = null;
+                }
             }
 
             if (this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
