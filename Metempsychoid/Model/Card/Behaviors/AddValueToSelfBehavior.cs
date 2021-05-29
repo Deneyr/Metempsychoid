@@ -43,5 +43,10 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             layer.PendingActions.Add(new ClearCardValueModifier(starEntity.CardSocketed.Card, this));
         }
+
+        public ICardBehavior Clone()
+        {
+            return new AddValueToSelfBehavior(this.Value);
+        }
     }
 }

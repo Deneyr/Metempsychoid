@@ -314,34 +314,37 @@ namespace Metempsychoid.Model.Node.TestWorld
                 }
             }
 
-            if (this.CheckSocketCardEvent(world, null, out StarEntity starEntity))
+            bool isThereSocketCardEvent = this.CheckSocketCardEvent(world, null, out StarEntity starEntity);
+            if (isThereSocketCardEvent)
             {
                 if (starEntity != null)
                 {
                     boardGameLayer.SocketCard(starEntity);
                 }
             }
-
-            bool IsTherePickCardEvent = this.CheckPickCardEvent(world, boardPlayerLayer, out CardEntity cardPicked, out string detailsPicked);
-            bool IsThereUnpickCardEvent = this.CheckUnPickCardEvent(world, boardPlayerLayer, out CardEntity cardUnpicked, out string detailsUnpicked);
-
-            if(boardGameLayer.CardEntityPicked == null)
-            {
-                if (IsTherePickCardEvent)
-                {
-                    this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
-                }
-            }
             else
             {
-                if (IsThereUnpickCardEvent)
-                {
-                    this.UnpickCard(boardPlayerLayer, boardGameLayer, detailsUnpicked);
-                }
+                bool IsTherePickCardEvent = this.CheckPickCardEvent(world, boardPlayerLayer, out CardEntity cardPicked, out string detailsPicked);
+                bool IsThereUnpickCardEvent = this.CheckUnPickCardEvent(world, boardPlayerLayer, out CardEntity cardUnpicked, out string detailsUnpicked);
 
-                if (IsTherePickCardEvent)
+                if (boardGameLayer.CardEntityPicked == null)
                 {
-                    this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                    if (IsTherePickCardEvent)
+                    {
+                        this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                    }
+                }
+                else
+                {
+                    if (IsThereUnpickCardEvent)
+                    {
+                        this.UnpickCard(boardPlayerLayer, boardGameLayer, detailsUnpicked);
+                    }
+
+                    if (IsTherePickCardEvent)
+                    {
+                        this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                    }
                 }
             }
 

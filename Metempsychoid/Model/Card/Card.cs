@@ -27,6 +27,12 @@ namespace Metempsychoid.Model.Card
             private set;
         }
 
+        public List<ICardBehavior> CardBehaviors
+        {
+            get;
+            private set;
+        }
+
         public bool IsAwakened
         {
             get
@@ -131,6 +137,8 @@ namespace Metempsychoid.Model.Card
 
             this.valueModificator = 0;
             this.BehaviorToValueModifier = new Dictionary<ICardBehavior, int>();
+
+            this.CardBehaviors = cardTemplate.CardBehaviors.Select(pElem => pElem.Clone()).ToList();
 
             this.isAwakened = false;
 
@@ -273,6 +281,11 @@ namespace Metempsychoid.Model.Card
         public void NotifyActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionOccured)
         {
             this.cardTemplate.OnActionsOccured(layer, starEntity, actionOccured);
+
+            foreach (ICardBehavior cardBehavior in this.CardBehaviors)
+            {
+                cardBehavior.OnActionsOccured(layer, starEntity, actionOccured);
+            }
         }
 
         public void ReevaluateAwakening(BoardGameLayer layer, StarEntity starEntity, HashSet<StarEntity> starEntitiesChanged)
@@ -296,11 +309,21 @@ namespace Metempsychoid.Model.Card
         public void NotifyCardAwakened(BoardGameLayer layer, StarEntity parentStarEntity)
         {
             this.cardTemplate.OnCardAwakened(layer, parentStarEntity);
+
+            foreach (ICardBehavior cardBehavior in this.CardBehaviors)
+            {
+                cardBehavior.OnAwakened(layer, parentStarEntity);
+            }
         }
 
         public void NotifyCardUnawakened(BoardGameLayer layer, StarEntity parentStarEntity)
         {
             this.cardTemplate.OnCardUnawakened(layer, parentStarEntity);
+
+            foreach (ICardBehavior cardBehavior in this.CardBehaviors)
+            {
+                cardBehavior.OnUnawakened(layer, parentStarEntity);
+            }
         }
     }
 }

@@ -85,26 +85,26 @@ namespace Metempsychoid.Model.Card
 
         public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionOccured)
         {
-            foreach(ICardBehavior cardBehavior in this.CardBehaviors)
-            {
-                cardBehavior.OnActionsOccured(layer, starEntity, actionOccured);
-            }
+            //foreach(ICardBehavior cardBehavior in this.CardBehaviors)
+            //{
+            //    cardBehavior.OnActionsOccured(layer, starEntity, actionOccured);
+            //}
         }
 
         public void OnCardAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            foreach (ICardBehavior cardBehavior in this.CardBehaviors)
-            {
-                cardBehavior.OnAwakened(layer, starEntity);
-            }
+            //foreach (ICardBehavior cardBehavior in this.CardBehaviors)
+            //{
+            //    cardBehavior.OnAwakened(layer, starEntity);
+            //}
         }
 
         public void OnCardUnawakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            foreach (ICardBehavior cardBehavior in this.CardBehaviors)
-            {
-                cardBehavior.OnUnawakened(layer, starEntity);
-            }
+            //foreach (ICardBehavior cardBehavior in this.CardBehaviors)
+            //{
+            //    cardBehavior.OnUnawakened(layer, starEntity);
+            //}
         }
 
         //private void DefaultHandlingFunction(Card card, BoardGameLayer layer)

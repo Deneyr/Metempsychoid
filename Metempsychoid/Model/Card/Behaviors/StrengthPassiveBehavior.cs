@@ -10,6 +10,8 @@ namespace Metempsychoid.Model.Card.Behaviors
 {
     public class StrengthPassiveBehavior : ICardBehavior
     {
+        private Dictionary<Card, List<CardEntity>> instanceToAffectedCardEntities;
+
         public int Value
         {
             get;
@@ -19,6 +21,8 @@ namespace Metempsychoid.Model.Card.Behaviors
         public StrengthPassiveBehavior(int value)
         {
             this.Value = value;
+
+            this.instanceToAffectedCardEntities = new Dictionary<Card, List<CardEntity>>();
         }
 
         public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
@@ -34,25 +38,62 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
+            this.instanceToAffectedCardEntities[starEntity.CardSocketed.Card] = new List<CardEntity>();
+
             this.UpdateValue(layer, starEntity);
         }
 
         private void UpdateValue(BoardGameLayer layer, StarEntity starEntity)
         {
-            int bonus = 0;
+            HashSet<StarLinkEntity> starLinkEntities = layer.StarToLinks[starEntity];
 
-
-            bool mustSetValue = starEntity.CardSocketed.Card.BehaviorToValueModifier.TryGetValue(this, out int currentValue) == false || currentValue != bonus;
-
-            if (mustSetValue)
+            List<CardEntity> previousAffectedStarEntity = this.instanceToAffectedCardEntities[starEntity.CardSocketed.Card];
+            List<CardEntity> currentAffectedStarEntity = new List<CardEntity>();
+            foreach(StarLinkEntity starLinkEntity in starLinkEntities)
             {
-                layer.PendingActions.Add(new SetCardValueModifier(starEntity.CardSocketed.Card, this, bonus));
+                StarEntity otherStarEntity = starLinkEntity.StarFrom;
+                if (otherStarEntity == starEntity)
+                {
+                    otherStarEntity = starLinkEntity.StarTo;
+                }
+
+                if(otherStarEntity.CardSocketed != null && otherStarEntity.CardSocketed.Card.Player == starEntity.CardSocketed.Card.Player)
+                {
+                    currentAffectedStarEntity.Add(otherStarEntity.CardSocketed);
+                }
             }
+
+            IEnumerable<CardEntity> noMoreAffected = previousAffectedStarEntity.Except(currentAffectedStarEntity);
+            IEnumerable<CardEntity> newAffected = currentAffectedStarEntity.Except(previousAffectedStarEntity);
+
+            foreach(CardEntity cardEntity in noMoreAffected)
+            {
+                layer.PendingActions.Add(new ClearCardValueModifier(cardEntity.Card, this));
+            }
+
+            foreach (CardEntity cardEntity in newAffected)
+            {
+                layer.PendingActions.Add(new SetCardValueModifier(cardEntity.Card, this, this.Value));
+            }
+
+            this.instanceToAffectedCardEntities[starEntity.CardSocketed.Card] = currentAffectedStarEntity;
         }
 
         public void OnUnawakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            layer.PendingActions.Add(new ClearCardValueModifier(starEntity.CardSocketed.Card, this));
+            List<CardEntity> previousAffectedStarEntity = this.instanceToAffectedCardEntities[starEntity.CardSocketed.Card];
+
+            foreach (CardEntity cardEntity in previousAffectedStarEntity)
+            {
+                layer.PendingActions.Add(new ClearCardValueModifier(cardEntity.Card, this));
+            }
+
+            this.instanceToAffectedCardEntities.Remove(starEntity.CardSocketed.Card);
+        }
+
+        public ICardBehavior Clone()
+        {
+            return new StrengthPassiveBehavior(this.Value);
         }
     }
 }
