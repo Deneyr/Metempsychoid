@@ -67,6 +67,7 @@
     <Compile Include="Model\Card\Behaviors\HangedManPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\HermitePassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\ICardBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\MoonPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\PriestessPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\StrengthPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\SunPassiveBehavior.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Model\Card\CardEntity.cs" />
     <Compile Include="Model\Card\CardFactory.cs" />
     <Compile Include="Model\Constellations\Constellation.cs" />
+    <Compile Include="Model\Constellations\ConstellationAllyNode.cs" />
     <Compile Include="Model\Constellations\ConstellationLink.cs" />
     <Compile Include="Model\Constellations\ConstellationNode.cs" />
     <Compile Include="Model\Constellations\ConstellationNodeSelf.cs" />

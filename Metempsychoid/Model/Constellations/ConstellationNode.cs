@@ -15,7 +15,7 @@ namespace Metempsychoid.Model.Constellations
             set;
         }
 
-        public virtual bool IsStarValid(StarEntity star)
+        public virtual bool IsStarValid(StarEntity star, StarEntity startStarEntity)
         {
             return star.CardSocketed != null;
         }

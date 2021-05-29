@@ -90,7 +90,7 @@ namespace Metempsychoid.Model.Constellations
                     }
                     else
                     {
-                        potentialStarEntities = this.CreatePotentialStarEntitiesFrom(boardGameLayer, nodeToStarEntity, out alreadyExploredNode, out starEntityToStarLinks);
+                        potentialStarEntities = this.CreatePotentialStarEntitiesFrom(boardGameLayer, startStarEntity, nodeToStarEntity, out alreadyExploredNode, out starEntityToStarLinks);
                     }
 
                     if (potentialStarEntities.Count > 0)
@@ -207,7 +207,7 @@ namespace Metempsychoid.Model.Constellations
             this.pathStarEntities = currentSnapshot.CurrentPathStarEntities;
         }
 
-        private Stack<StarEntity> CreatePotentialStarEntitiesFrom(BoardGameLayer boardGameLayer, Dictionary<ConstellationNode, StarEntity> nodeToStarEntity, out bool alreadyExploredNode, out Dictionary<StarEntity, List<StarLinkEntity>> starEntityToStarLinks)
+        private Stack<StarEntity> CreatePotentialStarEntitiesFrom(BoardGameLayer boardGameLayer, StarEntity startStarEntity, Dictionary<ConstellationNode, StarEntity> nodeToStarEntity, out bool alreadyExploredNode, out Dictionary<StarEntity, List<StarLinkEntity>> starEntityToStarLinks)
         {
             Stack<StarEntity> potentialStarEntities = new Stack<StarEntity>();
 
@@ -235,7 +235,7 @@ namespace Metempsychoid.Model.Constellations
                 }
                 else
                 {
-                    potentialStarEntities = new Stack<StarEntity>(potentialStarEntities.Where(pElem => currentConstellationTuple.Item2.IsStarValid(pElem) && this.alreadyEncounteredStarEntities.Contains(pElem) == false));
+                    potentialStarEntities = new Stack<StarEntity>(potentialStarEntities.Where(pElem => currentConstellationTuple.Item2.IsStarValid(pElem, startStarEntity) && this.alreadyEncounteredStarEntities.Contains(pElem) == false));
                 }
             }
             else
