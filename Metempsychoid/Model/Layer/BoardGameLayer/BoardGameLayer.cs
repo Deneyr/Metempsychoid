@@ -3,6 +3,7 @@ using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardGameLayer.Actions;
 using Metempsychoid.Model.Node;
+using Metempsychoid.Model.Node.TestWorld;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -306,6 +307,20 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
             // Apply the actions.
             this.UpdateBoard();
+        }
+
+        public int GetNbOpponentDeadCard(Player.Player player)
+        {
+            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as TestLevel).BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer != player);
+
+            return playerLayer.CardsCemetery.Count;
+        }
+
+        public int GetNbDeadCard(Player.Player player)
+        {
+            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as TestLevel).BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer == player);
+
+            return playerLayer.CardsCemetery.Count;
         }
 
         private void UpdateBoard()

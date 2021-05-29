@@ -18,19 +18,24 @@ namespace Metempsychoid.Model.Card
 
         private bool isAwakened;
 
+        private int valueModificator;
+
+        private List<ICardBehavior> cardBehaviorsCloned;
+
         public event Action<string> PropertyChanged;
 
-        private int valueModificator;
         public Dictionary<ICardBehavior, int> BehaviorToValueModifier
         {
             get;
             private set;
         }
 
-        public List<ICardBehavior> CardBehaviors
+        public override List<ICardBehavior> CardBehaviors
         {
-            get;
-            private set;
+            get
+            {
+                return this.cardBehaviorsCloned;
+            }
         }
 
         public bool IsAwakened
@@ -138,7 +143,7 @@ namespace Metempsychoid.Model.Card
             this.valueModificator = 0;
             this.BehaviorToValueModifier = new Dictionary<ICardBehavior, int>();
 
-            this.CardBehaviors = cardTemplate.CardBehaviors.Select(pElem => pElem.Clone()).ToList();
+            this.cardBehaviorsCloned = cardTemplate.CardBehaviors.Select(pElem => pElem.Clone()).ToList();
 
             this.isAwakened = false;
 

@@ -17,7 +17,7 @@ namespace Metempsychoid.Model.Card
         //public HandlingFunction HandlingCardAwakened;
         //public HandlingFunction HandlingCardUnAwakened;
 
-        public List<ICardBehavior> CardBehaviors
+        public virtual List<ICardBehavior> CardBehaviors
         {
             get;
             private set;

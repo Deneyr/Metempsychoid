@@ -10,7 +10,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 {
     public class StrengthPassiveBehavior : ICardBehavior
     {
-        private Dictionary<Card, List<CardEntity>> instanceToAffectedCardEntities;
+        private List<CardEntity> affectedCardEntities;
 
         public int Value
         {
@@ -22,7 +22,7 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             this.Value = value;
 
-            this.instanceToAffectedCardEntities = new Dictionary<Card, List<CardEntity>>();
+            this.affectedCardEntities = new List<CardEntity>();
         }
 
         public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
@@ -38,7 +38,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            this.instanceToAffectedCardEntities[starEntity.CardSocketed.Card] = new List<CardEntity>();
+            this.affectedCardEntities.Clear();
 
             this.UpdateValue(layer, starEntity);
         }
@@ -47,7 +47,6 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             HashSet<StarLinkEntity> starLinkEntities = layer.StarToLinks[starEntity];
 
-            List<CardEntity> previousAffectedStarEntity = this.instanceToAffectedCardEntities[starEntity.CardSocketed.Card];
             List<CardEntity> currentAffectedStarEntity = new List<CardEntity>();
             foreach(StarLinkEntity starLinkEntity in starLinkEntities)
             {
@@ -63,8 +62,8 @@ namespace Metempsychoid.Model.Card.Behaviors
                 }
             }
 
-            IEnumerable<CardEntity> noMoreAffected = previousAffectedStarEntity.Except(currentAffectedStarEntity);
-            IEnumerable<CardEntity> newAffected = currentAffectedStarEntity.Except(previousAffectedStarEntity);
+            IEnumerable<CardEntity> noMoreAffected = this.affectedCardEntities.Except(currentAffectedStarEntity);
+            IEnumerable<CardEntity> newAffected = currentAffectedStarEntity.Except(this.affectedCardEntities);
 
             foreach(CardEntity cardEntity in noMoreAffected)
             {
@@ -76,19 +75,17 @@ namespace Metempsychoid.Model.Card.Behaviors
                 layer.PendingActions.Add(new SetCardValueModifier(cardEntity.Card, this, this.Value));
             }
 
-            this.instanceToAffectedCardEntities[starEntity.CardSocketed.Card] = currentAffectedStarEntity;
+            this.affectedCardEntities = currentAffectedStarEntity;
         }
 
         public void OnUnawakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            List<CardEntity> previousAffectedStarEntity = this.instanceToAffectedCardEntities[starEntity.CardSocketed.Card];
-
-            foreach (CardEntity cardEntity in previousAffectedStarEntity)
+            foreach (CardEntity cardEntity in this.affectedCardEntities)
             {
                 layer.PendingActions.Add(new ClearCardValueModifier(cardEntity.Card, this));
             }
 
-            this.instanceToAffectedCardEntities.Remove(starEntity.CardSocketed.Card);
+            this.affectedCardEntities.Clear();
         }
 
         public ICardBehavior Clone()

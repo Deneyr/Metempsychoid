@@ -18,7 +18,11 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         private int playerIndex;
 
-        private List<BoardPlayerLayer> boardplayersList;
+        public List<BoardPlayerLayer> BoardplayersList
+        {
+            get;
+            private set;
+        }
 
         public int TurnIndex
         {
@@ -36,7 +40,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             base(world)
         {
             this.CurrentTurnPhase = TurnPhase.VOID;
-            this.boardplayersList = new List<BoardPlayerLayer>();
+            this.BoardplayersList = new List<BoardPlayerLayer>();
         }
 
         public TurnPhase CurrentTurnPhase
@@ -49,7 +53,7 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             get
             {
-                return this.boardplayersList[this.TurnIndex % this.boardplayersList.Count];
+                return this.BoardplayersList[this.TurnIndex % this.BoardplayersList.Count];
             }
         }
 
@@ -69,9 +73,9 @@ namespace Metempsychoid.Model.Node.TestWorld
                 "bannerLayer"
             }, this);
 
-            this.boardplayersList.Clear();
-            this.boardplayersList.Add(world.LoadedLayers["playerLayer"] as BoardPlayerLayer);
-            this.boardplayersList.Add(world.LoadedLayers["opponentLayer"] as BoardPlayerLayer);
+            this.BoardplayersList.Clear();
+            this.BoardplayersList.Add(world.LoadedLayers["playerLayer"] as BoardPlayerLayer);
+            this.BoardplayersList.Add(world.LoadedLayers["opponentLayer"] as BoardPlayerLayer);
             this.TurnIndex = -1;
 
             this.InitializeStartLevelPhase(world);

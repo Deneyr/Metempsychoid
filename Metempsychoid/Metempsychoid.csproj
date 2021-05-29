@@ -63,6 +63,7 @@
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
     <Compile Include="Model\Card\Behaviors\AddValueToSelfBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\HangedManPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\HermitePassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\ICardBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\PriestessPassiveBehavior.cs" />

@@ -17,6 +17,8 @@ namespace Metempsychoid.Model
 
         private bool raiseEntityEvents;
 
+        protected ALevelNode ownerLevelNode;
+
         protected HashSet<AEntity> entities;
 
         public event Action<AEntity> EntityAdded;
@@ -92,6 +94,8 @@ namespace Metempsychoid.Model
             this.position = new Vector2f(0, 0);
             this.rotation = 0;
 
+            this.ownerLevelNode = null;
+
             this.raiseEntityEvents = true;
 
             this.ParentLayer = null;
@@ -99,6 +103,8 @@ namespace Metempsychoid.Model
 
         public virtual void InitializeLayer(World world, ALevelNode levelNode)
         {
+            this.ownerLevelNode = levelNode;
+
             this.raiseEntityEvents = false;
 
             this.InternalInitializeLayer(world, levelNode);
@@ -136,6 +142,8 @@ namespace Metempsychoid.Model
 
         public virtual void FlushLayer()
         {
+            this.ownerLevelNode = null;
+
             foreach (AEntity entity in this.entities)
             {
                 entity.Dispose();
