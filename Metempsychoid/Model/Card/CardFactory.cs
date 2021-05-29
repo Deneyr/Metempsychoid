@@ -31,7 +31,7 @@ namespace Metempsychoid.Model.Card
             CardTemplate cardTemplate = new CardTemplate("wheel", "wheel_of_fortune_title", "wheel_of_fortune_poem", 2, 1);
 
             //cardTemplate.CardBehaviors.Add(new AddValueToSelfBehavior(1));
-            cardTemplate.CardBehaviors.Add(new TemperancePassiveBehavior(-1));
+            cardTemplate.CardBehaviors.Add(new DevilPassiveBehavior(1));
 
             //cardTemplate.HandlingCardAwakened = this.DefaultAwakenedFunction;
             //cardTemplate.HandlingCardUnAwakened = this.DefaultUnAwakenedFunction;

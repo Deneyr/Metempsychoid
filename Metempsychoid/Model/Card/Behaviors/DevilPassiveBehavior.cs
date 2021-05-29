@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class HermitePassiveBehavior : ICardBehavior
+    public class DevilPassiveBehavior : ICardBehavior
     {
         public int Value
         {
@@ -16,7 +16,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             private set;
         }
 
-        public HermitePassiveBehavior(int value)
+        public DevilPassiveBehavior(int value)
         {
             this.Value = value;
         }
@@ -42,12 +42,12 @@ namespace Metempsychoid.Model.Card.Behaviors
             int bonus = layer.StarToLinks[starEntity].Where(pElem =>
             {
                 StarEntity otherStarEntity = pElem.StarFrom;
-                if(otherStarEntity == starEntity)
+                if (otherStarEntity == starEntity)
                 {
                     otherStarEntity = pElem.StarTo;
                 }
 
-                return otherStarEntity.CardSocketed != null;
+                return otherStarEntity.CardSocketed != null && otherStarEntity.CardSocketed.Card.Player != starEntity.CardSocketed.Card.Player;
             }).Count();
 
 
@@ -66,7 +66,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public ICardBehavior Clone()
         {
-            return new HermitePassiveBehavior(this.Value);
+            return new DevilPassiveBehavior(this.Value);
         }
     }
 }
