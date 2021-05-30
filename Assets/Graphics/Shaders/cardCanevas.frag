@@ -7,6 +7,8 @@ uniform vec4 playerColor;
 uniform float ratioColor;
 uniform bool isSocketed;
 
+uniform bool isFocused;
+
 uniform float margin;
 uniform float outMargin;
 
@@ -32,7 +34,13 @@ void main()
 
     vec4 color = GetColor(gl_TexCoord[0].st, marginRatio);
 
-    gl_FragColor = (marginRatio) * color + (1 - marginRatio * 0.5) * vec4(0, 0, 0, 1);
+    float ratioFocused = 1;
+    if(isFocused)
+    {
+        ratioFocused = (1 + sin(time * 10)) / 2;
+    }
+
+    gl_FragColor = (marginRatio) * color + (1 - marginRatio * 0.5) * vec4(0, 0, 0, 1) * ratioFocused + (1 - ratioFocused) * vec4(0.8, 0.8, 0.8, 1);
     gl_FragColor.a = marginRatio;
 }
 

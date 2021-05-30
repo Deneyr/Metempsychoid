@@ -74,7 +74,7 @@ namespace Metempsychoid.Model.Card
 
             this.Patterns = new List<ConstellationPattern>()
             {
-                ConstellationPatternFactory.CreateMoonConstellation()
+                ConstellationPatternFactory.CreateDefaultConstellation()
             };
         }
 

@@ -31,6 +31,8 @@ namespace Metempsychoid.View.Card2D
         private Color playerColor;
         protected float ratioColor;
 
+        protected bool isFocused;
+
         protected bool isFliped;
         protected CardSideState sideState;
         protected int cardIndex;
@@ -39,7 +41,7 @@ namespace Metempsychoid.View.Card2D
 
         RenderStates render;
 
-        Clock timer = new Clock();
+        //Clock timer = new Clock();
 
         public bool IsAwakened
         {
@@ -96,6 +98,23 @@ namespace Metempsychoid.View.Card2D
                             this.InitializeFaceTransState(this.factory.GetIndexFromCardName(this.cardName));
                         }
                         break;
+                }
+            }
+        }
+
+        public bool IsFocused
+        {
+            get
+            {
+                return this.isFocused;
+            }
+            set
+            {
+                if(this.isFocused != value)
+                {
+                    this.isFocused = value;
+
+                    render.Shader.SetUniform("isFocused", this.isFocused);
                 }
             }
         }
@@ -288,6 +307,7 @@ namespace Metempsychoid.View.Card2D
             this.playerColor = Color.Black;
             this.isSocketed = entity.ParentStar == null;
             this.ratioColor = -1;
+            this.isFocused = true;
 
             Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\cardCanevas.frag");
 
@@ -325,6 +345,7 @@ namespace Metempsychoid.View.Card2D
             this.RatioColor = 1;
             this.cardName = entity.Card.Name;
             this.isFliped = entity.IsFliped;
+            this.IsFocused = false;
 
             this.cooldownFocus = 0;
 
@@ -499,11 +520,15 @@ namespace Metempsychoid.View.Card2D
         public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
         {
             parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_HAND, parentLayer.GetEntityFromEntity2D(this), null);
+
+            this.IsFocused = true;
         }
 
         public void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
         {
             parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_HAND, null, null);
+
+            this.IsFocused = false;
         }
 
         public bool IsFocusable(ALayer2D parentLayer)

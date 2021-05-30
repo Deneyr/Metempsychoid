@@ -19,7 +19,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         RenderStates render;
 
-        Clock timer = new Clock();
+        //Clock timer = new Clock();
 
         public StarState StarEntityState
         {

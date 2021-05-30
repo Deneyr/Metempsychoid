@@ -16,7 +16,7 @@ uniform float time; // Time used to scroll the distortion map
 uniform float distortionFactor = .02f; // Factor used to control severity of the effect
 uniform float riseFactor = .05f; // Factor used to control how fast air rises
 
-uniform float fillRatio = 0;
+uniform bool isFocused;
 
 float GetLengthRatio(vec2 coordinate);
 
@@ -55,10 +55,14 @@ void main()
 
     ratio -= (1 - ratioDist) * 0.5;
 
-    float fillRatioSin = fillRatio * (1 + sin(time * 10)) / 2;
+    float fillRatio = 0;
+    if(isFocused)
+    {
+        fillRatio = (1 + sin(time * 10)) / 2;
+    }
 
-    gl_FragColor = color * (1 - ratio * 0.6) + ratio * 0.6 * vec4(1, 1, 1, 1) * (1 - fillRatioSin) + fillRatioSin * color;
-    gl_FragColor.a = ratio * alphaRatio * (1 + fillRatioSin * 1.5);
+    gl_FragColor = color * (1 - ratio * 0.6) + ratio * 0.6 * vec4(1, 1, 1, 1) * (1 - fillRatio) + fillRatio * color;
+    gl_FragColor.a = ratio * alphaRatio * (1 + fillRatio * 1.5);
 }
 
 float GetLengthRatio(vec2 coordinate)

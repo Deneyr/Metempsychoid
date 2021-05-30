@@ -19,11 +19,11 @@ namespace Metempsychoid.Model.Card.Behaviors
             private set;
         }
 
-        public MoonPassiveBehavior(int value)
+        public MoonPassiveBehavior(int value, ConstellationPattern patternToMatch)
         {
             this.Value = value;
 
-            this.patternToMatch = ConstellationPatternFactory.CreateMoonConstellation();
+            this.patternToMatch = patternToMatch;
         }
 
         public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
@@ -78,7 +78,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public ICardBehavior Clone()
         {
-            return new MoonPassiveBehavior(this.Value);
+            return new MoonPassiveBehavior(this.Value, this.patternToMatch);
         }
     }
 }

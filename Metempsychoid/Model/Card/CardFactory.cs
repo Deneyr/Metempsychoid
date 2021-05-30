@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model.Card.Behaviors;
+using Metempsychoid.Model.Constellations;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Metempsychoid.Model.Card
             CardTemplate cardTemplate = new CardTemplate("wheel", "wheel_of_fortune_title", "wheel_of_fortune_poem", 2, 1);
 
             //cardTemplate.CardBehaviors.Add(new AddValueToSelfBehavior(1));
-            cardTemplate.CardBehaviors.Add(new MoonPassiveBehavior(2));
+            cardTemplate.CardBehaviors.Add(new MoonPassiveBehavior(2, ConstellationPatternFactory.CreateMoonConstellation()));
 
             //cardTemplate.HandlingCardAwakened = this.DefaultAwakenedFunction;
             //cardTemplate.HandlingCardUnAwakened = this.DefaultUnAwakenedFunction;

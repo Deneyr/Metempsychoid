@@ -14,6 +14,8 @@ namespace Metempsychoid.View
 {
     public class AEntity2D: AObject2D
     {
+        protected static Clock timer = new Clock();
+
         protected Sprite sprite;
 
         protected WeakReference<ALayer2D> parentLayer;

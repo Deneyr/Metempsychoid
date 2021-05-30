@@ -16,7 +16,7 @@ namespace Metempsychoid.View.Card2D
 
         RenderStates render;
 
-        Clock timer = new Clock();
+        //Clock timer = new Clock();
 
         private bool isActive;
 

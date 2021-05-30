@@ -30,35 +30,53 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         protected float ratioLinkTo;
         protected float ratioColorTo;
 
-        private float fillRatio;
+        //private float fillRatio;
+        private bool isFocused;
 
         protected RenderStates render;
 
-        protected Clock timer = new Clock();
+        //protected Clock timer = new Clock();
 
         protected StarLinkState starLinkState;
 
         protected bool isActive;
 
-        public TargetedFillRatioState FillRatioState
-        {
-            get;
-            set;
-        }
+        //public TargetedFillRatioState FillRatioState
+        //{
+        //    get;
+        //    set;
+        //}
 
-        public float FillRatio
+        //public float FillRatio
+        //{
+        //    get
+        //    {
+        //        return this.fillRatio;
+        //    }
+        //    protected set
+        //    {
+        //        if (this.fillRatio != value)
+        //        {
+        //            this.fillRatio = value;
+
+        //            render.Shader.SetUniform("fillRatio", this.fillRatio);
+        //        }
+        //    }
+        //}
+
+        public bool IsFocused
         {
             get
             {
-                return this.fillRatio;
+                return this.isFocused;
             }
-            protected set
+            set
             {
-                if (this.fillRatio != value)
+                if (this.isFocused != value)
                 {
-                    this.fillRatio = value;
+                    this.isFocused = value;
 
-                    render.Shader.SetUniform("fillRatio", this.fillRatio);
+                    render.Shader.SetUniform("isFocused", this.isFocused);
                 }
             }
         }
@@ -168,7 +186,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.starEntityFrom = layer2D.GetEntity2DFromEntity(entity.StarFrom) as StarEntity2D;
             this.starEntityTo = layer2D.GetEntity2DFromEntity(entity.StarTo) as StarEntity2D;
 
-            this.fillRatio = 0;
+            //this.fillRatio = 0;
+            this.isFocused = true;
 
             this.ObjectSprite.Color = Color.Blue;
 
@@ -234,8 +253,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.CurrentColorTo = this.starEntityTo.ObjectSprite.Color;
             this.RatioColorTo = 0.33f;
 
-            this.FillRatio = 0;
-            this.FillRatioState = TargetedFillRatioState.STOP;
+            //this.FillRatio = 0;
+            //this.FillRatioState = TargetedFillRatioState.STOP;
+            this.IsFocused = false;
 
             this.isActive = entity.IsActive;
 
@@ -381,41 +401,41 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     break;
             }
 
-            this.UpdateLinkFillRatio(deltaTime);
+            //this.UpdateLinkFillRatio(deltaTime);
 
             this.UpdateLinkColor(deltaTime);
 
             render.Shader.SetUniform("time", timer.ElapsedTime.AsSeconds());
         }
 
-        protected void UpdateLinkFillRatio(Time deltaTime)
-        {
-            float currentFillRatio = this.FillRatio;
-            switch (this.FillRatioState)
-            {
-                case TargetedFillRatioState.DOWN:
-                    currentFillRatio -=  SPEED_FILL_RATIO * deltaTime.AsSeconds();
+        //protected void UpdateLinkFillRatio(Time deltaTime)
+        //{
+        //    float currentFillRatio = this.FillRatio;
+        //    switch (this.FillRatioState)
+        //    {
+        //        case TargetedFillRatioState.DOWN:
+        //            currentFillRatio -=  SPEED_FILL_RATIO * deltaTime.AsSeconds();
 
-                    if(currentFillRatio < 0)
-                    {
-                        currentFillRatio = 0;
-                        this.FillRatioState = TargetedFillRatioState.STOP;
-                    }
+        //            if(currentFillRatio < 0)
+        //            {
+        //                currentFillRatio = 0;
+        //                this.FillRatioState = TargetedFillRatioState.STOP;
+        //            }
 
-                    break;
-                case TargetedFillRatioState.UP:
-                    currentFillRatio += SPEED_FILL_RATIO * deltaTime.AsSeconds();
+        //            break;
+        //        case TargetedFillRatioState.UP:
+        //            currentFillRatio += SPEED_FILL_RATIO * deltaTime.AsSeconds();
 
-                    if (currentFillRatio > 1)
-                    {
-                        currentFillRatio = 1;
-                        this.FillRatioState = TargetedFillRatioState.STOP;
-                    }
-                    break;
-            }
+        //            if (currentFillRatio > 1)
+        //            {
+        //                currentFillRatio = 1;
+        //                this.FillRatioState = TargetedFillRatioState.STOP;
+        //            }
+        //            break;
+        //    }
 
-            this.FillRatio = currentFillRatio;
-        }
+        //    this.FillRatio = currentFillRatio;
+        //}
 
         protected void UpdateLinkColor(Time deltaTime)
         {
@@ -464,11 +484,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             ACTIVE
         }
 
-        public enum TargetedFillRatioState
-        {
-            UP,
-            DOWN,
-            STOP
-        }
+        //public enum TargetedFillRatioState
+        //{
+        //    UP,
+        //    DOWN,
+        //    STOP
+        //}
     }
 }

@@ -21,7 +21,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         protected RenderStates render;
 
-        protected Clock timer = new Clock();
+        //protected Clock timer = new Clock();
 
         protected List<Vector2f> domainPoints;
         protected List<StarEntity2D> domainStars;
