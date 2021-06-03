@@ -16,16 +16,12 @@ namespace Metempsychoid.View.Text2D
 
         private IntRect canevas;
 
-        private int parameterIndex;
-
         private string fullText;
 
         public int ParameterIndex
         {
-            get
-            {
-                return this.parameterIndex;
-            }
+            get;
+            private set;
         }
 
         public string FullText
@@ -72,7 +68,7 @@ namespace Metempsychoid.View.Text2D
             }
             set
             {
-                this.text2D.Position = value * MainWindow.MODEL_TO_VIEW;
+                this.text2D.Position = value + new Vector2f((int) (this.canevas.Width / 2), (int) ((this.canevas.Height / 2))) * MainWindow.MODEL_TO_VIEW;
             }
         }
 
@@ -194,11 +190,11 @@ namespace Metempsychoid.View.Text2D
 
             if(text.StartsWith("{") && text.EndsWith("}") && int.TryParse(text.Substring(1, text.Length - 2), out int parameterIndex))
             {
-                this.parameterIndex = parameterIndex;
+                this.ParameterIndex = parameterIndex;
             }
             else
             {
-                this.parameterIndex = -1;
+                this.ParameterIndex = -1;
             }
 
             this.TextCursor = this.FullText.Count();
@@ -218,6 +214,8 @@ namespace Metempsychoid.View.Text2D
             this.canevas = new IntRect((int)canevas.Left, (int)canevas.Left, (int)canevas.Width, (int)canevas.Height);
 
             this.TextCursor = currentCursor;
+
+            this.text2D.Origin = new Vector2f(canevas.Width / 2, canevas.Height / 2);
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

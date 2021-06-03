@@ -2,6 +2,8 @@
 using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardGameLayer.Actions;
+using Metempsychoid.Model.Layer.BoardNotifLayer;
+using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
 using Metempsychoid.Model.Node;
 using Metempsychoid.Model.Node.TestWorld;
 using SFML.System;
@@ -18,6 +20,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
         private CardEntity cardFocused;
 
         private Player.Player playerTurn;
+
+        //public Dictionary<Card.Card, CardEntity> DeactivatedCardEntities
+        //{
+        //    get;
+        //    private set;
+        //}
 
         public Dictionary<string, HashSet<CardEntity>> NameToOnBoardCardEntities
         {
@@ -126,6 +134,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
             this.StarDomains = new List<CJStarDomain>();
 
+            //this.DeactivatedCardEntities = new Dictionary<Card.Card, CardEntity>();
             this.CardsOffBoard = new List<CardEntity>();
             this.PendingActions = new List<IBoardGameAction>();
             this.NameToOnBoardCardEntities = new Dictionary<string, HashSet<CardEntity>>();
@@ -268,7 +277,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             return false;
         }
 
-        public void SocketCard(StarEntity starEntity)
+        public void SocketCard(StarEntity starEntity) //, Vector2f positionInNotifBoard)
         {
             if(this.CardEntityPicked != null && this.NbCardsAbleToBeSocketed > 0)
             {
@@ -276,10 +285,20 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
                 this.NbCardsAbleToBeSocketed--;
 
-                this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity));
+                this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity)); //, positionInNotifBoard));
 
                 this.CardEntityPicked = null;
             }
+        }
+
+        public void GetCardFromBoard(CardEntity cardEntity)
+        {
+            //cardEntity.IsActive = false;
+        }
+
+        public void ReturnCardToBoard(CardEntityDecorator cardToReturn)
+        {
+            cardToReturn.CardEntityDecorated.IsActive = true;
         }
 
         //private void MoveCard(StarEntity fromStarEntity, StarEntity toStarEntity, CardEntity cardConcerned)
@@ -378,6 +397,24 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
+        public override void NotifyObjectPropertyChanged(AEntity obj, string propertyName)
+        {
+            switch (propertyName)
+            {
+                case "IsAwakened":
+                    CardEntity cardEntity = obj as CardEntity;
+                    if (cardEntity.Card.IsAwakened)
+                    {
+                        TestLevel ownerLevel = this.ownerLevelNode as TestLevel;
+
+                        ownerLevel.BoardNotifLayer.NotifBehaviorsStack.Push(new CardAwakenedNotifBehavior(ownerLevel, cardEntity));
+                    }
+                    break;
+            }
+
+            base.NotifyObjectPropertyChanged(obj, propertyName);
+        }
+
         public void MoveCardOverBoard(CardEntity cardEntity, Vector2f positionToMove)
         {
             if(this.CardEntityPicked != null
@@ -397,6 +434,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.StarToLinks.Clear();
             this.StarDomains.Clear();
 
+            //this.DeactivatedCardEntities.Clear();
             this.CardsOffBoard.Clear();
             this.PendingActions.Clear();
             this.NameToOnBoardCardEntities.Clear();

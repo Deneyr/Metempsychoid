@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Metempsychoid.Model.Constellations;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
+using SFML.System;
 
 namespace Metempsychoid.Model.Card
 {
@@ -15,13 +16,21 @@ namespace Metempsychoid.Model.Card
 
         private bool isFliped;
 
-        public Card Card
+        public event Action<string> PropertyChanged;
+
+        public virtual Card Card
         {
             get;
             private set;
         }
 
-        public StarEntity ParentStar
+        //public virtual Vector2f PositionInNotifBoard
+        //{
+        //    get;
+        //    set;
+        //}
+
+        public virtual StarEntity ParentStar
         {
             get
             {
@@ -41,7 +50,7 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public bool IsFliped
+        public virtual bool IsFliped
         {
             get
             {
@@ -70,6 +79,12 @@ namespace Metempsychoid.Model.Card
             this.parentStar = null;
 
             this.isFliped = isFliped;
+
+            //this.PositionInNotifBoard = new Vector2f(0, 0);
+        }
+
+        public CardEntity(EntityLayer entityLayer) : base(entityLayer)
+        {
         }
 
         private void OnPropertyChanged(string propertyName)
@@ -89,9 +104,11 @@ namespace Metempsychoid.Model.Card
                 }
 
                 entityLayer.NotifyObjectPropertyChanged(this, propertyName);
+
+                this.PropertyChanged?.Invoke(propertyName);
             }
         }
-        
+
         public override void Dispose()
         {
             this.Card.PropertyChanged -= this.OnPropertyChanged;

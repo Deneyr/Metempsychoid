@@ -85,10 +85,10 @@ namespace Metempsychoid.Model
         {
             this.gameNode.UpdateLogic(this, deltaTime);
 
-            //foreach(ALayer layer in this.currentLayers)
-            //{
-            //    layer.UpdateLogic(this, null, deltaTime);
-            //}
+            foreach (ALayer layer in this.currentLayers)
+            {
+                layer.UpdateLogic(this, deltaTime);
+            }
         }
 
         public void Dispose()

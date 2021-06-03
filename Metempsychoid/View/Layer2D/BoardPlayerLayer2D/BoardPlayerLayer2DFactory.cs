@@ -19,9 +19,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             if (obj is BoardPlayerLayer)
             {
-                BoardPlayerLayer boardGameLayer = obj as BoardPlayerLayer;
+                BoardPlayerLayer boardPlayerLayer = obj as BoardPlayerLayer;
 
-                return new BoardPlayerLayer2D(world2D, this, boardGameLayer);
+                return new BoardPlayerLayer2D(world2D, this, boardPlayerLayer);
             }
 
             return null;

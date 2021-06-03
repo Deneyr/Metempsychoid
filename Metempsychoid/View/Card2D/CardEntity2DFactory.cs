@@ -20,11 +20,13 @@ namespace Metempsychoid.View.Card2D
             this.texturesPath.Add(@"Assets\Graphics\Cards\backCard.jpg");
 
             this.texturesPath.Add(@"Assets\Graphics\Entities\StarHalo.png");
+            this.texturesPath.Add(@"Assets\Graphics\Cards\Effects\starEffect.png");
+            this.texturesPath.Add(@"Assets\Graphics\Cards\Effects\beamEffect.png");
 
             this.texturesPath.Add(@"Assets\Graphics\Cards\wheelCard.jpg");
 
             this.cardNameToIndex = new Dictionary<string, int>();
-            this.cardNameToIndex.Add("wheel", 3);
+            this.cardNameToIndex.Add("wheel", 5);
 
             this.InitializeFactory();
         }

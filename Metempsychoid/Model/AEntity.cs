@@ -18,6 +18,18 @@ namespace Metempsychoid.Model
 
         protected WeakReference<EntityLayer> parentLayer;
 
+        public EntityLayer ParentLayer
+        {
+            get
+            {
+                if(this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
+                {
+                    return entityLayer;
+                }
+                return null;
+            }
+        }
+
         public override Vector2f Position
         {
             get

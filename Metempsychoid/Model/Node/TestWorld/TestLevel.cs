@@ -2,7 +2,9 @@
 using Metempsychoid.Model.Event;
 using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
+using Metempsychoid.Model.Layer.BoardNotifLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,12 @@ namespace Metempsychoid.Model.Node.TestWorld
         private int playerIndex;
 
         public List<BoardPlayerLayer> BoardplayersList
+        {
+            get;
+            private set;
+        }
+
+        public BoardNotifLayer BoardNotifLayer
         {
             get;
             private set;
@@ -70,12 +78,16 @@ namespace Metempsychoid.Model.Node.TestWorld
                 "gameLayer",
                 "playerLayer",
                 "opponentLayer",
+                "notifLayer",
                 "bannerLayer"
             }, this);
 
             this.BoardplayersList.Clear();
             this.BoardplayersList.Add(world.LoadedLayers["playerLayer"] as BoardPlayerLayer);
             this.BoardplayersList.Add(world.LoadedLayers["opponentLayer"] as BoardPlayerLayer);
+
+            this.BoardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
+
             this.TurnIndex = -1;
 
             this.InitializeStartLevelPhase(world);
@@ -97,16 +109,21 @@ namespace Metempsychoid.Model.Node.TestWorld
             return result;
         }
 
-        public override void UpdateLogic(World world, Time timeElapsed)
-        {
-            base.UpdateLogic(world, timeElapsed);
+        //public override void UpdateLogic(World world, Time timeElapsed)
+        //{
+        //    base.UpdateLogic(world, timeElapsed);
 
-            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
-            boardGameLayer.UpdateLogic(world, timeElapsed);
-        }
+        //    BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+        //    boardGameLayer.UpdateLogic(world, timeElapsed);
+
+        //    BoardGameLayer notifGameLayer = world.LoadedLayers["notifLayer"] as BoardGameLayer;
+        //    boardGameLayer.UpdateLogic(world, timeElapsed);
+        //}
 
         protected override void InternalUpdateLogic(World world, Time timeElapsed)
         {
+            //this.UpdateCanevas();
+
             switch (this.CurrentTurnPhase)
             {
                 case TurnPhase.START_LEVEL:
@@ -135,6 +152,18 @@ namespace Metempsychoid.Model.Node.TestWorld
                     break;
             }
         }
+
+        //private void UpdateCanevas()
+        //{
+        //    if (this.pendingGameEvents.TryGetValue(EventType.CANEVAS_CHANGED, out List<GameEvent> gameEventsList))
+        //    {
+        //        GameEvent canevasChangedEvent = gameEventsList.FirstOrDefault();
+
+        //        string[] canevasTokens = canevasChangedEvent.Details.Split(':');
+
+        //        this.SceneCanevas = new FloatRect(float.Parse(canevasTokens[0]), float.Parse(canevasTokens[1]), float.Parse(canevasTokens[2]), float.Parse(canevasTokens[3]));
+        //    }
+        //}
 
         private void InitializeStartLevelPhase(World world)
         {
@@ -426,6 +455,26 @@ namespace Metempsychoid.Model.Node.TestWorld
                     boardPlayerLayer.UnpickCard(cardToUnpick, startPosition);
                 }
             }
+        }
+
+        public void AddCardToNotifBoard(World world, CardEntity cardEntityToAdd)
+        {
+            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+            BoardNotifLayer boardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
+
+            boardGameLayer.GetCardFromBoard(cardEntityToAdd);
+
+            boardNotifLayer.AddCardToBoard(cardEntityToAdd);
+        }
+
+        public void RemoveCardFromNotifBoard(World world, CardEntityDecorator cardEntityToRemove)
+        {
+            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+            BoardNotifLayer boardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
+
+            boardNotifLayer.RemoveCardFromBoard(cardEntityToRemove);
+
+            boardGameLayer.ReturnCardToBoard(cardEntityToRemove);
         }
 
         private void UpdateEndTurnPhase(World world)

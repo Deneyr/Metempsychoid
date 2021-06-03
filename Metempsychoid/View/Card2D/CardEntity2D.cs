@@ -24,11 +24,11 @@ namespace Metempsychoid.View.Card2D
         private string cardName;
 
         private Sprite canevasSprite;
-        private CardHalo2D cardHalo;
-        private CardLabel2D cardLabel;
+        protected CardHalo2D cardHalo;
+        protected CardLabel2D cardLabel;
 
         private bool isSocketed;
-        private Color playerColor;
+        protected Color playerColor;
         protected float ratioColor;
 
         protected bool isFocused;
@@ -39,7 +39,7 @@ namespace Metempsychoid.View.Card2D
 
         private float cooldownFocus;
 
-        RenderStates render;
+        protected RenderStates render;
 
         //Clock timer = new Clock();
 
@@ -136,7 +136,7 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
-        public Color PlayerColor
+        public virtual Color PlayerColor
         {
             get
             {
@@ -148,7 +148,7 @@ namespace Metempsychoid.View.Card2D
                 {
                     this.playerColor = value;
 
-                    render.Shader.SetUniform("playerColor", new SFML.Graphics.Glsl.Vec4(this.playerColor.R / 255f, this.playerColor.G / 255f, this.playerColor.B / 255f, 1));
+                    render.Shader.SetUniform("playerColor", new SFML.Graphics.Glsl.Vec4(this.playerColor.R / 255f, this.playerColor.G / 255f, this.playerColor.B / 255f, this.playerColor.A / 255f));
 
                     if (this.isSocketed)
                     {
@@ -255,7 +255,7 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
-        public int CardValue
+        public virtual int CardValue
         {
             get
             {
@@ -268,7 +268,7 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
-        public int CardValueModifier
+        public virtual int CardValueModifier
         {
             get
             {

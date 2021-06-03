@@ -48,6 +48,8 @@ namespace Metempsychoid.Model.Event
     {
         LEVEL_CHANGE,
 
+        //CANEVAS_CHANGED,
+
         LEVEL_PHASE_CHANGE,
         DRAW_CARD,
         FOCUS_CARD_HAND,

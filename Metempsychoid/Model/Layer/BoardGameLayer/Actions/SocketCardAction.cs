@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model.Card;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,19 +22,28 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
             private set;
         }
 
-        public SocketCardAction(CardEntity cardEntity, StarEntity starEntity)
+        //public Vector2f PositionInNotifBoard
+        //{
+        //    get;
+        //    private set;
+        //}
+
+        public SocketCardAction(CardEntity cardEntity, StarEntity starEntity) //, Vector2f positionInNotifBoard)
         {
             this.CardToSocket = cardEntity;
 
             this.OwnerStar = starEntity;
+
+            //this.PositionInNotifBoard = positionInNotifBoard;
         }
 
         public void ExecuteAction(BoardGameLayer layerToPerform)
         {
             //this.CardToSocket.Card.CardSocketed(layerToPerform, this.OwnerStar);
             this.OwnerStar.CardSocketed = this.CardToSocket;
+            //this.OwnerStar.CardSocketed.PositionInNotifBoard = this.PositionInNotifBoard;
 
-            if(layerToPerform.NameToOnBoardCardEntities.TryGetValue(this.CardToSocket.Card.Name, out HashSet<CardEntity> cardEntities))
+            if (layerToPerform.NameToOnBoardCardEntities.TryGetValue(this.CardToSocket.Card.Name, out HashSet<CardEntity> cardEntities))
             {
                 cardEntities.Add(this.CardToSocket);
             }

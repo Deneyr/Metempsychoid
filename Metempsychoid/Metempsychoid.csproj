@@ -100,6 +100,11 @@
     <Compile Include="Model\Layer\BoardGameLayer\StarLinkEntity.cs" />
     <Compile Include="Model\Card\CardTemplate.cs" />
     <Compile Include="Model\Layer\BoardBannerLayer\BoardBannerLayer.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ABoardNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\CardAwakenedNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\IBoardNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\BoardNotifLayer.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\CardEntityDecorator.cs" />
     <Compile Include="Model\Layer\BoardPlayerLayer\BoardPlayerLayer.cs" />
     <Compile Include="Model\Layer\EntityLayer\T_TeleEntity.cs" />
     <Compile Include="Model\Event\GameEvent.cs" />
@@ -159,6 +164,13 @@
     <Compile Include="View\Layer2D\BoardBannerLayer2D\IScoreLayer.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\ScoreDomainLabel2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\ScoreDomainPlayerLabel2D.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\AwakenedBannerLabel2D.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\BeamsEffect2D.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\BoardNotifLayer2D.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\BoardNotifLayer2DFactory.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\CardEntityDecorator2D.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\CardEntityDecorator2DFactory.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\StarEffect2D.cs" />
     <Compile Include="View\Layer2D\BoardPlayerLayer2D\ScoreLabel2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\TitleBannerTextToken2D.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2D.cs" />

@@ -44,7 +44,7 @@ namespace Metempsychoid.View
             protected set;
         }
 
-        public IHitRect FocusedGraphicEntity2D
+        public virtual IHitRect FocusedGraphicEntity2D
         {
             get
             {

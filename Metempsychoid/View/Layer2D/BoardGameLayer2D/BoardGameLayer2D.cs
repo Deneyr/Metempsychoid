@@ -255,13 +255,15 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                     cardAwakened.Priority = 2000 + this.maxAwakenedPriority++;
                     break;
+                case "IsActive":
+                    this.objectToObject2Ds[obj].IsActive = (obj as AEntity).IsActive;
+                    break;
                 case "Value":
                     CardEntity2D card2DChanged = this.objectToObject2Ds[obj] as CardEntity2D;
                     CardEntity cardChanged = obj as CardEntity;
                     card2DChanged.CardValue = cardChanged.Card.Value;
                     card2DChanged.CardValueModifier = cardChanged.Card.ValueModifier;
                     break;
-
                 case "DomainOwner":
                     CJStarDomain2D domain2DChanged = this.objectToObject2Ds[obj] as CJStarDomain2D;
                     CJStarDomain domainChanged = (obj as CJStarDomain);

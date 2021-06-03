@@ -1,6 +1,7 @@
 ﻿using Metempsychoid.Model.Layer.BackgroundLayer;
 using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
+using Metempsychoid.Model.Layer.BoardNotifLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.MenuLayer;
 using System;
@@ -34,6 +35,8 @@ namespace Metempsychoid.Model.Node.TestWorld
             BoardPlayerLayer boardPlayerLayer = new BoardPlayerLayer();
             BoardPlayerLayer boardOpponentLayer = new BoardPlayerLayer();
 
+            BoardNotifLayer boardNotifLayer = new BoardNotifLayer();
+
             BoardBannerLayer bannerLayer = new BoardBannerLayer();
 
             world.InitializeWorld(new List<Tuple<string, ALayer>>() {
@@ -43,6 +46,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                 new Tuple<string, ALayer>("gameLayer", boardGameLayer),
                 new Tuple<string, ALayer>("playerLayer", boardPlayerLayer),
                 new Tuple<string, ALayer>("opponentLayer", boardOpponentLayer),
+                new Tuple<string, ALayer>("notifLayer", boardNotifLayer),
                 new Tuple<string, ALayer>("bannerLayer", bannerLayer)
             });
 

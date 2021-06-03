@@ -93,7 +93,7 @@ namespace Metempsychoid.View
             AObject2D.animationManager.PlayAnimation(this, animation);
         }
 
-        public bool IsAnimationRunning()
+        public virtual bool IsAnimationRunning()
         {
             IAnimation animation = AObject2D.animationManager.GetAnimationFromAObject2D(this);
 

@@ -4,6 +4,7 @@ using Metempsychoid.Model.Event;
 using Metempsychoid.Model.Layer.BackgroundLayer;
 using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
+using Metempsychoid.Model.Layer.BoardNotifLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
 using Metempsychoid.Model.MenuLayer;
@@ -12,6 +13,7 @@ using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.BackgroundLayer2D;
 using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
 using Metempsychoid.View.Layer2D.BoardGameLayer2D;
+using Metempsychoid.View.Layer2D.BoardNotifLayer2D;
 using Metempsychoid.View.Layer2D.BoardPlayerLayer2D;
 using Metempsychoid.View.Layer2D.EntityLayer2D;
 using Metempsychoid.View.Layer2D.MenuLayer2D;
@@ -34,8 +36,6 @@ namespace Metempsychoid.View
 
         private LayerResourcesLoader layerResourcesLoader;
 
-        private Dictionary<ALayer, ALayer2D> layersDictionary;
-
         private World world;
 
         static World2D()
@@ -57,6 +57,8 @@ namespace Metempsychoid.View
 
             MappingObjectModelView.Add(typeof(BoardPlayerLayer), new BoardPlayerLayer2DFactory());
 
+            MappingObjectModelView.Add(typeof(BoardNotifLayer), new BoardNotifLayer2DFactory());
+
             // Layer foreground mapping
             MappingObjectModelView.Add(typeof(BoardBannerLayer), new BoardBannerLayer2DFactory());
 
@@ -69,6 +71,7 @@ namespace Metempsychoid.View
 
             // Card entities
             MappingObjectModelView.Add(typeof(CardEntity), new CardEntity2DFactory());
+            MappingObjectModelView.Add(typeof(CardEntityDecorator), new CardEntityDecorator2DFactory());
             MappingObjectModelView.Add(typeof(ToolTipEntity), new CardToolTip2DFactory());
 
             // Test Entity mapping
@@ -81,6 +84,11 @@ namespace Metempsychoid.View
             }
         }
 
+        public  Dictionary<ALayer, ALayer2D> LayersDictionary
+        {
+            get;
+            private set;
+        }
 
         public ControlManager ControlManager
         {
@@ -96,7 +104,7 @@ namespace Metempsychoid.View
 
         public World2D(MainWindow mainWindow)
         {
-            this.layersDictionary = new Dictionary<ALayer, ALayer2D>();
+            this.LayersDictionary = new Dictionary<ALayer, ALayer2D>();
             this.LayersList = new List<ALayer2D>();
 
             this.layerResourcesLoader = new LayerResourcesLoader();
@@ -163,17 +171,17 @@ namespace Metempsychoid.View
 
             ALayer2D layer2D = layer2DFactory.CreateObject2D(this, layerToAdd) as ALayer2D;
 
-            this.layersDictionary.Add(layerToAdd, layer2D);
+            this.LayersDictionary.Add(layerToAdd, layer2D);
         }
 
 
         private void OnLayerRemoved(ALayer layerToRemove)
         {
-            ALayer2D layer2D = this.layersDictionary[layerToRemove];
+            ALayer2D layer2D = this.LayersDictionary[layerToRemove];
 
             layer2D.Dispose();
 
-            this.layersDictionary.Remove(layerToRemove);
+            this.LayersDictionary.Remove(layerToRemove);
             this.LayersList.Remove(layer2D);
         }
 
@@ -186,11 +194,11 @@ namespace Metempsychoid.View
 
             foreach (ALayer layer in world.CurrentLayers)
             {
-                ALayer2D layer2D = this.layersDictionary[layer];
+                ALayer2D layer2D = this.LayersDictionary[layer];
 
                 if (layer.ParentLayer != null)
                 {
-                    this.layersDictionary[layer.ParentLayer].ChildrenLayer2D.Add(layer2D);
+                    this.LayersDictionary[layer.ParentLayer].ChildrenLayer2D.Add(layer2D);
                 }
 
                 if (layer2D == null)
@@ -205,7 +213,7 @@ namespace Metempsychoid.View
 
             foreach (ALayer layer in world.CurrentLayers)
             {
-                ALayer2D layer2D = this.layersDictionary[layer];
+                ALayer2D layer2D = this.LayersDictionary[layer];
                 layer2D.InitializeLayer(World2D.MappingObjectModelView[layer.GetType()]);
             }
         }
@@ -227,7 +235,7 @@ namespace Metempsychoid.View
 
         private void OnWorldEnding(World world)
         {
-            if (this.layersDictionary.Any())
+            if (this.LayersDictionary.Any())
             {
                 throw new Exception("There is always some layer at the end of the world");
             }
