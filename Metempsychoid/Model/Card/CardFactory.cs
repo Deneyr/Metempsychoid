@@ -29,7 +29,7 @@ namespace Metempsychoid.Model.Card
         {
             this.cardLibrary = new Dictionary<string, CardTemplate>();
 
-            CardTemplate cardTemplate = new CardTemplate("wheel", "wheel_of_fortune_title", "wheel_of_fortune_poem", 2, 1);
+            CardTemplate cardTemplate = new CardTemplate("wheel", "wheel_of_fortune_title", "wheel_of_fortune_poem", "wheel_of_fortune_effect", 2, 1);
 
             //cardTemplate.CardBehaviors.Add(new AddValueToSelfBehavior(1));
             cardTemplate.CardBehaviors.Add(new MoonPassiveBehavior(2, ConstellationPatternFactory.CreateMoonConstellation()));

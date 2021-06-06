@@ -10,7 +10,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 {
     public class TitleBannerTextToken2D : TextToken2D
     {
-        public TitleBannerTextToken2D(string text) : base(text)
+        public TitleBannerTextToken2D(string text, Color fillColor) 
+            : base(text, fillColor)
         {
             this.text2D.Font = AObject2DFactory.GetFontByName("Protector");
 

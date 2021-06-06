@@ -68,7 +68,7 @@ namespace Metempsychoid.View.Text2D
             }
             set
             {
-                this.text2D.Position = value + new Vector2f((int) (this.canevas.Width / 2), (int) ((this.canevas.Height / 2))) * MainWindow.MODEL_TO_VIEW;
+                this.text2D.Position = new Vector2f((int) (this.canevas.Width / 2 + value.X), (int) (this.canevas.Height / 2 + value.Y)) * MainWindow.MODEL_TO_VIEW;
             }
         }
 
@@ -180,7 +180,7 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
-        public TextToken2D(string text)
+        public TextToken2D(string text, Color fillColor)
         {
             this.fullText = text;
 
@@ -200,9 +200,11 @@ namespace Metempsychoid.View.Text2D
             this.TextCursor = this.FullText.Count();
             this.text2D.Font = AObject2DFactory.GetFontByName("Sans");
 
-            this.text2D.FillColor = Color.White;
+            this.text2D.FillColor = fillColor;
             this.text2D.OutlineThickness = 2;
             this.text2D.OutlineColor = Color.Black;
+
+            this.UpdateCanevas();
         }
 
         private void UpdateCanevas()
@@ -215,7 +217,7 @@ namespace Metempsychoid.View.Text2D
 
             this.TextCursor = currentCursor;
 
-            this.text2D.Origin = new Vector2f(canevas.Width / 2, canevas.Height / 2);
+            this.text2D.Origin = new Vector2f((int) (canevas.Width / 2), (int) (canevas.Height / 2));
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

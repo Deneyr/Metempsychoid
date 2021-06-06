@@ -53,13 +53,19 @@ namespace Metempsychoid.Model.Card
             private set;
         }
 
+        public virtual string EffectIdLoc
+        {
+            get;
+            private set;
+        }
+
         public List<ConstellationPattern> Patterns
         {
             get;
             private set;
         }
 
-        public CardTemplate(string name, string nameIdLoc, string poemIdLoc, int defaultValue, int bonusValue)
+        public CardTemplate(string name, string nameIdLoc, string poemIdLoc, string effectIdLoc, int defaultValue, int bonusValue)
         {
             this.DefaultValue = defaultValue;
             this.BonusValue = bonusValue;
@@ -67,8 +73,8 @@ namespace Metempsychoid.Model.Card
             this.Name = name;
 
             this.NameIdLoc = nameIdLoc;
-
             this.PoemIdLoc = poemIdLoc;
+            this.EffectIdLoc = effectIdLoc;
 
             this.CardBehaviors = new List<ICardBehavior>();
 

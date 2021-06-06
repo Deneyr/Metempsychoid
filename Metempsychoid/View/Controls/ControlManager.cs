@@ -66,7 +66,7 @@ namespace Metempsychoid.View.Controls
         {
             Stopwatch stopwatch = this.buttonToStopwatch[e.Button];
             stopwatch.Stop();
-            if (stopwatch.ElapsedMilliseconds < 200)
+            if (stopwatch.ElapsedMilliseconds < 300)
             {
                 if (e.Button == Button.Left)
                 {

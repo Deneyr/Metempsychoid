@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
+using SFML.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -89,7 +90,7 @@ namespace Metempsychoid.View.Text2D
                             {
                                 string content = paragraph.Value;
 
-                                List<TextToken2D> token2DsList = this.CreateTextTokens(content);
+                                List<TextToken2D> token2DsList = this.CreateTextTokens(content, Color.White);
 
                                 this.idToTokens.Add(key, token2DsList);
                             }
@@ -101,7 +102,18 @@ namespace Metempsychoid.View.Text2D
                                 {
                                     string content = paragraphElement.Value;
 
-                                    this.AppendTextTokens(token2DsList, content, paragraphElement.Name.LocalName);
+                                    XAttribute colorAttribut = paragraphElement.Attribute("color");
+                                    Color tokenFillColor = Color.White;
+                                    if (colorAttribut != null)
+                                    {
+                                        string[] colorTokens = colorAttribut.Value.Split(':');
+                                        if(colorTokens.Count() >= 3)
+                                        {
+                                            tokenFillColor = new Color(byte.Parse(colorTokens[0]), byte.Parse(colorTokens[1]), byte.Parse(colorTokens[2]));
+                                        }
+                                    }
+
+                                    this.AppendTextTokens(token2DsList, content, paragraphElement.Name.LocalName, tokenFillColor);
                                 }
 
                                 this.idToTokens.Add(key, token2DsList);
@@ -112,7 +124,7 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
-        private List<TextToken2D> CreateTextTokens(string text)
+        private List<TextToken2D> CreateTextTokens(string text, Color fillColor)
         {
             List<TextToken2D> tokens = new List<TextToken2D>();
 
@@ -121,7 +133,7 @@ namespace Metempsychoid.View.Text2D
             foreach (string textToken in textTokens)
             {
                 // Replace by ctr choice.
-                TextToken2D textToken2D = new TextToken2D(textToken);
+                TextToken2D textToken2D = new TextToken2D(textToken, fillColor);
 
                 tokens.Add(textToken2D);
             }
@@ -129,7 +141,7 @@ namespace Metempsychoid.View.Text2D
             return tokens;
         }
 
-        public void AppendTextTokens(List<TextToken2D> tokenListToAppend, string text, string tokenType)
+        public void AppendTextTokens(List<TextToken2D> tokenListToAppend, string text, string tokenType, Color fillColor)
         {
             string[] textTokens = text.Split(' ');
 
@@ -141,16 +153,16 @@ namespace Metempsychoid.View.Text2D
                     switch (tokenType)
                     {
                         case "Normal":
-                            textToken2D = new TextToken2D(textToken);
+                            textToken2D = new TextToken2D(textToken, fillColor);
                             break;
                         case "BannerTitle":
-                            textToken2D = new TitleBannerTextToken2D(textToken);
+                            textToken2D = new TitleBannerTextToken2D(textToken, fillColor);
                             break;
                         case "CardLabel":
-                            textToken2D = new CardLabelTextToken2D(textToken);
+                            textToken2D = new CardLabelTextToken2D(textToken, fillColor);
                             break;
                         default:
-                            textToken2D = new TextToken2D(textToken);
+                            textToken2D = new TextToken2D(textToken, fillColor);
                             break;
                     }
 

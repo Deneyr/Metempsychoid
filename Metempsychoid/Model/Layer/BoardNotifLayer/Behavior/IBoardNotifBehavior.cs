@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Metempsychoid.Model.Event;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
         bool UpdateNotif(World world);
 
         void EndNotif(World world);
+
+        void HandleGameEvents(Dictionary<EventType, List<GameEvent>> gameEvents);
     }
 }

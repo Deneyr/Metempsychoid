@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Metempsychoid.Animation;
 using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Event;
 using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
 using Metempsychoid.Model.Node;
 using SFML.System;
@@ -89,6 +90,11 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
             this.CardsHand = new List<CardEntityDecorator>();
         }
 
+        public void ForwardGameEventsToBehavior(Dictionary<EventType, List<GameEvent>> gameEvents)
+        {
+            this.CurrentNotifBehavior.HandleGameEvents(gameEvents);
+        }
+
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
             this.NotifBehaviorsStack = new Stack<IBoardNotifBehavior>();
@@ -134,7 +140,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
                     this.CurrentNotifBehavior = null;
                 }
             }
-            else if(this.NotifBehaviorsStack.Count > 0)
+
+            if (this.NotifBehaviorsStack.Count > 0 && this.CurrentNotifBehavior == null)
             {
                 this.CurrentNotifBehavior = this.NotifBehaviorsStack.Pop();
 

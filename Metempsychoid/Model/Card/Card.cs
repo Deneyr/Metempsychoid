@@ -109,6 +109,14 @@ namespace Metempsychoid.Model.Card
             }
         }
 
+        public override string EffectIdLoc
+        {
+            get
+            {
+                return this.cardTemplate.EffectIdLoc;
+            }
+        }
+
         public List<Constellation> Constellations
         {
             get

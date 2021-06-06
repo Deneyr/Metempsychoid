@@ -29,7 +29,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 {
                     this.score = value;
 
-                    this.CreateTextOfParagraph(2, this.score.ToString(), "BannerTitle");
+                    this.CreateTextOfParagraph(2, this.score.ToString(), "BannerTitle", Color.White);
 
                     this.PlayAnimation(0);
                 }

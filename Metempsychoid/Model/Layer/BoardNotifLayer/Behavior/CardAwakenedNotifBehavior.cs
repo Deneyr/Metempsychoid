@@ -34,7 +34,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public override bool UpdateNotif(World world)
         {
-            return true;
+            return this.IsActive;
         }
     }
 }

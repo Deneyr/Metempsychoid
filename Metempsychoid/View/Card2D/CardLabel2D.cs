@@ -40,7 +40,7 @@ namespace Metempsychoid.View.Card2D
                 {
                     this.label = value;
 
-                    this.CreateTextOfParagraph(0, this.label.ToString(), "CardLabel");
+                    this.CreateTextOfParagraph(0, this.label.ToString(), "CardLabel", Color.White);
 
                     if (this.IsActive)
                     {

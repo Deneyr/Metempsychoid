@@ -17,6 +17,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
     public class BoardNotifLayer2D : ALayer2D //, ICardFocusedLayer
     {
         private AwakenedBannerLabel2D awakenedBannerLabel2D;
+        private EffectBanner2D effectBanner2D;
+        private EffectLabel2D effectLabel2D;
 
         private CardEntityDecorator2D cardAwakened;
 
@@ -78,8 +80,11 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
                 {
                     this.cardAwakened = value;
 
-                    this.cardAwakened.DisplayAwakened();
-                    this.awakenedBannerLabel2D.DisplayBanner();
+                    if (this.cardAwakened != null)
+                    {
+                        this.cardAwakened.DisplayAwakened();
+                        this.awakenedBannerLabel2D.DisplayBanner();
+                    }
                 }
             }
         }
@@ -90,6 +95,9 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
 
             this.awakenedBannerLabel2D = new AwakenedBannerLabel2D(this);
+            this.effectBanner2D = new EffectBanner2D(this);
+
+            this.effectLabel2D = new EffectLabel2D(this);
 
             layer.CardAwakened += OnCardAwakened;
         }
@@ -220,10 +228,29 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             {
                 switch (this.CardAwakened.DecoratorState)
                 {
+                    case CardEntityDecorator2D.CardDecoratorState.PENDING:
+
+                        if (this.effectBanner2D.IsActive == false)
+                        {
+                            this.effectBanner2D.DisplayEffectBanner();
+
+                            this.effectLabel2D.DisplayEffectLabel((this.object2DToObjects[this.CardAwakened] as CardEntityDecorator).Card.EffectIdLoc);
+                        }
+                        else if (this.effectBanner2D.IsAnimationRunning() == false)
+                        {
+                            this.CardAwakened.HideAwakened();
+
+                            this.effectBanner2D.IsActive = false;
+                            this.effectLabel2D.IsActive = false;
+                        }
+
+                        break;
                     case CardEntityDecorator2D.CardDecoratorState.FINISHED:
+                        AEntity cardEntityDecorator = this.object2DToObjects[this.CardAwakened];
 
-                        //this.awakenedBannerLabel2D.DisplayBanner();
+                        this.CardAwakened = null;
 
+                        this.SendEventToWorld(Model.Event.EventType.NEXT_BEHAVIOR, cardEntityDecorator, string.Empty);
                         break;
                 }
             }
@@ -238,11 +265,24 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             this.awakenedBannerLabel2D.DrawIn(window, deltaTime);
 
+            this.effectBanner2D.DrawIn(window, deltaTime);
+            this.effectLabel2D.DrawIn(window, deltaTime);
+
             window.SetView(defaultView);
         }
 
         public override void Dispose()
         {
+            if(this.effectBanner2D != null)
+            {
+                this.effectBanner2D.Dispose();
+            }
+
+            if (this.effectLabel2D != null)
+            {
+                this.effectLabel2D.Dispose();
+            }
+
             (this.parentLayer as BoardNotifLayer).CardAwakened += OnCardAwakened;
 
             base.Dispose();

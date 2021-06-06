@@ -13,6 +13,19 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 {
     public class StarEffect2D : AEntity2D
     {
+        private bool isActive;
+
+        public override bool IsActive
+        {
+            get
+            {
+                return this.isActive || this.IsAnimationRunning();
+            }
+            set
+            {
+                this.isActive = value;
+            }
+        }
 
         public StarEffect2D(IObject2DFactory factory, ALayer2D parentLayer, CardEntityDecorator2D parentCardDecorator2D) :
             base(parentLayer, false)
@@ -24,15 +37,15 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.ObjectSprite.Origin = new SFML.System.Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
 
             // Active animation
-            SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(6), AnimationType.ONETIME);
+            SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(4), AnimationType.ONETIME);
 
             IAnimation anim = new ZoomAnimation(0.1f, 1, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             sequence.AddAnimation(0, anim);
 
-            anim = new ZoomAnimation(1, 0.1f, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
-            sequence.AddAnimation(5, anim);
+            //anim = new ZoomAnimation(1, 0.1f, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            //sequence.AddAnimation(5, anim);
 
-            anim = new RotationAnimation(0, 300, Time.FromSeconds(6), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            anim = new RotationAnimation(0, 360, Time.FromSeconds(6), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             sequence.AddAnimation(0.01f, anim);
 
             this.animationsList.Add(sequence);
@@ -49,9 +62,26 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.PlayAnimation(0);
         }
 
+        public void ContinueStarEffect()
+        {
+            IAnimation anim = new RotationAnimation(this.Rotation, this.Rotation + 360, Time.FromSeconds(6), AnimationType.LOOP, InterpolationMethod.LINEAR);
+
+            this.PlayAnimation(anim);
+        }
+
         public void HideStarEffect()
         {
             this.IsActive = false;
+
+            SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(1), AnimationType.ONETIME);
+
+            IAnimation anim = new ZoomAnimation(1, 0.1f, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            sequence.AddAnimation(0, anim);
+
+            anim = new RotationAnimation(this.Rotation, this.Rotation + 60, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            sequence.AddAnimation(0.01f, anim);
+
+            this.PlayAnimation(sequence);
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

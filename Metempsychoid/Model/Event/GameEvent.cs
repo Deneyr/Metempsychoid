@@ -56,6 +56,7 @@ namespace Metempsychoid.Model.Event
         FOCUS_CARD_BOARD,
         PICK_CARD,
         SOCKET_CARD,
+        NEXT_BEHAVIOR,
         MOVE_CARD_OVERBOARD
     }
 }

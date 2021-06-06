@@ -223,7 +223,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         {
             if (this.IsAnimationRunning() == false)
             {
-                this.InitializeEndState();
+                this.InitializePendingState();
             }
         }
 
@@ -242,6 +242,14 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.DecoratorState = CardDecoratorState.FINISHED;
         }
 
+        private void InitializePendingState()
+        {
+            this.starEffect2D.ContinueStarEffect();
+            this.beamsEffect2D.ContinueBeamsEffect();
+
+            this.DecoratorState = CardDecoratorState.PENDING;
+        }
+
         public override void UpdateGraphics(Time deltaTime)
         {
             base.UpdateGraphics(deltaTime);
@@ -253,6 +261,9 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
                     break;
                 case CardDecoratorState.MIDDLE:
                     this.UpdateMiddleState();
+                    break;
+                case CardDecoratorState.PENDING:
+
                     break;
                 case CardDecoratorState.END:
                     this.UpdateEndState();
@@ -283,6 +294,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         {
             START,
             MIDDLE,
+            PENDING,
             END,
             FINISHED
         }

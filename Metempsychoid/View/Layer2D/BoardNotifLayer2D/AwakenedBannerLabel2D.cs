@@ -59,20 +59,20 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             this.UpdateTextOfParagraph(0, "awakened_label");
 
-            SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(4), AnimationType.ONETIME);
+            SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(5), AnimationType.ONETIME);
 
             IAnimation anim = new ColorAnimation(new Color(0, 0, 0, 0), new Color(0, 0, 0, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             sequence.AddAnimation(0, anim);
             this.animationsList.Add(sequence);
 
-            anim = new ZoomAnimation(0.1f, 1, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
-            sequence.AddAnimation(0.01f, anim);
+            anim = new ZoomAnimation(0f, 1, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
+            sequence.AddAnimation(1f, anim);
 
             anim = new ZoomAnimation(1f, 10, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
-            sequence.AddAnimation(2, anim);
+            sequence.AddAnimation(3, anim);
 
             anim = new ColorAnimation(new Color(0, 0, 0, 255), new Color(0, 0, 0, 0), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.LINEAR);
-            sequence.AddAnimation(3.01f, anim);
+            sequence.AddAnimation(4f, anim);
             this.animationsList.Add(sequence);
 
             this.IsActive = false;
@@ -82,7 +82,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         {
             this.IsActive = true;
 
-            this.Zoom = 0.1f;
+            this.Zoom = 0f;
 
             this.PlayAnimation(0);
         }

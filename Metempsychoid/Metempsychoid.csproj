@@ -170,6 +170,8 @@
     <Compile Include="View\Layer2D\BoardNotifLayer2D\BoardNotifLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\BoardNotifLayer2D\CardEntityDecorator2D.cs" />
     <Compile Include="View\Layer2D\BoardNotifLayer2D\CardEntityDecorator2DFactory.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\EffectBanner2D.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\EffectLabel2D.cs" />
     <Compile Include="View\Layer2D\BoardNotifLayer2D\StarEffect2D.cs" />
     <Compile Include="View\Layer2D\BoardPlayerLayer2D\ScoreLabel2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\TitleBannerTextToken2D.cs" />

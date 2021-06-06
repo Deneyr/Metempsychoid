@@ -321,106 +321,84 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer; // world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
             BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+            BoardNotifLayer boardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
 
-            if (this.CheckMoveCardOverboardEvent(world, boardPlayerLayer, out CardEntity cardToMove, out string detailsMove))
+            if (boardNotifLayer.CurrentNotifBehavior != null)
             {
-                Vector2f startPosition = GetPositionFrom(detailsMove);
-                boardGameLayer.MoveCardOverBoard(cardToMove, startPosition);
-            }
-
-            if (this.CheckFocusCardHandEvent(world, boardPlayerLayer, out CardEntity cardHandFocused, out string detailsHandFocused))
-            {
-                //if (boardGameLayer.CardEntityPicked == null)
-                //{
-                    boardPlayerLayer.CardEntityFocused = cardHandFocused;
-
-                    boardGameLayer.CardEntityFocused = null;
-                //}
-            }
-
-
-            if (this.CheckFocusCardBoardEvent(world, null, out CardEntity cardBoardFocused, out string detailsBoardFocused))
-            {
-                if (/*boardGameLayer.CardEntityPicked == null && */boardPlayerLayer.CardEntityFocused == null)
-                {
-                    boardGameLayer.CardEntityFocused = cardBoardFocused;
-                }
-            }
-
-            bool isThereSocketCardEvent = this.CheckSocketCardEvent(world, null, out StarEntity starEntity);
-            if (isThereSocketCardEvent)
-            {
-                if (starEntity != null)
-                {
-                    boardGameLayer.SocketCard(starEntity);
-                }
+                boardNotifLayer.ForwardGameEventsToBehavior(this.pendingGameEvents);
             }
             else
             {
-                bool IsTherePickCardEvent = this.CheckPickCardEvent(world, boardPlayerLayer, out CardEntity cardPicked, out string detailsPicked);
-                bool IsThereUnpickCardEvent = this.CheckUnPickCardEvent(world, boardPlayerLayer, out CardEntity cardUnpicked, out string detailsUnpicked);
 
-                if (boardGameLayer.CardEntityPicked == null)
+                if (this.CheckMoveCardOverboardEvent(world, boardPlayerLayer, out CardEntity cardToMove, out string detailsMove))
                 {
-                    if (IsTherePickCardEvent)
+                    Vector2f startPosition = GetPositionFrom(detailsMove);
+                    boardGameLayer.MoveCardOverBoard(cardToMove, startPosition);
+                }
+
+                if (this.CheckFocusCardHandEvent(world, boardPlayerLayer, out CardEntity cardHandFocused, out string detailsHandFocused))
+                {
+                    //if (boardGameLayer.CardEntityPicked == null)
+                    //{
+                    boardPlayerLayer.CardEntityFocused = cardHandFocused;
+
+                    boardGameLayer.CardEntityFocused = null;
+                    //}
+                }
+
+
+                if (this.CheckFocusCardBoardEvent(world, null, out CardEntity cardBoardFocused, out string detailsBoardFocused))
+                {
+                    if (/*boardGameLayer.CardEntityPicked == null && */boardPlayerLayer.CardEntityFocused == null)
                     {
-                        this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                        boardGameLayer.CardEntityFocused = cardBoardFocused;
+                    }
+                }
+
+                bool isThereSocketCardEvent = this.CheckSocketCardEvent(world, null, out StarEntity starEntity);
+                if (isThereSocketCardEvent)
+                {
+                    if (starEntity != null)
+                    {
+                        boardGameLayer.SocketCard(starEntity);
                     }
                 }
                 else
                 {
-                    if (IsThereUnpickCardEvent)
-                    {
-                        this.UnpickCard(boardPlayerLayer, boardGameLayer, detailsUnpicked);
-                    }
+                    bool IsTherePickCardEvent = this.CheckPickCardEvent(world, boardPlayerLayer, out CardEntity cardPicked, out string detailsPicked);
+                    bool IsThereUnpickCardEvent = this.CheckUnPickCardEvent(world, boardPlayerLayer, out CardEntity cardUnpicked, out string detailsUnpicked);
 
-                    if (IsTherePickCardEvent)
+                    if (boardGameLayer.CardEntityPicked == null)
                     {
-                        this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                        if (IsTherePickCardEvent)
+                        {
+                            this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                        }
+                    }
+                    else
+                    {
+                        if (IsThereUnpickCardEvent)
+                        {
+                            this.UnpickCard(boardPlayerLayer, boardGameLayer, detailsUnpicked);
+                        }
+
+                        if (IsTherePickCardEvent)
+                        {
+                            this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                        }
                     }
                 }
-            }
 
-            //if (this.CheckPickCardEvent(world, boardPlayerLayer, out CardEntity cardPicked, out string detailsPicked))
-            //{
-            //    if (cardPicked != null)
-            //    {
-            //        if (boardGameLayer.CardEntityPicked == null)
-            //        {
-            //            if (boardPlayerLayer.PickCard(cardPicked))
-            //            {
-            //                boardGameLayer.PickCard(cardPicked.Card);
-            //            }
-            //            else
-            //            {
-            //                boardGameLayer.PickCard(cardPicked);
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (boardGameLayer.CardEntityPicked != null)
-            //        {
-            //            Card.Card cardToUnpick = boardGameLayer.CardEntityPicked.Card;
-            //            Vector2f startPosition = GetPositionFrom(detailsPicked);
-
-            //            if (boardGameLayer.UnPickCard())
-            //            {
-            //                boardPlayerLayer.UnpickCard(cardToUnpick, startPosition);
-            //            }
-            //        }
-            //    }
-            //}
-
-            if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN, boardPlayerLayer))
-            {
-                boardPlayerLayer.CardEntityFocused = null;
-                boardGameLayer.CardEntityFocused = null;
-
-                if (boardGameLayer.CardEntityPicked == null
-                    && boardGameLayer.PendingActions.Count == 0)
+                if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN, boardPlayerLayer))
                 {
-                    this.InitializeEndTurnPhase(world);
+                    boardPlayerLayer.CardEntityFocused = null;
+                    boardGameLayer.CardEntityFocused = null;
+
+                    if (boardGameLayer.CardEntityPicked == null
+                        && boardGameLayer.PendingActions.Count == 0)
+                    {
+                        this.InitializeEndTurnPhase(world);
+                    }
                 }
             }
         }

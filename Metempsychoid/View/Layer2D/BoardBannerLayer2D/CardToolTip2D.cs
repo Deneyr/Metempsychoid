@@ -117,7 +117,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.UpdateTextOfParagraph(0, card.NameIdLoc);
 
             this.UpdateTextOfParagraph(1, card.PoemIdLoc);
-            this.LaunchTextOfParagraphScrolling(1, 20);
+            this.LaunchTextOfParagraphScrolling(1, 100);
         }
 
         public void HideToolTip()

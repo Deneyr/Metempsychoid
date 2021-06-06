@@ -10,7 +10,8 @@ namespace Metempsychoid.View.Card2D
 {
     public class CardLabelTextToken2D : TextToken2D
     {
-        public CardLabelTextToken2D(string text) : base(text)
+        public CardLabelTextToken2D(string text, Color fillColor) 
+            : base(text, fillColor)
         {
         }
 

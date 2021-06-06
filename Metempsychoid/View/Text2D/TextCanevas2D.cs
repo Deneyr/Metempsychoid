@@ -165,11 +165,11 @@ namespace Metempsychoid.View.Text2D
             textParagraphFactory.CreateTextTokensIn(this.textParagraph2Ds[index], id, parameters);
         }
 
-        public void CreateTextOfParagraph(int index, string text, string tokenType)
+        public void CreateTextOfParagraph(int index, string text, string tokenType, Color fillColor)
         {
             List<TextToken2D> textTokens = new List<TextToken2D>();
 
-            textParagraphFactory.AppendTextTokens(textTokens, text, tokenType);
+            textParagraphFactory.AppendTextTokens(textTokens, text, tokenType, fillColor);
 
             this.textParagraph2Ds[index].UpdateTextTokens(textTokens);
         }
