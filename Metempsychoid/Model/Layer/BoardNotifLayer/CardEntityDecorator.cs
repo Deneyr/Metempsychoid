@@ -12,6 +12,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
 {
     public class CardEntityDecorator : CardEntity
     {
+        private int valueBeforeAwakened;
+
         public CardEntity CardEntityDecorated
         {
             get;
@@ -42,13 +44,13 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
             }
         }
 
-        //public override Vector2f PositionInNotifBoard
-        //{
-        //    get
-        //    {
-        //        return this.CardEntityDecorated.PositionInNotifBoard;
-        //    }
-        //}
+        public override int CardValue
+        {
+            get
+            {
+                return this.valueBeforeAwakened;
+            }
+        }
 
         public ALayer CardDecoratedParentLayer
         {
@@ -70,11 +72,22 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
             }
         }
 
+        public CardEntityDecorator(EntityLayer.EntityLayer entityLayer, CardEntity cardEntity, int valueBeforeAwakened) : base(entityLayer)
+        {
+            this.CardEntityDecorated = cardEntity;
+
+            this.valueBeforeAwakened = valueBeforeAwakened;
+
+            this.CardEntityDecorated.PropertyChanged += this.OnAwakenPropertyChanged;
+        }
+
         public CardEntityDecorator(EntityLayer.EntityLayer entityLayer, CardEntity cardEntity) : base(entityLayer)
         {
             this.CardEntityDecorated = cardEntity;
 
             this.CardEntityDecorated.PropertyChanged += this.OnAwakenPropertyChanged;
+
+            this.valueBeforeAwakened = cardEntity.CardValue;
         }
 
         private void OnAwakenPropertyChanged(string propertyName)

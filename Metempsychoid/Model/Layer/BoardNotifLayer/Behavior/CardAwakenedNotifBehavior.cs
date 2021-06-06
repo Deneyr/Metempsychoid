@@ -16,10 +16,18 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             private set;
         }
 
-        public CardAwakenedNotifBehavior(TestLevel level, CardEntity cardEntityAwakened):
+        public int ValueBeforeAwakened
+        {
+            get;
+            private set;
+        }
+
+        public CardAwakenedNotifBehavior(TestLevel level, CardEntity cardEntityAwakened) :
             base(level)
         {
             this.CardEntityAwakened = cardEntityAwakened;
+
+            this.ValueBeforeAwakened = cardEntityAwakened.CardValue;
         }
 
         public override void EndNotif(World world)
@@ -29,7 +37,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public override void StartNotif(World world)
         {
-            this.level.BoardNotifLayer.NotifyCardAwakened(this.CardEntityAwakened);
+            this.level.BoardNotifLayer.NotifyCardAwakened(this.CardEntityAwakened, this.ValueBeforeAwakened);
         }
 
         public override bool UpdateNotif(World world)

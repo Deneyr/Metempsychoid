@@ -115,9 +115,9 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
             this.UpdateCardsHandPosition();
         }
 
-        public void NotifyCardAwakened(CardEntity cardToNotify)
+        public void NotifyCardAwakened(CardEntity cardToNotify, int valueBeforeAwakened)
         {
-            CardEntityDecorator cardEntity = new CardEntityDecorator(this, cardToNotify);
+            CardEntityDecorator cardEntity = new CardEntityDecorator(this, cardToNotify, valueBeforeAwakened);
 
             this.AddEntityToLayer(cardEntity);
 

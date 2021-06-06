@@ -70,6 +70,22 @@ namespace Metempsychoid.Model.Card
             }
         }
 
+        public virtual int CardValue
+        {
+            get
+            {
+                return this.Card.Value;
+            }
+        }
+
+        public virtual int CardValueModifier
+        {
+            get
+            {
+                return this.Card.ValueModifier;
+            }
+        }
+
         public CardEntity(EntityLayer entityLayer, Card card, bool isFliped) : base(entityLayer)
         {
             this.Card = card;

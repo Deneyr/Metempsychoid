@@ -288,7 +288,7 @@ namespace Metempsychoid.View.Card2D
             this.factory = factory as CardEntity2DFactory;
 
             this.cardHalo = new CardHalo2D(factory, layer2D, this);
-            this.cardLabel = new CardLabel2D(layer2D, entity.Card.Value);
+            this.cardLabel = new CardLabel2D(layer2D, entity.CardValue);
 
             this.ObjectSprite.Texture = factory.GetTextureByIndex(1);
 

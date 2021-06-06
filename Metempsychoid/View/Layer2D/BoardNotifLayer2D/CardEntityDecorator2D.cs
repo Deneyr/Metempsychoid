@@ -122,8 +122,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             this.initialPosition = entity.CardDecoratedPosition;
 
-            this.cardValue = base.CardValue;
-            this.cardValueModifier = base.CardValueModifier;
+            this.cardValue = entity.Card.Value;
+            this.cardValueModifier = entity.Card.ValueModifier;
 
             //IAnimation animation = new ColorAnimation(new Color(255, 255, 255, 0), new Color(255, 255, 255, 255), Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             ////sequence.AddAnimation(0, animation);
@@ -187,7 +187,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             this.IsAwakened = true;
 
-            base.CardValue = this.cardValue + this.cardValueModifier;
+            base.CardValue = this.cardValue;
             base.CardValueModifier = this.cardValueModifier;
 
             this.starEffect2D.DisplayStarEffect();
