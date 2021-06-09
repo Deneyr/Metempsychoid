@@ -103,6 +103,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.CreateTextParagraph2D(new Vector2f(0, 10), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 20);
             this.CreateTextParagraph2D(new Vector2f(0, 60), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
+            this.CreateTextParagraph2D(new Vector2f(0, 150), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
             this.IsActive = false;
         }
 
@@ -115,9 +116,11 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.IsActive = true;
             this.UpdateTextOfParagraph(0, card.NameIdLoc);
-
             this.UpdateTextOfParagraph(1, card.PoemIdLoc);
+            this.UpdateTextOfParagraph(2, card.EffectIdLoc);
+
             this.LaunchTextOfParagraphScrolling(1, 100);
+            this.LaunchTextOfParagraphScrolling(2, 100);
         }
 
         public void HideToolTip()

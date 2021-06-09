@@ -32,6 +32,12 @@ namespace Metempsychoid.Model.Node.TestWorld
             private set;
         }
 
+        public BoardGameLayer BoardGameLayer
+        {
+            get;
+            private set;
+        }
+
         public int TurnIndex
         {
             get;
@@ -87,6 +93,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.BoardplayersList.Add(world.LoadedLayers["opponentLayer"] as BoardPlayerLayer);
 
             this.BoardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
+            this.BoardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
 
             this.TurnIndex = -1;
 
@@ -332,8 +339,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
                 if (this.CheckMoveCardOverboardEvent(world, boardPlayerLayer, out CardEntity cardToMove, out string detailsMove))
                 {
-                    Vector2f startPosition = GetPositionFrom(detailsMove);
-                    boardGameLayer.MoveCardOverBoard(cardToMove, startPosition);
+                    this.MoveCardOverBoard(detailsMove, cardToMove);
                 }
 
                 if (this.CheckFocusCardHandEvent(world, boardPlayerLayer, out CardEntity cardHandFocused, out string detailsHandFocused))
@@ -372,19 +378,19 @@ namespace Metempsychoid.Model.Node.TestWorld
                     {
                         if (IsTherePickCardEvent)
                         {
-                            this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                            this.PickCard(boardPlayerLayer, cardPicked);
                         }
                     }
                     else
                     {
                         if (IsThereUnpickCardEvent)
                         {
-                            this.UnpickCard(boardPlayerLayer, boardGameLayer, detailsUnpicked);
+                            this.UnpickCard(boardPlayerLayer, detailsUnpicked);
                         }
 
                         if (IsTherePickCardEvent)
                         {
-                            this.PickCard(boardPlayerLayer, boardGameLayer, cardPicked);
+                            this.PickCard(boardPlayerLayer, cardPicked);
                         }
                     }
                 }
@@ -403,36 +409,39 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
-        private void PickCard(BoardPlayerLayer boardPlayerLayer, BoardGameLayer boardGameLayer, CardEntity cardPicked)
+        public void PickCard(BoardPlayerLayer boardPlayerLayer, CardEntity cardPicked)
         {
-            //boardGameLayer.CardEntityFocused = cardPicked;
-            //boardPlayerLayer.CardEntityFocused = cardPicked;
-
-            if (boardGameLayer.CardEntityPicked == null)
+            if (this.BoardGameLayer.CardEntityPicked == null)
             {
                 if (boardPlayerLayer.PickCard(cardPicked))
                 {
-                    boardGameLayer.PickCard(cardPicked.Card);
+                    this.BoardGameLayer.PickCard(cardPicked.Card);
                 }
                 else
                 {
-                    boardGameLayer.PickCard(cardPicked);
+                    this.BoardGameLayer.PickCard(cardPicked);
                 }
             }
         }
 
-        private void UnpickCard(BoardPlayerLayer boardPlayerLayer, BoardGameLayer boardGameLayer, string detailUnpicked)
+        public void UnpickCard(BoardPlayerLayer boardPlayerLayer, string detailUnpicked)
         {
-            if (boardGameLayer.CardEntityPicked != null)
+            if (this.BoardGameLayer.CardEntityPicked != null)
             {
-                Card.Card cardToUnpick = boardGameLayer.CardEntityPicked.Card;
+                Card.Card cardToUnpick = this.BoardGameLayer.CardEntityPicked.Card;
                 Vector2f startPosition = GetPositionFrom(detailUnpicked);
 
-                if (boardGameLayer.UnPickCard())
+                if (this.BoardGameLayer.UnPickCard() && boardPlayerLayer != null)
                 {
                     boardPlayerLayer.UnpickCard(cardToUnpick, startPosition);
                 }
             }
+        }
+
+        public void MoveCardOverBoard(string detailsMove, CardEntity cardToMove)
+        {
+            Vector2f startPosition = GetPositionFrom(detailsMove);
+            this.BoardGameLayer.MoveCardOverBoard(cardToMove, startPosition);
         }
 
         public void AddCardToNotifBoard(World world, CardEntity cardEntityToAdd)

@@ -21,11 +21,17 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         private Player.Player playerTurn;
 
-        //public Dictionary<Card.Card, CardEntity> DeactivatedCardEntities
-        //{
-        //    get;
-        //    private set;
-        //}
+        public List<StarEntity> BehaviorSourceStarEntities
+        {
+            get;
+            private set;
+        }
+
+        public List<StarEntity> BehaviorTargetStarEntities
+        {
+            get;
+            private set;
+        }
 
         public Dictionary<string, HashSet<CardEntity>> NameToOnBoardCardEntities
         {
@@ -125,6 +131,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public event Action<CardEntity> CardFocused;
 
+        public event Action<List<StarEntity>> SourceStarEntitiesSet;
+        public event Action<List<StarEntity>> TargetStarEntitiesSet;
+
         public BoardGameLayer()
         {
             this.StarSystem = new HashSet<StarEntity>();
@@ -138,6 +147,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.CardsOffBoard = new List<CardEntity>();
             this.PendingActions = new List<IBoardGameAction>();
             this.NameToOnBoardCardEntities = new Dictionary<string, HashSet<CardEntity>>();
+
+            this.BehaviorSourceStarEntities = null;
+            this.BehaviorTargetStarEntities = null;
 
             this.TypesInChunk.Add(typeof(StarEntity));
             this.TypesInChunk.Add(typeof(StarLinkEntity));
@@ -214,6 +226,25 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 this.StarToLinks[starLinkEntity.StarTo].Remove(starLinkEntity);
             }
+        }
+
+        public void SetBehaviorSourceStarEntities(List<StarEntity> sourceStarEntities)
+        {
+            this.UnPickCard();
+
+            this.CardEntityFocused = null;
+
+            this.BehaviorTargetStarEntities = null;
+            this.BehaviorSourceStarEntities = new List<StarEntity>(sourceStarEntities);
+
+            this.SourceStarEntitiesSet?.Invoke(this.BehaviorSourceStarEntities);
+        }
+
+        public void SetBehaviorTargetStarEntities(List<StarEntity> sourceStarEntities)
+        {
+            this.BehaviorTargetStarEntities = new List<StarEntity>(sourceStarEntities);
+
+            this.TargetStarEntitiesSet?.Invoke(this.BehaviorTargetStarEntities);
         }
 
         public bool PickCard(Card.Card card)
@@ -407,7 +438,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                     {
                         TestLevel ownerLevel = this.ownerLevelNode as TestLevel;
 
-                        ownerLevel.BoardNotifLayer.NotifBehaviorsStack.Push(new CardAwakenedNotifBehavior(ownerLevel, cardEntity));
+                        //ownerLevel.BoardNotifLayer.NotifBehaviorsStack.Push(new CardAwakenedNotifBehavior(ownerLevel, cardEntity));
+                        ownerLevel.BoardNotifLayer.NotifBehaviorsStack.Push(new CardMovedNotifBehavior(ownerLevel, this.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList(), this.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList()));
                     }
                     break;
             }

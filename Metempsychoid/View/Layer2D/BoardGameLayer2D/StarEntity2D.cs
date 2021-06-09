@@ -19,7 +19,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         RenderStates render;
 
-        //Clock timer = new Clock();
+        protected bool isFocused;
+
+        protected bool isActive;
 
         public StarState StarEntityState
         {
@@ -27,7 +29,22 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             private set;
         }
 
-        protected bool isActive;
+        public bool IsFocused
+        {
+            get
+            {
+                return this.isFocused;
+            }
+            set
+            {
+                if (this.isFocused != value)
+                {
+                    this.isFocused = value;
+
+                    render.Shader.SetUniform("isFocused", this.isFocused);
+                }
+            }
+        }
 
         public override bool IsActive
         {
@@ -74,6 +91,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
             render = new RenderStates(BlendMode.Alpha);
             render.Shader = shader;
+
+            this.isFocused = true;
+            this.IsFocused = false;
 
             this.SetCardSocketed(entity.CardSocketed);
 
@@ -232,23 +252,33 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         public void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
         {
-            if (parentLayer is BoardGameLayer2D
-                && parentLayer.FocusedGraphicEntity2D == this)
+            if (parentLayer is BoardGameLayer2D)
             {
-                BoardGameLayer2D boardGameLayer2D = (parentLayer as BoardGameLayer2D);
-                if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
+                if (parentLayer.FocusedGraphicEntity2D == this)
                 {
-                    if (boardGameLayer2D.CardPicked != null)
+                    if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
                     {
-                        StarEntity starEntity = parentLayer.GetEntityFromEntity2D(this) as StarEntity;
-                        CardEntity cardEntity = parentLayer.GetEntityFromEntity2D(boardGameLayer2D.CardPicked) as CardEntity;
+                        BoardGameLayer2D boardGameLayer2D = (parentLayer as BoardGameLayer2D);
 
-                        if (starEntity.CanSocketCard(cardEntity))
+                        if (boardGameLayer2D.CardPicked != null)
                         {
-                            boardGameLayer2D.SendEventToWorld(Model.Event.EventType.SOCKET_CARD, starEntity, null);
+                            StarEntity starEntity = parentLayer.GetEntityFromEntity2D(this) as StarEntity;
+                            CardEntity cardEntity = parentLayer.GetEntityFromEntity2D(boardGameLayer2D.CardPicked) as CardEntity;
+
+                            if (starEntity.CanSocketCard(cardEntity))
+                            {
+                                boardGameLayer2D.SendEventToWorld(Model.Event.EventType.SOCKET_CARD, starEntity, null);
+                            }
+                        }
+                        else if (boardGameLayer2D.SourceCardEntities2D.Count > 0)
+                        {
+                            StarEntity starEntity = parentLayer.GetEntityFromEntity2D(this) as StarEntity;
+
+                            boardGameLayer2D.SendEventToWorld(Model.Event.EventType.PICK_CARD, starEntity.CardSocketed, null);
                         }
                     }
                 }
+                
             }
         }
 

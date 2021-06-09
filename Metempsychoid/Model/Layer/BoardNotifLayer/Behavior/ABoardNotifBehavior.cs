@@ -33,7 +33,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public virtual void HandleGameEvents(Dictionary<EventType, List<GameEvent>> gameEvents)
         {
-            if(gameEvents.TryGetValue(EventType.NEXT_BEHAVIOR, out List<GameEvent> gameEventsNextBehavior) && gameEventsNextBehavior.Count > 0)
+            if(gameEvents.TryGetValue(EventType.NEXT_BEHAVIOR, out List<GameEvent> gameEventsNextBehavior) && gameEventsNextBehavior.Any())
             {
                 this.IsActive = false;
             }

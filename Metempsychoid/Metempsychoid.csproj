@@ -102,6 +102,7 @@
     <Compile Include="Model\Layer\BoardBannerLayer\BoardBannerLayer.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ABoardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\CardAwakenedNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\CardMovedNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\IBoardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\BoardNotifLayer.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\CardEntityDecorator.cs" />
