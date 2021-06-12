@@ -72,7 +72,7 @@ namespace Metempsychoid.View.Card2D
                     }
                     else
                     {
-                        this.SpriteColor = Color.Yellow;
+                        this.SpriteColor = Color.White;
                     }
                 }
             }

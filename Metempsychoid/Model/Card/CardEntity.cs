@@ -107,6 +107,8 @@ namespace Metempsychoid.Model.Card
         {
             if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
             {
+                entityLayer.NotifyObjectBeforePropertyChanged(this, propertyName);
+
                 if (propertyName == "IsAwakened")
                 {
                     if (this.Card.IsAwakened)

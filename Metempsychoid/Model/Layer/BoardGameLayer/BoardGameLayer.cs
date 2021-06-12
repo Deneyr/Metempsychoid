@@ -19,6 +19,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
     {
         private CardEntity cardFocused;
 
+        private CardEntity cardPicked;
+
         private Player.Player playerTurn;
 
         public List<StarEntity> BehaviorSourceStarEntities
@@ -94,8 +96,19 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public CardEntity CardEntityPicked
         {
-            get;
-            private set;
+            get
+            {
+                return this.cardPicked;
+            }
+            set
+            {
+                if (value != this.cardPicked)
+                {
+                    this.cardPicked = value;
+
+                    this.NotifyCardPicked(this.cardPicked);
+                }
+            }
         }
 
         public CardEntity CardEntityFocused
@@ -104,7 +117,6 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 return this.cardFocused;
             }
-
             set
             {
                 if (value != this.cardFocused)
@@ -126,9 +138,6 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
         }
 
         public event Action<CardEntity> CardPicked;
-
-        public event Action<CardEntity> CardUnpicked;
-
         public event Action<CardEntity> CardFocused;
 
         public event Action<List<StarEntity>> SourceStarEntitiesSet;
@@ -253,11 +262,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 CardEntity cardEntity = new CardEntity(this, card, true);
 
-                this.CardEntityPicked = cardEntity;
-
                 this.AddEntityToLayer(cardEntity);
 
-                this.NotifyCardPicked(cardEntity);
+                this.CardEntityPicked = cardEntity;
 
                 return true;
             }
@@ -270,8 +277,6 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 this.CardEntityPicked = cardEntity;
 
-                this.NotifyCardPicked(cardEntity);
-
                 return true;
             }
             return false;
@@ -282,7 +287,6 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             if (this.CardEntityPicked != null)
             {
                 CardEntity cardEntity = this.CardEntityPicked;
-                this.CardEntityPicked = null;
 
                 if (cardEntity.ParentStar != null)
                 {
@@ -291,7 +295,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
                     cardEntity.PlayAnimation(positionAnimation);
 
-                    this.NotifyCardUnpicked(cardEntity);
+                    this.CardEntityPicked = null;
 
                     return false;
                 }
@@ -299,13 +303,24 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 {
                     this.RemoveEntityFromLayer(cardEntity);
 
-                    this.NotifyCardUnpicked(cardEntity);
+                    this.CardEntityPicked = null;
 
                     return true;
                 }
             }
 
             return false;
+        }
+
+        public void MoveCard(StarEntity starEntity)
+        {
+            if(this.CardEntityPicked.ParentStar != starEntity)
+            {
+                this.PendingActions.Add(new UnsocketCardAction(this.CardEntityPicked, false));
+                this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity));
+
+                this.CardEntityPicked = null;
+            }
         }
 
         public void SocketCard(StarEntity starEntity) //, Vector2f positionInNotifBoard)
@@ -316,9 +331,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
                 this.NbCardsAbleToBeSocketed--;
 
-                this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity)); //, positionInNotifBoard));
-
-                this.CardEntityPicked = null;
+                this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity));
             }
         }
 
@@ -428,7 +441,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
-        public override void NotifyObjectPropertyChanged(AEntity obj, string propertyName)
+        public override void NotifyObjectBeforePropertyChanged(AEntity obj, string propertyName)
         {
             switch (propertyName)
             {
@@ -436,15 +449,27 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                     CardEntity cardEntity = obj as CardEntity;
                     if (cardEntity.Card.IsAwakened)
                     {
-                        TestLevel ownerLevel = this.ownerLevelNode as TestLevel;
-
-                        //ownerLevel.BoardNotifLayer.NotifBehaviorsStack.Push(new CardAwakenedNotifBehavior(ownerLevel, cardEntity));
-                        ownerLevel.BoardNotifLayer.NotifBehaviorsStack.Push(new CardMovedNotifBehavior(ownerLevel, this.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList(), this.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList()));
+                        this.RegisterNotifBehavior(new CardAwakenedNotifBehavior(cardEntity));
+                    }
+                    else
+                    {
+                        this.UnregisterNotifBehavior(cardEntity);
                     }
                     break;
             }
+        }
 
-            base.NotifyObjectPropertyChanged(obj, propertyName);
+        public void RegisterNotifBehavior(IBoardNotifBehavior notifBehavior)
+        {
+            TestLevel ownerLevel = this.ownerLevelNode as TestLevel;
+            notifBehavior.NodeLevel = ownerLevel;
+            ownerLevel.BoardNotifLayer.NotifBehaviorsList.Add(notifBehavior);
+        }
+
+        public void UnregisterNotifBehavior(CardEntity behaviorOwner)
+        {
+            TestLevel ownerLevel = this.ownerLevelNode as TestLevel;
+            ownerLevel.BoardNotifLayer.NotifBehaviorsList.RemoveAll(pElem => pElem.OwnerCardEntity == behaviorOwner);
         }
 
         public void MoveCardOverBoard(CardEntity cardEntity, Vector2f positionToMove)
@@ -458,7 +483,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
-            this.CardEntityPicked = null;
+            this.cardPicked = null;
+            this.cardFocused = null;
+
             this.playerTurn = null;
 
             this.StarSystem.Clear();
@@ -588,20 +615,11 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 star10
             }, -2, false);
             this.AddStarDomain(domain2);
-
-
-            // Cards
-            this.cardFocused = null;
         }
 
         protected void NotifyCardPicked(CardEntity cardPicked)
         {
             this.CardPicked?.Invoke(cardPicked);
-        }
-
-        protected void NotifyCardUnpicked(CardEntity cardUnpicked)
-        {
-            this.CardUnpicked?.Invoke(cardUnpicked);
         }
 
         protected void NotifyCardFocused(CardEntity cardFocused)

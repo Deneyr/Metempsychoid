@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 {
-    public class CardMovedNotifBehavior : ABoardNotifBehavior
+    public class CardMovedNotifBehavior : ACardNotifBehavior
     {
         private MoveState state;
 
@@ -31,34 +31,22 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                     switch (this.state)
                     {
                         case MoveState.PICK_CARD:
-                            this.level.BoardGameLayer.SetBehaviorSourceStarEntities(this.FromStarEntities);
+                            this.NodeLevel.BoardGameLayer.SetBehaviorSourceStarEntities(this.FromStarEntities);
                             break;
                         case MoveState.SOCKET_CARD:
-                            this.level.BoardGameLayer.SetBehaviorTargetStarEntities(this.ToStarEntities);
+                            this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(this.ToStarEntities);
                             break;
                     }
                 }
             }
         }
 
-        public List<StarEntity> FromStarEntities
+        public CardMovedNotifBehavior(ICardBehaviorOwner cardBehaviorOwner, CardEntity ownerCardEntity)//List<StarEntity> fromStarEntities, List<StarEntity> toStarEntities) :
+            : base(cardBehaviorOwner, ownerCardEntity)
         {
-            get;
-            private set;
-        }
+            this.FromStarEntities = new List<StarEntity>();
 
-        public List<StarEntity> ToStarEntities
-        {
-            get;
-            private set;
-        }
-
-        public CardMovedNotifBehavior(TestLevel level, List<StarEntity> fromStarEntities, List<StarEntity> toStarEntities) :
-            base(level)
-        {
-            this.FromStarEntities = fromStarEntities;
-
-            this.ToStarEntities = toStarEntities;
+            this.ToStarEntities = new List<StarEntity>();
 
             this.state = MoveState.VOID;
         }
@@ -70,6 +58,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public override void StartNotif(World world)
         {
+            this.CardBehaviorOwner.OnBehaviorStart(this);
+
             this.State = MoveState.PICK_CARD;
         }
 
@@ -102,13 +92,13 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
         {
             if (gameEvents.TryGetValue(EventType.PICK_CARD, out List<GameEvent> gameEventsPicks))
             {
-                GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == level.BoardGameLayer);
+                GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
 
                 if (boardGameEvent != null)
                 {
-                    level.BoardGameLayer.PickCard(boardGameEvent.Entity as CardEntity);
+                    NodeLevel.BoardGameLayer.PickCard(boardGameEvent.Entity as CardEntity);
 
-                    if (level.BoardGameLayer.CardEntityPicked != null)
+                    if (NodeLevel.BoardGameLayer.CardEntityPicked != null)
                     {
                         this.State = MoveState.SOCKET_CARD;
                     }
@@ -118,19 +108,40 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         private void HandleSocketState(Dictionary<EventType, List<GameEvent>> gameEvents)
         {
+            if (gameEvents.TryGetValue(EventType.SOCKET_CARD, out List<GameEvent> gameEventsSocket))
+            {
+                GameEvent socketEvent = gameEventsSocket.FirstOrDefault();
+
+                if (socketEvent != null)
+                {
+                    StarEntity starEntity = socketEvent.Entity as StarEntity;
+
+                    if (this.ToStarEntities.Contains(starEntity))
+                    {
+                        this.NodeLevel.BoardGameLayer.MoveCard(starEntity);
+
+                        this.CardBehaviorOwner.OnBehaviorEnd(this);
+                        if (this.IsActive)
+                        {
+                            this.State = MoveState.PICK_CARD;
+                        }
+                    }
+                }
+            }
+
             if (gameEvents.TryGetValue(EventType.MOVE_CARD_OVERBOARD, out List<GameEvent> gameEventsOverboard))
             {
-                GameEvent boardGameEvent = gameEventsOverboard.FirstOrDefault(pElem => pElem.Layer == level.BoardGameLayer);
+                GameEvent boardGameEvent = gameEventsOverboard.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
 
                 if (boardGameEvent != null)
                 {
-                    this.level.MoveCardOverBoard(boardGameEvent.Details, (boardGameEvent.Entity as CardEntity));
+                    this.NodeLevel.MoveCardOverBoard(boardGameEvent.Details, (boardGameEvent.Entity as CardEntity));
                 }
             }
 
             if (gameEvents.TryGetValue(EventType.PICK_CARD, out List<GameEvent> gameEventsPicks))
             {
-                GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == level.BoardGameLayer);
+                GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
 
                 if (boardGameEvent == null)
                 {
@@ -138,9 +149,9 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
                     if (boardGameEvent != null && boardGameEvent.Entity == null)
                     {
-                        this.level.UnpickCard(null, boardGameEvent.Details);
+                        this.NodeLevel.UnpickCard(null, boardGameEvent.Details);
 
-                        if (level.BoardGameLayer.CardEntityPicked == null)
+                        if (NodeLevel.BoardGameLayer.CardEntityPicked == null)
                         {
                             this.State = MoveState.PICK_CARD;
                         }

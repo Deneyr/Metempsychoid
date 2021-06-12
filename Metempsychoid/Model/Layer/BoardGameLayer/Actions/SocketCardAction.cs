@@ -51,6 +51,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
             {
                 layerToPerform.NameToOnBoardCardEntities.Add(this.CardToSocket.Card.Name, new HashSet<CardEntity>() { this.CardToSocket });
             }
+
+            layerToPerform.CardEntityPicked = null;
         }
     }
 }

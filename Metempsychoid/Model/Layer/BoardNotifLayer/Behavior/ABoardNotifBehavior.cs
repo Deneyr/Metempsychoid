@@ -1,4 +1,5 @@
-﻿using Metempsychoid.Model.Event;
+﻿using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Event;
 using Metempsychoid.Model.Node.TestWorld;
 using System;
 using System.Collections.Generic;
@@ -10,17 +11,27 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 {
     public abstract class ABoardNotifBehavior : IBoardNotifBehavior
     {
-        protected TestLevel level;
-
-        public bool IsActive
+        public CardEntity OwnerCardEntity
         {
             get;
             private set;
         }
 
-        public ABoardNotifBehavior(TestLevel level)
+        public TestLevel NodeLevel
         {
-            this.level = level;
+            get;
+            set;
+        }
+
+        public virtual bool IsActive
+        {
+            get;
+            protected set;
+        }
+
+        public ABoardNotifBehavior(CardEntity ownerCardEntity)
+        {
+            this.OwnerCardEntity = ownerCardEntity;
 
             this.IsActive = true;
         }

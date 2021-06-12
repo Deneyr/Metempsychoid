@@ -78,19 +78,19 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
 
             this.valueBeforeAwakened = valueBeforeAwakened;
 
-            this.CardEntityDecorated.PropertyChanged += this.OnAwakenPropertyChanged;
+            this.CardEntityDecorated.PropertyChanged += this.OnPropertyChanged;
         }
 
         public CardEntityDecorator(EntityLayer.EntityLayer entityLayer, CardEntity cardEntity) : base(entityLayer)
         {
             this.CardEntityDecorated = cardEntity;
 
-            this.CardEntityDecorated.PropertyChanged += this.OnAwakenPropertyChanged;
+            this.CardEntityDecorated.PropertyChanged += this.OnPropertyChanged;
 
             this.valueBeforeAwakened = cardEntity.CardValue;
         }
 
-        private void OnAwakenPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName)
         {
             if (this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
             {
@@ -100,7 +100,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
 
         public override void Dispose()
         {
-            this.CardEntityDecorated.PropertyChanged -= this.OnAwakenPropertyChanged;
+            this.CardEntityDecorated.PropertyChanged -= this.OnPropertyChanged;
 
             base.Dispose();
         }

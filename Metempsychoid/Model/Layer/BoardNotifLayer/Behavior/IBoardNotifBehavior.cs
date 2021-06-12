@@ -1,4 +1,6 @@
-﻿using Metempsychoid.Model.Event;
+﻿using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Event;
+using Metempsychoid.Model.Node.TestWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,17 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 {
     public interface IBoardNotifBehavior
     {
+        CardEntity OwnerCardEntity
+        {
+            get;
+        }
+
+        TestLevel NodeLevel
+        {
+            get;
+            set;
+        }
+
         void StartNotif(World world);
 
         bool UpdateNotif(World world);

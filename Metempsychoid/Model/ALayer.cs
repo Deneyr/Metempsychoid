@@ -187,6 +187,11 @@ namespace Metempsychoid.Model
             this.RotationChanged?.Invoke(rotation);
         }
 
+        public virtual void NotifyObjectBeforePropertyChanged(AEntity obj, string propertyName)
+        {
+            
+        }
+
         public virtual void NotifyObjectPropertyChanged(AEntity obj, string propertyName)
         {
             if (this.raiseEntityEvents)

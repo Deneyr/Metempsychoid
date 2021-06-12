@@ -34,7 +34,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
         //    private set;
         //}
 
-        public Stack<IBoardNotifBehavior> NotifBehaviorsStack
+        public List<IBoardNotifBehavior> NotifBehaviorsList
         {
             get;
             private set;
@@ -97,7 +97,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
 
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
-            this.NotifBehaviorsStack = new Stack<IBoardNotifBehavior>();
+            this.NotifBehaviorsList = new List<IBoardNotifBehavior>();
 
             this.CurrentNotifBehavior = null;
 
@@ -141,9 +141,10 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
                 }
             }
 
-            if (this.NotifBehaviorsStack.Count > 0 && this.CurrentNotifBehavior == null)
+            if (this.NotifBehaviorsList.Count > 0 && this.CurrentNotifBehavior == null)
             {
-                this.CurrentNotifBehavior = this.NotifBehaviorsStack.Pop();
+                this.CurrentNotifBehavior = this.NotifBehaviorsList.First();
+                this.NotifBehaviorsList.RemoveAt(0);
 
                 this.CurrentNotifBehavior.StartNotif(world);
             }

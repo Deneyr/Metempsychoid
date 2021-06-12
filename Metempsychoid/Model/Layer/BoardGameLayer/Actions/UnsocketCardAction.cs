@@ -27,11 +27,11 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
             private set;
         }
 
-        public UnsocketCardAction(CardEntity cardEntity, StarEntity starEntity, bool offBoard)
+        public UnsocketCardAction(CardEntity cardEntity, bool offBoard)
         {
             this.CardToUnsocket = cardEntity;
 
-            this.OwnerStar = starEntity;
+            this.OwnerStar = cardEntity.ParentStar;
 
             this.OffBoard = offBoard;
         }
@@ -40,6 +40,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
         {
             //this.CardToSocket.Card.CardUnsocketed(layerToPerform, this.OwnerStar);
             this.OwnerStar.CardSocketed = null;
+
+            layerToPerform.CardEntityPicked = null;
 
             if (this.OffBoard)
             {

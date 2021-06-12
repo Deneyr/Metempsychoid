@@ -187,7 +187,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.linksFocused = new List<StarLinkEntity2D>();
 
             layer.CardPicked += this.OnCardPicked;
-            layer.CardUnpicked += this.OnCardUnPicked;
+            //layer.CardUnpicked += this.OnCardUnPicked;
 
             layer.CardFocused += this.OnCardFocused;
 
@@ -256,14 +256,16 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         private void OnCardPicked(CardEntity obj)
         {
-            this.CardPicked = this.objectToObject2Ds[obj] as CardEntity2D;
-            this.CardPicked.Priority = 3001;
-        }
-
-        private void OnCardUnPicked(CardEntity obj)
-        {
-            this.CardPicked.Priority = 3000;
-            this.CardPicked = null;
+            if (obj != null)
+            {
+                this.CardPicked = this.objectToObject2Ds[obj] as CardEntity2D;
+                this.CardPicked.Priority = 3001;
+            }
+            else
+            {
+                this.CardPicked.Priority = 1000;
+                this.CardPicked = null;
+            }
         }
 
         private void OnCardFocused(CardEntity obj)
@@ -323,9 +325,6 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     StarEntity2D starEntity2D = this.objectToObject2Ds[obj] as StarEntity2D;
 
                     starEntity2D.SetCardSocketed(starEntity.CardSocketed);
-
-                    this.CardPicked.Priority = 1000;
-                    this.CardPicked = null;
                     break;
                 case "IsSocketed":
                     (this.objectToObject2Ds[obj] as CardEntity2D).IsSocketed = ((obj as CardEntity).ParentStar != null);
@@ -604,7 +603,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         public override void Dispose()
         {
             (this.parentLayer as BoardGameLayer).CardPicked -= this.OnCardPicked;
-            (this.parentLayer as BoardGameLayer).CardUnpicked -= this.OnCardUnPicked;
+            //(this.parentLayer as BoardGameLayer).CardUnpicked -= this.OnCardUnPicked;
 
             (this.parentLayer as BoardGameLayer).CardFocused -= this.OnCardFocused;
 
