@@ -244,7 +244,14 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.CardEntityFocused = null;
 
             this.BehaviorTargetStarEntities = null;
-            this.BehaviorSourceStarEntities = new List<StarEntity>(sourceStarEntities);
+            if (sourceStarEntities != null && sourceStarEntities.Count > 0)
+            {
+                this.BehaviorSourceStarEntities = new List<StarEntity>(sourceStarEntities);
+            }
+            else
+            {
+                this.BehaviorSourceStarEntities = null;
+            }
 
             this.SourceStarEntitiesSet?.Invoke(this.BehaviorSourceStarEntities);
         }

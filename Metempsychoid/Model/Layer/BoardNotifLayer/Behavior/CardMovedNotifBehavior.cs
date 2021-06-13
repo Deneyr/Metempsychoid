@@ -15,6 +15,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
     {
         private MoveState state;
 
+        protected bool mustNotifyBehaviorEnd;
+
         public MoveState State
         {
             get
@@ -53,11 +55,16 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public override void EndNotif(World world)
         {
+            this.FromStarEntities.Clear();
+            this.ToStarEntities.Clear();
 
+            this.NodeLevel.BoardGameLayer.SetBehaviorSourceStarEntities(this.FromStarEntities);
         }
 
         public override void StartNotif(World world)
         {
+            this.mustNotifyBehaviorEnd = false;
+
             this.CardBehaviorOwner.OnBehaviorStart(this);
 
             this.State = MoveState.PICK_CARD;
@@ -65,9 +72,15 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public override bool UpdateNotif(World world)
         {
-            if (this.IsActive)
+            if (this.mustNotifyBehaviorEnd)
             {
+                this.CardBehaviorOwner.OnBehaviorEnd(this);
+                this.mustNotifyBehaviorEnd = false;
 
+                if (this.IsActive)
+                {
+                    this.State = MoveState.PICK_CARD;
+                }
             }
 
             return this.IsActive;
@@ -100,6 +113,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
                     if (NodeLevel.BoardGameLayer.CardEntityPicked != null)
                     {
+                        this.CardBehaviorOwner.OnBehaviorCardPicked(this);
+
                         this.State = MoveState.SOCKET_CARD;
                     }
                 }
@@ -118,13 +133,11 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
                     if (this.ToStarEntities.Contains(starEntity))
                     {
-                        this.NodeLevel.BoardGameLayer.MoveCard(starEntity);
+                        this.ExecuteBehavior(starEntity);
 
-                        this.CardBehaviorOwner.OnBehaviorEnd(this);
-                        if (this.IsActive)
-                        {
-                            this.State = MoveState.PICK_CARD;
-                        }
+                        this.NbBehaviorUse--;
+                        this.mustNotifyBehaviorEnd = true;
+                        return;
                     }
                 }
             }
@@ -158,6 +171,11 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                     }
                 }
             }
+        }
+
+        protected virtual void ExecuteBehavior(StarEntity starEntity)
+        {
+            this.NodeLevel.BoardGameLayer.MoveCard(starEntity);
         }
 
         public enum MoveState

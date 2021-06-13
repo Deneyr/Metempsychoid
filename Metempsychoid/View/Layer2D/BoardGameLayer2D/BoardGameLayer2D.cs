@@ -199,16 +199,32 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         {
             this.TargetStarEntities2D = null;
 
-            this.sourceStarEntities = obj.Select(pElem => this.objectToObject2Ds[pElem] as StarEntity2D).ToList();
-            this.SourceCardEntities2D = obj.Select(pElem => this.objectToObject2Ds[pElem.CardSocketed] as CardEntity2D).ToList();
+            if (obj != null && obj.Count > 0)
+            {
+                this.sourceStarEntities = obj.Select(pElem => this.objectToObject2Ds[pElem] as StarEntity2D).ToList();
+                this.SourceCardEntities2D = obj.Select(pElem => this.objectToObject2Ds[pElem.CardSocketed] as CardEntity2D).ToList();
+            }
+            else
+            {
+                this.sourceStarEntities = null;
+                this.SourceCardEntities2D = null;
+            }
         }
 
         private void OnTargetStarEntitiesSet(List<StarEntity> obj)
         {
             this.SourceCardEntities2D = null;
 
-            this.sourceStarEntities = obj.Select(pElem => this.objectToObject2Ds[pElem] as StarEntity2D).ToList();
-            this.TargetStarEntities2D = this.sourceStarEntities;
+            if (obj != null && obj.Count > 0)
+            {
+                this.sourceStarEntities = obj.Select(pElem => this.objectToObject2Ds[pElem] as StarEntity2D).ToList();
+                this.TargetStarEntities2D = this.sourceStarEntities;
+            }
+            else
+            {
+                this.sourceStarEntities = null;
+                this.TargetStarEntities2D = null;
+            }
         }
 
         public override void InitializeLayer(IObject2DFactory factory)

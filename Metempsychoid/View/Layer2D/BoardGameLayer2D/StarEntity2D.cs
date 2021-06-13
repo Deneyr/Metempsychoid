@@ -270,7 +270,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                                 boardGameLayer2D.SendEventToWorld(Model.Event.EventType.SOCKET_CARD, starEntity, null);
                             }
                         }
-                        else if (boardGameLayer2D.SourceCardEntities2D.Count > 0)
+                        else if (boardGameLayer2D.SourceCardEntities2D != null && boardGameLayer2D.SourceCardEntities2D.Count > 0)
                         {
                             StarEntity starEntity = parentLayer.GetEntityFromEntity2D(this) as StarEntity;
 

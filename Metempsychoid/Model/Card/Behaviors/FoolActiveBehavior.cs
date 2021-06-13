@@ -35,15 +35,24 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public void OnBehaviorStart(ACardNotifBehavior behavior)
         {
-            //behavior.NbBehaviorUse = 3;
+            behavior.NbBehaviorUse = 3;
 
             behavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
-            behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
+            //behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
         }
 
         public void OnBehaviorEnd(ACardNotifBehavior behavior)
         {
-            behavior.NbBehaviorUse--;
+            behavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
+            //behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
+        }
+
+        public void OnBehaviorCardPicked(ACardNotifBehavior behavior)
+        {
+            StarEntity starEntityConcerned = behavior.NodeLevel.BoardGameLayer.CardEntityPicked.ParentStar;
+            HashSet<StarLinkEntity> starLinks = behavior.NodeLevel.BoardGameLayer.StarToLinks[starEntityConcerned];
+
+            behavior.ToStarEntities = starLinks.Select(pElem => pElem.StarFrom == starEntityConcerned ? pElem.StarTo : pElem.StarFrom).Where(pElem => pElem.CardSocketed == null).ToList();
         }
     }
 }

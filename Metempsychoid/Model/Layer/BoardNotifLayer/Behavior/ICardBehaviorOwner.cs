@@ -11,6 +11,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
     {
         void OnBehaviorStart(ACardNotifBehavior behavior);
 
+        void OnBehaviorCardPicked(ACardNotifBehavior behavior);
+
         void OnBehaviorEnd(ACardNotifBehavior behavior);
     }
 }
