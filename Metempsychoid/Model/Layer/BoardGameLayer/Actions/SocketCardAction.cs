@@ -1,4 +1,6 @@
-﻿using Metempsychoid.Model.Card;
+﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Animation;
+using Metempsychoid.Model.Card;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -22,26 +24,36 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
             private set;
         }
 
-        //public Vector2f PositionInNotifBoard
-        //{
-        //    get;
-        //    private set;
-        //}
+        public bool MustTravel
+        {
+            get;
+            private set;
+        }
 
-        public SocketCardAction(CardEntity cardEntity, StarEntity starEntity) //, Vector2f positionInNotifBoard)
+        public SocketCardAction(CardEntity cardEntity, StarEntity starEntity, bool mustTravel = false)
         {
             this.CardToSocket = cardEntity;
 
             this.OwnerStar = starEntity;
+
+            this.MustTravel = mustTravel;
 
             //this.PositionInNotifBoard = positionInNotifBoard;
         }
 
         public void ExecuteAction(BoardGameLayer layerToPerform)
         {
-            //this.CardToSocket.Card.CardSocketed(layerToPerform, this.OwnerStar);
+            Vector2f previousPosition = this.CardToSocket.Position;
+
             this.OwnerStar.CardSocketed = this.CardToSocket;
-            //this.OwnerStar.CardSocketed.PositionInNotifBoard = this.PositionInNotifBoard;
+
+            if (this.MustTravel)
+            {
+                this.CardToSocket.Position = previousPosition;
+                IAnimation positionAnimation = new PositionAnimation(previousPosition, this.OwnerStar.Position, Time.FromSeconds(1f), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
+
+                this.CardToSocket.PlayAnimation(positionAnimation);
+            }
 
             if (layerToPerform.NameToOnBoardCardEntities.TryGetValue(this.CardToSocket.Card.Name, out HashSet<CardEntity> cardEntities))
             {

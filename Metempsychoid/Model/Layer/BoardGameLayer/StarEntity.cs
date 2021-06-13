@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
     public class StarEntity: AEntity
     {
         private CardEntity cardSocketed;
+
+        public ACardNotifBehavior CurrentNotifBehavior
+        {
+            get;
+            set;
+        }
 
         public string Name
         {
@@ -52,10 +59,17 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
         public StarEntity(BoardGameLayer boardGameLayer) : base(boardGameLayer)
         {
             this.cardSocketed = null;
+
+            this.CurrentNotifBehavior = null;
         }
 
         public bool CanSocketCard(CardEntity cardToSocket)
         {
+            if(this.CurrentNotifBehavior != null)
+            {
+                return this.CurrentNotifBehavior.CanSocketCardOn(this, cardToSocket);
+            }
+
             bool canSocketOnBoard = true;
 
             if(this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
@@ -64,12 +78,6 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
 
             return this.IsActive && this.CardSocketed == null && canSocketOnBoard;
-        }
-
-        public bool CanMoveCard(CardEntity cardToMove)
-        {
-            return this.IsActive 
-                && (this.CardSocketed == null || this.CardSocketed.Card.Player != cardToMove.Card.Player);
         }
 
         public override void Dispose()

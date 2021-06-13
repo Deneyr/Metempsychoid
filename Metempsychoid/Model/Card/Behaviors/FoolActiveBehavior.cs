@@ -20,7 +20,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            layer.RegisterNotifBehavior(new CardMovedNotifBehavior(this, starEntity.CardSocketed));
+            layer.RegisterNotifBehavior(new CardSwapNotifBehavior(this, starEntity.CardSocketed));
         }
 
         public void OnUnawakened(BoardGameLayer layer, StarEntity starEntity)
@@ -38,21 +38,23 @@ namespace Metempsychoid.Model.Card.Behaviors
             behavior.NbBehaviorUse = 3;
 
             behavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
-            //behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
+            //behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
         }
 
         public void OnBehaviorEnd(ACardNotifBehavior behavior)
         {
             behavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
-            //behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
+            //behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
         }
 
         public void OnBehaviorCardPicked(ACardNotifBehavior behavior)
         {
-            StarEntity starEntityConcerned = behavior.NodeLevel.BoardGameLayer.CardEntityPicked.ParentStar;
-            HashSet<StarLinkEntity> starLinks = behavior.NodeLevel.BoardGameLayer.StarToLinks[starEntityConcerned];
+            CardEntity cardEntity = behavior.NodeLevel.BoardGameLayer.CardEntityPicked;
+            //HashSet<StarLinkEntity> starLinks = behavior.NodeLevel.BoardGameLayer.StarToLinks[starEntityConcerned];
 
-            behavior.ToStarEntities = starLinks.Select(pElem => pElem.StarFrom == starEntityConcerned ? pElem.StarTo : pElem.StarFrom).Where(pElem => pElem.CardSocketed == null).ToList();
+            behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed != cardEntity).ToList();
+
+            //behavior.ToStarEntities = starLinks.Select(pElem => pElem.StarFrom == starEntityConcerned ? pElem.StarTo : pElem.StarFrom).Where(pElem => pElem.CardSocketed == null).ToList();
         }
     }
 }

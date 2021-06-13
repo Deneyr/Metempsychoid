@@ -43,6 +43,27 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             }
         }
 
+        public override void EndNotif(World world)
+        {
+            foreach (StarEntity starEntity in this.NodeLevel.BoardGameLayer.StarSystem)
+            {
+                starEntity.CurrentNotifBehavior = null;
+            }
+        }
+
+        public override void StartNotif(World world)
+        {
+            foreach(StarEntity starEntity in this.NodeLevel.BoardGameLayer.StarSystem)
+            {
+                starEntity.CurrentNotifBehavior = this;
+            }
+        }
+
+        public virtual bool CanSocketCardOn(StarEntity starEntity, CardEntity cardToSocket)
+        {
+            return this.ToStarEntities.Contains(starEntity);
+        }
+
         public ACardNotifBehavior(ICardBehaviorOwner cardBehaviorOwner, CardEntity ownerCardEntity) 
             : base(ownerCardEntity)
         {

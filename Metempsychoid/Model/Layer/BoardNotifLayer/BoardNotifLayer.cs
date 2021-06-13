@@ -20,9 +20,9 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
 
         private CardEntityDecorator cardFocused;
 
-        public event Action<CardEntityDecorator> CardPicked;
+        //public event Action<CardEntityDecorator> CardPicked;
 
-        public event Action<CardEntityDecorator> CardUnpicked;
+        //public event Action<CardEntityDecorator> CardUnpicked;
 
         public event Action<CardEntityDecorator> CardFocused;
 

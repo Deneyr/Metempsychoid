@@ -297,8 +297,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
                 if (cardEntity.ParentStar != null)
                 {
-                    IAnimation positionAnimation;
-                    positionAnimation = new PositionAnimation(cardEntity.Position, cardEntity.ParentStar.Position, Time.FromSeconds(1f), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
+                    IAnimation positionAnimation = new PositionAnimation(cardEntity.Position, cardEntity.ParentStar.Position, Time.FromSeconds(1f), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
 
                     cardEntity.PlayAnimation(positionAnimation);
 
@@ -325,6 +324,23 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 this.PendingActions.Add(new UnsocketCardAction(this.CardEntityPicked, false));
                 this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity));
+
+                this.CardEntityPicked = null;
+            }
+        }
+
+        public void SwapCard(StarEntity starEntity)
+        {
+            if (this.CardEntityPicked.ParentStar != starEntity)
+            {
+                CardEntity toCardEntity = starEntity.CardSocketed;
+                StarEntity toStarEntity = this.CardEntityPicked.ParentStar;
+
+                this.PendingActions.Add(new UnsocketCardAction(this.CardEntityPicked, false));
+                this.PendingActions.Add(new UnsocketCardAction(toCardEntity, false));
+
+                this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity));
+                this.PendingActions.Add(new SocketCardAction(toCardEntity, toStarEntity, true));
 
                 this.CardEntityPicked = null;
             }
