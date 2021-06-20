@@ -23,7 +23,8 @@ namespace Metempsychoid.View.Animation
         {
             if (parentObject is IObject2D)
             {
-                (parentObject as IObject2D).Zoom = (float) (Math.Cos(this.currentValue) * this.length);
+                IObject2D object2D = parentObject as IObject2D;
+                object2D.CustomZoom = new Vector2f((float) (Math.Cos(this.currentValue) * this.length), object2D.CustomZoom.Y);
             }
         }
     }

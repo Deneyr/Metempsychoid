@@ -58,21 +58,21 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
-        public override float Zoom
+        public override Vector2f CustomZoom
         {
             get
             {
-                return base.Zoom;
+                return base.CustomZoom;
             }
             set
             {
-                if (base.Zoom != value)
+                if (base.CustomZoom != value)
                 {
-                    base.Zoom = value;
+                    base.CustomZoom = value;
 
                     foreach (TextParagraph2D textParagraph2D in this.textParagraph2Ds)
                     {
-                        textParagraph2D.Zoom = base.Zoom;
+                        textParagraph2D.CustomZoom = base.CustomZoom;
                     }
                 }
             }

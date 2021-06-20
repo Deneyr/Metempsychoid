@@ -16,6 +16,8 @@ namespace Metempsychoid.Model.Card
 
         private bool isFliped;
 
+        private bool isSelected;
+
         public event Action<string> PropertyChanged;
 
         public virtual Card Card
@@ -70,6 +72,26 @@ namespace Metempsychoid.Model.Card
             }
         }
 
+        public virtual bool IsSelected
+        {
+            get
+            {
+                return this.isSelected;
+            }
+            set
+            {
+                if (this.isSelected != value)
+                {
+                    this.isSelected = value;
+
+                    if (this.parentLayer.TryGetTarget(out EntityLayer entityLayer))
+                    {
+                        entityLayer.NotifyObjectPropertyChanged(this, "IsSelected");
+                    }
+                }
+            }
+        }
+
         public virtual int CardValue
         {
             get
@@ -95,6 +117,8 @@ namespace Metempsychoid.Model.Card
             this.parentStar = null;
 
             this.isFliped = isFliped;
+
+            this.isSelected = false;
 
             //this.PositionInNotifBoard = new Vector2f(0, 0);
         }

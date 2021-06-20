@@ -358,15 +358,15 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
-        public void GetCardFromBoard(CardEntity cardEntity)
-        {
-            //cardEntity.IsActive = false;
-        }
+        //public void GetCardFromBoard(CardEntity cardEntity)
+        //{
+        //    //cardEntity.IsActive = false;
+        //}
 
-        public void ReturnCardToBoard(CardEntityDecorator cardToReturn)
-        {
-            cardToReturn.CardEntityDecorated.IsActive = true;
-        }
+        //public void ReturnCardToBoard(CardEntityDecorator cardToReturn)
+        //{
+        //    cardToReturn.CardEntityDecorated.IsActive = true;
+        //}
 
         //private void MoveCard(StarEntity fromStarEntity, StarEntity toStarEntity, CardEntity cardConcerned)
         //{

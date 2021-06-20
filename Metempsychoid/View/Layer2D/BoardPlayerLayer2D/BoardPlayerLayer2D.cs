@@ -35,7 +35,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         //private CardEntity2D cardPicked;
 
         //private CardToolTip cardToolTip;
-        private EndTurnButton2D endTurnButton;
+        //private EndTurnButton2D endTurnButton;
         private ScoreLabel2D scoreLabel;
 
         private int maxPriority;
@@ -83,12 +83,12 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                                 this.cardDrew = null;
                                 break;
                             case TurnPhase.MAIN:
-                                this.endTurnButton.ActiveButton();
+                                //this.endTurnButton.ActiveButton();
                                 break;
                             case TurnPhase.END_TURN:
                                 this.FocusedGraphicEntity2D = null;
 
-                                this.endTurnButton.DeactiveButton();
+                                //this.endTurnButton.DeactiveButton();
                                 break;
                         }
                     }
@@ -105,10 +105,10 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 {
                     base.DefaultViewSize = value;
 
-                    IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+                    //IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
                     IntRect scoreLabelCanevas = this.scoreLabel.Canevas;
 
-                    this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
+                    //this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
                     this.scoreLabel.Position = new Vector2f(scoreLabelCanevas.Width / 2 - this.DefaultViewSize.X / 2 + 20, this.OffsetCard * 3/4);
 
                     foreach (KeyValuePair<AEntity, AEntity2D> pairEntity in this.objectToObject2Ds)
@@ -171,7 +171,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             layer.CardUnpicked += OnCardUnpicked;
 
             //this.cardToolTip = new CardToolTip(this);
-            this.endTurnButton = new EndTurnButton2D(this);
+            //this.endTurnButton = new EndTurnButton2D(this);
             this.scoreLabel = new ScoreLabel2D(this);
 
             this.cardsDeck = new List<CardEntity2D>();
@@ -289,7 +289,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         public override void UpdateGraphics(Time deltaTime)
         {
             //this.cardToolTip.UpdateGraphics(deltaTime);
-            this.endTurnButton.UpdateGraphics(deltaTime);
+            //this.endTurnButton.UpdateGraphics(deltaTime);
 
             this.UpdateCardsToDraw(deltaTime);
 
@@ -312,7 +312,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.hittableEntities2D.Clear();
 
             this.hittableEntities2D.AddRange(this.cardsHand);
-            this.hittableEntities2D.Add(this.endTurnButton);
+            //this.hittableEntities2D.Add(this.endTurnButton);
 
             return this.hittableEntities2D;
         }
@@ -468,7 +468,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             window.SetView(this.view);
 
             //this.cardToolTip.DrawIn(window, deltaTime);
-            this.endTurnButton.DrawIn(window, deltaTime);
+            //this.endTurnButton.DrawIn(window, deltaTime);
             this.scoreLabel.DrawIn(window, deltaTime);
 
             window.SetView(defaultView);

@@ -39,16 +39,16 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
         }
 
-        public override float Zoom
+        public override Vector2f CustomZoom
         {
             get
             {
-                return base.Zoom;
+                return base.CustomZoom;
             }
 
             set
             {
-                this.textParagraph2Ds[1].Zoom = value;
+                this.textParagraph2Ds[1].CustomZoom = value;
             }
         }
         //private int score;
@@ -110,51 +110,6 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 }
             }
         }
-
-        //public override IntRect Canevas
-        //{
-        //    get
-        //    {
-        //        return new IntRect(0, 0, (int)this.bannerShape.Size.X, (int)this.bannerShape.Size.Y);
-        //    }
-
-        //    set
-        //    {
-        //        Vector2f newSize = new Vector2f(value.Width, value.Height);
-
-        //        if (this.bannerShape.Size != newSize)
-        //        {
-        //            this.bannerShape.Size = newSize;
-
-        //            IntRect newCanevas = this.Canevas;
-        //            foreach (TextParagraph2D textParagraph2D in this.textParagraph2Ds)
-        //            {
-        //                textParagraph2D.Canevas = newCanevas;
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public override float Zoom
-        //{
-        //    get
-        //    {
-        //        return base.Zoom;
-        //    }
-
-        //    set
-        //    {
-        //        this.textParagraph2Ds[2].Zoom = value;
-        //    }
-        //}
-
-        //public override FloatRect Bounds
-        //{
-        //    get
-        //    {
-        //        return this.bannerShape.GetGlobalBounds();
-        //    }
-        //}
 
         public ScoreDomainLabel2D(ALayer2D parentLayer, string playerName1, string playerName2)
             : base(parentLayer)

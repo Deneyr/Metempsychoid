@@ -391,6 +391,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 case "IsFliped":
                     (this.objectToObject2Ds[obj] as CardEntity2D).IsFliped = (obj as CardEntity).IsFliped;
                     break;
+                case "IsSelected":
+                    (this.objectToObject2Ds[obj] as CardEntity2D).IsSelected = (obj as CardEntity).IsSelected;
+                    break;
                 case "IsAwakened":
                     CardEntity2D cardAwakened = this.objectToObject2Ds[obj] as CardEntity2D;
                     cardAwakened.IsAwakened = (obj as CardEntity).Card.IsAwakened;

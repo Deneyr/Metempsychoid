@@ -18,6 +18,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private bool isActive;
 
+        private Dictionary<string, int> idLabelToIndex;
+
         public override bool IsActive
         {
             get
@@ -90,8 +92,18 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.Position = new Vector2f(0, 0);
 
+            this.idLabelToIndex = new Dictionary<string, int>();
             this.CreateTextParagraph2D(new Vector2f(0, 25), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
             this.UpdateTextOfParagraph(0, "end_turn");
+
+            this.CreateTextParagraph2D(new Vector2f(0, 25), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
+            this.UpdateTextOfParagraph(1, "pass_action");
+
+            this.CreateTextParagraph2D(new Vector2f(0, 25), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
+            this.UpdateTextOfParagraph(2, "destroy_action");
+
+            this.idLabelToIndex.Add("DeleteCardNotifBehavior." + Enum.GetName(typeof(Model.Layer.BoardNotifLayer.Behavior.DeleteCardNotifBehavior.DeleteState), Model.Layer.BoardNotifLayer.Behavior.DeleteCardNotifBehavior.DeleteState.PICK_CARD), 1);
+            this.idLabelToIndex.Add("DeleteCardNotifBehavior." + Enum.GetName(typeof(Model.Layer.BoardNotifLayer.Behavior.DeleteCardNotifBehavior.DeleteState), Model.Layer.BoardNotifLayer.Behavior.DeleteCardNotifBehavior.DeleteState.CAN_DELETE_CARD), 2);
 
             IAnimation showAnimation = new ColorAnimation(new Color(0, 0, 0, 0), new Color(0, 0, 0, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(showAnimation);
@@ -107,6 +119,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             IAnimation hideAnimation = new ColorAnimation(new Color(0, 0, 0, 255), new Color(0, 0, 0, 0), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(hideAnimation);
 
+            IAnimation labelChangedAnimation = new ZoomAnimation(2, 1, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            this.animationsList.Add(labelChangedAnimation);
+
             this.IsActive = false;
         }
 
@@ -115,13 +130,28 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             return this.isActive;
         }
 
-        public void ActiveButton()
+        public void ActiveButton(int paragraphIndex)
         {
             this.SpriteColor = new Color(0, 0, 0, 0);
 
             this.IsActive = true;
 
+            this.ActiveOnlyParagraph(paragraphIndex);
+
             this.PlayAnimation(0);
+        }
+
+        public void SetParagraph(string paragraphId)
+        {
+            if (this.idLabelToIndex.ContainsKey(paragraphId))
+            {
+                this.ActiveOnlyParagraph(this.idLabelToIndex[paragraphId]);
+
+                if (this.IsAnimationRunning() == false)
+                {
+                    this.PlayAnimation(3);
+                }
+            }
         }
 
         public void DeactiveButton()
@@ -133,6 +163,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         public override void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
         {
+            this.Zoom = 1;
+
             this.PlayAnimation(1);
         }
 
@@ -150,9 +182,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             if (parentLayer.FocusedGraphicEntity2D == this)
             {
-                BoardPlayerLayer2D boardPlayerLayer2D = (parentLayer as BoardPlayerLayer2D);
+                BoardNotifLayer2D.BoardNotifLayer2D boardPlayerLayer2D = (parentLayer as BoardNotifLayer2D.BoardNotifLayer2D);
 
-                boardPlayerLayer2D.SendUnpickEvent();
+                //boardPlayerLayer2D.SendUnpickEvent();
                 boardPlayerLayer2D.GoOnTurnPhase(Model.Node.TestWorld.TurnPhase.END_TURN);
             }
 

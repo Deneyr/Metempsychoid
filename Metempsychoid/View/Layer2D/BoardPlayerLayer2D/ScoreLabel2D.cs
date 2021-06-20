@@ -90,16 +90,16 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
-        public override float Zoom
+        public override Vector2f CustomZoom
         {
             get
             {
-                return base.Zoom;
+                return base.CustomZoom;
             }
 
             set
             {
-                this.textParagraph2Ds[2].Zoom = value;
+                this.textParagraph2Ds[2].CustomZoom = value;
             }
         }
 

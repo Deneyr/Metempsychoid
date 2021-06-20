@@ -23,5 +23,10 @@ namespace Metempsychoid.View.Card2D
                 this.text2D.OutlineColor = new Color(this.text2D.OutlineColor.R, this.text2D.OutlineColor.G, this.text2D.OutlineColor.B, value.A);
             }
         }
+
+        public override TextToken2D CloneToken()
+        {
+            return new CardLabelTextToken2D(this.FullText, this.SpriteColor);
+        }
     }
 }

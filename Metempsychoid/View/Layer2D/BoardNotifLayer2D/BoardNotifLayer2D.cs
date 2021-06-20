@@ -2,8 +2,12 @@
 using Metempsychoid.Model;
 using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Layer.BoardNotifLayer;
+using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
+using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.View.Card2D;
+using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
+using Metempsychoid.View.Layer2D.BoardPlayerLayer2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -20,7 +24,43 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         private EffectBanner2D effectBanner2D;
         private EffectLabel2D effectLabel2D;
 
-        private CardEntityDecorator2D cardAwakened;
+        private CardEntityAwakenedDecorator2D cardAwakened;
+
+        private List<AEntity2D> hittableEntities2D;
+
+        private EndTurnButton2D endTurnButton;
+        private EffectBehaviorLabel2D effectBehaviorLabel2D;
+
+        private TurnPhase levelTurnPhase;
+
+        public TurnPhase LevelTurnPhase
+        {
+            get
+            {
+                return this.levelTurnPhase;
+            }
+            private set
+            {
+                if (this.levelTurnPhase != value)
+                {
+                    this.levelTurnPhase = value;
+
+                    switch (this.levelTurnPhase)
+                    {
+                        case TurnPhase.CREATE_HAND:
+                            break;
+                        case TurnPhase.MAIN:
+                            this.endTurnButton.ActiveButton(0);
+                            break;
+                        case TurnPhase.END_TURN:
+                            this.FocusedGraphicEntity2D = null;
+
+                            this.endTurnButton.DeactiveButton();
+                            break;
+                    }
+                }
+            }
+        }
 
         //private BoardGameLayer2D.BoardGameLayer2D boardGameLayer2D;
 
@@ -68,7 +108,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         //    }
         //}
 
-        public CardEntityDecorator2D CardAwakened
+        public CardEntityAwakenedDecorator2D CardAwakened
         {
             get
             {
@@ -89,17 +129,91 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             }
         }
 
+        protected override Vector2f DefaultViewSize
+        {
+            set
+            {
+                if (value != this.DefaultViewSize)
+                {
+                    base.DefaultViewSize = value;
+
+                    IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+                    this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
+
+                    IntRect effectBehaviorLabelCanvevas = this.effectBehaviorLabel2D.Canevas;
+                    this.effectBehaviorLabel2D.StartingPosition = new Vector2f(-this.DefaultViewSize.X / 2 - effectBehaviorLabelCanvevas.Width, 0);
+                }
+            }
+        }
+
         public BoardNotifLayer2D(World2D world2D, IObject2DFactory factory, BoardNotifLayer layer) :
             base(world2D, layer)
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
+
+            this.hittableEntities2D = new List<AEntity2D>();
 
             this.awakenedBannerLabel2D = new AwakenedBannerLabel2D(this);
             this.effectBanner2D = new EffectBanner2D(this);
 
             this.effectLabel2D = new EffectLabel2D(this);
 
+            this.endTurnButton = new EndTurnButton2D(this);
+            this.effectBehaviorLabel2D = new EffectBehaviorLabel2D(this);
+
             layer.CardAwakened += OnCardAwakened;
+
+            layer.NotifBehaviorStarted += OnNotifBehaviorStarted;
+            layer.NotifBehaviorPhaseChanged += OnNotifBehaviorPhaseChanged;
+            layer.NotifBehaviorUseChanged += OnNotifBehaviorUseChanged;
+            layer.NotifBehaviorEnded += OnNotifBehaviorEnded;
+        }
+
+        private void OnNotifBehaviorStarted(IBoardNotifBehavior obj)
+        {
+            if (obj.IsThereBehaviorLabel)
+            {
+                this.effectBehaviorLabel2D.ActiveLabel(obj.GetType());
+
+                if(obj is ACardNotifBehavior)
+                {
+                    this.effectBehaviorLabel2D.Label = (obj as ACardNotifBehavior).NbBehaviorUse;
+                }
+            }
+
+            if(obj.IsThereEndButton == false)
+            {
+                this.endTurnButton.DeactiveButton();
+            }
+        }
+
+        private void OnNotifBehaviorUseChanged(int obj)
+        {
+            if (this.effectBehaviorLabel2D.IsActive)
+            {
+                this.effectBehaviorLabel2D.Label = obj;
+            }
+        }
+
+        private void OnNotifBehaviorPhaseChanged(string obj)
+        {
+            if (this.endTurnButton.IsActive)
+            {
+                this.endTurnButton.SetParagraph(obj);
+            }
+        }
+
+        private void OnNotifBehaviorEnded(IBoardNotifBehavior obj)
+        {
+            if (obj.IsThereBehaviorLabel)
+            {
+                this.effectBehaviorLabel2D.DeactiveLabel();
+            }
+
+            if (this.endTurnButton.IsActive == false)
+            {
+                this.endTurnButton.ActiveButton(1);
+            }
         }
 
         public override void InitializeLayer(IObject2DFactory factory)
@@ -108,15 +222,22 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             this.cardAwakened = null;
 
+            this.LevelTurnPhase = TurnPhase.VOID;
+
             //if (this.world2D.TryGetTarget(out World2D world2D))
             //{
             //    this.boardGameLayer2D = world2D.LayersList.First(pElem => pElem is BoardGameLayer2D.BoardGameLayer2D) as BoardGameLayer2D.BoardGameLayer2D;
             //}
         }
 
-        private void OnCardAwakened(CardEntityDecorator obj)
+        protected override void OnLevelStateChanged(string obj)
         {
-            this.CardAwakened = this.objectToObject2Ds[obj] as CardEntityDecorator2D;
+            this.LevelTurnPhase = (TurnPhase)Enum.Parse(typeof(TurnPhase), obj);
+        }
+
+        private void OnCardAwakened(CardEntityAwakenedDecorator obj)
+        {
+            this.CardAwakened = this.objectToObject2Ds[obj] as CardEntityAwakenedDecorator2D;
         }
 
         public Vector2f GetPositionFrom(ALayer layerFrom, Vector2f position)
@@ -210,8 +331,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             switch (propertyName)
             {
                 case "Value":
-                    CardEntityDecorator2D cardConcerned2D = this.objectToObject2Ds[obj] as CardEntityDecorator2D;
-                    CardEntityDecorator cardConcerned = (obj as CardEntityDecorator);
+                    CardEntityAwakenedDecorator2D cardConcerned2D = this.objectToObject2Ds[obj] as CardEntityAwakenedDecorator2D;
+                    CardEntityAwakenedDecorator cardConcerned = (obj as CardEntityAwakenedDecorator);
 
                     cardConcerned2D.CardValue = cardConcerned.Card.Value;
                     cardConcerned2D.CardValueModifier = cardConcerned.Card.ValueModifier;
@@ -224,17 +345,19 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         {
             base.UpdateGraphics(deltaTime);
 
-            if(this.CardAwakened != null)
+            this.endTurnButton.UpdateGraphics(deltaTime);
+
+            if (this.CardAwakened != null)
             {
                 switch (this.CardAwakened.DecoratorState)
                 {
-                    case CardEntityDecorator2D.CardDecoratorState.PENDING:
+                    case CardEntityAwakenedDecorator2D.CardDecoratorState.PENDING:
 
                         if (this.effectBanner2D.IsActive == false)
                         {
                             this.effectBanner2D.DisplayEffectBanner();
 
-                            this.effectLabel2D.DisplayEffectLabel((this.object2DToObjects[this.CardAwakened] as CardEntityDecorator).Card.EffectIdLoc);
+                            this.effectLabel2D.DisplayEffectLabel((this.object2DToObjects[this.CardAwakened] as CardEntityAwakenedDecorator).Card.EffectIdLoc);
                         }
                         else if (this.effectBanner2D.IsAnimationRunning() == false)
                         {
@@ -245,7 +368,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
                         }
 
                         break;
-                    case CardEntityDecorator2D.CardDecoratorState.FINISHED:
+                    case CardEntityAwakenedDecorator2D.CardDecoratorState.FINISHED:
                         AEntity cardEntityDecorator = this.object2DToObjects[this.CardAwakened];
 
                         this.CardAwakened = null;
@@ -254,6 +377,43 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
                         break;
                 }
             }
+        }
+
+        public override bool OnControlActivated(Controls.ControlEventType eventType, string details)
+        {
+            base.OnControlActivated(eventType, details);
+
+            if (eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "click")
+            {
+                Vector2i mousePosition = this.MousePosition;
+
+                this.SendEventToWorld(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y);
+            }
+
+            return true;
+        }
+
+        public void GoOnTurnPhase(TurnPhase nextTurnPhase)
+        {
+            this.SendEventToWorld(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase));
+        }
+
+        public void SendUnpickEvent()
+        {
+            Vector2i mousePosition = this.MousePosition;
+
+            //mousePosition.Y -= (int)this.OffsetCard;
+
+            this.SendEventToWorld(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y);
+        }
+
+        protected override IEnumerable<AEntity2D> GetEntities2DFocusable()
+        {
+            this.hittableEntities2D.Clear();
+
+            this.hittableEntities2D.Add(this.endTurnButton);
+
+            return this.hittableEntities2D;
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
@@ -267,6 +427,9 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             this.effectBanner2D.DrawIn(window, deltaTime);
             this.effectLabel2D.DrawIn(window, deltaTime);
+
+            this.effectBehaviorLabel2D.DrawIn(window, deltaTime);
+            this.endTurnButton.DrawIn(window, deltaTime);
 
             window.SetView(defaultView);
         }
@@ -283,7 +446,11 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
                 this.effectLabel2D.Dispose();
             }
 
-            (this.parentLayer as BoardNotifLayer).CardAwakened += OnCardAwakened;
+            (this.parentLayer as BoardNotifLayer).CardAwakened -= OnCardAwakened;
+
+            (this.parentLayer as BoardNotifLayer).NotifBehaviorStarted -= OnNotifBehaviorStarted;
+            (this.parentLayer as BoardNotifLayer).NotifBehaviorPhaseChanged -= OnNotifBehaviorPhaseChanged;
+            (this.parentLayer as BoardNotifLayer).NotifBehaviorEnded -= OnNotifBehaviorEnded;
 
             base.Dispose();
         }

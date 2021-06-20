@@ -20,7 +20,7 @@ namespace Metempsychoid.View.Text2D
 
         private Color spriteColor;
 
-        private float zoom;
+        private Vector2f customZoom;
 
         private bool isActive;
 
@@ -94,17 +94,29 @@ namespace Metempsychoid.View.Text2D
         {
             get
             {
-                return this.zoom;
+                return this.CustomZoom.X;
             }
             set
             {
-                if (this.zoom != value)
+                this.CustomZoom = new Vector2f(value, value);
+            }
+        }
+
+        public override Vector2f CustomZoom
+        {
+            get
+            {
+                return this.customZoom;
+            }
+            set
+            {
+                if (this.customZoom != value)
                 {
-                    this.zoom = value;
+                    this.customZoom = value;
 
                     foreach (TextToken2D textToken2D in this.textToken2Ds)
                     {
-                        textToken2D.Zoom = this.zoom;
+                        textToken2D.CustomZoom = this.customZoom;
                     }
                 }
             }
@@ -221,6 +233,7 @@ namespace Metempsychoid.View.Text2D
             this.spriteColor = Color.White;
 
             this.characterSize = characterSize;
+            this.customZoom = new Vector2f(-1, -1);
             this.Zoom = textCanevas2D.Zoom;
         }
 
@@ -232,6 +245,7 @@ namespace Metempsychoid.View.Text2D
             {
                 textToken.CharacterSize = this.CharacterSize;
                 textToken.SpriteColor = this.SpriteColor;
+                textToken.CustomZoom = this.CustomZoom;
             }
 
             this.AlignTextTokens();

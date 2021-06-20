@@ -33,6 +33,8 @@ namespace Metempsychoid.View.Card2D
 
         protected bool isFocused;
 
+        protected bool isSelected;
+
         protected bool isFliped;
         protected CardSideState sideState;
         protected int cardIndex;
@@ -119,6 +121,31 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
+        public bool IsSelected
+        {
+            get
+            {
+                return this.isSelected;
+            }
+            set
+            {
+                if (this.isSelected != value)
+                {
+                    this.isSelected = value;
+
+                    if (this.isSelected)
+                    {
+                        this.PlayAnimation(2);
+                    }
+                    else
+                    {
+                        AObject2D.animationManager.StopAnimation(this);
+                        this.Zoom = 1;
+                    }
+                }
+            }
+        }
+
         public float RatioColor
         {
             get
@@ -191,19 +218,38 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
-        public override float Zoom
+        //public override float Zoom
+        //{
+        //    get
+        //    {
+        //        return base.Zoom;
+        //    }
+        //    set
+        //    {
+        //        if (this.Zoom != value)
+        //        {
+        //            this.ObjectSprite.Scale = new Vector2f(value, 1);
+
+        //            this.canevasSprite.Scale = new Vector2f(value, 1);
+
+        //            this.UpdateScaling();
+        //        }
+        //    }
+        //}
+
+        public override Vector2f CustomZoom
         {
             get
             {
-                return base.Zoom;
+                return base.CustomZoom;
             }
             set
             {
-                if (this.Zoom != value)
+                if (this.CustomZoom != value)
                 {
-                    this.ObjectSprite.Scale = new Vector2f(value, 1);
+                    this.ObjectSprite.Scale = value;
 
-                    this.canevasSprite.Scale = new Vector2f(value, 1);
+                    this.canevasSprite.Scale = value;
 
                     this.UpdateScaling();
                 }
@@ -308,6 +354,7 @@ namespace Metempsychoid.View.Card2D
             this.isSocketed = entity.ParentStar == null;
             this.ratioColor = -1;
             this.isFocused = true;
+            this.isSelected = !entity.IsSelected;
 
             Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\cardCanevas.frag");
 
@@ -329,6 +376,14 @@ namespace Metempsychoid.View.Card2D
             //flipAnimation.AddAnimation(0.5f, animation);
             this.animationsList.Add(animation);
 
+            SequenceAnimation sequenceAnimation = new SequenceAnimation(Time.FromSeconds(1f), AnimationType.LOOP);
+            animation = new ZoomAnimation(0.9f, 1.1f, Time.FromSeconds(0.5f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            sequenceAnimation.AddAnimation(0, animation);
+
+            animation = new ZoomAnimation(1.1f, 0.9f, Time.FromSeconds(0.5f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            sequenceAnimation.AddAnimation(0.5f, animation);
+            this.animationsList.Add(sequenceAnimation);
+
             this.Initialize(entity);
 
             this.UpdateScaling();
@@ -346,6 +401,7 @@ namespace Metempsychoid.View.Card2D
             this.cardName = entity.Card.Name;
             this.isFliped = entity.IsFliped;
             this.IsFocused = false;
+            this.IsSelected = entity.IsSelected;
 
             this.cooldownFocus = 0;
 

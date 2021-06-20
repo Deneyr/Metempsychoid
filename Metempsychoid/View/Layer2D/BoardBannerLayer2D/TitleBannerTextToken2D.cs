@@ -15,9 +15,14 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         {
             this.text2D.Font = AObject2DFactory.GetFontByName("Protector");
 
-            this.text2D.FillColor = Color.White;
+            this.text2D.FillColor = fillColor;
             this.text2D.OutlineThickness = 2;
             this.text2D.OutlineColor = Color.Black;
+        }
+
+        public override TextToken2D CloneToken()
+        {
+            return new TitleBannerTextToken2D(this.FullText, this.SpriteColor);
         }
     }
 }

@@ -69,11 +69,23 @@ namespace Metempsychoid.View
         {
             get
             {
-                return this.sprite.Scale.X;
+                return this.CustomZoom.X;
             }
             set
             {
-                this.sprite.Scale = new Vector2f(value, value);
+                this.CustomZoom = new Vector2f(value, value);
+            }
+        }
+
+        public override Vector2f CustomZoom
+        {
+            get
+            {
+                return this.sprite.Scale;
+            }
+            set
+            {
+                this.sprite.Scale = value;
             }
         }
 

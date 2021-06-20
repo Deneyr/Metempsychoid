@@ -22,6 +22,16 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             set;
         }
 
+        bool IsThereEndButton
+        {
+            get;
+        }
+
+        bool IsThereBehaviorLabel
+        {
+            get;
+        }
+
         void StartNotif(World world);
 
         bool UpdateNotif(World world);

@@ -17,6 +17,12 @@ namespace Metempsychoid.View
             set;
         }
 
+        Vector2f CustomZoom
+        {
+            get;
+            set;
+        }
+
         IntRect Canevas
         {
             get;

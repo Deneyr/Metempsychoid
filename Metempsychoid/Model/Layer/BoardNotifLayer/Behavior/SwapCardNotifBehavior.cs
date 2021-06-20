@@ -8,9 +8,9 @@ using Metempsychoid.Model.Layer.BoardGameLayer;
 
 namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 {
-    public class CardSwapNotifBehavior : CardMoveNotifBehavior
+    public class SwapCardNotifBehavior : MoveCardNotifBehavior
     {
-        public CardSwapNotifBehavior(ICardBehaviorOwner cardBehaviorOwner, CardEntity ownerCardEntity) 
+        public SwapCardNotifBehavior(ICardBehaviorOwner cardBehaviorOwner, CardEntity ownerCardEntity) 
             : base(cardBehaviorOwner, ownerCardEntity)
         {
         }

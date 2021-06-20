@@ -71,7 +71,10 @@ namespace Metempsychoid.View
 
             // Card entities
             MappingObjectModelView.Add(typeof(CardEntity), new CardEntity2DFactory());
+
             MappingObjectModelView.Add(typeof(CardEntityDecorator), new CardEntityDecorator2DFactory());
+            MappingObjectModelView.Add(typeof(CardEntityAwakenedDecorator), new CardEntityAwakenedDecorator2DFactory());
+
             MappingObjectModelView.Add(typeof(ToolTipEntity), new CardToolTip2DFactory());
 
             // Test Entity mapping

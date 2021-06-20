@@ -35,6 +35,22 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             set;
         }
 
+        public override bool IsThereBehaviorLabel
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override bool IsThereEndButton
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public override bool IsActive
         {
             get

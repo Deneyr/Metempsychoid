@@ -18,21 +18,16 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
         private static Vector2f HAND_POSITION = new Vector2f(350, 0);
         private static int HAND_CARD_SPACE = 100;
 
-        private CardEntityDecorator cardFocused;
+        private CardEntityAwakenedDecorator cardFocused;
 
-        //public event Action<CardEntityDecorator> CardPicked;
+        public event Action<CardEntityAwakenedDecorator> CardFocused;
 
-        //public event Action<CardEntityDecorator> CardUnpicked;
+        public event Action<CardEntityAwakenedDecorator> CardAwakened;
 
-        public event Action<CardEntityDecorator> CardFocused;
-
-        public event Action<CardEntityDecorator> CardAwakened;
-
-        //public CardEntityDecorator CardEntityAwakened
-        //{
-        //    get;
-        //    private set;
-        //}
+        public event Action<IBoardNotifBehavior> NotifBehaviorStarted;
+        public event Action<string> NotifBehaviorPhaseChanged;
+        public event Action<int> NotifBehaviorUseChanged;
+        public event Action<IBoardNotifBehavior> NotifBehaviorEnded;
 
         public List<IBoardNotifBehavior> NotifBehaviorsList
         {
@@ -46,7 +41,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
             private set;
         }
 
-        public CardEntityDecorator CardEntityFocused
+        public CardEntityAwakenedDecorator CardEntityFocused
         {
             get
             {
@@ -88,6 +83,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
         public BoardNotifLayer()
         {
             this.CardsHand = new List<CardEntityDecorator>();
+
+            this.TypesInChunk.Add(typeof(CardEntityDecorator));
         }
 
         public void ForwardGameEventsToBehavior(Dictionary<EventType, List<GameEvent>> gameEvents)
@@ -104,11 +101,12 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
             // this.CardAwakened = null;
         }
 
-        public void AddCardToBoard(CardEntity cardToAdd)
+        public void AddCardToBoard(CardEntity cardToAdd, Vector2f position)
         {
             CardEntityDecorator cardEntity = new CardEntityDecorator(this, cardToAdd);
-
             this.AddEntityToLayer(cardEntity);
+
+            cardEntity.Position = position;
 
             this.CardsHand.Add(cardEntity);
 
@@ -117,14 +115,14 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
 
         public void NotifyCardAwakened(CardEntity cardToNotify, int valueBeforeAwakened)
         {
-            CardEntityDecorator cardEntity = new CardEntityDecorator(this, cardToNotify, valueBeforeAwakened);
+            CardEntityAwakenedDecorator cardEntity = new CardEntityAwakenedDecorator(this, cardToNotify, valueBeforeAwakened);
 
             this.AddEntityToLayer(cardEntity);
 
             this.CardAwakened?.Invoke(cardEntity);
         }
 
-        public void RemoveCardFromBoard(CardEntityDecorator cardToRemove)
+        public void RemoveCardFromBoard(CardEntityAwakenedDecorator cardToRemove)
         {
             this.RemoveEntityFromLayer(cardToRemove);
         }
@@ -136,7 +134,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
                 if (this.CurrentNotifBehavior.UpdateNotif(world) == false)
                 {
                     this.CurrentNotifBehavior.EndNotif(world);
-
+                    this.NotifBehaviorEnded?.Invoke(this.CurrentNotifBehavior);
                     this.CurrentNotifBehavior = null;
                 }
             }
@@ -147,6 +145,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
                 this.NotifBehaviorsList.RemoveAt(0);
 
                 this.CurrentNotifBehavior.StartNotif(world);
+                this.NotifBehaviorStarted?.Invoke(this.CurrentNotifBehavior);
             }
         }
 
@@ -196,6 +195,16 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
                 i++;
 
             }
+        }
+
+        public void NotifyNotifBehaviorPhaseChanged(string newPhase)
+        {
+            this.NotifBehaviorPhaseChanged?.Invoke(newPhase);
+        }
+
+        public void NotifyNotifBehaviorUseChanged(int newUseCount)
+        {
+            this.NotifBehaviorUseChanged?.Invoke(newUseCount);
         }
     }
 }

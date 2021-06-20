@@ -1,6 +1,5 @@
 ﻿using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.Model.Layer.EntityLayer;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -12,8 +11,6 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
 {
     public class CardEntityDecorator : CardEntity
     {
-        private int valueBeforeAwakened;
-
         public CardEntity CardEntityDecorated
         {
             get;
@@ -44,14 +41,6 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
             }
         }
 
-        public override int CardValue
-        {
-            get
-            {
-                return this.valueBeforeAwakened;
-            }
-        }
-
         public ALayer CardDecoratedParentLayer
         {
             get
@@ -72,22 +61,11 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
             }
         }
 
-        public CardEntityDecorator(EntityLayer.EntityLayer entityLayer, CardEntity cardEntity, int valueBeforeAwakened) : base(entityLayer)
-        {
-            this.CardEntityDecorated = cardEntity;
-
-            this.valueBeforeAwakened = valueBeforeAwakened;
-
-            this.CardEntityDecorated.PropertyChanged += this.OnPropertyChanged;
-        }
-
         public CardEntityDecorator(EntityLayer.EntityLayer entityLayer, CardEntity cardEntity) : base(entityLayer)
         {
             this.CardEntityDecorated = cardEntity;
 
             this.CardEntityDecorated.PropertyChanged += this.OnPropertyChanged;
-
-            this.valueBeforeAwakened = cardEntity.CardValue;
         }
 
         private void OnPropertyChanged(string propertyName)

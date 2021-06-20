@@ -2,6 +2,7 @@
 using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Event;
+using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
 using Metempsychoid.Model.Node;
 using Metempsychoid.Model.Node.TestWorld;
 using SFML.System;

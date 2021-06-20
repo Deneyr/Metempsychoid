@@ -150,6 +150,19 @@ namespace Metempsychoid.View
             }
         }
 
+        public override Vector2f CustomZoom
+        {
+            get
+            {
+                return new Vector2f();
+            }
+
+            set
+            {
+                
+            }
+        }
+
         public override Color SpriteColor
         {
             get;

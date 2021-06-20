@@ -102,11 +102,23 @@ namespace Metempsychoid.View.Text2D
         {
             get
             {
-                return this.text2D.Scale.X;
+                return this.CustomZoom.X;
             }
             set
             {
-                this.text2D.Scale = new Vector2f(value, value);
+                this.CustomZoom = new Vector2f(value, value);
+            }
+        }
+
+        public override Vector2f CustomZoom
+        {
+            get
+            {
+                return this.text2D.Scale;
+            }
+            set
+            {
+                this.text2D.Scale = value;
             }
         }
 
@@ -218,6 +230,11 @@ namespace Metempsychoid.View.Text2D
             this.TextCursor = currentCursor;
 
             this.text2D.Origin = new Vector2f((int) (canevas.Width / 2), (int) (canevas.Height / 2));
+        }
+
+        public virtual TextToken2D CloneToken()
+        {
+            return new TextToken2D(this.fullText, this.SpriteColor);
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

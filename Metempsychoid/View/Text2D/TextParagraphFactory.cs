@@ -48,6 +48,7 @@ namespace Metempsychoid.View.Text2D
         public void CreateTextTokensIn(TextParagraph2D paragraph2D, string id, params string[] parameters)
         {
             List<TextToken2D> textToken2Ds = this.idToTokens[id];
+            textToken2Ds = textToken2Ds.Select(pElem => pElem.CloneToken()).ToList();
 
             if (parameters.Count() > 0)
             {
@@ -58,7 +59,7 @@ namespace Metempsychoid.View.Text2D
                 }
             }
 
-            paragraph2D.UpdateTextTokens(this.idToTokens[id]);
+            paragraph2D.UpdateTextTokens(textToken2Ds);
         }
 
         private void UpdateTextTokensFromCulture()

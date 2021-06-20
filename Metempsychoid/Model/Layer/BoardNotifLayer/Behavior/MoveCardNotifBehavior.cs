@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 {
-    public class CardMoveNotifBehavior : ACardNotifBehavior
+    public class MoveCardNotifBehavior : ACardNotifBehavior
     {
         private MoveState state;
 
@@ -39,11 +39,13 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                             this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(this.ToStarEntities);
                             break;
                     }
+
+                    this.NodeLevel.BoardNotifLayer.NotifyNotifBehaviorPhaseChanged("MoveCardNotifBehavior." + this.State.ToString());
                 }
             }
         }
 
-        public CardMoveNotifBehavior(ICardBehaviorOwner cardBehaviorOwner, CardEntity ownerCardEntity)//List<StarEntity> fromStarEntities, List<StarEntity> toStarEntities) :
+        public MoveCardNotifBehavior(ICardBehaviorOwner cardBehaviorOwner, CardEntity ownerCardEntity)//List<StarEntity> fromStarEntities, List<StarEntity> toStarEntities) :
             : base(cardBehaviorOwner, ownerCardEntity)
         {
             this.FromStarEntities = new List<StarEntity>();
@@ -140,6 +142,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                         this.ExecuteBehavior(starEntity);
 
                         this.NbBehaviorUse--;
+                        this.NodeLevel.BoardNotifLayer.NotifyNotifBehaviorUseChanged(this.NbBehaviorUse);
+
                         this.mustNotifyBehaviorEnd = true;
                         return;
                     }

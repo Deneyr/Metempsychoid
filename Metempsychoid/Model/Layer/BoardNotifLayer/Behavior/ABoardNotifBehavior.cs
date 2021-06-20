@@ -29,6 +29,22 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             protected set;
         }
 
+        public virtual bool IsThereEndButton
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public virtual bool IsThereBehaviorLabel
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public ABoardNotifBehavior(CardEntity ownerCardEntity)
         {
             this.OwnerCardEntity = ownerCardEntity;

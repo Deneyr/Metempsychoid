@@ -27,7 +27,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             }
         }
 
-        public StarEffect2D(IObject2DFactory factory, ALayer2D parentLayer, CardEntityDecorator2D parentCardDecorator2D) :
+        public StarEffect2D(IObject2DFactory factory, ALayer2D parentLayer, CardEntityAwakenedDecorator2D parentCardDecorator2D) :
             base(parentLayer, false)
         {
             this.Position = parentCardDecorator2D.Position;

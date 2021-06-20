@@ -395,7 +395,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                     }
                 }
 
-                if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN, boardPlayerLayer))
+                if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN, null))
                 {
                     boardPlayerLayer.CardEntityFocused = null;
                     boardGameLayer.CardEntityFocused = null;
@@ -444,25 +444,25 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.BoardGameLayer.MoveCardOverBoard(cardToMove, startPosition);
         }
 
-        public void AddCardToNotifBoard(World world, CardEntity cardEntityToAdd)
-        {
-            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
-            BoardNotifLayer boardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
+        //public void AddCardToNotifBoard(World world, CardEntity cardEntityToAdd)
+        //{
+        //    BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+        //    BoardNotifLayer boardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
 
-            boardGameLayer.GetCardFromBoard(cardEntityToAdd);
+        //    boardGameLayer.GetCardFromBoard(cardEntityToAdd);
 
-            boardNotifLayer.AddCardToBoard(cardEntityToAdd);
-        }
+        //    boardNotifLayer.AddCardToBoard(cardEntityToAdd);
+        //}
 
-        public void RemoveCardFromNotifBoard(World world, CardEntityDecorator cardEntityToRemove)
-        {
-            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
-            BoardNotifLayer boardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
+        //public void RemoveCardFromNotifBoard(World world, CardEntityDecorator cardEntityToRemove)
+        //{
+        //    BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+        //    BoardNotifLayer boardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
 
-            boardNotifLayer.RemoveCardFromBoard(cardEntityToRemove);
+        //    boardNotifLayer.RemoveCardFromBoard(cardEntityToRemove);
 
-            boardGameLayer.ReturnCardToBoard(cardEntityToRemove);
-        }
+        //    boardGameLayer.ReturnCardToBoard(cardEntityToRemove);
+        //}
 
         private void UpdateEndTurnPhase(World world)
         {
@@ -645,7 +645,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
-        private static Vector2f GetPositionFrom(string position)
+        public static Vector2f GetPositionFrom(string position)
         {
             string[] token = position.Split(':');
 
@@ -658,6 +658,11 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             if (this.pendingGameEvents.TryGetValue(EventType.LEVEL_PHASE_CHANGE, out List<GameEvent> gameEventsList))
             {
+                if(boardPlayerLayer == null)
+                {
+                    return true;
+                }
+
                 foreach (GameEvent gameEvent in gameEventsList)
                 {
                     if ((boardPlayerLayer == null || gameEvent.Layer == boardPlayerLayer) && gameEvent.Details == nextTurnPhaseString)

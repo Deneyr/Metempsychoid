@@ -60,11 +60,19 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         {
             get
             {
-                return this.bannerShape.Scale.Y;
+                return this.CustomZoom.Y;
+            }
+        }
+
+        public override Vector2f CustomZoom
+        {
+            get
+            {
+                return this.bannerShape.Scale;
             }
             set
             {
-                this.bannerShape.Scale = new Vector2f(1, value);
+                this.bannerShape.Scale = new Vector2f(1, value.Y);
             }
         }
 
