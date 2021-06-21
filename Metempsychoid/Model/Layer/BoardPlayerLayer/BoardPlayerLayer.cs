@@ -19,18 +19,21 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         private static int TOP_DECK = 3;
 
         private static Vector2f DECK_POSITION = new Vector2f(-600, -150);
-        private static Vector2f CEMETERY_POSITION = new Vector2f(-500, -150);
+        private static Vector2f CEMETERY_POSITION = new Vector2f(-380, -150);
         private static Vector2f HAND_POSITION = new Vector2f(400, -150);
 
         private static int HAND_CARD_SPACE = 100;
+        private static int CEMETERY_CARD_SPACE = 10;
 
         private int nbCardsToDraw;
 
         private CardEntity cardFocused;
 
         public event Action<CardEntity> CardPicked;
-
         public event Action<CardEntity> CardUnpicked;
+
+        public event Action<CardEntity> CardDestroyed;
+        public event Action<CardEntity> CardResurrected;
 
         public event Action<CardEntity> CardDrew;
 
@@ -275,6 +278,21 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             this.UpdateCardsHandPosition();
         }
 
+        public void AddCardToCemetery(Card.Card cardToAdd, Vector2f startPosition)
+        {
+            CardEntity cardEntity = new CardEntity(this, cardToAdd, true);
+
+            this.AddEntityToLayer(cardEntity);
+
+            cardEntity.Position = startPosition;
+
+            this.CardsCemetery.Add(cardEntity);
+
+            this.CardDestroyed?.Invoke(cardEntity);
+
+            this.UpdateCardsCimeteryPosition();
+        }
+
         public override void RemoveEntityFromLayer(AEntity entity)
         {
             if (entity is CardEntity)
@@ -288,6 +306,54 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                 this.CardsCemetery.Remove(cardEntity);
             }
             base.RemoveEntityFromLayer(entity);
+        }
+
+        private void UpdateCardsCimeteryPosition()
+        {
+            float startWidth = this.CemeteryPosition.X + CEMETERY_CARD_SPACE * this.CardsCemetery.Count / 2f;
+
+            int i = 0;
+            bool cardFocusedEncountered = false;
+
+            foreach (CardEntity cardEntity in this.CardsCemetery)
+            {
+                Vector2f newPosition;
+                cardFocusedEncountered |= this.cardFocused == cardEntity;
+
+                if (this.cardFocused != null)
+                {
+                    if (this.cardFocused == cardEntity)
+                    {
+                        newPosition = new Vector2f(startWidth - i * CEMETERY_CARD_SPACE, this.CemeteryPosition.Y);
+                    }
+                    else if (cardFocusedEncountered)
+                    {
+                        newPosition = new Vector2f(startWidth - (i + 1) * CEMETERY_CARD_SPACE, this.CemeteryPosition.Y);
+                    }
+                    else
+                    {
+                        newPosition = new Vector2f(startWidth - (i - 1) * CEMETERY_CARD_SPACE, this.CemeteryPosition.Y);
+                    }
+                }
+                else
+                {
+                    newPosition = new Vector2f(startWidth - i * CEMETERY_CARD_SPACE, this.CemeteryPosition.Y);
+                }
+
+                IAnimation positionAnimation;
+                if (this.cardFocused != null)
+                {
+                    positionAnimation = new PositionAnimation(cardEntity.Position, newPosition, Time.FromSeconds(1f), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
+                }
+                else
+                {
+                    positionAnimation = new PositionAnimation(cardEntity.Position, newPosition, Time.FromSeconds(2f), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
+                }
+
+                cardEntity.PlayAnimation(positionAnimation);
+                i++;
+
+            }
         }
 
         private void UpdateCardsHandPosition()

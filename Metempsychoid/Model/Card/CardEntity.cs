@@ -141,7 +141,7 @@ namespace Metempsychoid.Model.Card
                     }
                     else
                     {
-                        this.Card.NotifyCardUnawakened(entityLayer as BoardGameLayer, this.ParentStar);
+                        this.Card.NotifyCardUnawakened(entityLayer as BoardGameLayer, this);
                     }
                 }
 

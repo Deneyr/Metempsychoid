@@ -105,7 +105,7 @@ namespace Metempsychoid.Model.Card
             //}
         }
 
-        public void OnCardUnawakened(BoardGameLayer layer, StarEntity starEntity)
+        public void OnCardUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
             //foreach (ICardBehavior cardBehavior in this.CardBehaviors)
             //{

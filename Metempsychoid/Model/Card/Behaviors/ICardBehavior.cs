@@ -14,7 +14,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         void OnAwakened(BoardGameLayer layer, StarEntity starEntity);
 
-        void OnUnawakened(BoardGameLayer layer, StarEntity starEntity);
+        void OnUnawakened(BoardGameLayer layer, CardEntity cardEntity);
 
         ICardBehavior Clone();
     }

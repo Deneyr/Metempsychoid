@@ -87,7 +87,6 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             base.EndNotif(world);
 
             this.FromStarEntities.Clear();
-            this.ToStarEntities.Clear();
 
             this.NodeLevel.BoardGameLayer.SetBehaviorSourceStarEntities(this.FromStarEntities);
         }
@@ -142,6 +141,22 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         private void HandlePickState(Dictionary<EventType, List<GameEvent>> gameEvents)
         {
+            if (gameEvents.TryGetValue(EventType.NEXT_BEHAVIOR, out List<GameEvent> gameEventsNextBehavior))
+            {
+                if (gameEventsNextBehavior.Any())
+                {
+                    IEnumerable<StarEntity> starEntitiesConcerned = this.FromStarEntities.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.IsSelected);
+                    foreach (StarEntity starEntity in starEntitiesConcerned)
+                    {
+                        this.ExecuteBehavior(starEntity);
+                    }
+                    this.IsActive = false;
+                    this.mustNotifyBehaviorEnd = true;
+                    return;
+                }
+            }
+
+
             if (gameEvents.TryGetValue(EventType.PICK_CARD, out List<GameEvent> gameEventsPicks))
             {
                 GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
@@ -172,61 +187,9 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             }
         }
 
-        //private void HandleSocketState(Dictionary<EventType, List<GameEvent>> gameEvents)
-        //{
-        //    if (gameEvents.TryGetValue(EventType.SOCKET_CARD, out List<GameEvent> gameEventsSocket))
-        //    {
-        //        GameEvent socketEvent = gameEventsSocket.FirstOrDefault();
-
-        //        if (socketEvent != null)
-        //        {
-        //            StarEntity starEntity = socketEvent.Entity as StarEntity;
-
-        //            if (this.ToStarEntities.Contains(starEntity))
-        //            {
-        //                this.ExecuteBehavior(starEntity);
-
-        //                this.NbBehaviorUse--;
-        //                this.mustNotifyBehaviorEnd = true;
-        //                return;
-        //            }
-        //        }
-        //    }
-
-        //    if (gameEvents.TryGetValue(EventType.MOVE_CARD_OVERBOARD, out List<GameEvent> gameEventsOverboard))
-        //    {
-        //        GameEvent boardGameEvent = gameEventsOverboard.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
-
-        //        if (boardGameEvent != null)
-        //        {
-        //            this.NodeLevel.MoveCardOverBoard(boardGameEvent.Details, (boardGameEvent.Entity as CardEntity));
-        //        }
-        //    }
-
-        //    if (gameEvents.TryGetValue(EventType.PICK_CARD, out List<GameEvent> gameEventsPicks))
-        //    {
-        //        GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
-
-        //        if (boardGameEvent == null)
-        //        {
-        //            boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer is BoardPlayerLayer.BoardPlayerLayer);
-
-        //            if (boardGameEvent != null && boardGameEvent.Entity == null)
-        //            {
-        //                this.NodeLevel.UnpickCard(null, boardGameEvent.Details);
-
-        //                if (NodeLevel.BoardGameLayer.CardEntityPicked == null)
-        //                {
-        //                    this.State = MoveState.PICK_CARD;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
         protected virtual void ExecuteBehavior(StarEntity starEntity)
         {
-            this.NodeLevel.BoardGameLayer.MoveCard(starEntity);
+            this.NodeLevel.BoardGameLayer.DeleteCard(starEntity);
         }
 
         public enum DeleteState

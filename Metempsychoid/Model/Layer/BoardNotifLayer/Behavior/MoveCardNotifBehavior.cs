@@ -129,6 +129,16 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         private void HandleSocketState(Dictionary<EventType, List<GameEvent>> gameEvents)
         {
+            if (gameEvents.TryGetValue(EventType.NEXT_BEHAVIOR, out List<GameEvent> gameEventsNextBehavior))
+            {
+                if (gameEventsNextBehavior.Any())
+                {
+                    this.IsActive = false;
+                    this.mustNotifyBehaviorEnd = true;
+                    return;
+                }
+            }
+
             if (gameEvents.TryGetValue(EventType.SOCKET_CARD, out List<GameEvent> gameEventsSocket))
             {
                 GameEvent socketEvent = gameEventsSocket.FirstOrDefault();

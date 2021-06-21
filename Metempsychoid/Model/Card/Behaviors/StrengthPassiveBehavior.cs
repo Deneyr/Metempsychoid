@@ -78,7 +78,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.affectedCardEntities = currentAffectedStarEntity;
         }
 
-        public void OnUnawakened(BoardGameLayer layer, StarEntity starEntity)
+        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
             foreach (CardEntity cardEntity in this.affectedCardEntities)
             {

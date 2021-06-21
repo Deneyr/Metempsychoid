@@ -23,7 +23,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             layer.RegisterNotifBehavior(new DeleteCardNotifBehavior(this, starEntity.CardSocketed));
         }
 
-        public void OnUnawakened(BoardGameLayer layer, StarEntity starEntity)
+        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
 
         }

@@ -329,6 +329,16 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
+        public void DeleteCard(StarEntity starEntity)
+        {
+            if (starEntity.CardSocketed != null)
+            {
+                this.PendingActions.Add(new UnsocketCardAction(starEntity.CardSocketed, true));
+
+                this.CardEntityPicked = null;
+            }
+        }
+
         public void SwapCard(StarEntity starEntity)
         {
             if (this.CardEntityPicked.ParentStar != starEntity)
@@ -422,17 +432,23 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                     actionToResolve.ExecuteAction(this);
                 }
 
-                HashSet<StarEntity> starModifiedActions = new HashSet<StarEntity>(currentPendingActions.Where(pElem => pElem is IModifyStarEntityAction).Select(pElem => (pElem as IModifyStarEntityAction).OwnerStar));
-                // Update awaken states
+                // Update off board cards
                 if (this.CardsOffBoard.Count > 0)
                 {
+                    TestLevel ownerLevel = this.ownerLevelNode as TestLevel;
                     foreach (CardEntity cardEntity in this.CardsOffBoard)
                     {
                         cardEntity.Card.ResetConstellations();
+
+                        this.RemoveEntityFromLayer(cardEntity);
+
+                        ownerLevel.GetLayerFromPlayer(cardEntity.Card.Player).AddCardToCemetery(cardEntity.Card, new Vector2f(0, 0));
                     }
                     this.CardsOffBoard.Clear();
                 }
 
+                // Update awaken states
+                HashSet<StarEntity> starModifiedActions = new HashSet<StarEntity>(currentPendingActions.Where(pElem => pElem is IModifyStarEntityAction).Select(pElem => (pElem as IModifyStarEntityAction).OwnerStar));
                 if (starModifiedActions.Count > 0)
                 {
                     foreach (StarEntity star in this.StarSystem)

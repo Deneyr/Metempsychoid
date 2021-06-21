@@ -329,13 +329,13 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public void NotifyCardUnawakened(BoardGameLayer layer, StarEntity parentStarEntity)
+        public void NotifyCardUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
-            this.cardTemplate.OnCardUnawakened(layer, parentStarEntity);
+            this.cardTemplate.OnCardUnawakened(layer, ownerCardEntity);
 
             foreach (ICardBehavior cardBehavior in this.CardBehaviors)
             {
-                cardBehavior.OnUnawakened(layer, parentStarEntity);
+                cardBehavior.OnUnawakened(layer, ownerCardEntity);
             }
         }
     }

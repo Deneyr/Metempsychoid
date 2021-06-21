@@ -116,6 +116,11 @@ namespace Metempsychoid.Model.Node.TestWorld
             return result;
         }
 
+        public BoardPlayerLayer GetLayerFromPlayer(Player.Player player)
+        {
+            return this.BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer == player);
+        }
+
         //public override void UpdateLogic(World world, Time timeElapsed)
         //{
         //    base.UpdateLogic(world, timeElapsed);

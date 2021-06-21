@@ -39,9 +39,9 @@ namespace Metempsychoid.Model.Card.Behaviors
             layer.PendingActions.Add(new AddCardValueModifier(starEntity.CardSocketed.Card, this, this.Value));
         }
 
-        public void OnUnawakened(BoardGameLayer layer, StarEntity starEntity)
+        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
-            layer.PendingActions.Add(new ClearCardValueModifier(starEntity.CardSocketed.Card, this));
+            layer.PendingActions.Add(new ClearCardValueModifier(ownerCardEntity.Card, this));
         }
 
         public ICardBehavior Clone()

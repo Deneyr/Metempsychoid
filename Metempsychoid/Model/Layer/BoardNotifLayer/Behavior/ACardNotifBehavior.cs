@@ -11,6 +11,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 {
     public abstract class ACardNotifBehavior : ABoardNotifBehavior
     {
+        private bool isActive;
+
         public ICardBehaviorOwner CardBehaviorOwner
         {
             get;
@@ -55,7 +57,12 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
         {
             get
             {
-                return this.NbBehaviorUse > 0;
+                return this.isActive && this.NbBehaviorUse > 0;
+            }
+
+            protected set
+            {
+                this.isActive = value;
             }
         }
 
@@ -69,6 +76,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public override void StartNotif(World world)
         {
+            this.isActive = true;
+
             foreach(StarEntity starEntity in this.NodeLevel.BoardGameLayer.StarSystem)
             {
                 starEntity.CurrentNotifBehavior = this;

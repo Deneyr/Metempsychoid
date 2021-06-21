@@ -56,6 +56,10 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 
                 layerToPerform.CardsOffBoard.Add(this.CardToUnsocket);
             }
+            //else
+            //{
+            //    this.OwnerStar.CardSocketed = null;
+            //}
         }
     }
 }

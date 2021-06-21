@@ -33,6 +33,12 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
         private TurnPhase levelTurnPhase;
 
+        public bool IsRunningBehavior
+        {
+            get;
+            private set;
+        }
+
         public TurnPhase LevelTurnPhase
         {
             get
@@ -171,6 +177,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
         private void OnNotifBehaviorStarted(IBoardNotifBehavior obj)
         {
+            this.IsRunningBehavior = true;
+
             if (obj.IsThereBehaviorLabel)
             {
                 this.effectBehaviorLabel2D.ActiveLabel(obj.GetType());
@@ -205,6 +213,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
         private void OnNotifBehaviorEnded(IBoardNotifBehavior obj)
         {
+            this.IsRunningBehavior = false;
+
             if (obj.IsThereBehaviorLabel)
             {
                 this.effectBehaviorLabel2D.DeactiveLabel();
@@ -212,7 +222,11 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             if (this.endTurnButton.IsActive == false)
             {
-                this.endTurnButton.ActiveButton(1);
+                this.endTurnButton.ActiveButton(0);
+            }
+            else
+            {
+                this.endTurnButton.SetParagraph(0);
             }
         }
 
@@ -223,6 +237,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.cardAwakened = null;
 
             this.LevelTurnPhase = TurnPhase.VOID;
+
+            this.IsRunningBehavior = false;
 
             //if (this.world2D.TryGetTarget(out World2D world2D))
             //{

@@ -154,6 +154,16 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
+        public void SetParagraph(int paragraphIndex)
+        {
+            this.ActiveOnlyParagraph(paragraphIndex);
+
+            if (this.IsAnimationRunning() == false)
+            {
+                this.PlayAnimation(3);
+            }
+        }
+
         public void DeactiveButton()
         {
             this.IsActive = false;
@@ -185,7 +195,15 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 BoardNotifLayer2D.BoardNotifLayer2D boardPlayerLayer2D = (parentLayer as BoardNotifLayer2D.BoardNotifLayer2D);
 
                 //boardPlayerLayer2D.SendUnpickEvent();
-                boardPlayerLayer2D.GoOnTurnPhase(Model.Node.TestWorld.TurnPhase.END_TURN);
+
+                if (boardPlayerLayer2D.IsRunningBehavior)
+                {
+                    boardPlayerLayer2D.SendEventToWorld(Model.Event.EventType.NEXT_BEHAVIOR, null, null);
+                }
+                else
+                {
+                    boardPlayerLayer2D.GoOnTurnPhase(Model.Node.TestWorld.TurnPhase.END_TURN);
+                }
             }
 
             this.Zoom = 1;

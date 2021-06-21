@@ -170,6 +170,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             layer.CardPicked += OnCardPicked;
             layer.CardUnpicked += OnCardUnpicked;
 
+            layer.CardDestroyed += OnCardDestroyed;
+            layer.CardResurrected += OnCardResurrected;
+
             //this.cardToolTip = new CardToolTip(this);
             //this.endTurnButton = new EndTurnButton2D(this);
             this.scoreLabel = new ScoreLabel2D(this);
@@ -246,7 +249,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.cardDrew.SetCooldownFocus(COOLDOWN_FOCUS);
 
-            this.UpdateCardEntitiesPriority();
+            this.UpdateCardHandPriority();
         }
 
         private void OnCardPicked(CardEntity obj)
@@ -255,7 +258,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.cardsHand.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
 
-            this.UpdateCardEntitiesPriority();
+            this.UpdateCardHandPriority();
         }
 
         private void OnCardUnpicked(CardEntity obj)
@@ -266,15 +269,39 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             cardPicked.SetCooldownFocus(COOLDOWN_FOCUS);
 
-            this.UpdateCardEntitiesPriority();
-
-            //this.cardPicked = null;
+            this.UpdateCardHandPriority();
         }
 
-        private void UpdateCardEntitiesPriority()
+        private void OnCardResurrected(CardEntity obj)
+        {
+            this.cardsCemetery.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+
+            this.UpdateCardCimeteryPriority();
+        }
+
+        private void OnCardDestroyed(CardEntity obj)
+        {
+            CardEntity2D cardDestroyed = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+
+            this.cardsCemetery.Add(cardDestroyed);
+
+            this.UpdateCardCimeteryPriority();
+        }
+
+        private void UpdateCardHandPriority()
         {
             int i = 0;
             foreach (CardEntity2D cardEntity2D in this.cardsHand)
+            {
+                cardEntity2D.Priority = 1000 + i;
+                i++;
+            }
+        }
+
+        private void UpdateCardCimeteryPriority()
+        {
+            int i = 0;
+            foreach (CardEntity2D cardEntity2D in this.cardsCemetery)
             {
                 cardEntity2D.Priority = 1000 + i;
                 i++;
@@ -540,6 +567,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             (this.parentLayer as BoardPlayerLayer).CardPicked -= OnCardPicked;
             (this.parentLayer as BoardPlayerLayer).CardUnpicked -= OnCardUnpicked;
+
+            (this.parentLayer as BoardPlayerLayer).CardDestroyed -= OnCardDestroyed;
+            (this.parentLayer as BoardPlayerLayer).CardResurrected -= OnCardResurrected;
 
             base.Dispose();
         }
