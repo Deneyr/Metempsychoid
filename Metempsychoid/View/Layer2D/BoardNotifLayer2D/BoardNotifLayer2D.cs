@@ -193,11 +193,22 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             {
                 this.endTurnButton.DeactiveButton();
             }
+            else
+            {
+                if (this.endTurnButton.IsActive)
+                {
+                    this.endTurnButton.SetParagraph(1);
+                }
+                else
+                {
+                    this.endTurnButton.ActiveButton(1);
+                }
+            }
         }
 
         private void OnNotifBehaviorUseChanged(int obj)
         {
-            if (this.effectBehaviorLabel2D.IsActive)
+            if (this.IsRunningBehavior && this.effectBehaviorLabel2D.IsActive)
             {
                 this.effectBehaviorLabel2D.Label = obj;
             }

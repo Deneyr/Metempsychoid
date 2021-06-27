@@ -577,14 +577,22 @@ namespace Metempsychoid.View.Card2D
         {
             parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_HAND, parentLayer.GetEntityFromEntity2D(this), null);
 
-            this.IsFocused = true;
+            Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D boardPlayerLayer2D = parentLayer as Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D;
+            if (boardPlayerLayer2D == null || boardPlayerLayer2D.SourceCardEntities2D == null || boardPlayerLayer2D.SourceCardEntities2D.Count == 0)
+            {
+                this.IsFocused = true;
+            }
         }
 
         public void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
         {
             parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_HAND, null, null);
 
-            this.IsFocused = false;
+            Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D boardPlayerLayer2D = parentLayer as Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D;
+            if (boardPlayerLayer2D == null || boardPlayerLayer2D.SourceCardEntities2D == null || boardPlayerLayer2D.SourceCardEntities2D.Count == 0)
+            {
+                this.IsFocused = false;
+            }
         }
 
         public bool IsFocusable(ALayer2D parentLayer)

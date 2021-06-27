@@ -160,6 +160,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.MoveCardNotifBehavior), "move_behavior_label");
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.SwapCardNotifBehavior), "swap_behavior_label");
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.DeleteCardNotifBehavior), "delete_behavior_label");
+            this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.ResurrectCardNotifBehavior), "resurrect_behavior_label");
 
             IAnimation showAnimation = new PositionAnimation(new Vector2f(0, 0), new Vector2f(this.Canevas.Width, 0), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(showAnimation);

@@ -442,7 +442,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
                         this.RemoveEntityFromLayer(cardEntity);
 
-                        ownerLevel.GetLayerFromPlayer(cardEntity.Card.Player).AddCardToCemetery(cardEntity.Card, new Vector2f(0, 0));
+                        ownerLevel.GetLayerFromPlayer(cardEntity.Card.Player).AddCardToCemetery(cardEntity.Card, cardEntity.Position);
                     }
                     this.CardsOffBoard.Clear();
                 }

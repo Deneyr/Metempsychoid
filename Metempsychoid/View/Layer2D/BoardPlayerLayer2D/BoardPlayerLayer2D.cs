@@ -2,6 +2,7 @@
 using Metempsychoid.Model;
 using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.View.Card2D;
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 {
-    public class BoardPlayerLayer2D: ALayer2D, ICardFocusedLayer, IScoreLayer
+    public class BoardPlayerLayer2D: ALayer2D, IBoardToLayerPositionConverter, ICardFocusedLayer, IScoreLayer
     {
         private static float COOLDOWN_FOCUS = 2;
         private static float COOLDOWN_DRAW = 1;
@@ -29,6 +30,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         private List<CardEntity2D> cardsDeck;
         private List<CardEntity2D> cardsCemetery;
         private List<CardEntity2D> cardsHand;
+
+        private List<CardEntity2D> sourceCardEntities;
 
         private CardEntity2D cardDrew;
         private CardEntity2D cardFocused;
@@ -45,6 +48,35 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         private TurnPhase levelTurnPhase;
 
         public event Action<ICardFocusedLayer> CardFocusedChanged;
+
+        public List<CardEntity2D> SourceCardEntities2D
+        {
+            get
+            {
+                return this.sourceCardEntities;
+            }
+
+            set
+            {
+                if (this.sourceCardEntities != null)
+                {
+                    foreach (CardEntity2D cardEntity2D in this.sourceCardEntities)
+                    {
+                        cardEntity2D.IsFocused = false;
+                    }
+                }
+
+                this.sourceCardEntities = value;
+
+                if (this.sourceCardEntities != null)
+                {
+                    foreach (CardEntity2D cardEntity2D in this.sourceCardEntities)
+                    {
+                        cardEntity2D.IsFocused = true;
+                    }
+                }
+            }
+        }
 
         public CardEntity2D CardFocused
         {
@@ -173,6 +205,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             layer.CardDestroyed += OnCardDestroyed;
             layer.CardResurrected += OnCardResurrected;
 
+            layer.SourceCardEntitiesSet += OnSourceCardEntitiesSet;
+
             //this.cardToolTip = new CardToolTip(this);
             //this.endTurnButton = new EndTurnButton2D(this);
             this.scoreLabel = new ScoreLabel2D(this);
@@ -180,6 +214,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardsDeck = new List<CardEntity2D>();
             this.cardsCemetery = new List<CardEntity2D>();
             this.cardsHand = new List<CardEntity2D>();
+
+            layer.BoardToLayerPositionConverter = this;
         }
 
         public override void InitializeLayer(IObject2DFactory factory)
@@ -198,6 +234,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.cardDrew = null;
             this.cardFocused = null;
+
+            this.sourceCardEntities = null;
             //this.cardPicked = null;
 
             base.InitializeLayer(factory);
@@ -216,6 +254,18 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
                     this.cardsDeck.Add(cardEntity2D);
                 }
+            }
+        }
+
+        private void OnSourceCardEntitiesSet(List<CardEntity> obj)
+        {
+            if (obj != null && obj.Count > 0)
+            {
+                this.SourceCardEntities2D = obj.Select(pElem => this.objectToObject2Ds[pElem] as CardEntity2D).ToList();
+            }
+            else
+            {
+                this.SourceCardEntities2D = null;
             }
         }
 
@@ -338,8 +388,14 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             this.hittableEntities2D.Clear();
 
-            this.hittableEntities2D.AddRange(this.cardsHand);
-            //this.hittableEntities2D.Add(this.endTurnButton);
+            if (this.SourceCardEntities2D != null)
+            {
+                this.hittableEntities2D.AddRange(this.SourceCardEntities2D);
+            }
+            else
+            {
+                this.hittableEntities2D.AddRange(this.cardsHand);
+            }
 
             return this.hittableEntities2D;
         }
@@ -541,6 +597,29 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         //        pairEntity.Value.Position = new Vector2f(pairEntity.Key.Position.X, this.view.Size.Y / 2 + pairEntity.Key.Position.Y);
         //    }
         //}
+
+        public Vector2f BoardToLayerPosition(BoardGameLayer layer, Vector2f boardPosition)
+        {
+            Vector2f resultPosition = new Vector2f();
+            if (this.world2D.TryGetTarget(out World2D world2D))
+            {
+                resultPosition = this.GetPositionInScene(world2D.LayersDictionary[layer].GetPositionInWindow(boardPosition));
+            }
+
+            return new Vector2f(resultPosition.X, resultPosition.Y - this.OffsetCard);
+        }
+
+        public Vector2f LayerToBoardPosition(BoardGameLayer layer, Vector2f layerPosition)
+        {
+            Vector2f resultPosition = new Vector2f();
+            if (this.world2D.TryGetTarget(out World2D world2D))
+            {
+                layerPosition = new Vector2f(layerPosition.X, layerPosition.Y + this.OffsetCard);
+                resultPosition = world2D.LayersDictionary[layer].GetPositionInScene(this.GetPositionInWindow(layerPosition));
+            }
+
+            return resultPosition;
+        }
 
         public override void FlushEntities()
         {

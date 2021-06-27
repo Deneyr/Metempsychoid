@@ -21,6 +21,7 @@ namespace Metempsychoid.Model.Card.Behaviors
         public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             layer.RegisterNotifBehavior(new DeleteCardNotifBehavior(this, starEntity.CardSocketed));
+            layer.RegisterNotifBehavior(new ResurrectCardNotifBehavior(this, starEntity.CardSocketed));
         }
 
         public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
@@ -37,22 +38,29 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             behavior.NbBehaviorUse = 3;
 
-            behavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
+            if (behavior is ResurrectCardNotifBehavior)
+            {
+                (behavior as ResurrectCardNotifBehavior).FromCardEntities = behavior.NodeLevel.GetLayerFromPlayer(behavior.OwnerCardEntity.Card.Player).CardsCemetery.ToList();
+            }
+            else if(behavior is DeleteCardNotifBehavior)
+            {
+                (behavior as DeleteCardNotifBehavior).FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
+            }
             //behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
         }
 
         public void OnBehaviorEnd(ACardNotifBehavior behavior)
         {
-            behavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
+            //(behavior as ResurrectCardNotifBehavior).FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
             //behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
         }
 
-        public void OnBehaviorCardPicked(ACardNotifBehavior behavior)
+        public void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
         {
             CardEntity cardEntity = behavior.NodeLevel.BoardGameLayer.CardEntityPicked;
             //HashSet<StarLinkEntity> starLinks = behavior.NodeLevel.BoardGameLayer.StarToLinks[starEntityConcerned];
 
-            behavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed != cardEntity).ToList();
+            //(behavior as DeleteCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed != cardEntity).ToList();
 
             //behavior.ToStarEntities = starLinks.Select(pElem => pElem.StarFrom == starEntityConcerned ? pElem.StarTo : pElem.StarFrom).Where(pElem => pElem.CardSocketed == null).ToList();
         }

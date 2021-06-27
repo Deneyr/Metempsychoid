@@ -1,4 +1,5 @@
-﻿using Metempsychoid.Model.Node.TestWorld;
+﻿using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Node.TestWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
     {
         void OnBehaviorStart(ACardNotifBehavior behavior);
 
-        void OnBehaviorCardPicked(ACardNotifBehavior behavior);
+        void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked);
 
         void OnBehaviorEnd(ACardNotifBehavior behavior);
     }

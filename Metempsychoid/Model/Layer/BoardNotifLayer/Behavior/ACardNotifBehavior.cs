@@ -19,18 +19,6 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             private set;
         }
 
-        public List<StarEntity> FromStarEntities
-        {
-            get;
-            set;
-        }
-
-        public List<StarEntity> ToStarEntities
-        {
-            get;
-            set;
-        }
-
         public int NbBehaviorUse
         {
             get;
@@ -86,7 +74,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public virtual bool CanSocketCardOn(StarEntity starEntity, CardEntity cardToSocket)
         {
-            return this.ToStarEntities.Contains(starEntity);
+            //return this.ToStarEntities.Contains(starEntity);
+            return false;
         }
 
         public ACardNotifBehavior(ICardBehaviorOwner cardBehaviorOwner, CardEntity ownerCardEntity) 

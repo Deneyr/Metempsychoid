@@ -97,6 +97,7 @@
     <Compile Include="Model\Layer\BoardGameLayer\BoardGameLayer.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\CJStarDomain.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\CurvedStarLinkEntity.cs" />
+    <Compile Include="Model\Layer\BoardGameLayer\IBoardToLayerPositionConverter.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\StarEntity.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\StarLinkEntity.cs" />
     <Compile Include="Model\Card\CardTemplate.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ABoardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ACardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\CardAwakenedNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ResurrectCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\CardEntityDecorator.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\MoveCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SwapCardNotifBehavior.cs" />

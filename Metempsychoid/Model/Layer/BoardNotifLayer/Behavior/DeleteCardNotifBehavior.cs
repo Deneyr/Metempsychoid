@@ -17,6 +17,12 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         private int nbCurrentBehaviorUse;
 
+        public List<StarEntity> FromStarEntities
+        {
+            get;
+            set;
+        }
+
         public virtual int NbCurrentBehaviorUse
         {
             get
@@ -76,8 +82,6 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             : base(cardBehaviorOwner, ownerCardEntity)
         {
             this.FromStarEntities = new List<StarEntity>();
-
-            this.ToStarEntities = null;
 
             this.state = DeleteState.VOID;
         }
@@ -175,12 +179,16 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                             this.NbCurrentBehaviorUse--;
 
                             cardEntityPicked.IsSelected = false;
+
+                            this.CardBehaviorOwner.OnBehaviorCardPicked(this, cardEntityPicked);
                         }
                         else if(this.NbCurrentBehaviorUse < this.NbBehaviorUse)
                         {
                             this.NbCurrentBehaviorUse++;
 
                             cardEntityPicked.IsSelected = true;
+
+                            this.CardBehaviorOwner.OnBehaviorCardPicked(this, cardEntityPicked);
                         }
                     }
                 }
