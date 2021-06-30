@@ -36,7 +36,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         public event Action<CardEntity> CardUnpicked;
 
         public event Action<CardEntity> CardDestroyed;
-        public event Action<CardEntity> CardResurrected;
+        // public event Action<CardEntity> CardResurrected;
 
         public event Action<CardEntity> CardDrew;
 
@@ -249,7 +249,6 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
             this.CardEntityFocused = null;
 
-            this.BehaviorSourceCardEntities = null;
             if (sourceCardEntities != null && sourceCardEntities.Count > 0)
             {
                 this.BehaviorSourceCardEntities = new List<CardEntity>(sourceCardEntities);
@@ -341,7 +340,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         public bool PickCard(CardEntity cardToPick)
         {
-            if (this.CardsHand.Contains(cardToPick))
+            if (this.CardsHand.Contains(cardToPick)
+                || this.CardsCemetery.Contains(cardToPick))
             {
                 this.NotifyCardPicked(cardToPick);
 
@@ -354,7 +354,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             return false;
         }
 
-        public void UnpickCard(Card.Card cardToUnpick, Vector2f startPosition)
+        public CardEntity UnpickCard(Card.Card cardToUnpick, Vector2f startPosition)
         {
             CardEntity cardEntity = new CardEntity(this, cardToUnpick, true);
 
@@ -362,11 +362,27 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
             cardEntity.Position = startPosition;
 
-            this.CardsHand.Add(cardEntity);
+            if (this.CardPileFocused == PileFocused.HAND)
+            {
+                this.CardsHand.Add(cardEntity);
+            }
+            else
+            {
+                this.CardsCemetery.Add(cardEntity);
+            }
 
             this.NotifyCardUnpicked(cardEntity);
 
-            this.UpdateCardsHandPosition();
+            if (this.CardPileFocused == PileFocused.HAND)
+            {
+                this.UpdateCardsHandPosition();
+            }
+            else
+            {
+                this.UpdateCardsCimeteryPosition();
+            }
+
+            return cardEntity;
         }
 
         public void AddCardToCemetery(Card.Card cardToAdd, Vector2f startPosition)

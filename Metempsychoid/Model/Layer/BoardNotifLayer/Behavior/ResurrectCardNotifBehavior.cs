@@ -34,7 +34,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                 return this.state;
             }
 
-            private set
+            protected set
             {
                 if (this.state != value)
                 {
@@ -43,10 +43,12 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                     switch (this.state)
                     {
                         case MoveState.PICK_CARD:
+                            this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(null);
                             this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player).SetBehaviorSourceCardEntities(this.FromCardEntities);
                             break;
                         case MoveState.SOCKET_CARD:
-                            //this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(this.ToStarEntities);
+                            //this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player).SetBehaviorSourceCardEntities(null);
+                            this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(this.ToStarEntities);
                             break;
                     }
 
@@ -129,39 +131,58 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         private void HandlePickState(Dictionary<EventType, List<GameEvent>> gameEvents)
         {
+            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player);
+
             if (gameEvents.TryGetValue(EventType.FOCUS_CARD_HAND, out List<GameEvent> gameEventsFocused))
             {
-                BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player);
-                GameEvent boardGameEvent = gameEventsFocused.FirstOrDefault(pElem => pElem.Layer == currentPlayerLayer);
+                CardEntity cardEntity = null;
+                bool encounterGameEvent = false;
 
-                if (boardGameEvent != null)
+                foreach (GameEvent gameEvent in gameEventsFocused)
+                {
+                    if (gameEvent.Layer == currentPlayerLayer)
+                    {
+                        if (cardEntity == null
+                            || gameEvent.Entity != null)
+                        {
+                            cardEntity = gameEvent.Entity as CardEntity;
+
+                            encounterGameEvent = true;
+                        }
+                    }
+                }
+
+                if (encounterGameEvent)
                 {
                     this.NodeLevel.BoardGameLayer.CardEntityFocused = null;
 
-                    currentPlayerLayer.CardEntityFocused = boardGameEvent.Entity as CardEntity;
+                    currentPlayerLayer.CardEntityFocused = cardEntity;
                 }
             }
 
             if (gameEvents.TryGetValue(EventType.PICK_CARD, out List<GameEvent> gameEventsPicks))
             {
-                GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
+                GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == currentPlayerLayer && pElem.Entity != null);
 
                 if (boardGameEvent != null)
                 {
-                    NodeLevel.BoardGameLayer.PickCard(boardGameEvent.Entity as CardEntity);
+                    CardEntity cardToRemove = boardGameEvent.Entity as CardEntity;
 
-                    if (NodeLevel.BoardGameLayer.CardEntityPicked != null)
-                    {
-                        this.CardBehaviorOwner.OnBehaviorCardPicked(this, NodeLevel.BoardGameLayer.CardEntityPicked);
+                    this.FromCardEntities.Remove(cardToRemove);
 
-                        this.State = MoveState.SOCKET_CARD;
-                    }
+                    this.NodeLevel.PickCard(currentPlayerLayer, cardToRemove);
+
+                    this.CardBehaviorOwner.OnBehaviorCardPicked(this, this.NodeLevel.BoardGameLayer.CardEntityPicked);
+
+                    this.State = MoveState.SOCKET_CARD;
                 }
             }
         }
 
         private void HandleSocketState(Dictionary<EventType, List<GameEvent>> gameEvents)
         {
+            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player);
+
             if (gameEvents.TryGetValue(EventType.NEXT_BEHAVIOR, out List<GameEvent> gameEventsNextBehavior))
             {
                 if (gameEventsNextBehavior.Any())
@@ -193,33 +214,31 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                 }
             }
 
-            if (gameEvents.TryGetValue(EventType.MOVE_CARD_OVERBOARD, out List<GameEvent> gameEventsOverboard))
-            {
-                GameEvent boardGameEvent = gameEventsOverboard.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
-
-                if (boardGameEvent != null)
-                {
-                    this.NodeLevel.MoveCardOverBoard(boardGameEvent.Details, (boardGameEvent.Entity as CardEntity));
-                }
-            }
-
             if (gameEvents.TryGetValue(EventType.PICK_CARD, out List<GameEvent> gameEventsPicks))
             {
-                GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
+                GameEvent nullPickEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == currentPlayerLayer && pElem.Entity == null);
+                GameEvent entityPickEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == currentPlayerLayer && pElem.Entity != null);
 
-                if (boardGameEvent == null)
+                if(nullPickEvent != null)
                 {
-                    boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer is BoardPlayerLayer.BoardPlayerLayer);
+                    CardEntity cardToAdd = NodeLevel.UnpickCard(currentPlayerLayer, nullPickEvent.Details);
 
-                    if (boardGameEvent != null && boardGameEvent.Entity == null)
-                    {
-                        this.NodeLevel.UnpickCard(null, boardGameEvent.Details);
+                    this.FromCardEntities.Add(cardToAdd);
 
-                        if (NodeLevel.BoardGameLayer.CardEntityPicked == null)
-                        {
-                            this.State = MoveState.PICK_CARD;
-                        }
-                    }
+                    this.State = MoveState.PICK_CARD;
+                }
+
+                if (entityPickEvent != null)
+                {
+                    CardEntity cardToRemove = entityPickEvent.Entity as CardEntity;
+
+                    this.FromCardEntities.Remove(cardToRemove);
+
+                    this.NodeLevel.PickCard(currentPlayerLayer, cardToRemove);
+
+                    this.CardBehaviorOwner.OnBehaviorCardPicked(this, this.NodeLevel.BoardGameLayer.CardEntityPicked);
+
+                    this.State = MoveState.SOCKET_CARD;
                 }
             }
         }
@@ -231,7 +250,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         protected virtual void ExecuteBehavior(StarEntity starEntity)
         {
-            //this.NodeLevel.BoardGameLayer.MoveCard(starEntity);
+            this.NodeLevel.BoardGameLayer.SocketCard(starEntity);
         }
 
         public enum MoveState

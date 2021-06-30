@@ -36,11 +36,13 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public void OnBehaviorStart(ACardNotifBehavior behavior)
         {
-            behavior.NbBehaviorUse = 3;
+            behavior.NbBehaviorUse = 1;
 
             if (behavior is ResurrectCardNotifBehavior)
             {
-                (behavior as ResurrectCardNotifBehavior).FromCardEntities = behavior.NodeLevel.GetLayerFromPlayer(behavior.OwnerCardEntity.Card.Player).CardsCemetery.ToList();
+                Random random = new Random();
+                (behavior as ResurrectCardNotifBehavior).FromCardEntities = behavior.NodeLevel.GetLayerFromPlayer(behavior.OwnerCardEntity.Card.Player).CardsCemetery.Where(pElem => random.NextDouble() > 0.5).ToList();
+                (behavior as ResurrectCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
             }
             else if(behavior is DeleteCardNotifBehavior)
             {
@@ -58,6 +60,11 @@ namespace Metempsychoid.Model.Card.Behaviors
         public void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
         {
             CardEntity cardEntity = behavior.NodeLevel.BoardGameLayer.CardEntityPicked;
+
+            //if (behavior is ResurrectCardNotifBehavior)
+            //{
+            //    (behavior as ResurrectCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
+            //}
             //HashSet<StarLinkEntity> starLinks = behavior.NodeLevel.BoardGameLayer.StarToLinks[starEntityConcerned];
 
             //(behavior as DeleteCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed != cardEntity).ToList();

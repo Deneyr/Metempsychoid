@@ -256,14 +256,21 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.SourceStarEntitiesSet?.Invoke(this.BehaviorSourceStarEntities);
         }
 
-        public void SetBehaviorTargetStarEntities(List<StarEntity> sourceStarEntities)
+        public void SetBehaviorTargetStarEntities(List<StarEntity> targetStarEntities)
         {
-            this.BehaviorTargetStarEntities = new List<StarEntity>(sourceStarEntities);
+            if (targetStarEntities != null && targetStarEntities.Count > 0)
+            {
+                this.BehaviorTargetStarEntities = new List<StarEntity>(targetStarEntities);
+            }
+            else
+            {
+                this.BehaviorTargetStarEntities = null;
+            }
 
             this.TargetStarEntitiesSet?.Invoke(this.BehaviorTargetStarEntities);
         }
 
-        public bool PickCard(Card.Card card)
+        public CardEntity PickCard(Card.Card card)
         {
             if (this.CardEntityPicked == null)
             {
@@ -273,9 +280,9 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
                 this.CardEntityPicked = cardEntity;
 
-                return true;
+                return cardEntity;
             }
-            return false;
+            return null;
         }
 
         public bool PickCard(CardEntity cardEntity)

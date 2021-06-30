@@ -203,7 +203,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             layer.CardUnpicked += OnCardUnpicked;
 
             layer.CardDestroyed += OnCardDestroyed;
-            layer.CardResurrected += OnCardResurrected;
+            // layer.CardResurrected += OnCardResurrected;
 
             layer.SourceCardEntitiesSet += OnSourceCardEntitiesSet;
 
@@ -306,7 +306,14 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             //this.cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
-            this.cardsHand.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+            if ((this.parentLayer as BoardPlayerLayer).CardPileFocused == BoardPlayerLayer.PileFocused.HAND)
+            {
+                this.cardsHand.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+            }
+            else
+            {
+                this.cardsCemetery.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+            }
 
             this.UpdateCardHandPriority();
         }
@@ -315,19 +322,33 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             CardEntity2D cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
-            this.cardsHand.Add(cardPicked);
+            if ((this.parentLayer as BoardPlayerLayer).CardPileFocused == BoardPlayerLayer.PileFocused.HAND)
+            {
+                this.cardsHand.Add(cardPicked);
+            }
+            else
+            {
+                this.cardsCemetery.Add(cardPicked);
+            }
 
             cardPicked.SetCooldownFocus(COOLDOWN_FOCUS);
 
-            this.UpdateCardHandPriority();
+            if ((this.parentLayer as BoardPlayerLayer).CardPileFocused == BoardPlayerLayer.PileFocused.HAND)
+            {
+                this.UpdateCardHandPriority();
+            }
+            else
+            {
+                this.UpdateCardCimeteryPriority();
+            }
         }
 
-        private void OnCardResurrected(CardEntity obj)
-        {
-            this.cardsCemetery.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+        //private void OnCardResurrected(CardEntity obj)
+        //{
+        //    this.cardsCemetery.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
 
-            this.UpdateCardCimeteryPriority();
-        }
+        //    this.UpdateCardCimeteryPriority();
+        //}
 
         private void OnCardDestroyed(CardEntity obj)
         {
@@ -388,14 +409,26 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             this.hittableEntities2D.Clear();
 
-            if (this.SourceCardEntities2D != null)
-            {
-                this.hittableEntities2D.AddRange(this.SourceCardEntities2D);
-            }
-            else
+            if ((this.parentLayer as BoardPlayerLayer).CardPileFocused == BoardPlayerLayer.PileFocused.HAND)
             {
                 this.hittableEntities2D.AddRange(this.cardsHand);
             }
+            else
+            {
+                if (this.SourceCardEntities2D != null)
+                {
+                    this.hittableEntities2D.AddRange(this.cardsCemetery.Where(pElem => this.SourceCardEntities2D.Contains(pElem)));
+                }
+            }
+
+            //if (this.SourceCardEntities2D != null)
+            //{
+            //    this.hittableEntities2D.AddRange(this.SourceCardEntities2D);
+            //}
+            //else
+            //{
+            //    this.hittableEntities2D.AddRange(this.cardsHand);
+            //}
 
             return this.hittableEntities2D;
         }
@@ -648,7 +681,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             (this.parentLayer as BoardPlayerLayer).CardUnpicked -= OnCardUnpicked;
 
             (this.parentLayer as BoardPlayerLayer).CardDestroyed -= OnCardDestroyed;
-            (this.parentLayer as BoardPlayerLayer).CardResurrected -= OnCardResurrected;
+            // (this.parentLayer as BoardPlayerLayer).CardResurrected -= OnCardResurrected;
 
             base.Dispose();
         }
