@@ -24,7 +24,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public override void EndNotif(World world)
         {
-            
+            this.NodeLevel.BoardNotifLayer.RemoveCardAwakened();
         }
 
         public override void StartNotif(World world)

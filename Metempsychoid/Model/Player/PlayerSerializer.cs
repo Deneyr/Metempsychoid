@@ -35,10 +35,10 @@ namespace Metempsychoid.Model.Player
             rootElement.Add(colorElement);
 
             XElement deckElement = new XElement(DECK_ELEMENT);
-            foreach(Card.Card card in playerToSerialize.Deck.Cards)
+            foreach(string cardId in playerToSerialize.Deck.CardIds)
             {
                 XElement cardElement = new XElement(CARD_ELEMENT);
-                cardElement.Value = card.Name;
+                cardElement.Value = cardId;
                 deckElement.Add(cardElement);
             }
             rootElement.Add(deckElement);
@@ -48,7 +48,7 @@ namespace Metempsychoid.Model.Player
             playerDocument.Save(path);
         }
 
-        public static Player Deserialize(string path, CardFactory cardFactory)
+        public static Player Deserialize(string path)
         {
             FileInfo fileInfo = new FileInfo(path);
 
@@ -70,7 +70,7 @@ namespace Metempsychoid.Model.Player
                     IEnumerable<XElement> cardElements = deckElement.Elements(CARD_ELEMENT);
                     foreach (XElement cardElement in cardElements)
                     {
-                        player.Deck.Cards.Add(cardFactory.CreateCard(cardElement.Value, player));
+                        player.Deck.CardIds.Add(cardElement.Value);
                     }
 
                     return player;

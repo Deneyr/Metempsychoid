@@ -18,12 +18,17 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 {
-    public class BoardNotifLayer2D : ALayer2D //, ICardFocusedLayer
+    public class BoardNotifLayer2D : ALayer2D, ICardFocusedLayer
     {
+        private static float COOLDOWN_FOCUS = 2;
+
         private AwakenedBannerLabel2D awakenedBannerLabel2D;
         private EffectBanner2D effectBanner2D;
         private EffectLabel2D effectLabel2D;
 
+        private List<CardEntity2D> cardsHand;
+
+        private CardEntity2D cardFocused;
         private CardEntityAwakenedDecorator2D cardAwakened;
 
         private List<AEntity2D> hittableEntities2D;
@@ -32,6 +37,10 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         private EffectBehaviorLabel2D effectBehaviorLabel2D;
 
         private TurnPhase levelTurnPhase;
+
+        private List<CardEntity2D> pendingRemovingCardEntities;
+
+        public event Action<ICardFocusedLayer> CardFocusedChanged;
 
         public bool IsRunningBehavior
         {
@@ -68,52 +77,6 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             }
         }
 
-        //private BoardGameLayer2D.BoardGameLayer2D boardGameLayer2D;
-
-        //private static Vector2f HAND_POSITION = new Vector2f(0, -350);
-        //private static int HAND_CARD_SPACE = 100;
-
-        //public event Action<ICardFocusedLayer> CardFocusedChanged;
-
-        //protected Vector2f HandPosition
-        //{
-        //    get
-        //    {
-        //        Vector2f result = HAND_POSITION;
-
-        //        return result;
-        //    }
-        //}
-
-        //public List<CardEntity2D> CardsHand
-        //{
-        //    get;
-        //    private set;
-        //}
-
-        //public override IHitRect FocusedGraphicEntity2D
-        //{
-        //    protected set
-        //    {
-        //        IHitRect previousEntityFocused = base.FocusedGraphicEntity2D;
-
-        //        base.FocusedGraphicEntity2D = value;
-
-        //        if (previousEntityFocused != value && value is CardEntity2D)
-        //        {
-        //            this.UpdateCardsHandPosition();
-        //        }
-        //    }
-        //}
-
-        //public CardEntity2D CardFocused
-        //{
-        //    get
-        //    {
-        //        return this.FocusedGraphicEntity2D as CardEntity2D;
-        //    }
-        //}
-
         public CardEntityAwakenedDecorator2D CardAwakened
         {
             get
@@ -131,6 +94,23 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
                         this.cardAwakened.DisplayAwakened();
                         this.awakenedBannerLabel2D.DisplayBanner();
                     }
+                }
+            }
+        }
+
+        public CardEntity2D CardFocused
+        {
+            get
+            {
+                return this.cardFocused;
+            }
+            set
+            {
+                if (this.cardFocused != value)
+                {
+                    this.cardFocused = value;
+
+                    this.CardFocusedChanged?.Invoke(this);
                 }
             }
         }
@@ -167,12 +147,78 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.endTurnButton = new EndTurnButton2D(this);
             this.effectBehaviorLabel2D = new EffectBehaviorLabel2D(this);
 
+            this.pendingRemovingCardEntities = new List<CardEntity2D>();
+
+            this.cardsHand = new List<CardEntity2D>();
+
+            layer.CardCreated += OnCardCreated;
+            layer.CardRemoved += OnCardRemoved;
+
+            layer.CardPicked += OnCardPicked;
+            layer.CardUnpicked += OnCardUnpicked;
+
+            layer.CardFocused += OnCardFocused;
+
             layer.CardAwakened += OnCardAwakened;
 
             layer.NotifBehaviorStarted += OnNotifBehaviorStarted;
             layer.NotifBehaviorPhaseChanged += OnNotifBehaviorPhaseChanged;
             layer.NotifBehaviorUseChanged += OnNotifBehaviorUseChanged;
             layer.NotifBehaviorEnded += OnNotifBehaviorEnded;
+        }
+
+        private void OnCardFocused(Model.Card.CardEntity obj)
+        {
+            if (obj != null)
+            {
+                CardEntity2D cardFocused = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+
+                this.CardFocused = cardFocused;
+                //this.cardToolTip.DisplayToolTip(obj.Card, cardFocused);
+            }
+            else
+            {
+                this.CardFocused = null;
+                //this.cardToolTip.HideToolTip();
+            }
+        }
+
+        private void OnCardPicked(Model.Card.CardEntity obj)
+        {
+            this.cardsHand.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+
+            this.UpdateCardHandPriority();
+        }
+
+        private void OnCardUnpicked(Model.Card.CardEntity obj)
+        {
+            CardEntity2D cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+
+            this.cardsHand.Add(cardPicked);
+
+            cardPicked.SetCooldownFocus(COOLDOWN_FOCUS);
+
+            this.UpdateCardHandPriority();
+        }
+
+        private void OnCardCreated(Model.Card.CardEntity obj)
+        {
+            CardEntity2D cardEntity = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+
+            this.cardsHand.Add(cardEntity);
+
+            this.UpdateCardHandPriority();
+        }
+
+        private void OnCardRemoved(Model.Card.CardEntity obj)
+        {
+            CardEntity2D cardEntity2DToRemove = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+
+            this.cardsHand.Remove(cardEntity2DToRemove);
+
+            this.UpdateCardHandPriority();
+
+            cardEntity2DToRemove.PlayRemoveAnimation();
         }
 
         private void OnNotifBehaviorStarted(IBoardNotifBehavior obj)
@@ -241,11 +287,30 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             }
         }
 
+        protected override void OnEntityRemoved(AEntity obj)
+        {
+            CardEntity2D cardEntity2DToRemove = this.objectToObject2Ds[obj] as CardEntity2D;
+
+            if (cardEntity2DToRemove != null)
+            {
+                this.pendingRemovingCardEntities.Add(cardEntity2DToRemove);
+            }
+            else
+            {
+                base.OnEntityRemoved(obj);
+            }
+        }
+
         public override void InitializeLayer(IObject2DFactory factory)
         {
+            this.cardsHand.Clear();
+
             base.InitializeLayer(factory);
 
+            this.cardFocused = null;
             this.cardAwakened = null;
+
+            this.pendingRemovingCardEntities.Clear();
 
             this.LevelTurnPhase = TurnPhase.VOID;
 
@@ -264,7 +329,14 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
         private void OnCardAwakened(CardEntityAwakenedDecorator obj)
         {
-            this.CardAwakened = this.objectToObject2Ds[obj] as CardEntityAwakenedDecorator2D;
+            if (obj != null)
+            {
+                this.CardAwakened = this.objectToObject2Ds[obj] as CardEntityAwakenedDecorator2D;
+            }
+            else
+            {
+                this.CardAwakened = null;
+            }
         }
 
         public Vector2f GetPositionFrom(ALayer layerFrom, Vector2f position)
@@ -278,78 +350,22 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             return originPosition;
         }
 
-        //private void UpdateCardsHandPosition()
-        //{
-        //    float startWidth = this.HandPosition.X + HAND_CARD_SPACE * this.CardsHand.Count / 2f;
-
-        //    int i = 0;
-        //    bool cardFocusedEncountered = false;
-
-        //    foreach (CardEntity2D cardEntity2D in this.CardsHand)
-        //    {
-        //        Vector2f newPosition;
-        //        cardFocusedEncountered |= this.CardFocused == cardEntity2D;
-
-        //        if (this.CardFocused != null)
-        //        {
-        //            if (this.CardFocused == cardEntity2D)
-        //            {
-        //                newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, this.HandPosition.Y);
-        //            }
-        //            else if (cardFocusedEncountered)
-        //            {
-        //                newPosition = new Vector2f(startWidth - (i + 1) * HAND_CARD_SPACE, this.HandPosition.Y);
-        //            }
-        //            else
-        //            {
-        //                newPosition = new Vector2f(startWidth - (i - 1) * HAND_CARD_SPACE, this.HandPosition.Y);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            newPosition = new Vector2f(startWidth - i * HAND_CARD_SPACE, this.HandPosition.Y);
-        //        }
-
-        //        IAnimation positionAnimation;
-        //        if (this.CardFocused != null)
-        //        {
-        //            positionAnimation = new PositionAnimation(cardEntity2D.Position, newPosition, Time.FromSeconds(1f), AnimationType.ONETIME, InterpolationMethod.SQUARE_DEC);
-        //        }
-        //        else
-        //        {
-        //            positionAnimation = new PositionAnimation(cardEntity2D.Position, newPosition, Time.FromSeconds(2f), AnimationType.ONETIME, InterpolationMethod.SIGMOID);
-        //        }
-
-        //        cardEntity2D.PlayAnimation(positionAnimation);
-        //        i++;
-        //    }
-        //}
-
-        protected override AEntity2D AddEntity(AEntity obj)
+        private void UpdateCardHandPriority()
         {
-            AEntity2D entity2D = base.AddEntity(obj);
-
-            //if (entity2D is CardEntity2D)
-            //{
-            //    CardEntityDecorator cardDecorator = obj as CardEntityDecorator;
-
-            //    if (this.world2D.TryGetTarget(out World2D world2D))
-            //    {
-            //        ALayer2D cardDecoratedParentLayer2D = world2D.LayersDictionary[cardDecorator.ParentLayer];
-
-            //        if (cardDecorator != null)
-            //        {
-            //            entity2D.Position = this.GetPositionInScene(cardDecoratedParentLayer2D.GetPositionInWindow(cardDecorator.CardDecoratedPosition));
-            //        }
-            //    }
-
-            //    this.CardsHand.Add(entity2D as CardEntity2D);
-
-            //    this.UpdateCardsHandPosition();
-            //}
-
-            return entity2D;
+            int i = 0;
+            foreach (CardEntity2D cardEntity2D in this.cardsHand)
+            {
+                cardEntity2D.Priority = 1000 + i;
+                i++;
+            }
         }
+
+        //protected override AEntity2D AddEntity(AEntity obj)
+        //{
+        //    AEntity2D entity2D = base.AddEntity(obj);
+
+        //    return entity2D;
+        //}
 
         protected override void OnEntityPropertyChanged(AEntity obj, string propertyName)
         {
@@ -373,6 +389,18 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             base.UpdateGraphics(deltaTime);
 
             this.endTurnButton.UpdateGraphics(deltaTime);
+
+            if(this.pendingRemovingCardEntities.Count > 0)
+            {
+                List<CardEntity2D> currentRemovingCards = this.pendingRemovingCardEntities.Where(pElem => pElem.IsAnimationRunning() == false).ToList();  
+                
+                foreach(CardEntity2D removingCard in currentRemovingCards)
+                {
+                    base.OnEntityRemoved(this.object2DToObjects[removingCard]);
+
+                    this.pendingRemovingCardEntities.Remove(removingCard);
+                }
+            }
 
             if (this.CardAwakened != null)
             {
@@ -438,10 +466,43 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         {
             this.hittableEntities2D.Clear();
 
+            if(this.cardsHand != null && this.cardsHand.Count > 0)
+            {
+                this.hittableEntities2D.AddRange(this.cardsHand);
+            }
+
             this.hittableEntities2D.Add(this.endTurnButton);
 
             return this.hittableEntities2D;
         }
+
+        //// TO REMOVE
+        //protected override void UpdateFocusedEntity2Ds()
+        //{
+        //    Vector2i mousePosition = this.MousePosition;
+
+        //    AEntity2D newFocusedEntity2D = null;
+        //    IEnumerable<AEntity2D> focusableEntities2D = this.GetEntities2DFocusable();
+        //    foreach (AEntity2D entity2D in focusableEntities2D)
+        //    {
+        //        IHitRect hitRect = entity2D as IHitRect;
+
+        //        if (hitRect != null
+        //            && hitRect.IsFocusable(this)
+        //            && hitRect.HitZone.Contains(mousePosition.X, mousePosition.Y))
+        //        {
+        //            if (newFocusedEntity2D == null
+        //                || (Math.Abs(mousePosition.X - entity2D.Position.X) + Math.Abs(mousePosition.Y - entity2D.Position.Y)
+        //                    < Math.Abs(mousePosition.X - newFocusedEntity2D.Position.X) + Math.Abs(mousePosition.Y - newFocusedEntity2D.Position.Y)))
+        //            {
+        //                newFocusedEntity2D = entity2D;
+        //            }
+        //        }
+        //    }
+
+        //    this.FocusedGraphicEntity2D = newFocusedEntity2D as IHitRect;
+        //}
+        ////
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
         {
@@ -449,6 +510,16 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             SFML.Graphics.View defaultView = window.DefaultView;
             window.SetView(this.view);
+
+            //FloatRect bounds = this.Bounds;
+            //foreach (CardEntity2D removingCardEntity2D in this.pendingRemovingCardEntities)
+            //{
+            //    if (removingCardEntity2D.IsActive
+            //        && removingCardEntity2D.Bounds.Intersects(bounds))
+            //    {
+            //        removingCardEntity2D.DrawIn(window, deltaTime);
+            //    }
+            //}
 
             this.awakenedBannerLabel2D.DrawIn(window, deltaTime);
 
@@ -472,6 +543,14 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             {
                 this.effectLabel2D.Dispose();
             }
+
+            (this.parentLayer as BoardNotifLayer).CardFocused -= OnCardFocused;
+
+            (this.parentLayer as BoardNotifLayer).CardCreated -= OnCardCreated;
+            (this.parentLayer as BoardNotifLayer).CardRemoved -= OnCardRemoved;
+
+            (this.parentLayer as BoardNotifLayer).CardPicked -= OnCardPicked;
+            (this.parentLayer as BoardNotifLayer).CardUnpicked -= OnCardUnpicked;
 
             (this.parentLayer as BoardNotifLayer).CardAwakened -= OnCardAwakened;
 

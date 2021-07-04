@@ -8,7 +8,7 @@ namespace Metempsychoid.Model.Card
 {
     public class CardDeck
     {
-        public List<Card> Cards
+        public List<string> CardIds
         {
             get;
             protected set;
@@ -16,7 +16,7 @@ namespace Metempsychoid.Model.Card
 
         public CardDeck()
         {
-            this.Cards = new List<Card>();
+            this.CardIds = new List<string>();
         }
 
         public void SortDeck()

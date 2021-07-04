@@ -272,7 +272,9 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             this.SupportedPlayer = (levelNode as TestLevel).GetPlayerFromIndex(world, out int currentPlayerIndex);
             this.IndexPlayer = currentPlayerIndex;
 
-            foreach (Card.Card card in this.SupportedPlayer.Deck.Cards)
+            List<Card.Card> deckCards = this.SupportedPlayer.ConstructDeck(world.CardLibrary);
+
+            foreach (Card.Card card in deckCards)
             {
                 CardEntity cardEntity = new CardEntity(this, card, false);
 
@@ -362,24 +364,26 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
             cardEntity.Position = startPosition;
 
-            if (this.CardPileFocused == PileFocused.HAND)
+            switch (this.CardPileFocused)
             {
-                this.CardsHand.Add(cardEntity);
-            }
-            else
-            {
-                this.CardsCemetery.Add(cardEntity);
+                case PileFocused.HAND:
+                    this.CardsHand.Add(cardEntity);
+                    break;
+                case PileFocused.CEMETERY:
+                    this.CardsCemetery.Add(cardEntity);
+                    break;
             }
 
             this.NotifyCardUnpicked(cardEntity);
 
-            if (this.CardPileFocused == PileFocused.HAND)
+            switch (this.CardPileFocused)
             {
-                this.UpdateCardsHandPosition();
-            }
-            else
-            {
-                this.UpdateCardsCimeteryPosition();
+                case PileFocused.HAND:
+                    this.UpdateCardsHandPosition();
+                    break;
+                case PileFocused.CEMETERY:
+                    this.UpdateCardsCimeteryPosition();
+                    break;
             }
 
             return cardEntity;
@@ -546,7 +550,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         public enum PileFocused
         {
             HAND,
-            CEMETERY
+            CEMETERY,
+            OTHER
         }
     }
 }

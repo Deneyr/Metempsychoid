@@ -11,6 +11,12 @@
         <paragraph culture="en"><Normal>Wheel of Fortune &#10; poem</Normal></paragraph>
     </paragraphEntry>
 
+    <paragraphEntry>
+        <key>wheel_of_fortune_effect</key>
+        <paragraph culture="fr"><Normal>Chaque formation de cartes en triangle rapporte</Normal><Normal color="0:255:0">2</Normal><Normal>points de puissance</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
 
     <paragraphEntry>
         <key>the_world_title</key>

@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Animation;
 using Metempsychoid.Model.Card;
 using Metempsychoid.View.Animation;
 using Metempsychoid.View.Controls;
@@ -103,6 +104,23 @@ namespace Metempsychoid.View.Card2D
                 }
             }
         }
+
+        //public override Color SpriteColor
+        //{
+        //    get
+        //    {
+        //        return base.SpriteColor;
+        //    }
+        //    set
+        //    {
+        //        base.SpriteColor = new Color(base.SpriteColor.R, base.SpriteColor.G, base.SpriteColor.B, value.A);
+
+        //        this.canevasSprite.Color = new Color(this.canevasSprite.Color.R, this.canevasSprite.Color.G, this.canevasSprite.Color.B, value.A);
+
+        //        this.cardHalo.SpriteColor = new Color(this.cardHalo.SpriteColor.R, this.cardHalo.SpriteColor.G, this.cardHalo.SpriteColor.B, value.A);
+        //        this.cardLabel.SpriteColor = new Color(this.cardLabel.SpriteColor.R, this.cardLabel.SpriteColor.G, this.cardLabel.SpriteColor.B, value.A);
+        //    }
+        //}
 
         public bool IsFocused
         {
@@ -543,6 +561,19 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
+        public void PlayRemoveAnimation()
+        {
+            SequenceAnimation sequenceAnimation = new SequenceAnimation(Time.FromSeconds(1f), AnimationType.ONETIME);
+
+            IAnimation animation = new PositionAnimation(this.Position, this.Position + new Vector2f(0, 50), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            sequenceAnimation.AddAnimation(0, animation);
+
+            animation = new ColorAnimation(new Color(255, 255, 255, 255), new Color(255, 255, 255, 0), Time.FromSeconds(0.9f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            sequenceAnimation.AddAnimation(0.1f, animation);
+
+            this.PlayAnimation(sequenceAnimation);
+        }
+
         // Part IHitRect
 
         public void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
@@ -556,6 +587,18 @@ namespace Metempsychoid.View.Card2D
             {
                 Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D boardPlayerLayer2D = parentLayer as Layer2D.BoardPlayerLayer2D.BoardPlayerLayer2D;
                 if (boardPlayerLayer2D != null && boardPlayerLayer2D.LevelTurnPhase == Model.Node.TestWorld.TurnPhase.MAIN)
+                {
+                    Vector2i mousePosition = parentLayer.MousePosition;
+
+                    mousePosition.Y -= (int)(this.Bounds.Height / 2);
+                    if (eventType == ControlEventType.MOUSE_LEFT_CLICK)
+                    {
+                        parentLayer.SendEventToWorld(Model.Event.EventType.PICK_CARD, parentLayer.GetEntityFromEntity2D(this), mousePosition.X + ":" + mousePosition.Y);
+                    }
+                }
+
+                Layer2D.BoardNotifLayer2D.BoardNotifLayer2D boardNotifLayer2D = parentLayer as Layer2D.BoardNotifLayer2D.BoardNotifLayer2D;
+                if (boardNotifLayer2D != null && boardNotifLayer2D.LevelTurnPhase == Model.Node.TestWorld.TurnPhase.MAIN)
                 {
                     Vector2i mousePosition = parentLayer.MousePosition;
 
@@ -602,6 +645,13 @@ namespace Metempsychoid.View.Card2D
             {
                 return this.cooldownFocus <= 0 && boardPlayerLayer2D.LevelTurnPhase == Model.Node.TestWorld.TurnPhase.MAIN;
             }
+
+            Layer2D.BoardNotifLayer2D.BoardNotifLayer2D boardNotifLayer2D = parentLayer as Layer2D.BoardNotifLayer2D.BoardNotifLayer2D;
+            if (boardNotifLayer2D != null)
+            {
+                return this.cooldownFocus <= 0 && boardNotifLayer2D.LevelTurnPhase == Model.Node.TestWorld.TurnPhase.MAIN;
+            }
+
             return false;
         }
 

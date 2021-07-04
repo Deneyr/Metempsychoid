@@ -444,6 +444,36 @@ namespace Metempsychoid.Model.Node.TestWorld
             return null;
         }
 
+        public CardEntity PickCard(BoardNotifLayer boardNotifLayer, CardEntity cardPicked)
+        {
+            if (this.BoardGameLayer.CardEntityPicked == null)
+            {
+                if (boardNotifLayer.PickCard(cardPicked))
+                {
+                    return this.BoardGameLayer.PickCard(cardPicked.Card);
+                }
+                this.BoardGameLayer.PickCard(cardPicked);
+            }
+
+            return null;
+        }
+
+        public CardEntity UnpickCard(BoardNotifLayer boardNotifLayer, string detailUnpicked)
+        {
+            if (this.BoardGameLayer.CardEntityPicked != null)
+            {
+                Card.Card cardToUnpick = this.BoardGameLayer.CardEntityPicked.Card;
+                Vector2f startPosition = GetPositionFrom(detailUnpicked);
+
+                if (this.BoardGameLayer.UnPickCard() && boardNotifLayer != null)
+                {
+                    return boardNotifLayer.UnpickCard(cardToUnpick, startPosition);
+                }
+            }
+
+            return null;
+        }
+
         public void MoveCardOverBoard(string detailsMove, CardEntity cardToMove)
         {
             Vector2f startPosition = GetPositionFrom(detailsMove);

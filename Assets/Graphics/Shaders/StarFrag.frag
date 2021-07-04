@@ -1,6 +1,8 @@
 uniform sampler2D currentTexture; // Our render texture
 uniform sampler2D distortionMapTexture; // Our heat distortion map texture
 
+uniform bool isFocused;
+
 uniform float time; // Time used to scroll the distortion map
 uniform float distortionFactor = .02f; // Factor used to control severity of the effect
 uniform float riseFactor = .1f; // Factor used to control how fast air rises
@@ -37,6 +39,12 @@ void main()
     vec4 color = texture2D(currentTexture, distortedTextureCoordinate);
     float ratio = color.a * color.a;
 
-    gl_FragColor = gl_Color * (1 - ratio) + ratio * vec4(1, 1, 1, 1);
-    gl_FragColor.a = color.a;
+    float ratioFocused = 1;
+    if(isFocused)
+    {
+        ratioFocused = (1 + sin(time * 10)) / 2;
+    }
+
+    gl_FragColor = gl_Color * (1 - ratio) + ratio * vec4(1, 1, 1, 1) * ratioFocused + (1 - ratioFocused) * vec4(0.5, 0.5, 0.5, 1);;
+    gl_FragColor.a = gl_Color.a * color.a;
 }

@@ -206,8 +206,8 @@ namespace Metempsychoid.Model
             //}
 
 
-            this.Player = PlayerSerializer.Deserialize("player.xml", this.CardLibrary);
-            this.Opponent = PlayerSerializer.Deserialize("opponent.xml", this.CardLibrary);
+            this.Player = PlayerSerializer.Deserialize("player.xml");
+            this.Opponent = PlayerSerializer.Deserialize("opponent.xml");
 
             this.gameNode.VisitStart(this);
         }

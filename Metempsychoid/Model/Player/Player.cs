@@ -36,5 +36,20 @@ namespace Metempsychoid.Model.Player
 
             this.Deck = new CardDeck();
         }
+
+        public List<Card.Card> ConstructDeck(CardFactory factory)
+        {
+            List<Card.Card> deckCardsResult = new List<Card.Card>();
+
+            foreach(string cardId in this.Deck.CardIds)
+            {
+                deckCardsResult.Add(factory.CreateCard(cardId, this));
+            }
+
+            Random rand = new Random();
+            deckCardsResult.OrderBy(pElem => rand.Next()).ToList();
+
+            return deckCardsResult;
+        }
     }
 }

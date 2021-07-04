@@ -40,8 +40,8 @@ void main()
         ratioFocused = (1 + sin(time * 10)) / 2;
     }
 
-    gl_FragColor = (marginRatio) * color + (1 - marginRatio * 0.5) * vec4(0, 0, 0, 1) * ratioFocused + (1 - ratioFocused) * vec4(0.8, 0.8, 0.8, 1);
-    gl_FragColor.a = marginRatio;
+    gl_FragColor = (marginRatio) * color + (1 - marginRatio * 0.5) * vec4(0, 0, 0, 1) * ratioFocused + (1 - ratioFocused) * vec4(0.5, 0.5, 0.5, 1);
+    gl_FragColor.a = playerColor.a * marginRatio;
 }
 
 float GetMarginRatio(vec2 coordinate)

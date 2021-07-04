@@ -36,7 +36,9 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
             this.CardBehaviorOwner.OnBehaviorStart(this);
 
-            this.State = MoveState.PICK_CARD;
+            this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player).CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.HAND;
+
+            this.State = ResurrectState.PICK_CARD;
         }
     }
 }

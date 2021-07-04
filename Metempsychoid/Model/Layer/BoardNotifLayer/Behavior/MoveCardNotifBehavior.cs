@@ -121,6 +121,16 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         private void HandlePickState(Dictionary<EventType, List<GameEvent>> gameEvents)
         {
+            if (gameEvents.TryGetValue(EventType.NEXT_BEHAVIOR, out List<GameEvent> gameEventsNextBehavior))
+            {
+                if (gameEventsNextBehavior.Any())
+                {
+                    this.IsActive = false;
+                    this.mustNotifyBehaviorEnd = true;
+                    return;
+                }
+            }
+
             if (gameEvents.TryGetValue(EventType.PICK_CARD, out List<GameEvent> gameEventsPicks))
             {
                 GameEvent boardGameEvent = gameEventsPicks.FirstOrDefault(pElem => pElem.Layer == NodeLevel.BoardGameLayer);
@@ -140,17 +150,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
         }
 
         private void HandleSocketState(Dictionary<EventType, List<GameEvent>> gameEvents)
-        {
-            if (gameEvents.TryGetValue(EventType.NEXT_BEHAVIOR, out List<GameEvent> gameEventsNextBehavior))
-            {
-                if (gameEventsNextBehavior.Any())
-                {
-                    this.IsActive = false;
-                    this.mustNotifyBehaviorEnd = true;
-                    return;
-                }
-            }
-
+        { 
             if (gameEvents.TryGetValue(EventType.SOCKET_CARD, out List<GameEvent> gameEventsSocket))
             {
                 GameEvent socketEvent = gameEventsSocket.FirstOrDefault();
@@ -192,13 +192,24 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
                     if (boardGameEvent != null && boardGameEvent.Entity == null)
                     {
-                        this.NodeLevel.UnpickCard(null, boardGameEvent.Details);
+                        //this.NodeLevel.UnpickCard(null, boardGameEvent.Details);
+                        this.NodeLevel.BoardGameLayer.UnPickCard();
 
                         if (NodeLevel.BoardGameLayer.CardEntityPicked == null)
                         {
                             this.State = MoveState.PICK_CARD;
                         }
                     }
+                }
+            }
+
+            if (gameEvents.TryGetValue(EventType.NEXT_BEHAVIOR, out List<GameEvent> gameEventsNextBehavior))
+            {
+                if (gameEventsNextBehavior.Any())
+                {
+                    this.IsActive = false;
+                    this.mustNotifyBehaviorEnd = true;
+                    return;
                 }
             }
         }

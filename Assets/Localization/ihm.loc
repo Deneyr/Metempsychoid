@@ -58,13 +58,13 @@
     </paragraphEntry>
     <paragraphEntry>
         <key>score_domain_player_content</key>
-        <paragraph culture="fr"><BannerTitle>Point(s) de conquete</BannerTitle></paragraph>
-        <paragraph culture="en"><BannerTitle>Conquest point(s)</BannerTitle></paragraph>
+        <paragraph culture="fr"><BannerTitle>Point(s) de puissance</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Power point(s)</BannerTitle></paragraph>
     </paragraphEntry>
     <paragraphEntry>
         <key>score_domain_opponent_content</key>
-        <paragraph culture="fr"><BannerTitle>Point(s) de conquete</BannerTitle></paragraph>
-        <paragraph culture="en"><BannerTitle>Conquest point(s)</BannerTitle></paragraph>
+        <paragraph culture="fr"><BannerTitle>Point(s) de puissance</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Power point(s)</BannerTitle></paragraph>
     </paragraphEntry>
 
     <paragraphEntry>
@@ -92,4 +92,63 @@
         <paragraph culture="fr"><BannerTitle>Fin du tour</BannerTitle></paragraph>
         <paragraph culture="en"><BannerTitle>End turn</BannerTitle></paragraph>
     </paragraphEntry>
+    <paragraphEntry>
+        <key>pass_action</key>
+        <paragraph culture="fr"><BannerTitle>Passer l'action</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Pass action</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>behavior_using_label</key>
+        <paragraph culture="fr"><BannerTitle>utilisation(s) restante(s)</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>remaining using</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>move_behavior_label</key>
+        <paragraph culture="fr"><BannerTitle>Déplacer les cartes indiquées</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Move the focused cards</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>swap_behavior_label</key>
+        <paragraph culture="fr"><BannerTitle>Intervertir les cartes indiquées</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Swap the focused cards</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>delete_behavior_label</key>
+        <paragraph culture="fr"><BannerTitle>Cibler les cartes à détruire</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Target the cards to destroy</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>destroy_action</key>
+        <paragraph culture="fr"><BannerTitle>Détruire les cartes</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Destroy cards</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>resurrect_behavior_label</key>
+        <paragraph culture="fr"><BannerTitle>Rejouer les cartes indiquées</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Replay the focused cards</BannerTitle></paragraph>
+    </paragraphEntry>
+    
+
+    <paragraphEntry>
+        <key>play_behavior_label</key>
+        <paragraph culture="fr"><BannerTitle>Jouer les cartes indiquées</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Play the focused cards</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>play_new_behavior_label</key>
+        <paragraph culture="fr"><BannerTitle>Jouer les nouvelles cartes</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Play the new cards</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>awakened_label</key>
+        <paragraph culture="fr"><BannerTitle>EVEIL</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>ENLIGHTENMENT</BannerTitle></paragraph>
+    </paragraphEntry>
+
 </localization>

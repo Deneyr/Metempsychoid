@@ -306,13 +306,14 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             //this.cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
-            if ((this.parentLayer as BoardPlayerLayer).CardPileFocused == BoardPlayerLayer.PileFocused.HAND)
+            switch((this.parentLayer as BoardPlayerLayer).CardPileFocused)
             {
-                this.cardsHand.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
-            }
-            else
-            {
-                this.cardsCemetery.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+                case BoardPlayerLayer.PileFocused.HAND:
+                    this.cardsHand.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+                    break;
+                case BoardPlayerLayer.PileFocused.CEMETERY:
+                    this.cardsCemetery.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
+                    break;
             }
 
             this.UpdateCardHandPriority();
@@ -322,24 +323,26 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             CardEntity2D cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
-            if ((this.parentLayer as BoardPlayerLayer).CardPileFocused == BoardPlayerLayer.PileFocused.HAND)
+            switch ((this.parentLayer as BoardPlayerLayer).CardPileFocused)
             {
-                this.cardsHand.Add(cardPicked);
-            }
-            else
-            {
-                this.cardsCemetery.Add(cardPicked);
+                case BoardPlayerLayer.PileFocused.HAND:
+                    this.cardsHand.Add(cardPicked);
+                    break;
+                case BoardPlayerLayer.PileFocused.CEMETERY:
+                    this.cardsCemetery.Add(cardPicked);
+                    break;
             }
 
             cardPicked.SetCooldownFocus(COOLDOWN_FOCUS);
 
-            if ((this.parentLayer as BoardPlayerLayer).CardPileFocused == BoardPlayerLayer.PileFocused.HAND)
+            switch ((this.parentLayer as BoardPlayerLayer).CardPileFocused)
             {
-                this.UpdateCardHandPriority();
-            }
-            else
-            {
-                this.UpdateCardCimeteryPriority();
+                case BoardPlayerLayer.PileFocused.HAND:
+                    this.UpdateCardHandPriority();
+                    break;
+                case BoardPlayerLayer.PileFocused.CEMETERY:
+                    this.UpdateCardCimeteryPriority();
+                    break;
             }
         }
 
