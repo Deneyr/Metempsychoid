@@ -122,6 +122,19 @@ namespace Metempsychoid.View.Card2D
         //    }
         //}
 
+        public override Color SpriteColor
+        {
+            set
+            {
+                if (this.SpriteColor != value)
+                {
+                    this.PlayerColor = new Color(this.PlayerColor.R, this.PlayerColor.G, this.PlayerColor.B, value.A);
+
+                    base.SpriteColor = value;
+                }
+            }
+        }
+
         public bool IsFocused
         {
             get

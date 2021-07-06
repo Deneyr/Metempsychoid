@@ -438,7 +438,9 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         {
             base.OnControlActivated(eventType, details);
 
-            if (eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "click")
+            if(eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed"
+                || eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "click")
+            //if (eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "click")
             {
                 Vector2i mousePosition = this.MousePosition;
 

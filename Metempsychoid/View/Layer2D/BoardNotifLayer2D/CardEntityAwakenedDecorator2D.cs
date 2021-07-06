@@ -31,18 +31,18 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             private set;
         }
 
-        public override Color SpriteColor
-        {
-            set
-            {
-                if (this.SpriteColor != value)
-                {
-                    this.PlayerColor = new Color(this.PlayerColor.R, this.PlayerColor.G, this.PlayerColor.B, value.A);
+        //public override Color SpriteColor
+        //{
+        //    set
+        //    {
+        //        if (this.SpriteColor != value)
+        //        {
+        //            this.PlayerColor = new Color(this.PlayerColor.R, this.PlayerColor.G, this.PlayerColor.B, value.A);
 
-                    base.SpriteColor = value;
-                }
-            }
-        }
+        //            base.SpriteColor = value;
+        //        }
+        //    }
+        //}
 
         public override Vector2f Position
         {

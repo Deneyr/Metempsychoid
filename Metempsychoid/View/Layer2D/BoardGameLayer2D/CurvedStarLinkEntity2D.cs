@@ -65,7 +65,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 int height = (int)(vectorStar.OppProjection(vectorCenter).Len());
                 int width = (int)(vectorStar.Projection(vectorCenter).Len());
 
-                this.ObjectSprite.TextureRect = new IntRect(0, 0, width + StarLinkEntity2D.WIDTH_LINK / 2, height + StarLinkEntity2D.WIDTH_LINK / 2);
+                this.ObjectSprite.TextureRect = new IntRect(0, 0, width + StarLinkEntity2D.WIDTH_LINK / 2, height + 4 * StarLinkEntity2D.WIDTH_LINK / 2);
 
                 this.ObjectSprite.Origin = new Vector2f(StarLinkEntity2D.WIDTH_LINK / 2, this.ObjectSprite.TextureRect.Height);
 
