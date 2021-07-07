@@ -12,6 +12,7 @@ uniform float rTo, gTo, bTo;
 
 uniform float radius;
 uniform float margin;
+uniform int sizeX;
 uniform int sizeY;
 uniform int sideMainTexture;
 
@@ -78,7 +79,7 @@ float GetLengthRatio(vec2 coordinate)
     vec2 coordinateCenterWorld = vec2(radius + margin, sizeY);
     vec2 diff = coordinateWorld - coordinateCenterWorld;
 
-    float maxAngle = asin(min(1, sizeY / radius));
+    float maxAngle = acos((radius - sizeX) / radius);
     float pixelAngle = acos(-diff.s / length(diff));
 
     return pixelAngle / maxAngle;

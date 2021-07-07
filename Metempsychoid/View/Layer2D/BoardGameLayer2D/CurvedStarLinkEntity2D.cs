@@ -71,7 +71,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                 this.ObjectSprite.Scale = new Vector2f(1, Math.Sign(this.radius));
 
-                //render.Shader.SetUniform("sizeX", this.ObjectSprite.TextureRect.Width);
+                render.Shader.SetUniform("sizeX", this.ObjectSprite.TextureRect.Width);
                 render.Shader.SetUniform("sizeY", this.ObjectSprite.TextureRect.Height);
             }
         }
