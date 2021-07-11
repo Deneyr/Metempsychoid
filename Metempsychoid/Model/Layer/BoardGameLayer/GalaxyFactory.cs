@@ -246,10 +246,15 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             domain = new CJStarDomain(boardGameLayer, new HashSet<StarEntity>()
             {
                 fourthCircleStars[0],
+                thirdCircleStars[0],
                 fourthCircleStars[1],
+                thirdCircleStars[1],
                 fourthCircleStars[2],
+                thirdCircleStars[2],
                 fourthCircleStars[3],
-                fourthCircleStars[4]
+                thirdCircleStars[3],
+                fourthCircleStars[4],
+                thirdCircleStars[4]
             }, -1, false);
             boardGameLayer.AddStarDomain(domain);
 
@@ -301,8 +306,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 star1,
                 star2,
                 star3,
-                star4,
-                star5
+                star5,
+                star4
             }, 0, true);
             boardGameLayer.AddStarDomain(domain);
 

@@ -48,7 +48,7 @@ namespace Metempsychoid.View
             MappingObjectModelView.Add(typeof(CJMenuLayer), new CJMenuLayer2DFactory());
 
             // Layer background mapping
-            MappingObjectModelView.Add(typeof(BackgroundLayer), new BackgroundLayer2DFactory("VsO7nJK"));
+            MappingObjectModelView.Add(typeof(BackgroundLayer), new BackgroundLayer2DFactory("skyBackground"));
 
             // Layer entity Mapping
             MappingObjectModelView.Add(typeof(EntityLayer), new EntityLayer2DFactory());

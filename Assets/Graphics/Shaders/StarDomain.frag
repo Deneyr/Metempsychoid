@@ -2,7 +2,7 @@ uniform sampler2D currentTexture; // Our render texture
 
 uniform float time; // Time used to scroll the distortion map
 
-uniform vec2[20] points;
+uniform vec2 points[20];
 uniform int pointsLen = 20;
 
 uniform float margin;
@@ -30,10 +30,13 @@ void main()
 float GetAlphaRatio(vec2 coordinate)
 {
     float alphaRatio = 0;
-    float lenOutside = 10000;
-    bool outsideFound = false;
-    bool isInside = true;
 
+    vec2 origin = vec2(-100000, -10000);
+
+    float minDist = 100000;
+
+
+    int nbIntersect = 0;
     for(int i = 0; i < pointsLen; i++)
     {
         vec2 point1 = points[i];
@@ -47,87 +50,66 @@ float GetAlphaRatio(vec2 coordinate)
             point2 = points[i + 1];
         }    
 
-        vec2 currentVector = coordinate - point1;
-        vec2 currentEdge = normalize(point2 - point1);
+        float num1 = point1.x * point2.y - point1.y * point2.x;
+        float num2 = origin.x * coordinate.y - origin.y * coordinate.x;
+        float denum = (point1.x - point2.x) * (origin.y - coordinate.y) - (point1.y - point2.y) * (origin.x - coordinate.x);
 
-        vec3 crossVector = cross(vec3(currentVector, 0), vec3(currentEdge, 0));
-
-        /*if(crossVector.z > 0)
+        if(denum != 0)
         {
-            isInside = false;
+            float intersecX = (num1 * (origin.x - coordinate.x) - num2 * (point1.x - point2.x)) / denum;   
+            float intersecY = (num1 * (origin.y - coordinate.y) - num2 * (point1.y - point2.y)) / denum;
 
-            vec2 secondVector = coordinate - point2;
+            vec2 intersect = vec2(intersecX, intersecY);
 
-            if(dot(currentEdge, currentVector) * dot(currentEdge, secondVector) < 0)
+            if(intersect == point2)
             {
-                lenOutside = crossVector.z;
-                outsideFound = true;
-            }
-        }*/
 
-        if(crossVector.z > 0)
-        {
-            isInside = false;
+            }
+            else if(dot(intersect - point1, intersect - point2) < 0 && dot(intersect - origin, intersect - coordinate) < 0)
+            {
+                nbIntersect++;
+            }
         }
 
-        vec2 secondVector = coordinate - point2;
+        vec2 firstVector = coordinate - point1;
+        //vec2 vector2 = coordinate - point2;
+        vec2 normalizedEdge = normalize(point2 - point1);
+        //vec2 vector = vector - normalizedEdge * dot(normalizedEdge, vector);
 
-        if(dot(currentEdge, currentVector) * dot(currentEdge, secondVector) < 0)
+        vec3 crossVector = cross(vec3(firstVector, 0), vec3(normalizedEdge, 0));
+        //vec3 crossVector2 = cross(vec3(vector2, 0), vec3(-normalizedEdge, 0));
+
+        vec2 secondVector = coordinate - point2;
+        if(dot(normalizedEdge, firstVector) * dot(normalizedEdge, secondVector) < 0)
         {
             float crossLen = abs(crossVector.z);
 
-            if(lenOutside > crossLen)
+            if(crossLen < minDist)
             {
-                lenOutside = crossLen;
+                minDist = crossLen;
             }
+        }
+
+        float lenToPoint = length(firstVector);
+        if(lenToPoint < minDist)
+        {
+            minDist = lenToPoint;
         }
 
     }  
 
-    /*if(outsideFound == false)
+    if(isFilled)
     {
-        bool firstTime = true;
-        for(int i = 0; i < pointsLen; i++)
+        if(nbIntersect % 2 == 1)
         {
-            vec2 currentVector = coordinate - points[i];
-            float lenVec = length(currentVector);
-            if(firstTime || lenVec < lenOutside)
-            {
-                lenOutside = lenVec;
-                firstTime = false;
-            }
-        }
-    }*/
-
-    for(int i = 0; i < pointsLen; i++)
-    {
-        vec2 currentVector = coordinate - points[i];
-        float lenVec = length(currentVector);
-        if(lenVec < lenOutside)
-        {
-            lenOutside = lenVec;
+            alphaRatio = 0.5;
         }
     }
 
-    /*if(isInside)
-    {
-        alphaRatio = 0.7;
-    }
-    else
-    {
-        alphaRatio = min(0.7, 2 * (margin - lenOutside) / margin);
-    }*/
-    
-    if((isFilled && isInside) || lenOutside < margin / 2)
+    if(minDist < margin / 2)
     {
         alphaRatio = 0.5;
     }
-    else
-    {
-        alphaRatio = 0;
-    }
-
-    //alphaRatio = min(0.7, max((margin - lenOutside), 0) / margin);
 
     return alphaRatio;
 }
