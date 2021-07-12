@@ -106,7 +106,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 this.domainPoints = value;
 
-                this.PopulateNewDomainPoints2();
+                //this.PopulateNewDomainPoints2();
 
                 Vec2[] points = new Vec2[NB_MAX_POINTS];
                 int i = 0;
@@ -332,9 +332,91 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             //this.WidthRatio = ((float)width) / this.ObjectSprite.Texture.Size.X;
             //this.HeightRatio = ((float)height) / this.ObjectSprite.Texture.Size.Y;
 
-            this.DomainPoints = entity.Domain.Select(pElem => pElem.Position).ToList();
+
+
+            this.DomainPoints = this.PopulateNewDomainPoints3(entity); //entity.Domain.Select(pElem => pElem.Position).ToList();
 
             this.render.Shader.SetUniform("margin", ((float)MARGIN_DOMAIN) / this.ObjectSprite.Texture.Size.X);
+        }
+
+        private List<Vector2f> PopulateNewDomainPoints3(CJStarDomain entity)
+        {
+            List<Vector2f> pointsToReturn = new List<Vector2f>();
+
+            for(int i = 0; i < entity.Domain.Count; i++)
+            {
+                StarEntity currentStarEntity = entity.Domain[i];
+                StarEntity nextStarEntity = entity.Domain[(i + 1) % entity.Domain.Count];
+
+                pointsToReturn.Add(currentStarEntity.Position);
+
+                if (entity.DomainLinks.TryGetValue(currentStarEntity, out StarLinkEntity currentLink) && currentLink is CurvedStarLinkEntity)
+                {
+                    int sign = currentLink.StarFrom == currentStarEntity ? 1 : -1;
+
+                    float radiusLink = (currentLink as CurvedStarLinkEntity).Radius * sign;
+
+                    Vector2f currentToNextNorm = nextStarEntity.Position - currentStarEntity.Position;
+                    float lenCurrentToNext = currentToNextNorm.Len();
+                    currentToNextNorm = currentToNextNorm / lenCurrentToNext;
+
+                    float angleToRotate = (float) Math.Acos(lenCurrentToNext / (2 * radiusLink));
+
+                    Vector2f currentToCenter = currentToNextNorm.Rotate(angleToRotate) * radiusLink;
+                    Vector2f centerPoint = currentStarEntity.Position + currentToCenter;
+
+                    Vector2f newPoint = centerPoint + (-currentToCenter).Rotate(Math.Sign(radiusLink) * sign * (Math.PI / 2 - angleToRotate));
+
+                    pointsToReturn.Add(newPoint);
+                }
+                else
+                {
+                    Vector2f firstPoint;
+                    if (i == 0)
+                    {
+                        firstPoint = entity.Domain[entity.Domain.Count - 1].Position;
+                    }
+                    else
+                    {
+                        firstPoint = entity.Domain[i - 1].Position;
+                    }
+                    Vector2f secondPoint = entity.Domain[i].Position;
+                    Vector2f thirdPoint = entity.Domain[(i + 1) % entity.Domain.Count].Position;
+                    Vector2f fourthPoint = entity.Domain[(i + 2) % entity.Domain.Count].Position;
+
+                    Vector2f normVector1 = secondPoint - firstPoint;
+                    normVector1 = normVector1 / normVector1.Len();
+
+                    Vector2f normVector2 = thirdPoint - secondPoint;
+                    normVector2 = normVector2 / normVector2.Len();
+
+                    Vector2f normVector3 = fourthPoint - thirdPoint;
+                    normVector3 = normVector3 / normVector3.Len();
+
+                    float distX1 = normVector1.X != 0 ? (secondPoint.X - firstPoint.X) / normVector1.X : (secondPoint.Y - firstPoint.Y) / normVector1.Y;
+                    float distX2 = normVector2.X != 0 ? distX1 + (thirdPoint.X - secondPoint.X) / normVector2.X : distX1 + (thirdPoint.Y - secondPoint.Y) / normVector2.Y;
+                    float distX3 = normVector3.X != 0 ? distX2 + (fourthPoint.X - thirdPoint.X) / normVector3.X : distX2 + (fourthPoint.Y - thirdPoint.Y) / normVector3.Y;
+
+                    Vector2f firstPointX = new Vector2f(0, firstPoint.X);
+                    Vector2f secondPointX = new Vector2f(distX1, secondPoint.X);
+                    Vector2f thirdPointX = new Vector2f(distX2, thirdPoint.X);
+                    Vector2f fourthPointX = new Vector2f(distX3, fourthPoint.X);
+
+                    float x = (distX2 + distX1) / 2;
+                    float newPointX = this.CubicInterpolate(x, firstPointX, secondPointX, thirdPointX, fourthPointX);
+
+                    Vector2f firstPointY = new Vector2f(0, firstPoint.Y);
+                    Vector2f secondPointY = new Vector2f(distX1, secondPoint.Y);
+                    Vector2f thirdPointY = new Vector2f(distX2, thirdPoint.Y);
+                    Vector2f fourthPointY = new Vector2f(distX3, fourthPoint.Y);
+
+                    float newPointY = this.CubicInterpolate(x, firstPointY, secondPointY, thirdPointY, fourthPointY);
+
+                    pointsToReturn.Add(new Vector2f(newPointX, newPointY));
+                }
+            }
+
+            return pointsToReturn;
         }
 
         private void StartNotActiveState()

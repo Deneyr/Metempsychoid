@@ -44,7 +44,13 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             private set;
         }
 
-        public HashSet<StarEntity> Domain
+        public List<StarEntity> Domain
+        {
+            get;
+            private set;
+        }
+
+        public Dictionary<StarEntity, StarLinkEntity> DomainLinks
         {
             get;
             private set;
@@ -63,9 +69,10 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
         }
 
 
-        public CJStarDomain(EntityLayer.EntityLayer entityLayer, HashSet<StarEntity> starDomain, int priority, bool isFilled = true) : base(entityLayer)
+        public CJStarDomain(EntityLayer.EntityLayer entityLayer, List<StarEntity> starDomain, int priority, bool isFilled = true) : base(entityLayer)
         {
             this.Domain = starDomain;
+            this.CreateDomainLinks(entityLayer as BoardGameLayer);
 
             this.IsFilled = isFilled;
 
@@ -76,6 +83,23 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.domainOwner = null;
 
             this.PlayerToPoints = new Dictionary<Player.Player, int>();
+        }
+
+        private void CreateDomainLinks(BoardGameLayer boardGameLayer)
+        {
+            this.DomainLinks = new Dictionary<StarEntity, StarLinkEntity>();
+
+            for(int i = 0; i < this.Domain.Count; i++)
+            {
+                StarEntity currentStarEntity = this.Domain[i];
+                StarEntity nextStarEntity = this.Domain[(i + 1) % this.Domain.Count];
+
+                StarLinkEntity currentLink = boardGameLayer.StarToLinks[currentStarEntity].FirstOrDefault(pElem => pElem.StarFrom == nextStarEntity || pElem.StarTo == nextStarEntity);
+                if(currentLink != null)
+                {
+                    this.DomainLinks.Add(currentStarEntity, currentLink);
+                }
+            }
         }
 
         public void EvaluateDomainOwner()
