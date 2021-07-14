@@ -146,6 +146,17 @@
     </paragraphEntry>
 
     <paragraphEntry>
+        <key>convert_behavior_label</key>
+        <paragraph culture="fr"><BannerTitle>Convertissez les cartes indiquées</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Convert the focused cards</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>convert_action</key>
+        <paragraph culture="fr"><BannerTitle>Convertir les cartes</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Convert cards</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
         <key>awakened_label</key>
         <paragraph culture="fr"><BannerTitle>EVEIL</BannerTitle></paragraph>
         <paragraph culture="en"><BannerTitle>ENLIGHTENMENT</BannerTitle></paragraph>

@@ -346,6 +346,16 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
+        public void ConvertCard(StarEntity starEntity, Player.Player newCardOwner)
+        {
+            if (starEntity.CardSocketed != null)
+            {
+                this.PendingActions.Add(new ConvertCardAction(starEntity.CardSocketed, newCardOwner));
+
+                this.CardEntityPicked = null;
+            }
+        }
+
         public void SwapCard(StarEntity starEntity)
         {
             if (this.CardEntityPicked.ParentStar != starEntity)

@@ -200,11 +200,12 @@ namespace Metempsychoid.View.Card2D
             {
                 return this.playerColor;
             }
-            protected set
+            set
             {
                 if (this.playerColor != value)
                 {
                     this.playerColor = value;
+                    this.cardHalo.SpriteColor = this.playerColor;
 
                     render.Shader.SetUniform("playerColor", new SFML.Graphics.Glsl.Vec4(this.playerColor.R / 255f, this.playerColor.G / 255f, this.playerColor.B / 255f, this.playerColor.A / 255f));
 
@@ -425,7 +426,6 @@ namespace Metempsychoid.View.Card2D
         private void Initialize(CardEntity entity)
         {
             this.PlayerColor = entity.Card.Player.PlayerColor;
-            this.cardHalo.SpriteColor = this.PlayerColor;
 
             this.IsSocketed = entity.ParentStar != null;
             this.RatioColor = 1;

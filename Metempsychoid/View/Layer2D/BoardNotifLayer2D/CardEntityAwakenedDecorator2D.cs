@@ -68,7 +68,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
         public override Color PlayerColor
         {
-            protected set
+            set
             {
                 if (this.playerColor != value)
                 {

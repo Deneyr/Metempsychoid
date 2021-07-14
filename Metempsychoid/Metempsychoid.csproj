@@ -89,6 +89,7 @@
     <Compile Include="Model\Layer\BoardBannerLayer\ToolTipEntity.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\AddCardValueModifier.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\ClearCardValueModifier.cs" />
+    <Compile Include="Model\Layer\BoardGameLayer\Actions\ConvertCardAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\IBoardGameAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\IModifyStarEntityAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\SetCardValueModifier.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ABoardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ACardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\CardAwakenedNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ConvertCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ResurrectCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SocketCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SocketNewCardNotifBehavior.cs" />

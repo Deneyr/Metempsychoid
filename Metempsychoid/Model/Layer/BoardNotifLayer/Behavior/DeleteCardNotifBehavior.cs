@@ -11,7 +11,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 {
     public class DeleteCardNotifBehavior : ACardNotifBehavior
     {
-        private DeleteState state;
+        protected DeleteState state;
 
         protected bool mustNotifyBehaviorEnd;
 
@@ -49,14 +49,14 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             }
         }
 
-        public DeleteState State
+        public virtual DeleteState State
         {
             get
             {
                 return this.state;
             }
 
-            private set
+            protected set
             {
                 if (this.state != value)
                 {
@@ -152,6 +152,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                     IEnumerable<StarEntity> starEntitiesConcerned = this.FromStarEntities.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.IsSelected);
                     foreach (StarEntity starEntity in starEntitiesConcerned)
                     {
+                        starEntity.CardSocketed.IsSelected = false;
+
                         this.ExecuteBehavior(starEntity);
                     }
                     this.IsActive = false;

@@ -20,10 +20,10 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            //layer.RegisterNotifBehavior(new DeleteCardNotifBehavior(this, starEntity.CardSocketed));
+            layer.RegisterNotifBehavior(new ConvertCardNotifBehavior(this, starEntity.CardSocketed));
             //layer.RegisterNotifBehavior(new ResurrectCardNotifBehavior(this, starEntity.CardSocketed));
 
-            layer.RegisterNotifBehavior(new SocketNewCardNotifBehavior(this, starEntity.CardSocketed, new List<string>() { "wheel", "wheel", "wheel", "wheel" }));
+            //layer.RegisterNotifBehavior(new SocketNewCardNotifBehavior(this, starEntity.CardSocketed, new List<string>() { "wheel", "wheel", "wheel", "wheel" }));
         }
 
         public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
@@ -45,6 +45,10 @@ namespace Metempsychoid.Model.Card.Behaviors
                 Random random = new Random();
                 (behavior as ResurrectCardNotifBehavior).FromCardEntities = behavior.NodeLevel.GetLayerFromPlayer(behavior.OwnerCardEntity.Card.Player).CardsCemetery.Where(pElem => random.NextDouble() > 0.5).ToList();
                 (behavior as ResurrectCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
+            }
+            else if (behavior is ConvertCardNotifBehavior)
+            {
+                (behavior as ConvertCardNotifBehavior).FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.Player != behavior.OwnerCardEntity.Card.Player).ToList();
             }
             else if(behavior is DeleteCardNotifBehavior)
             {

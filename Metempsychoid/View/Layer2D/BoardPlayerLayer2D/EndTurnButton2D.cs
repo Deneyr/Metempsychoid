@@ -102,8 +102,13 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.CreateTextParagraph2D(new Vector2f(0, 25), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
             this.UpdateTextOfParagraph(2, "destroy_action");
 
+            this.CreateTextParagraph2D(new Vector2f(0, 25), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
+            this.UpdateTextOfParagraph(3, "convert_action");
+
             this.idLabelToIndex.Add("DeleteCardNotifBehavior." + Enum.GetName(typeof(Model.Layer.BoardNotifLayer.Behavior.DeleteCardNotifBehavior.DeleteState), Model.Layer.BoardNotifLayer.Behavior.DeleteCardNotifBehavior.DeleteState.PICK_CARD), 1);
             this.idLabelToIndex.Add("DeleteCardNotifBehavior." + Enum.GetName(typeof(Model.Layer.BoardNotifLayer.Behavior.DeleteCardNotifBehavior.DeleteState), Model.Layer.BoardNotifLayer.Behavior.DeleteCardNotifBehavior.DeleteState.CAN_DELETE_CARD), 2);
+            this.idLabelToIndex.Add("ConvertCardNotifBehavior." + Enum.GetName(typeof(Model.Layer.BoardNotifLayer.Behavior.ConvertCardNotifBehavior.DeleteState), Model.Layer.BoardNotifLayer.Behavior.ConvertCardNotifBehavior.DeleteState.PICK_CARD), 1);
+            this.idLabelToIndex.Add("ConvertCardNotifBehavior." + Enum.GetName(typeof(Model.Layer.BoardNotifLayer.Behavior.ConvertCardNotifBehavior.DeleteState), Model.Layer.BoardNotifLayer.Behavior.ConvertCardNotifBehavior.DeleteState.CAN_DELETE_CARD), 3);
 
             IAnimation showAnimation = new ColorAnimation(new Color(0, 0, 0, 0), new Color(0, 0, 0, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(showAnimation);

@@ -320,8 +320,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 firstPoint = false;
             }
 
-            float width = bottomRight.X - topLeft.X + MARGIN_DOMAIN * 2;
-            float height = bottomRight.Y - topLeft.Y + MARGIN_DOMAIN * 2;
+            float width = bottomRight.X - topLeft.X + MARGIN_DOMAIN * 3;
+            float height = bottomRight.Y - topLeft.Y + MARGIN_DOMAIN * 3;
             //topLeft -= new Vector2f(MARGIN_DOMAIN, MARGIN_DOMAIN);
 
             this.ObjectSprite.TextureRect = new IntRect(0, 0, (int) width, (int) height);

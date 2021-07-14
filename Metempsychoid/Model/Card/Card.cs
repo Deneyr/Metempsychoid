@@ -20,6 +20,8 @@ namespace Metempsychoid.Model.Card
 
         private int valueModificator;
 
+        private Player.Player cardOwner;
+
         private List<ICardBehavior> cardBehaviorsCloned;
 
         public event Action<string> PropertyChanged;
@@ -65,8 +67,19 @@ namespace Metempsychoid.Model.Card
 
         public Player.Player Player
         {
-            get;
-            set;
+            get
+            {
+                return this.cardOwner;
+            }
+            set
+            {
+                if(this.cardOwner != value)
+                {
+                    this.cardOwner = value;
+
+                    this.PropertyChanged.Invoke("Player");
+                }
+            }
         }
 
         public int Value
@@ -146,7 +159,7 @@ namespace Metempsychoid.Model.Card
         {
             this.cardTemplate = cardTemplate;
 
-            this.Player = player;
+            this.cardOwner = player;
 
             this.valueModificator = 0;
             this.BehaviorToValueModifier = new Dictionary<ICardBehavior, int>();
