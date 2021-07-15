@@ -86,6 +86,7 @@
     <Compile Include="Model\Constellations\ConstellationOpponentNode.cs" />
     <Compile Include="Model\Constellations\ConstellationPattern.cs" />
     <Compile Include="Model\Constellations\ConstellationPatternFactory.cs" />
+    <Compile Include="Model\Constellations\ConstellationSpecificCardNode.cs" />
     <Compile Include="Model\Event\InternalGameEvent.cs" />
     <Compile Include="Model\Event\IGameEventListener.cs" />
     <Compile Include="Model\Layer\BoardBannerLayer\ToolTipEntity.cs" />
