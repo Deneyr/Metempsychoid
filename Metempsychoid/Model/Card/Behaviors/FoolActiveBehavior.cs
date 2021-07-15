@@ -31,9 +31,9 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         }
 
-        public ICardBehavior Clone()
+        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
         {
-            return new FoolActiveBehavior();
+
         }
 
         public void OnBehaviorStart(ACardNotifBehavior behavior)
@@ -43,12 +43,12 @@ namespace Metempsychoid.Model.Card.Behaviors
             if (behavior is ResurrectCardNotifBehavior)
             {
                 Random random = new Random();
-                (behavior as ResurrectCardNotifBehavior).FromCardEntities = behavior.NodeLevel.GetLayerFromPlayer(behavior.OwnerCardEntity.Card.Player).CardsCemetery.Where(pElem => random.NextDouble() > 0.5).ToList();
+                (behavior as ResurrectCardNotifBehavior).FromCardEntities = behavior.NodeLevel.GetLayerFromPlayer(behavior.OwnerCardEntity.Card.CurrentOwner).CardsCemetery.Where(pElem => random.NextDouble() > 0.5).ToList();
                 (behavior as ResurrectCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
             }
             else if (behavior is ConvertCardNotifBehavior)
             {
-                (behavior as ConvertCardNotifBehavior).FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.Player != behavior.OwnerCardEntity.Card.Player).ToList();
+                (behavior as ConvertCardNotifBehavior).FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner != behavior.OwnerCardEntity.Card.CurrentOwner).ToList();
             }
             else if(behavior is DeleteCardNotifBehavior)
             {
@@ -80,6 +80,11 @@ namespace Metempsychoid.Model.Card.Behaviors
             //(behavior as DeleteCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed != cardEntity).ToList();
 
             //behavior.ToStarEntities = starLinks.Select(pElem => pElem.StarFrom == starEntityConcerned ? pElem.StarTo : pElem.StarFrom).Where(pElem => pElem.CardSocketed == null).ToList();
+        }
+
+        public ICardBehavior Clone()
+        {
+            return new FoolActiveBehavior();
         }
     }
 }

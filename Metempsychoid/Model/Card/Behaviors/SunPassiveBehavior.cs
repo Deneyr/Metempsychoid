@@ -51,7 +51,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             List<CardEntity> currentAffectedStarEntity = new List<CardEntity>();
             foreach (Constellation constellation in starEntity.CardSocketed.Card.Constellations)
             {
-                currentAffectedStarEntity.AddRange(constellation.NodeToStarEntity.Values.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.Player == starEntity.CardSocketed.Card.Player).Select(pElem => pElem.CardSocketed));
+                currentAffectedStarEntity.AddRange(constellation.NodeToStarEntity.Values.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner == starEntity.CardSocketed.Card.CurrentOwner).Select(pElem => pElem.CardSocketed));
             }
 
             IEnumerable<CardEntity> noMoreAffected = this.affectedCardEntities.Except(currentAffectedStarEntity);
@@ -78,6 +78,11 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
 
             this.affectedCardEntities.Clear();
+        }
+
+        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
+        {
+
         }
 
         public ICardBehavior Clone()

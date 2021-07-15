@@ -455,11 +455,11 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                     CardBoardLevel ownerLevel = this.ownerLevelNode as CardBoardLevel;
                     foreach (CardEntity cardEntity in this.CardsOffBoard)
                     {
-                        cardEntity.Card.ResetConstellations();
+                        cardEntity.Card.ResetConstellations(this, cardEntity);
 
                         this.RemoveEntityFromLayer(cardEntity);
 
-                        ownerLevel.GetLayerFromPlayer(cardEntity.Card.Player).AddCardToCemetery(cardEntity.Card, cardEntity.Position);
+                        ownerLevel.GetLayerFromPlayer(cardEntity.Card.CurrentOwner).AddCardToCemetery(cardEntity.Card, cardEntity.Position);
                     }
                     this.CardsOffBoard.Clear();
                 }

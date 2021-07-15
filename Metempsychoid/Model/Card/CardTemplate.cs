@@ -78,10 +78,7 @@ namespace Metempsychoid.Model.Card
 
             this.CardBehaviors = new List<ICardBehavior>();
 
-            this.Patterns = new List<ConstellationPattern>()
-            {
-                ConstellationPatternFactory.CreateDefaultConstellation()
-            };
+            this.Patterns = new List<ConstellationPattern>();
         }
 
         public CardTemplate()

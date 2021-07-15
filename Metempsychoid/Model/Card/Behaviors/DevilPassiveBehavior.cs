@@ -47,7 +47,7 @@ namespace Metempsychoid.Model.Card.Behaviors
                     otherStarEntity = pElem.StarTo;
                 }
 
-                return otherStarEntity.CardSocketed != null && otherStarEntity.CardSocketed.Card.Player != starEntity.CardSocketed.Card.Player;
+                return otherStarEntity.CardSocketed != null && otherStarEntity.CardSocketed.Card.CurrentOwner != starEntity.CardSocketed.Card.CurrentOwner;
             }).Count();
 
 
@@ -62,6 +62,11 @@ namespace Metempsychoid.Model.Card.Behaviors
         public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
             layer.PendingActions.Add(new ClearCardValueModifier(ownerCardEntity.Card, this));
+        }
+
+        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
+        {
+
         }
 
         public ICardBehavior Clone()

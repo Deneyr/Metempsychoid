@@ -74,6 +74,11 @@ namespace Metempsychoid.Model.Card.Behaviors
             layer.PendingActions.Add(new ClearCardValueModifier(ownerCardEntity.Card, this));
         }
 
+        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
+        {
+
+        }
+
         public ICardBehavior Clone()
         {
             return new PriestessPassiveBehavior(this.Value, this.CardNames);

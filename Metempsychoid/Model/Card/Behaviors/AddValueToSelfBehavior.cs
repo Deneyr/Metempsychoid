@@ -48,5 +48,10 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             return new AddValueToSelfBehavior(this.Value);
         }
+
+        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
+        {
+            
+        }
     }
 }

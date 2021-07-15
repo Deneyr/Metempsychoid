@@ -54,6 +54,12 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             }
         }
 
+        public HashSet<CardEntity> ModifiedCardEntities
+        {
+            get;
+            private set;
+        }
+
         public override void EndNotif(World world)
         { 
             foreach (StarEntity starEntity in this.NodeLevel.BoardGameLayer.StarSystem)
@@ -73,6 +79,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                 starEntity.CurrentNotifBehavior = this;
             }
 
+            this.ModifiedCardEntities.Clear();
+
             this.CardBehaviorOwner.OnBehaviorStart(this);
         }
 
@@ -88,6 +96,13 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             this.CardBehaviorOwner = cardBehaviorOwner;
 
             this.NbBehaviorUse = 1;
+
+            this.ModifiedCardEntities = new HashSet<CardEntity>();
+        }
+
+        protected virtual void ExecuteBehavior(StarEntity starEntity)
+        {
+            this.ModifiedCardEntities.Add(starEntity.CardSocketed);
         }
     }
 }

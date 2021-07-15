@@ -20,7 +20,7 @@ namespace Metempsychoid.Model.Card
 
         private int valueModificator;
 
-        private Player.Player cardOwner;
+        private Player.Player currentOwner;
 
         private List<ICardBehavior> cardBehaviorsCloned;
 
@@ -65,21 +65,27 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public Player.Player Player
+        public Player.Player CurrentOwner
         {
             get
             {
-                return this.cardOwner;
+                return this.currentOwner;
             }
             set
             {
-                if(this.cardOwner != value)
+                if(this.currentOwner != value)
                 {
-                    this.cardOwner = value;
+                    this.currentOwner = value;
 
-                    this.PropertyChanged.Invoke("Player");
+                    this.PropertyChanged.Invoke("CurrentOwner");
                 }
             }
+        }
+
+        public Player.Player FirstOwner
+        {
+            get;
+            private set;
         }
 
         public int Value
@@ -159,7 +165,8 @@ namespace Metempsychoid.Model.Card
         {
             this.cardTemplate = cardTemplate;
 
-            this.cardOwner = player;
+            this.FirstOwner = player;
+            this.currentOwner = this.FirstOwner;
 
             this.valueModificator = 0;
             this.BehaviorToValueModifier = new Dictionary<ICardBehavior, int>();
@@ -253,7 +260,7 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public void ResetConstellations()
+        public void ResetConstellations(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
             foreach (Constellation constellation in this.constellations)
             {
@@ -261,6 +268,11 @@ namespace Metempsychoid.Model.Card
             }
 
             this.IsAwakened = false;
+
+            foreach (ICardBehavior cardBehavior in this.CardBehaviors)
+            {
+                cardBehavior.OnDestroyed(layer, ownerCardEntity);
+            }
         }
 
         internal void OnConstellationAwakened(Constellation constellationAwakened)

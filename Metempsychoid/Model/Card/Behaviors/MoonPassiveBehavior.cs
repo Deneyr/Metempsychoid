@@ -44,7 +44,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         private void UpdateValue(BoardGameLayer layer, StarEntity starEntity)
         {
-            List<StarEntity> allyStarEntities = layer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.Player == starEntity.CardSocketed.Card.Player).ToList();
+            List<StarEntity> allyStarEntities = layer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner == starEntity.CardSocketed.Card.CurrentOwner).ToList();
 
             int bonus = 0;
             Dictionary<ConstellationNode, StarEntity> nodeToStarEntity = new Dictionary<ConstellationNode, StarEntity>();
@@ -74,6 +74,11 @@ namespace Metempsychoid.Model.Card.Behaviors
         public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
             layer.PendingActions.Add(new ClearCardValueModifier(ownerCardEntity.Card, this));
+        }
+
+        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
+        {
+
         }
 
         public ICardBehavior Clone()

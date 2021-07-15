@@ -21,7 +21,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             this.FromCardEntities.Clear();
             this.ToStarEntities.Clear();
 
-            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player);
+            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner);
 
             currentPlayerLayer.SetBehaviorSourceCardEntities(this.FromCardEntities);
 
@@ -36,7 +36,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
             this.CardBehaviorOwner.OnBehaviorStart(this);
 
-            this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player).CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.HAND;
+            this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner).CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.HAND;
 
             this.State = ResurrectState.PICK_CARD;
         }

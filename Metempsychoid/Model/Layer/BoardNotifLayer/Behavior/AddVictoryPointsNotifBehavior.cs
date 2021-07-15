@@ -35,7 +35,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public override void StartNotif(World world)
         {
-            this.NodeLevel.BoardBannerLayer.AddVictoryPointsTo(this.OwnerCardEntity.Card.Player.PlayerName, this.NbVictoryPointsToAdd);
+            this.NodeLevel.BoardBannerLayer.AddVictoryPointsTo(this.OwnerCardEntity.Card.CurrentOwner.PlayerName, this.NbVictoryPointsToAdd);
         }
 
         public override bool UpdateNotif(World world)

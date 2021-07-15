@@ -43,7 +43,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 
         public void ExecuteAction(BoardGameLayer layerToPerform)
         {
-            this.CardToConvert.Card.Player = this.NewCardOwner;
+            this.CardToConvert.Card.CurrentOwner = this.NewCardOwner;
         }
     }
 }

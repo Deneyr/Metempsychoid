@@ -29,6 +29,27 @@ namespace Metempsychoid.Model.Constellations
             return patternToCreate;
         }
 
+        public static ConstellationPattern CreateLoverConstellation()
+        {
+            ConstellationPattern patternToCreate = new ConstellationPattern();
+
+            ConstellationNode node1 = new ConstellationOpponentNode();
+            patternToCreate.AddNode(node1);
+            ConstellationNode node2 = new ConstellationOpponentNode();
+            patternToCreate.AddNode(node2);
+            ConstellationNodeSelf self = new ConstellationNodeSelf();
+            patternToCreate.AddNode(self);
+
+            ConstellationLink link = new ConstellationLink(self, node2);
+            patternToCreate.AddNodeLink(link);
+            ConstellationLink link2 = new ConstellationLink(self, node1);
+            patternToCreate.AddNodeLink(link2);
+            ConstellationLink link3 = new ConstellationLink(node1, node2);
+            patternToCreate.AddNodeLink(link3);
+
+            return patternToCreate;
+        }
+
         public static ConstellationPattern CreateDefaultConstellation()
         {
             ConstellationPattern patternToCreate = new ConstellationPattern();

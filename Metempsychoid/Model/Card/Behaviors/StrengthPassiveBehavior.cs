@@ -56,7 +56,7 @@ namespace Metempsychoid.Model.Card.Behaviors
                     otherStarEntity = starLinkEntity.StarTo;
                 }
 
-                if(otherStarEntity.CardSocketed != null && otherStarEntity.CardSocketed.Card.Player == starEntity.CardSocketed.Card.Player)
+                if(otherStarEntity.CardSocketed != null && otherStarEntity.CardSocketed.Card.CurrentOwner == starEntity.CardSocketed.Card.CurrentOwner)
                 {
                     currentAffectedStarEntity.Add(otherStarEntity.CardSocketed);
                 }
@@ -86,6 +86,11 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
 
             this.affectedCardEntities.Clear();
+        }
+
+        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
+        {
+
         }
 
         public ICardBehavior Clone()

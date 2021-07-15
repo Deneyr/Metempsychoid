@@ -219,8 +219,13 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             return this.ToStarEntities.Contains(starEntity);
         }
 
-        protected virtual void ExecuteBehavior(StarEntity starEntity)
+        protected override void ExecuteBehavior(StarEntity starEntity)
         {
+            if (this.NodeLevel.BoardGameLayer.CardEntityPicked != null)
+            {
+                this.ModifiedCardEntities.Add(this.NodeLevel.BoardGameLayer.CardEntityPicked);
+            }
+
             this.NodeLevel.BoardGameLayer.MoveCard(starEntity);
         }
 

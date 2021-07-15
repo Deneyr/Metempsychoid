@@ -425,7 +425,7 @@ namespace Metempsychoid.View.Card2D
 
         private void Initialize(CardEntity entity)
         {
-            this.PlayerColor = entity.Card.Player.PlayerColor;
+            this.PlayerColor = entity.Card.CurrentOwner.PlayerColor;
 
             this.IsSocketed = entity.ParentStar != null;
             this.RatioColor = 1;

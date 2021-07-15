@@ -34,7 +34,9 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         protected override void ExecuteBehavior(StarEntity starEntity)
         {
-            this.NodeLevel.BoardGameLayer.ConvertCard(starEntity, this.OwnerCardEntity.Card.Player);
+            this.ModifiedCardEntities.Add(starEntity.CardSocketed);
+
+            this.NodeLevel.BoardGameLayer.ConvertCard(starEntity, this.OwnerCardEntity.Card.CurrentOwner);
         }
     }
 }

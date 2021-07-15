@@ -88,6 +88,11 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.affectedCardEntities.Clear();
         }
 
+        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
+        {
+
+        }
+
         public ICardBehavior Clone()
         {
             return new TemperancePassiveBehavior(this.Value);

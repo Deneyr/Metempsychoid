@@ -109,13 +109,13 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             {
                 if(starEntity.CardSocketed != null)
                 {
-                    if (this.PlayerToPoints.ContainsKey(starEntity.CardSocketed.Card.Player) == false)
+                    if (this.PlayerToPoints.ContainsKey(starEntity.CardSocketed.Card.CurrentOwner) == false)
                     {
-                        this.PlayerToPoints.Add(starEntity.CardSocketed.Card.Player, starEntity.CardSocketed.Card.Value);
+                        this.PlayerToPoints.Add(starEntity.CardSocketed.Card.CurrentOwner, starEntity.CardSocketed.Card.Value);
                     }
                     else
                     {
-                        this.PlayerToPoints[starEntity.CardSocketed.Card.Player] += starEntity.CardSocketed.Card.Value;
+                        this.PlayerToPoints[starEntity.CardSocketed.Card.CurrentOwner] += starEntity.CardSocketed.Card.Value;
                     }
                 }
             }

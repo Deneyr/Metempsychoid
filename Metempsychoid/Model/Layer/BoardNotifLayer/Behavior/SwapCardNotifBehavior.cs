@@ -17,6 +17,16 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         protected override void ExecuteBehavior(StarEntity starEntity)
         {
+            if (this.NodeLevel.BoardGameLayer.CardEntityPicked != null)
+            {
+                this.ModifiedCardEntities.Add(this.NodeLevel.BoardGameLayer.CardEntityPicked);
+            }
+
+            if (starEntity.CardSocketed != null)
+            {
+                this.ModifiedCardEntities.Add(starEntity.CardSocketed);
+            }
+
             this.NodeLevel.BoardGameLayer.SwapCard(starEntity);
         }
     }

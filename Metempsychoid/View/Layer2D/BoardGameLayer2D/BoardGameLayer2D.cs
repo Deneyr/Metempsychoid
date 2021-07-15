@@ -403,10 +403,10 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 case "IsActive":
                     this.objectToObject2Ds[obj].IsActive = (obj as AEntity).IsActive;
                     break;
-                case "Player":
+                case "CurrentOwner":
                     CardEntity cardConcerned = obj as CardEntity;
 
-                    (this.objectToObject2Ds[cardConcerned] as CardEntity2D).PlayerColor = cardConcerned.Card.Player.PlayerColor;
+                    (this.objectToObject2Ds[cardConcerned] as CardEntity2D).PlayerColor = cardConcerned.Card.CurrentOwner.PlayerColor;
                     (this.objectToObject2Ds[cardConcerned.ParentStar] as StarEntity2D).SetCardSocketed(cardConcerned);
                     break;
                 case "Value":

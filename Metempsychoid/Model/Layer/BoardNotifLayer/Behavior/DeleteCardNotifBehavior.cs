@@ -197,8 +197,10 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             }
         }
 
-        protected virtual void ExecuteBehavior(StarEntity starEntity)
+        protected override void ExecuteBehavior(StarEntity starEntity)
         {
+            base.ExecuteBehavior(starEntity);
+
             this.NodeLevel.BoardGameLayer.DeleteCard(starEntity);
         }
 

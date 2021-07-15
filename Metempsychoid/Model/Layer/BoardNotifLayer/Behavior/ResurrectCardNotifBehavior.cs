@@ -44,7 +44,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                     {
                         case ResurrectState.PICK_CARD:
                             this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(null);
-                            this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player).SetBehaviorSourceCardEntities(this.FromCardEntities);
+                            this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner).SetBehaviorSourceCardEntities(this.FromCardEntities);
                             break;
                         case ResurrectState.SOCKET_CARD:
                             //this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player).SetBehaviorSourceCardEntities(null);
@@ -77,7 +77,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             this.FromCardEntities.Clear();
             this.ToStarEntities.Clear();
 
-            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player);
+            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner);
 
             //this.NodeLevel.UnpickCard(currentPlayerLayer, )
 
@@ -95,7 +95,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
             //this.CardBehaviorOwner.OnBehaviorStart(this);
 
-            this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player).CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.CEMETERY;
+            this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner).CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.CEMETERY;
 
             this.State = ResurrectState.PICK_CARD;
         }
@@ -133,7 +133,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         private void HandlePickState(Dictionary<EventType, List<GameEvent>> gameEvents)
         {
-            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player);
+            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner);
 
             if (gameEvents.TryGetValue(EventType.NEXT_BEHAVIOR, out List<GameEvent> gameEventsNextBehavior))
             {
@@ -193,7 +193,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         private void HandleSocketState(Dictionary<EventType, List<GameEvent>> gameEvents)
         {
-            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player);
+            BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner);
 
             if (gameEvents.TryGetValue(EventType.SOCKET_CARD, out List<GameEvent> gameEventsSocket))
             {
@@ -260,8 +260,13 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             return this.ToStarEntities.Contains(starEntity);
         }
 
-        protected virtual void ExecuteBehavior(StarEntity starEntity)
+        protected override void ExecuteBehavior(StarEntity starEntity)
         {
+            if (this.NodeLevel.BoardGameLayer.CardEntityPicked != null)
+            {
+                this.ModifiedCardEntities.Add(this.NodeLevel.BoardGameLayer.CardEntityPicked);
+            }
+
             this.NodeLevel.BoardGameLayer.SocketCard(starEntity);
         }
 

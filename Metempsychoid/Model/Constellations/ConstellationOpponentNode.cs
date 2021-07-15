@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Constellations
 {
-    public class ConstellationAllyNode : ConstellationNode
+    public class ConstellationOpponentNode : ConstellationNode
     {
         public override bool IsStarValid(StarEntity star, StarEntity startStarEntity)
         {
-            return base.IsStarValid(star, startStarEntity) && startStarEntity.CardSocketed.Card.CurrentOwner == star.CardSocketed.Card.CurrentOwner;
+            return base.IsStarValid(star, startStarEntity) && startStarEntity.CardSocketed.Card.CurrentOwner != star.CardSocketed.Card.CurrentOwner;
         }
     }
 }

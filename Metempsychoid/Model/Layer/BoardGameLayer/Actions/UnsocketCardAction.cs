@@ -54,6 +54,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
                     layerToPerform.NameToOnBoardCardEntities.Remove(this.CardToUnsocket.Card.Name);
                 }
 
+                this.CardToUnsocket.Card.CurrentOwner = this.CardToUnsocket.Card.FirstOwner;
+
                 layerToPerform.CardsOffBoard.Add(this.CardToUnsocket);
             }
             //else
