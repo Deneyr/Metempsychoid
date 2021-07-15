@@ -424,14 +424,14 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public int GetNbOpponentDeadCard(Player.Player player)
         {
-            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as TestLevel).BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer != player);
+            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as CardBoardLevel).BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer != player);
 
             return playerLayer.CardsCemetery.Count;
         }
 
         public int GetNbDeadCard(Player.Player player)
         {
-            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as TestLevel).BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer == player);
+            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as CardBoardLevel).BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer == player);
 
             return playerLayer.CardsCemetery.Count;
         }
@@ -452,7 +452,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 // Update off board cards
                 if (this.CardsOffBoard.Count > 0)
                 {
-                    TestLevel ownerLevel = this.ownerLevelNode as TestLevel;
+                    CardBoardLevel ownerLevel = this.ownerLevelNode as CardBoardLevel;
                     foreach (CardEntity cardEntity in this.CardsOffBoard)
                     {
                         cardEntity.Card.ResetConstellations();
@@ -517,14 +517,14 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public void RegisterNotifBehavior(IBoardNotifBehavior notifBehavior)
         {
-            TestLevel ownerLevel = this.ownerLevelNode as TestLevel;
+            CardBoardLevel ownerLevel = this.ownerLevelNode as CardBoardLevel;
             notifBehavior.NodeLevel = ownerLevel;
             ownerLevel.BoardNotifLayer.NotifBehaviorsList.Add(notifBehavior);
         }
 
         public void UnregisterNotifBehavior(CardEntity behaviorOwner)
         {
-            TestLevel ownerLevel = this.ownerLevelNode as TestLevel;
+            CardBoardLevel ownerLevel = this.ownerLevelNode as CardBoardLevel;
             ownerLevel.BoardNotifLayer.NotifBehaviorsList.RemoveAll(pElem => pElem.OwnerCardEntity == behaviorOwner);
         }
 

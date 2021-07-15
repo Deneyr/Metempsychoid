@@ -269,7 +269,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
             this.IsActiveTurn = false;
 
-            this.SupportedPlayer = (levelNode as TestLevel).GetPlayerFromIndex(world, out int currentPlayerIndex);
+            this.SupportedPlayer = (levelNode as CardBoardLevel).GetPlayerFromIndex(world, out int currentPlayerIndex);
             this.IndexPlayer = currentPlayerIndex;
 
             List<Card.Card> deckCards = this.SupportedPlayer.ConstructDeck(world.CardLibrary);
@@ -397,7 +397,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
             if(this.BoardToLayerPositionConverter != null)
             {
-                TestLevel testLevelNode = this.ownerLevelNode as TestLevel;
+                CardBoardLevel testLevelNode = this.ownerLevelNode as CardBoardLevel;
 
                 startPosition = this.BoardToLayerPositionConverter.BoardToLayerPosition(testLevelNode.BoardGameLayer, startPosition);
             }

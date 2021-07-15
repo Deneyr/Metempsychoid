@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Node.TestWorld
 {
-    public class TestLevel: ALevelNode
+    public class CardBoardLevel: ALevelNode
     {
         private static int NB_CARDS_HAND = 4;
 
@@ -56,7 +56,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             private set;
         }
 
-        public TestLevel(World world) :
+        public CardBoardLevel(World world) :
             base(world)
         {
             this.CurrentTurnPhase = TurnPhase.VOID;

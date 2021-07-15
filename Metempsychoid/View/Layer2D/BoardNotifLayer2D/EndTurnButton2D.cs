@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
+namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 {
     public class EndTurnButton2D : AButton2D
     {
@@ -197,7 +197,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             if (parentLayer.FocusedGraphicEntity2D == this)
             {
-                BoardNotifLayer2D.BoardNotifLayer2D boardPlayerLayer2D = (parentLayer as BoardNotifLayer2D.BoardNotifLayer2D);
+                BoardNotifLayer2D boardPlayerLayer2D = (parentLayer as BoardNotifLayer2D);
 
                 //boardPlayerLayer2D.SendUnpickEvent();
 

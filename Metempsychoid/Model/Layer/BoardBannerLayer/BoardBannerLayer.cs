@@ -77,7 +77,7 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
             this.Player = world.Player;
-            this.Opponent = (levelNode as TestLevel).Opponent;
+            this.Opponent = (levelNode as CardBoardLevel).Opponent;
 
             this.PlayerTurn = this.Player;
             this.TurnIndex = 0;

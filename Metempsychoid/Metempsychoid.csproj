@@ -133,7 +133,7 @@
     <Compile Include="Model\Node\ALevelNode.cs" />
     <Compile Include="Model\Node\RootGameNode.cs" />
     <Compile Include="Model\Node\TestWorld\CJMenuLevel.cs" />
-    <Compile Include="Model\Node\TestWorld\TestLevel.cs" />
+    <Compile Include="Model\Node\TestWorld\CardBoardLevel.cs" />
     <Compile Include="Model\Node\TestWorld\TestWorld.cs" />
     <Compile Include="Model\Player\Player.cs" />
     <Compile Include="Model\Player\PlayerSerializer.cs" />
@@ -206,7 +206,7 @@
     <Compile Include="View\Layer2D\BoardGameLayer2D\StarLinkEntity2DFactory.cs" />
     <Compile Include="View\Layer2D\BoardPlayerLayer2D\BoardPlayerLayer2D.cs" />
     <Compile Include="View\Layer2D\BoardPlayerLayer2D\BoardPlayerLayer2DFactory.cs" />
-    <Compile Include="View\Layer2D\BoardPlayerLayer2D\EndTurnButton2D.cs" />
+    <Compile Include="View\Layer2D\BoardNotifLayer2D\EndTurnButton2D.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\EntityLayer2D.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\EntityLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\EntityLayer2D\T_TeleEntity2D.cs" />

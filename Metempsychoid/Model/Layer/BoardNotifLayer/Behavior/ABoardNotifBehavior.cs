@@ -17,7 +17,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             private set;
         }
 
-        public TestLevel NodeLevel
+        public CardBoardLevel NodeLevel
         {
             get;
             set;
