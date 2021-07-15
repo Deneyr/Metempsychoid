@@ -68,6 +68,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
 
+            layer.PlayerScoreUpdated += OnPlayerScoreUpdated;
+
             this.bannerEntity2D = new BannerEntity2D(this);
 
             this.cardFocusedLayers = new HashSet<ICardFocusedLayer>();
@@ -118,6 +120,11 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                     }
                 }
             }
+        }
+
+        private void OnPlayerScoreUpdated(string playerName, int scoreUpdated)
+        {
+            this.scoreLayers[playerName].PlayerScore = scoreUpdated;
         }
 
         private void OnStartDomainsEvaluated()
@@ -372,6 +379,13 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.scoreLayers.Clear();
 
             this.cardFocusedLayers.Clear();
+        }
+
+        public override void Dispose()
+        {
+            (this.parentLayer as BoardBannerLayer).PlayerScoreUpdated -= OnPlayerScoreUpdated;
+
+            base.Dispose();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            layer.RegisterNotifBehavior(new ConvertCardNotifBehavior(this, starEntity.CardSocketed));
+            layer.RegisterNotifBehavior(new AddVictoryPointsNotifBehavior(starEntity.CardSocketed, 1));
             //layer.RegisterNotifBehavior(new ResurrectCardNotifBehavior(this, starEntity.CardSocketed));
 
             //layer.RegisterNotifBehavior(new SocketNewCardNotifBehavior(this, starEntity.CardSocketed, new List<string>() { "wheel", "wheel", "wheel", "wheel" }));

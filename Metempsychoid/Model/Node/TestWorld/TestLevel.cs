@@ -38,6 +38,12 @@ namespace Metempsychoid.Model.Node.TestWorld
             private set;
         }
 
+        public BoardBannerLayer BoardBannerLayer
+        {
+            get;
+            private set;
+        }
+
         public int TurnIndex
         {
             get;
@@ -94,6 +100,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             this.BoardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
             this.BoardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+            this.BoardBannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
 
             this.TurnIndex = -1;
 
@@ -268,6 +275,11 @@ namespace Metempsychoid.Model.Node.TestWorld
                 playerScore += scoresPlayer.Last();
                 opponentScore += scoresOpponent.Last();
             }
+
+            playerScore += bannerLayer.PlayerNameToModifier[world.Player.PlayerName];
+            opponentScore += bannerLayer.PlayerNameToModifier[world.Opponent.PlayerName];
+
+            bannerLayer.ClearModifiers();
 
             scoresPlayer.Add(playerScore);
             scoresOpponent.Add(opponentScore);

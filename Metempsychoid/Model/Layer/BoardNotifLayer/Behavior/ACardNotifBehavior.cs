@@ -55,11 +55,13 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
         }
 
         public override void EndNotif(World world)
-        {
+        { 
             foreach (StarEntity starEntity in this.NodeLevel.BoardGameLayer.StarSystem)
             {
                 starEntity.CurrentNotifBehavior = null;
             }
+
+            this.CardBehaviorOwner.OnBehaviorEnd(this);
         }
 
         public override void StartNotif(World world)
@@ -70,6 +72,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             {
                 starEntity.CurrentNotifBehavior = this;
             }
+
+            this.CardBehaviorOwner.OnBehaviorStart(this);
         }
 
         public virtual bool CanSocketCardOn(StarEntity starEntity, CardEntity cardToSocket)

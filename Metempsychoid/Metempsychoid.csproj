@@ -106,6 +106,7 @@
     <Compile Include="Model\Layer\BoardBannerLayer\BoardBannerLayer.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ABoardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ACardNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\AddVictoryPointsNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\CardAwakenedNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ConvertCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ResurrectCardNotifBehavior.cs" />

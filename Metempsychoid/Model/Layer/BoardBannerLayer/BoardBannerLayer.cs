@@ -10,6 +10,12 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
 {
     public class BoardBannerLayer: EntityLayer.EntityLayer
     {
+        public Dictionary<string, int> PlayerNameToModifier
+        {
+            get;
+            private set;
+        }
+
         public Dictionary<string, List<int>> PlayerNameToTotalScores
         {
             get;
@@ -46,6 +52,28 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
             private set;
         }
 
+        public event Action<string, int> PlayerScoreUpdated;
+
+        public void AddVictoryPointsTo(string playerName, int nbVictoryPointsToAdd)
+        {
+            this.PlayerNameToModifier[playerName] += nbVictoryPointsToAdd;
+
+            int playerTotalScore = 0;
+            if (this.PlayerNameToTotalScores.TryGetValue(playerName, out List<int> scoresList) && scoresList.Count > 0)
+            {
+                playerTotalScore = scoresList.Last();
+            }
+
+            this.PlayerScoreUpdated?.Invoke(playerName, this.PlayerNameToModifier[playerName] + playerTotalScore);
+        }
+
+        public void ClearModifiers()
+        {
+            this.PlayerNameToModifier = new Dictionary<string, int>();
+            this.PlayerNameToModifier.Add(this.Player.PlayerName, 0);
+            this.PlayerNameToModifier.Add(this.Opponent.PlayerName, 0);
+        }
+
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
             this.Player = world.Player;
@@ -60,6 +88,8 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
             this.PlayerNameToTotalScores = new Dictionary<string, List<int>>();
             this.PlayerNameToTotalScores.Add(this.Player.PlayerName, new List<int>());
             this.PlayerNameToTotalScores.Add(this.Opponent.PlayerName, new List<int>());
+
+            this.ClearModifiers();
         }
     }
 }

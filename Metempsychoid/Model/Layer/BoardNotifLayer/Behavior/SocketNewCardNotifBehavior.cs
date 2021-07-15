@@ -91,7 +91,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
             this.mustNotifyBehaviorEnd = false;
 
-            this.CardBehaviorOwner.OnBehaviorStart(this);
+            //this.CardBehaviorOwner.OnBehaviorStart(this);
 
             //this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.Player).CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.CEMETERY;
 
@@ -126,7 +126,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
         {
             if (this.mustNotifyBehaviorEnd)
             {
-                this.CardBehaviorOwner.OnBehaviorEnd(this);
+                //this.CardBehaviorOwner.OnBehaviorEnd(this);
                 this.mustNotifyBehaviorEnd = false;
 
                 if (this.IsActive)
