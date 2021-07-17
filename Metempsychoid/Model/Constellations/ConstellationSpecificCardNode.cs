@@ -9,20 +9,46 @@ namespace Metempsychoid.Model.Constellations
 {
     public class ConstellationSpecificCardNode : ConstellationNode
     {
+        public NodeType Type
+        {
+            get;
+            private set;
+        }
+
         public string CardName
         {
             get;
             private set;
         }
 
-        public ConstellationSpecificCardNode(string cardName)
+        public ConstellationSpecificCardNode(string cardName, NodeType type)
         {
+            this.Type = type;
+
             this.CardName = cardName;
         }
 
         public override bool IsStarValid(StarEntity star, StarEntity startStarEntity)
         {
-            return base.IsStarValid(star, startStarEntity) && startStarEntity.CardSocketed.Card.Name == this.CardName;
+            bool isValid = true;
+            switch (this.Type)
+            {
+                case NodeType.ALLY:
+                    isValid = startStarEntity.CardSocketed.Card.CurrentOwner == star.CardSocketed.Card.CurrentOwner;
+                    break;
+                case NodeType.OPPONENT:
+                    isValid = startStarEntity.CardSocketed.Card.CurrentOwner != star.CardSocketed.Card.CurrentOwner;
+                    break;
+            }
+
+            return isValid && base.IsStarValid(star, startStarEntity) && startStarEntity.CardSocketed.Card.Name == this.CardName;
+        }
+
+        public enum NodeType
+        {
+            DEFAULT,
+            ALLY,
+            OPPONENT
         }
     }
 }

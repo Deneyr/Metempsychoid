@@ -96,13 +96,13 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public override int BonusValue
-        {
-            get
-            {
-                return this.cardTemplate.BonusValue;
-            }
-        }
+        //public override int BonusValue
+        //{
+        //    get
+        //    {
+        //        return this.cardTemplate.BonusValue;
+        //    }
+        //}
 
         public override string Name
         {

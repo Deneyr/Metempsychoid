@@ -29,11 +29,11 @@ namespace Metempsychoid.Model.Card
             private set;
         }
 
-        public virtual int BonusValue
-        {
-            get;
-            private set;
-        }
+        //public virtual int BonusValue
+        //{
+        //    get;
+        //    private set;
+        //}
 
         public virtual string Name
         {
@@ -65,10 +65,10 @@ namespace Metempsychoid.Model.Card
             private set;
         }
 
-        public CardTemplate(string name, string nameIdLoc, string poemIdLoc, string effectIdLoc, int defaultValue, int bonusValue)
+        public CardTemplate(string name, string nameIdLoc, string poemIdLoc, string effectIdLoc, int defaultValue)
         {
             this.DefaultValue = defaultValue;
-            this.BonusValue = bonusValue;
+            //this.BonusValue = bonusValue;
 
             this.Name = name;
 

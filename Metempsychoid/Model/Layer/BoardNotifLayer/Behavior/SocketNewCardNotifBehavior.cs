@@ -74,6 +74,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             //this.FromStarEntities.Clear();
             //this.FromCardEntities.Clear();
             this.ToStarEntities.Clear();
+            this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(this.ToStarEntities);
 
             this.NodeLevel.BoardNotifLayer.RemoveCardsInHand();
 

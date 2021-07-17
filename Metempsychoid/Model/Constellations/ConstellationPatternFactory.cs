@@ -287,7 +287,7 @@ namespace Metempsychoid.Model.Constellations
 
             ConstellationNode node1 = new ConstellationOpponentNode();
             patternToCreate.AddNode(node1);
-            ConstellationNode node2 = new ConstellationSpecificCardNode("empress");
+            ConstellationNode node2 = new ConstellationSpecificCardNode("empress", ConstellationSpecificCardNode.NodeType.ALLY);
             patternToCreate.AddNode(node2);
             ConstellationNodeSelf self = new ConstellationNodeSelf();
             patternToCreate.AddNode(self);
@@ -324,8 +324,13 @@ namespace Metempsychoid.Model.Constellations
         {
             ConstellationPattern patternToCreate = new ConstellationPattern();
 
+            ConstellationNode node1 = new ConstellationLockNode();
+            patternToCreate.AddNode(node1);
             ConstellationNodeSelf self = new ConstellationNodeSelf();
             patternToCreate.AddNode(self);
+
+            ConstellationLink link = new ConstellationLink(self, node1);
+            patternToCreate.AddNodeLink(link);
 
             return patternToCreate;
         }
@@ -336,7 +341,7 @@ namespace Metempsychoid.Model.Constellations
 
             ConstellationNode node1 = new ConstellationAllyNode();
             patternToCreate.AddNode(node1);
-            ConstellationNode node2 = new ConstellationSpecificCardNode("emperor");
+            ConstellationNode node2 = new ConstellationSpecificCardNode("emperor", ConstellationSpecificCardNode.NodeType.ALLY);
             patternToCreate.AddNode(node2);
             ConstellationNodeSelf self = new ConstellationNodeSelf();
             patternToCreate.AddNode(self);

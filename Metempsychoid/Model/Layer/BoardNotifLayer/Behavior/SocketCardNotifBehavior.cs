@@ -20,11 +20,11 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             //this.FromStarEntities.Clear();
             this.FromCardEntities.Clear();
             this.ToStarEntities.Clear();
-
+            
             BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner);
 
             currentPlayerLayer.SetBehaviorSourceCardEntities(this.FromCardEntities);
-
+            this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(this.ToStarEntities);
             //this.NodeLevel.BoardGameLayer.SetBehaviorSourceStarEntities(this.FromStarEntities);
         }
 

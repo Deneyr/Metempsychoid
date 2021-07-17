@@ -63,13 +63,18 @@
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
     <Compile Include="Model\Card\Behaviors\AddValueToSelfBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\DeathActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\DevilPassiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\EmperorActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\FoolActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\HangedManPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\HermitePassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\ICardBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\JusticeActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\LoverPassiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\MagicianActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\MoonPassiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\HierophantActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\PriestessPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\StrengthPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\SunPassiveBehavior.cs" />
@@ -81,6 +86,7 @@
     <Compile Include="Model\Constellations\Constellation.cs" />
     <Compile Include="Model\Constellations\ConstellationAllyNode.cs" />
     <Compile Include="Model\Constellations\ConstellationLink.cs" />
+    <Compile Include="Model\Constellations\ConstellationLockNode.cs" />
     <Compile Include="Model\Constellations\ConstellationNode.cs" />
     <Compile Include="Model\Constellations\ConstellationNodeSelf.cs" />
     <Compile Include="Model\Constellations\ConstellationOpponentNode.cs" />
