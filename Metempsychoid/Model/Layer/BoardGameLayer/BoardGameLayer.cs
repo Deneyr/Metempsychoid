@@ -385,6 +385,19 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
+        public void SecureDomains(StarEntity starEntity)
+        {
+            if(starEntity.CardSocketed != null)
+            {
+                IEnumerable<CJStarDomain> domainConcerned = this.StarDomains.Where(pElem => pElem.Domain.Contains(starEntity));
+
+                foreach(CJStarDomain domain in domainConcerned)
+                {
+                    this.PendingActions.Add(new SecureDomainAction(domain, starEntity.CardSocketed.Card.CurrentOwner));
+                }
+            }
+        }
+
         //public void GetCardFromBoard(CardEntity cardEntity)
         //{
         //    //cardEntity.IsActive = false;

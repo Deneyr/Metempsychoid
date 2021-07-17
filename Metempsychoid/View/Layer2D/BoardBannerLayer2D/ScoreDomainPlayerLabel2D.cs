@@ -73,6 +73,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.CreateTextParagraph2D(new Vector2f(0, 10), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 20);
             this.CreateTextParagraph2D(new Vector2f(0, 80), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 20);
             this.CreateTextParagraph2D(new Vector2f(0, 30), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 40);
+            this.CreateTextParagraph2D(new Vector2f(0, 40), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 25);
 
             if (indexPlayer == 0)
             {
@@ -92,6 +93,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 this.UpdateTextOfParagraph(1, "score_domain_opponent_content");
             }
 
+            this.UpdateTextOfParagraph(3, "score_domain_temporary_content");
+
             this.IsActive = false;
 
             IAnimation anim = new PositionAnimation(this.Position, new Vector2f(-this.offsetX, 0), Time.FromSeconds(1f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
@@ -106,11 +109,25 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.animationsList.Add(sequence);
         }
 
-        public void DisplayScore(int score)
+        public void DisplayScore(int score, bool isTemporaryOwner)
         {
             this.IsActive = true;
 
-            this.Score = score;
+            this.textParagraph2Ds[0].IsActive = true;
+            if (isTemporaryOwner)
+            {
+                this.textParagraph2Ds[1].IsActive = false;
+                this.textParagraph2Ds[2].IsActive = false;
+                this.textParagraph2Ds[3].IsActive = true;
+            }
+            else
+            {
+                this.Score = score;
+
+                this.textParagraph2Ds[1].IsActive = true;
+                this.textParagraph2Ds[2].IsActive = true;
+                this.textParagraph2Ds[3].IsActive = false;
+            }
         }
     }
 }

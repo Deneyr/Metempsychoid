@@ -63,6 +63,7 @@
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
     <Compile Include="Model\Card\Behaviors\AddValueToSelfBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\CartActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\DeathActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\DevilPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\EmperorActiveBehavior.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Model\Card\Behaviors\HangedManPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\HermitePassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\ICardBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\JudgementActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\JusticeActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\LoverPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\MagicianActiveBehavior.cs" />
@@ -79,6 +81,8 @@
     <Compile Include="Model\Card\Behaviors\StrengthPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\SunPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\TemperancePassiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\WheelActiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\WorldActiveBehavior.cs" />
     <Compile Include="Model\Card\Card.cs" />
     <Compile Include="Model\Card\CardDeck.cs" />
     <Compile Include="Model\Card\CardEntity.cs" />
@@ -101,6 +105,7 @@
     <Compile Include="Model\Layer\BoardGameLayer\Actions\ConvertCardAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\IBoardGameAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\IModifyStarEntityAction.cs" />
+    <Compile Include="Model\Layer\BoardGameLayer\Actions\SecureDomainAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\SetCardValueModifier.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\SocketCardAction.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\UnsocketCardAction.cs" />
@@ -119,6 +124,7 @@
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\CardAwakenedNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ConvertCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ResurrectCardNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SecureDomainNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SocketCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SocketNewCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\CardEntityDecorator.cs" />

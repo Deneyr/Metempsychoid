@@ -34,7 +34,7 @@ namespace Metempsychoid.Model.Card
 
             //cardTemplate.CardBehaviors.Add(new AddValueToSelfBehavior(1));
             cardTemplate.CardBehaviors.Add(new MoonPassiveBehavior(2, ConstellationPatternFactory.CreateMoonConstellation()));
-            //cardTemplate.CardBehaviors.Add(new HierophantActiveBehavior());
+            cardTemplate.CardBehaviors.Add(new WorldActiveBehavior());
 
             //cardTemplate.HandlingCardAwakened = this.DefaultAwakenedFunction;
             //cardTemplate.HandlingCardUnAwakened = this.DefaultUnAwakenedFunction;

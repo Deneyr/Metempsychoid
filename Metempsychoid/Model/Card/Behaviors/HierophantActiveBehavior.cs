@@ -22,7 +22,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.NewCardsToAdd = newCardsToAdd;
         }
 
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionOccured)
+        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
         {
 
         }

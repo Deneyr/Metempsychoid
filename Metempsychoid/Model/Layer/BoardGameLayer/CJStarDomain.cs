@@ -12,10 +12,17 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
     {
         private Player.Player domainOwner;
 
+        private Player.Player temporaryDomainOwner;
+
         public Player.Player DomainOwner
         {
             get
             {
+                if(this.TemporaryDomainOwner != null)
+                {
+                    return this.TemporaryDomainOwner;
+                }
+
                 return this.domainOwner;
             }
             private set
@@ -23,6 +30,26 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 if (this.domainOwner != value)
                 {
                     this.domainOwner = value;
+
+                    if (this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
+                    {
+                        entityLayer.NotifyObjectPropertyChanged(this, "DomainOwner");
+                    }
+                }
+            }
+        }
+
+        public Player.Player TemporaryDomainOwner
+        {
+            get
+            {
+                return this.temporaryDomainOwner;
+            }
+            set
+            {
+                if(this.temporaryDomainOwner != value)
+                {
+                    this.temporaryDomainOwner = value;
 
                     if (this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
                     {
@@ -81,6 +108,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.Priority = priority;
 
             this.domainOwner = null;
+
+            this.temporaryDomainOwner = null;
 
             this.PlayerToPoints = new Dictionary<Player.Player, int>();
         }

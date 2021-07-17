@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class MagicianActiveBehavior : ICardBehavior, ICardBehaviorOwner
+    public class WheelActiveBehavior : ICardBehavior, ICardBehaviorOwner
     {
 
         public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
@@ -19,14 +19,14 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            if(layer.StarSystem
-                .Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner == starEntity.CardSocketed.Card.CurrentOwner && pElem.CardSocketed != starEntity.CardSocketed).Any() == false)
+            if (layer.StarToLinks[starEntity]
+                .Select(pElem => pElem.StarFrom != starEntity ? pElem.StarFrom : pElem.StarTo)
+                .Where(pElem => pElem.CardSocketed != null).Any() == false)
             {
                 return;
             }
 
-            if (layer.StarToLinks[starEntity]
-                .Select(pElem => pElem.StarFrom != starEntity ? pElem.StarFrom : pElem.StarTo)
+            if (layer.StarSystem
                 .Where(pElem => pElem.CardSocketed == null).Any() == false)
             {
                 return;
@@ -50,7 +50,9 @@ namespace Metempsychoid.Model.Card.Behaviors
             behavior.NbBehaviorUse = 1;
 
             MoveCardNotifBehavior moveCardBehavior = behavior as MoveCardNotifBehavior;
-            moveCardBehavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner == behavior.OwnerCardEntity.Card.CurrentOwner && pElem.CardSocketed != behavior.OwnerCardEntity).ToList();
+            moveCardBehavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarToLinks[behavior.OwnerCardEntity.ParentStar]
+                .Select(pElem => pElem.StarFrom != behavior.OwnerCardEntity.ParentStar ? pElem.StarFrom : pElem.StarTo)
+                .Where(pElem => pElem.CardSocketed != null).ToList();
         }
 
         public void OnBehaviorEnd(ACardNotifBehavior behavior)
@@ -62,15 +64,12 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             MoveCardNotifBehavior moveCardBehavior = behavior as MoveCardNotifBehavior;
 
-            moveCardBehavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarToLinks[behavior.OwnerCardEntity.ParentStar]
-                .Select(pElem => pElem.StarFrom != behavior.OwnerCardEntity.ParentStar ? pElem.StarFrom : pElem.StarTo)
-                .Where(pElem => pElem.CardSocketed == null).ToList();
+            moveCardBehavior.ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
         }
 
         public ICardBehavior Clone()
         {
-            return new MagicianActiveBehavior();
+            return new WheelActiveBehavior();
         }
     }
 }
-

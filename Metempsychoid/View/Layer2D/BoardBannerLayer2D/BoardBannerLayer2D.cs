@@ -161,7 +161,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 domainOwnerName = domain.DomainOwner.PlayerName;
             }
 
-            this.scoreDomainLabel2D.DisplayScoreDomainLabel(domainOwnerName);
+            this.scoreDomainLabel2D.DisplayScoreDomainLabel(domainOwnerName, domain.TemporaryDomainOwner != null);
+
             foreach (KeyValuePair<Player, int> keyValuePair in domain.PlayerToPoints)
             {
                 this.scoreDomainLabel2D.UpdateScoreDomainLabel(keyValuePair.Key.PlayerName, keyValuePair.Value);

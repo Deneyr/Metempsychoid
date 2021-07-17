@@ -18,6 +18,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         private ZoomVSState zoomState;
 
         private string ownerName;
+        private bool isTemporaryOwner;
 
         public override bool IsActive
         {
@@ -51,26 +52,6 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 this.textParagraph2Ds[1].CustomZoom = value;
             }
         }
-        //private int score;
-
-        //public int Score
-        //{
-        //    get
-        //    {
-        //        return this.score;
-        //    }
-        //    set
-        //    {
-        //        if (this.score != value)
-        //        {
-        //            this.score = value;
-
-        //            this.CreateTextOfParagraph(2, this.score.ToString(), "BannerTitle");
-
-        //            this.PlayAnimation(0);
-        //        }
-        //    }
-        //}
 
         public override Vector2f Position
         {
@@ -115,6 +96,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             : base(parentLayer)
         {
             this.ownerName = null;
+            this.isTemporaryOwner = false;
             this.zoomState = ZoomVSState.STOP;
 
             this.Canevas = new IntRect(0, 0, 500, 200);
@@ -156,27 +138,29 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         public void UpdateScoreDomainLabel(string playerName, int score)
         {
-            this.playerNameToScoreDomain2D[playerName].DisplayScore(score);
+            this.playerNameToScoreDomain2D[playerName].DisplayScore(score, this.isTemporaryOwner && playerName == this.ownerName);
         }
 
-        public void DisplayScoreDomainLabel(string ownerName)
+        public void DisplayScoreDomainLabel(string ownerName, bool isTemporaryOwner)
         {
             this.Zoom = 2;
             this.ownerName = ownerName;
+            this.isTemporaryOwner = isTemporaryOwner;
 
             this.ActiveAllParagraphs();
 
             this.Position = new Vector2f(0, 0);
             this.SpriteColor = new Color(0, 0, 0, 0);
 
-            foreach (ScoreDomainPlayerLabel2D scoreDomainPlayerLabel2D in this.playerNameToScoreDomain2D.Values)
+            foreach (KeyValuePair<string, ScoreDomainPlayerLabel2D> scoreDomainKeyValuePair in this.playerNameToScoreDomain2D)
             {
-                scoreDomainPlayerLabel2D.DisplayScore(0);
+                scoreDomainKeyValuePair.Value.DisplayScore(0, this.isTemporaryOwner && scoreDomainKeyValuePair.Key == this.ownerName);
             }
 
             this.InitializeZoomVSRunning();
 
             this.IsActive = true;
+
             this.PlayAnimation(0);
         }
 
@@ -235,7 +219,6 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         {
             if (this.ownerName != null)
             {
-
                 foreach (KeyValuePair<string, ScoreDomainPlayerLabel2D> keyValuePair in this.playerNameToScoreDomain2D)
                 {
                     if (keyValuePair.Key == this.ownerName)

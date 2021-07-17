@@ -531,6 +531,11 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             if (this.CheckNextTurnPhaseEvent(TurnPhase.START_TURN, null))
             {
+                foreach (CJStarDomain domain in this.BoardGameLayer.StarDomains)
+                {
+                    domain.TemporaryDomainOwner = null;
+                }
+
                 this.InitializeStartTurnPhase(world);
             }
         }
