@@ -25,7 +25,7 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             if (starEntity.CardSocketed.Card.IsAwakened)
             {
-                if (actionsOccured.Any(pElem => pElem is UnsocketCardAction))
+                if (actionsOccured.Any(pElem => pElem is UnsocketCardAction || pElem is SocketCardAction))
                 {
                     this.UpdateValue(layer, starEntity);
                 }
@@ -39,7 +39,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         private void UpdateValue(BoardGameLayer layer, StarEntity starEntity)
         {
-            int bonus = layer.GetNbOpponentDeadCard(starEntity.CardSocketed.Card.CurrentOwner);
+            int bonus = layer.GetNbOpponentDeadCard(starEntity.CardSocketed.Card.CurrentOwner) * this.Value;
 
             bool mustSetValue = starEntity.CardSocketed.Card.BehaviorToValueModifier.TryGetValue(this, out int currentValue) == false || currentValue != bonus;
 

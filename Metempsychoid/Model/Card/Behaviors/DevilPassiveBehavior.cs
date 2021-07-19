@@ -48,7 +48,7 @@ namespace Metempsychoid.Model.Card.Behaviors
                 }
 
                 return otherStarEntity.CardSocketed != null && otherStarEntity.CardSocketed.Card.CurrentOwner != starEntity.CardSocketed.Card.CurrentOwner;
-            }).Count();
+            }).Count() * this.Value;
 
 
             bool mustSetValue = starEntity.CardSocketed.Card.BehaviorToValueModifier.TryGetValue(this, out int currentValue) == false || currentValue != bonus;

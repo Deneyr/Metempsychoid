@@ -320,7 +320,7 @@ namespace Metempsychoid.Model.Constellations
             return CreateCartConstellation();
         }
 
-        public static ConstellationPattern CreateRocConstellation()
+        public static ConstellationPattern CreateRockConstellation()
         {
             ConstellationPattern patternToCreate = new ConstellationPattern();
 

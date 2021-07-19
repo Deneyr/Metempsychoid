@@ -61,6 +61,8 @@ namespace Metempsychoid.Model.Card.Behaviors
                 }
             }
 
+            bonus *= this.Value;
+
             bool mustSetValue = starEntity.CardSocketed.Card.BehaviorToValueModifier.TryGetValue(this, out int currentValue) == false || currentValue != bonus;
 
             if (mustSetValue)
