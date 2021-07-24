@@ -91,6 +91,8 @@ namespace Metempsychoid.View.Text2D
                             {
                                 string content = paragraph.Value;
 
+                                content = CleanSpecialCaracters(content);
+
                                 List<TextToken2D> token2DsList = this.CreateTextTokens(content, Color.White);
 
                                 this.idToTokens.Add(key, token2DsList);
@@ -102,6 +104,8 @@ namespace Metempsychoid.View.Text2D
                                 foreach (XElement paragraphElement in paragraphElements)
                                 {
                                     string content = paragraphElement.Value;
+
+                                    content = CleanSpecialCaracters(content);
 
                                     XAttribute colorAttribut = paragraphElement.Attribute("color");
                                     Color tokenFillColor = Color.White;
@@ -123,6 +127,18 @@ namespace Metempsychoid.View.Text2D
                     }
                 }
             }
+        }
+
+        private static string CleanSpecialCaracters(string str)
+        {
+            str = str.Replace("é", "e");
+            str = str.Replace("è", "e");
+            str = str.Replace("ê", "e");
+            str = str.Replace("ë", "e");
+
+            str = str.Replace("à", "a");
+
+            return str;
         }
 
         private List<TextToken2D> CreateTextTokens(string text, Color fillColor)

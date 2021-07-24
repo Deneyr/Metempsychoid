@@ -38,7 +38,7 @@ namespace Metempsychoid.Model.Card
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("justice", "justice_title", "justice_poem", "justice_effect", 1);
-            cardTemplate.Patterns.Add(ConstellationPatternFactory.CreateStrengthConstellation());
+            cardTemplate.Patterns.Add(ConstellationPatternFactory.CreateJusticeConstellation());
 
             cardTemplate.CardBehaviors.Add(new JusticeActiveBehavior(1));
             this.AddCardTemplateToLibrary(cardTemplate);
@@ -132,7 +132,7 @@ namespace Metempsychoid.Model.Card
 
             this.AddCardTemplateToLibrary(cardTemplate);
 
-            cardTemplate = new CardTemplate("emperess", "emperess_title", "emperess_poem", "emperess_effect", 1);
+            cardTemplate = new CardTemplate("empress", "empress_title", "empress_poem", "empress_effect", 1);
             cardTemplate.Patterns.Add(ConstellationPatternFactory.CreateEmpressConstellation());
 
             cardTemplate.CardBehaviors.Add(new EmperorActiveBehavior(1));
@@ -157,7 +157,7 @@ namespace Metempsychoid.Model.Card
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("sun", "sun_title", "sun_poem", "sun_effect", 1);
-            cardTemplate.Patterns.Add(ConstellationPatternFactory.CreateJudgementConstellation());
+            cardTemplate.Patterns.Add(ConstellationPatternFactory.CreateSunConstellation());
 
             cardTemplate.CardBehaviors.Add(new SunPassiveBehavior(1));
             this.AddCardTemplateToLibrary(cardTemplate);

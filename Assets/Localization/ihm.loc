@@ -66,6 +66,11 @@
         <paragraph culture="fr"><BannerTitle>Point(s) de puissance</BannerTitle></paragraph>
         <paragraph culture="en"><BannerTitle>Power point(s)</BannerTitle></paragraph>
     </paragraphEntry>
+    <paragraphEntry>
+        <key>score_domain_temporary_content</key>
+        <paragraph culture="fr"><BannerTitle>Gagne le domaine pour ce tour</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Gain the domain for this turn</BannerTitle></paragraph>
+    </paragraphEntry>
 
     <paragraphEntry>
         <key>start_player_turn</key>

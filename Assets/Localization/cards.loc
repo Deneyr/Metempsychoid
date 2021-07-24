@@ -29,4 +29,441 @@
         <paragraph culture="fr"><Normal>Le voyage touche a sa fin &#10; sous un soleil cramoisi &#10; Toutes les questions nees au matin &#10; trouvent leur reponse dans la nuit &#10; Car voici la plenitude du monde</Normal></paragraph>
         <paragraph culture="en"><Normal>The world &#10; poem</Normal></paragraph>
     </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>strength_title</key>
+        <paragraph culture="fr"><Normal>La Force</Normal></paragraph>
+        <paragraph culture="en"><Normal>Strength</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>strength_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>strength_effect</key>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+1</Normal><Normal> point de puissance aux cartes alliées liées</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>justice_title</key>
+        <paragraph culture="fr"><Normal>La Justice</Normal></paragraph>
+        <paragraph culture="en"><Normal>Justice</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>justice_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>justice_effect</key>
+        <paragraph culture="fr"><Normal>Actif : Ramène </Normal><Normal color="0:255:0">1</Normal><Normal> carte alliée détruite sur un emplacement au choix</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>moon_title</key>
+        <paragraph culture="fr"><Normal>La Lune</Normal></paragraph>
+        <paragraph culture="en"><Normal>Moon</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>moon_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>moon_effect</key>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+2</Normal><Normal> points de puissance par nombre de constellation en triangle alliée liée</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>death_title</key>
+        <paragraph culture="fr"><Normal>La Mort</Normal></paragraph>
+        <paragraph culture="en"><Normal>Death</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>death_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>death_effect</key>
+        <paragraph culture="fr"><Normal>Actif : Détruit </Normal><Normal color="0:255:0">1</Normal><Normal> carte sur le plateau</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>lover_title</key>
+        <paragraph culture="fr"><Normal>L'Amoureux</Normal></paragraph>
+        <paragraph culture="en"><Normal>Lover</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>lover_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>lover_effect</key>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">1</Normal><Normal> carte ennemie liée devient alliée tant qu'elle est liée</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>priestess_title</key>
+        <paragraph culture="fr"><Normal>La Papesse</Normal></paragraph>
+        <paragraph culture="en"><Normal>High Priestess</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>priestess_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>priestess_effect</key>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+1</Normal><Normal> point de puissance pour chaque autre prêtresse et hiérophante actuellement en jeu</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>temperance_title</key>
+        <paragraph culture="fr"><Normal>La Temperance</Normal></paragraph>
+        <paragraph culture="en"><Normal>Temperance</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>temperance_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>temperance_effect</key>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="255:0:0">-1</Normal><Normal> points de puissance aux cartes liées</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>cart_title</key>
+        <paragraph culture="fr"><Normal>Le Chariot</Normal></paragraph>
+        <paragraph culture="en"><Normal>Chariot</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>cart_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>cart_effect</key>
+        <paragraph culture="fr"><Normal>Actif : Si le chariot est déplacé à côté de cartes ennemis liées, on peut en détruire </Normal><Normal color="0:255:0">1</Normal><Normal> au choix</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>devil_title</key>
+        <paragraph culture="fr"><Normal>Le Diable</Normal></paragraph>
+        <paragraph culture="en"><Normal>Devil</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>devil_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>devil_effect</key>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+1</Normal><Normal> point de puissance par carte ennemie liée</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>fool_title</key>
+        <paragraph culture="fr"><Normal>Le Fou</Normal></paragraph>
+        <paragraph culture="en"><Normal>Fool</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>fool_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>fool_effect</key>
+        <paragraph culture="fr"><Normal>Actif : </Normal><Normal color="0:255:0">1</Normal><Normal> échange de position entre deux cartes sur le plateau</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>hierophant_title</key>
+        <paragraph culture="fr"><Normal>Le Pape</Normal></paragraph>
+        <paragraph culture="en"><Normal>Hierophant</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>hierophant_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>hierophant_effect</key>
+        <paragraph culture="fr"><Normal>Actif : Créer </Normal><Normal color="0:255:0">1</Normal><Normal> carte prêtresse</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>magician_title</key>
+        <paragraph culture="fr"><Normal>Le Magicien</Normal></paragraph>
+        <paragraph culture="en"><Normal>Magician</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>magician_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>magician_effect</key>
+        <paragraph culture="fr"><Normal>Actif : Permet de déplacer </Normal><Normal color="0:255:0">1</Normal><Normal> carte alliée sur un emplacement disponible à côté de lui</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>world_title</key>
+        <paragraph culture="fr"><Normal>Le Monde</Normal></paragraph>
+        <paragraph culture="en"><Normal>World</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>world_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>world_effect</key>
+        <paragraph culture="fr"><Normal>Actif : Sécurise le point de victoire du territoire pour cette manche</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>emperor_title</key>
+        <paragraph culture="fr"><Normal>L'Empereur</Normal></paragraph>
+        <paragraph culture="en"><Normal>Emperor</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>emperor_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>emperor_effect</key>
+        <paragraph culture="fr"><Normal>Actif : </Normal><Normal color="0:255:0">+1</Normal><Normal> point de victoire</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>hangedMan_title</key>
+        <paragraph culture="fr"><Normal>Le Pendu</Normal></paragraph>
+        <paragraph culture="en"><Normal>Hanged Man</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>hangedMan_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>hangedMan_effect</key>
+        <paragraph culture="fr"><Normal>Passif: </Normal><Normal color="0:255:0">+1</Normal><Normal> point de puissance pour chaque carte ennemie dans le cimetière</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>hermite_title</key>
+        <paragraph culture="fr"><Normal>L'Hermite</Normal></paragraph>
+        <paragraph culture="en"><Normal>Hermite</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>hermite_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>hermite_effect</key>
+        <paragraph culture="fr"><Normal>Passif: </Normal><Normal color="255:0:0">-1</Normal><Normal> point de puissance par carte liées</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>rock_title</key>
+        <paragraph culture="fr"><Normal>Le Rocher</Normal></paragraph>
+        <paragraph culture="en"><Normal>Rock</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>rock_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>rock_effect</key>
+        <paragraph culture="fr"><Normal>No effect</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>empress_title</key>
+        <paragraph culture="fr"><Normal>L'Impératrice</Normal></paragraph>
+        <paragraph culture="en"><Normal>Empress</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>empress_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>empress_effect</key>
+        <paragraph culture="fr"><Normal>Actif : </Normal><Normal color="0:255:0">+1</Normal><Normal> point de victoire</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>wheel_title</key>
+        <paragraph culture="fr"><Normal>La Roue de la Fortune</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>wheel_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>wheel_effect</key>
+        <paragraph culture="fr"><Normal>Actif : Déplace </Normal><Normal color="0:255:0">1</Normal><Normal> une carte liée n'importe où sur le plateau</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+    
+    <paragraphEntry>
+        <key>tower_title</key>
+        <paragraph culture="fr"><Normal>La Tour</Normal></paragraph>
+        <paragraph culture="en"><Normal>Tower</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>tower_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>tower_effect</key>
+        <paragraph culture="fr"><Normal>Actif : Créer </Normal><Normal color="0:255:0">1</Normal><Normal> carte rocher sur un emplacement vide</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>judgement_title</key>
+        <paragraph culture="fr"><Normal>Le Jugement</Normal></paragraph>
+        <paragraph culture="en"><Normal>Judgement</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>judgement_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>judgement_effect</key>
+        <paragraph culture="fr"><Normal>Actif : Détruit </Normal><Normal color="0:255:0">1</Normal><Normal> carte la plus puissante du terrain au choix du possesseur de cette carte</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>sun_title</key>
+        <paragraph culture="fr"><Normal>Le Soleil</Normal></paragraph>
+        <paragraph culture="en"><Normal>Sun</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>sun_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>sun_effect</key>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+1</Normal><Normal> point de puissance pour chaques cartes du carré alliées</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
+        <key>star_title</key>
+        <paragraph culture="fr"><Normal>L'Etoile</Normal></paragraph>
+        <paragraph culture="en"><Normal>Star</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>star_poem</key>
+        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>star_effect</key>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+3</Normal><Normal> points de puissance</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
 </localization>

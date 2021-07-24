@@ -141,7 +141,7 @@ namespace Metempsychoid.View.Card2D
             this.bannerShape = new RectangleShape(new Vector2f(50, 25));
             this.Position = new Vector2f(0, 0);
 
-            this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
+            this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 30);
 
             this.SpriteColor = new Color(255, 255, 255, 0);
 
@@ -184,14 +184,14 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
-        public override void DrawIn(RenderWindow window, Time deltaTime)
-        {
-            if (this.IsActive)
-            {
-                window.Draw(this.bannerShape);
-            }
+        //public override void DrawIn(RenderWindow window, Time deltaTime)
+        //{
+        //    if (this.IsActive)
+        //    {
+        //        window.Draw(this.bannerShape);
+        //    }
 
-            base.DrawIn(window, deltaTime);
-        }
+        //    base.DrawIn(window, deltaTime);
+        //}
     }
 }

@@ -103,7 +103,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.CreateTextParagraph2D(new Vector2f(0, 10), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 20);
             this.CreateTextParagraph2D(new Vector2f(0, 60), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
-            this.CreateTextParagraph2D(new Vector2f(0, 150), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
+            this.CreateTextParagraph2D(new Vector2f(0, 200), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
             this.IsActive = false;
         }
 

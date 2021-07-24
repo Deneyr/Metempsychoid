@@ -212,9 +212,9 @@ namespace Metempsychoid.Model.Constellations
             patternToCreate.AddNode(node2);
 
             ConstellationNode node3 = new ConstellationNode();
-            patternToCreate.AddNode(node1);
+            patternToCreate.AddNode(node3);
             ConstellationNode node4 = new ConstellationNode();
-            patternToCreate.AddNode(node2);
+            patternToCreate.AddNode(node4);
 
             ConstellationNodeSelf self = new ConstellationNodeSelf();
             patternToCreate.AddNode(self);
@@ -261,9 +261,9 @@ namespace Metempsychoid.Model.Constellations
             patternToCreate.AddNode(node2);
 
             ConstellationNode node3 = new ConstellationAllyNode();
-            patternToCreate.AddNode(node1);
+            patternToCreate.AddNode(node3);
             ConstellationNode node4 = new ConstellationAllyNode();
-            patternToCreate.AddNode(node2);
+            patternToCreate.AddNode(node4);
 
             ConstellationNodeSelf self = new ConstellationNodeSelf();
             patternToCreate.AddNode(self);
@@ -418,9 +418,9 @@ namespace Metempsychoid.Model.Constellations
             patternToCreate.AddNode(node2);
 
             ConstellationNode node3 = new ConstellationNode();
-            patternToCreate.AddNode(node1);
+            patternToCreate.AddNode(node3);
             ConstellationNode node4 = new ConstellationNode();
-            patternToCreate.AddNode(node2);
+            patternToCreate.AddNode(node4);
 
             ConstellationNodeSelf self = new ConstellationNodeSelf();
             patternToCreate.AddNode(self);

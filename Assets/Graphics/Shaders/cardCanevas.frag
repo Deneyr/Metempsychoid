@@ -11,12 +11,14 @@ uniform bool isFocused;
 
 uniform float margin;
 uniform float outMargin;
+uniform float radius;
 
 uniform float time; // Time used to scroll the distortion map
 uniform float distortionFactor = .02f; // Factor used to control severity of the effect
 uniform float riseFactor = .1f; // Factor used to control how fast air rises
 
 float GetMarginRatio(vec2 coordinate);
+float GetMarginRadiusRatio(vec2 coordinate);
 
 vec4 GetColor(vec2 coordinate, float ratio);
 
@@ -30,7 +32,7 @@ void main()
 
     vec4 distortionMapValue = texture2D(distortionMapTexture, distortionMapCoordinate);
 
-    float marginRatio = GetMarginRatio(canevasCoord + distortionMapValue.xy * 0.010);
+    float marginRatio = GetMarginRadiusRatio(canevasCoord + distortionMapValue.xy * 0.010);
 
     vec4 color = GetColor(gl_TexCoord[0].st, marginRatio);
 
@@ -44,51 +46,122 @@ void main()
     gl_FragColor.a = playerColor.a * marginRatio;
 }
 
-float GetMarginRatio(vec2 coordinate)
+// float GetMarginRatio(vec2 coordinate)
+// {
+//     float ratio;
+
+//     float realWidthRatio = widthRatio - 2 * outMargin;
+//     float realHeightRatio = heightRatio - 2 * outMargin;
+
+//     if(coordinate.s > margin
+//         && realWidthRatio - coordinate.s > margin
+//         && coordinate.t > margin
+//         && realHeightRatio - coordinate.t > margin)
+//     {
+//         ratio = 0;
+
+//         ratio = max(ratio, max(0, margin - abs(coordinate.s - margin)) / margin);
+
+//         ratio = max(ratio, max(0, margin - abs(realWidthRatio - coordinate.s - margin)) / margin);
+
+//         ratio = max(ratio, max(0, margin - abs(coordinate.t - margin)) / margin);
+
+//         ratio = max(ratio, max(0, margin - abs(realHeightRatio - coordinate.t - margin)) / margin);
+//     }
+//     else
+//     {
+//         ratio = 1;
+
+//         if(coordinate.s < margin)
+//         {
+//             ratio = min(ratio, max(0, margin - abs(coordinate.s - margin)) / margin);
+//         }
+//         else if(realWidthRatio - coordinate.s < margin)
+//         {
+//             ratio = min(ratio, max(0, margin - abs(realWidthRatio - coordinate.s - margin)) / margin);
+//         }
+
+//         if(coordinate.t < margin)
+//         {
+//             ratio = min(ratio, max(0, margin - abs(coordinate.t - margin)) / margin);
+//         }
+//         else if(realHeightRatio - coordinate.t < margin)
+//         {
+//             ratio = min(ratio, max(0, margin - abs(realHeightRatio - coordinate.t - margin)) / margin);
+//         }
+//     }
+
+//     return ratio;
+// }
+
+float GetMarginRadiusRatio(vec2 coordinate)
 {
     float ratio;
 
     float realWidthRatio = widthRatio - 2 * outMargin;
     float realHeightRatio = heightRatio - 2 * outMargin;
 
-    if(coordinate.s > margin
-        && realWidthRatio - coordinate.s > margin
-        && coordinate.t > margin
-        && realHeightRatio - coordinate.t > margin)
+    float marginRadius = radius + margin;
+    if((coordinate.s < marginRadius && coordinate.t < marginRadius)
+        || (coordinate.s > realWidthRatio - marginRadius && coordinate.t < marginRadius)
+        || (coordinate.s < marginRadius && coordinate.t > realHeightRatio - marginRadius)
+        || (coordinate.s > realWidthRatio - marginRadius && coordinate.t > realHeightRatio - marginRadius))
     {
         ratio = 0;
 
-        ratio = max(ratio, max(0, margin - abs(coordinate.s - margin)) / margin);
+        float radiusCoord = abs(radius - length(coordinate - vec2(marginRadius, marginRadius)));
+        ratio = max(ratio, max(0, (margin - radiusCoord) / margin));
 
-        ratio = max(ratio, max(0, margin - abs(realWidthRatio - coordinate.s - margin)) / margin);
+        radiusCoord = abs(radius - length(coordinate - vec2(realWidthRatio - marginRadius, marginRadius)));
+        ratio = max(ratio, max(0, (margin - radiusCoord) / margin));
 
-        ratio = max(ratio, max(0, margin - abs(coordinate.t - margin)) / margin);
+        radiusCoord = abs(radius - length(coordinate - vec2(marginRadius, realHeightRatio - marginRadius)));
+        ratio = max(ratio, max(0, (margin - radiusCoord) / margin));
 
-        ratio = max(ratio, max(0, margin - abs(realHeightRatio - coordinate.t - margin)) / margin);
+        radiusCoord = abs(radius - length(coordinate - vec2(realWidthRatio - marginRadius, realHeightRatio - marginRadius)));
+        ratio = max(ratio, max(0, (margin - radiusCoord) / margin));
     }
     else
     {
-        ratio = 1;
 
-        if(coordinate.s < margin)
+        if(coordinate.s > margin
+            && realWidthRatio - coordinate.s > margin
+            && coordinate.t > margin
+            && realHeightRatio - coordinate.t > margin)
         {
-            ratio = min(ratio, max(0, margin - abs(coordinate.s - margin)) / margin);
-        }
-        else if(realWidthRatio - coordinate.s < margin)
-        {
-            ratio = min(ratio, max(0, margin - abs(realWidthRatio - coordinate.s - margin)) / margin);
-        }
+            ratio = 0;
 
-        if(coordinate.t < margin)
-        {
-            ratio = min(ratio, max(0, margin - abs(coordinate.t - margin)) / margin);
+            ratio = max(ratio, max(0, margin - abs(coordinate.s - margin)) / margin);
+
+            ratio = max(ratio, max(0, margin - abs(realWidthRatio - coordinate.s - margin)) / margin);
+
+            ratio = max(ratio, max(0, margin - abs(coordinate.t - margin)) / margin);
+
+            ratio = max(ratio, max(0, margin - abs(realHeightRatio - coordinate.t - margin)) / margin);
         }
-        else if(realHeightRatio - coordinate.t < margin)
+        else
         {
-            ratio = min(ratio, max(0, margin - abs(realHeightRatio - coordinate.t - margin)) / margin);
+            ratio = 1;
+
+            if(coordinate.s < margin)
+            {
+                ratio = min(ratio, max(0, margin - abs(coordinate.s - margin)) / margin);
+            }
+            else if(realWidthRatio - coordinate.s < margin)
+            {
+                ratio = min(ratio, max(0, margin - abs(realWidthRatio - coordinate.s - margin)) / margin);
+            }
+
+            if(coordinate.t < margin)
+            {
+                ratio = min(ratio, max(0, margin - abs(coordinate.t - margin)) / margin);
+            }
+            else if(realHeightRatio - coordinate.t < margin)
+            {
+                ratio = min(ratio, max(0, margin - abs(realHeightRatio - coordinate.t - margin)) / margin);
+            }
         }
     }
-
     return ratio;
 }
 
