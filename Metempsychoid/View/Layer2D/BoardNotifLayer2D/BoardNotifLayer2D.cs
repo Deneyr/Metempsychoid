@@ -434,9 +434,9 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             }
         }
 
-        public override bool OnControlActivated(Controls.ControlEventType eventType, string details)
+        public override bool OnControlActivated(Controls.ControlEventType eventType, string details, bool mustForwardEvent)
         {
-            base.OnControlActivated(eventType, details);
+            mustForwardEvent = base.OnControlActivated(eventType, details, mustForwardEvent);
 
             if(eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed"
                 || eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "click")
@@ -447,7 +447,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
                 this.SendEventToWorld(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y);
             }
 
-            return true;
+            return mustForwardEvent;
         }
 
         public void GoOnTurnPhase(TurnPhase nextTurnPhase)

@@ -56,7 +56,7 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
             window.SetView(defaultView);
         }
 
-        public override bool OnControlActivated(ControlEventType eventType, string details)
+        public override bool OnControlActivated(ControlEventType eventType, string details, bool mustForwardEvent)
         {
             switch (eventType)
             {
@@ -68,7 +68,7 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
                     break;
             }
 
-            return true;
+            return mustForwardEvent;
         }
 
         public override void OnMouseMoved(Vector2i newPosition, Vector2i deltaPosition)

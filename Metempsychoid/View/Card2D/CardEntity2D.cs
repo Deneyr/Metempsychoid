@@ -592,12 +592,12 @@ namespace Metempsychoid.View.Card2D
 
         // Part IHitRect
 
-        public void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
+        public bool OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
         {
-
+            return true;
         }
 
-        public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
+        public bool OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
             if (parentLayer.FocusedGraphicEntity2D == this)
             {
@@ -625,11 +625,12 @@ namespace Metempsychoid.View.Card2D
                     }
                 }
             }
+            return true;
         }
 
-        public void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
+        public bool OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
         {
-
+            return true;
         }
 
         public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)

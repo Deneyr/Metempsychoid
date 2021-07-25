@@ -13,12 +13,12 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
         {
         }
 
-        public override void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
+        public override bool OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
         {
-
+            return false;
         }
 
-        public override void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
+        public override bool OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
             if (parentLayer.FocusedGraphicEntity2D == this)
             {
@@ -26,6 +26,8 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
             }
 
             this.Zoom = 1f;
+
+            return false;
         }
     }
 }

@@ -122,9 +122,10 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
             this.PlayAnimation(1);
         }
 
-        public override void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
+        public override bool OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
         {
             this.Zoom = 1.1f;
+            return false;
         }
 
         public override void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)

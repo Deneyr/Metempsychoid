@@ -21,9 +21,9 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         private static Vector2f DECK_POSITION = new Vector2f(-600, -150);
         private static Vector2f CEMETERY_POSITION = new Vector2f(-380, -150);
-        private static Vector2f HAND_POSITION = new Vector2f(400, -150);
+        private static Vector2f HAND_POSITION = new Vector2f(200, -150);
 
-        private static int HAND_CARD_SPACE = 100;
+        private static int HAND_CARD_SPACE = 50;
         private static int CEMETERY_CARD_SPACE = 10;
 
         private int nbCardsToDraw;
@@ -446,11 +446,11 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     }
                     else if (cardFocusedEncountered)
                     {
-                        newPosition = new Vector2f(startWidth - (i + 1) * this.CemeterySpace, this.CemeteryPosition.Y);
+                        newPosition = new Vector2f(startWidth - (i + 4) * this.CemeterySpace, this.CemeteryPosition.Y);
                     }
                     else
                     {
-                        newPosition = new Vector2f(startWidth - (i - 1) * this.CemeterySpace, this.CemeteryPosition.Y);
+                        newPosition = new Vector2f(startWidth - (i - 4) * this.CemeterySpace, this.CemeteryPosition.Y);
                     }
                 }
                 else
@@ -494,11 +494,11 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     }
                     else if (cardFocusedEncountered)
                     {
-                        newPosition = new Vector2f(startWidth - (i + 1) * this.HandSpace, this.HandPosition.Y);
+                        newPosition = new Vector2f(startWidth - (i + 4) * this.HandSpace, this.HandPosition.Y);
                     }
                     else
                     {
-                        newPosition = new Vector2f(startWidth - (i - 1) * this.HandSpace, this.HandPosition.Y);
+                        newPosition = new Vector2f(startWidth - (i - 4) * this.HandSpace, this.HandPosition.Y);
                     }
                 }
                 else

@@ -398,8 +398,13 @@ namespace Metempsychoid.View
             }
         }
 
-        public virtual bool OnControlActivated(ControlEventType eventType, string details)
+        public virtual bool OnControlActivated(ControlEventType eventType, string details, bool mustForwardEvent)
         {
+            if(mustForwardEvent == false)
+            {
+                return mustForwardEvent;
+            }
+
             if(eventType == ControlEventType.MOUSE_LEFT_CLICK
                 || eventType == ControlEventType.MOUSE_RIGHT_CLICK)
             {
@@ -430,7 +435,7 @@ namespace Metempsychoid.View
                 {
                     if (details == "pressed")
                     {
-                        this.SetSelectedGraphicEntity2D(this.FocusedGraphicEntity2D, eventType, details);
+                        mustForwardEvent &= this.SetSelectedGraphicEntity2D(this.FocusedGraphicEntity2D, eventType, details);
                     }
                 }
 
@@ -438,7 +443,7 @@ namespace Metempsychoid.View
                 {
                     if (details == "click")
                     {
-                        this.selectedGraphicEntity2D.OnMouseClicked(this, eventType);
+                        mustForwardEvent &= this.selectedGraphicEntity2D.OnMouseClicked(this, eventType);
                     }
                 }
 
@@ -446,12 +451,12 @@ namespace Metempsychoid.View
                 {
                     if (details == "released")
                     {
-                        this.SetSelectedGraphicEntity2D(null, eventType, details);
+                        mustForwardEvent &= this.SetSelectedGraphicEntity2D(null, eventType, details);
                     }
                 }
 
             }
-            return true;
+            return mustForwardEvent;
         }
 
         public virtual void OnMouseMoved(Vector2i newPosition, Vector2i deltaPosition)
@@ -461,22 +466,26 @@ namespace Metempsychoid.View
             this.UpdateMousePosition();
         }
 
-        protected void SetSelectedGraphicEntity2D(IHitRect selectedEntity, ControlEventType eventType, string details)
+        protected bool SetSelectedGraphicEntity2D(IHitRect selectedEntity, ControlEventType eventType, string details)
         {
+            bool mustForwardEvent = true;
+
             if (this.selectedGraphicEntity2D != selectedEntity)
             {
                 if (this.selectedGraphicEntity2D != null)
                 {
-                    this.selectedGraphicEntity2D.OnMouseReleased(this, eventType);
+                    mustForwardEvent &= this.selectedGraphicEntity2D.OnMouseReleased(this, eventType);
                 }
 
                 this.selectedGraphicEntity2D = selectedEntity;
 
                 if (this.selectedGraphicEntity2D != null)
                 {
-                    this.selectedGraphicEntity2D.OnMousePressed(this, eventType);
+                    mustForwardEvent &= this.selectedGraphicEntity2D.OnMousePressed(this, eventType);
                 }
             }
+
+            return mustForwardEvent;
         }
 
         protected void UpdateMousePosition()

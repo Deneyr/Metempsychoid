@@ -50,6 +50,12 @@ namespace Metempsychoid.Model.Node.TestWorld
             private set;
         }
 
+        public Player.Player MainPlayer
+        {
+            get;
+            private set;
+        }
+
         public Player.Player Opponent
         {
             get;
@@ -81,6 +87,7 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             base.VisitStart(world);
 
+            this.MainPlayer = world.Player;
             this.Opponent = world.Opponent;
 
             this.playerIndex = 0;
@@ -112,7 +119,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             Player.Player result = null;
             if (this.playerIndex == 0)
             {
-                result = world.Player;
+                result = this.MainPlayer;
             }
             else
             {
@@ -194,10 +201,10 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.SetCurrentTurnPhase(world, TurnPhase.CREATE_HAND);
 
             BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
-            boardPlayerLayer.NbCardsToDraw = NB_CARDS_HAND;
+            boardPlayerLayer.NbCardsToDraw = this.MainPlayer.Deck.CardIds.Count;
 
             boardPlayerLayer = world.LoadedLayers["opponentLayer"] as BoardPlayerLayer;
-            boardPlayerLayer.NbCardsToDraw = NB_CARDS_HAND;
+            boardPlayerLayer.NbCardsToDraw = this.Opponent.Deck.CardIds.Count;
         }
 
         private void InitializeStartTurnPhase(World world)
@@ -224,7 +231,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer; // world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
 
-            boardPlayerLayer.NbCardsToDraw = 1;
+            boardPlayerLayer.NbCardsToDraw = 0;
         }
 
         private void InitializeMainPhase(World world)
@@ -257,7 +264,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                         playerScore++;
                         opponentScore++;
                     }
-                    else if(domain.DomainOwner == world.Player)
+                    else if(domain.DomainOwner == this.MainPlayer)
                     {
                         playerScore++;
                     }
@@ -268,16 +275,16 @@ namespace Metempsychoid.Model.Node.TestWorld
                 }
             }
 
-            List<int> scoresPlayer = bannerLayer.PlayerNameToTotalScores[world.Player.PlayerName];
-            List<int> scoresOpponent = bannerLayer.PlayerNameToTotalScores[world.Opponent.PlayerName];
+            List<int> scoresPlayer = bannerLayer.PlayerNameToTotalScores[this.MainPlayer.PlayerName];
+            List<int> scoresOpponent = bannerLayer.PlayerNameToTotalScores[this.Opponent.PlayerName];
             if (scoresPlayer.Count > 0)
             {
                 playerScore += scoresPlayer.Last();
                 opponentScore += scoresOpponent.Last();
             }
 
-            playerScore += bannerLayer.PlayerNameToModifier[world.Player.PlayerName];
-            opponentScore += bannerLayer.PlayerNameToModifier[world.Opponent.PlayerName];
+            playerScore += bannerLayer.PlayerNameToModifier[this.MainPlayer.PlayerName];
+            opponentScore += bannerLayer.PlayerNameToModifier[this.Opponent.PlayerName];
 
             bannerLayer.ClearModifiers();
 

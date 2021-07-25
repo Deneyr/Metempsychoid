@@ -22,7 +22,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
     public class BoardPlayerLayer2D: ALayer2D, IBoardToLayerPositionConverter, ICardFocusedLayer, IScoreLayer
     {
         private static float COOLDOWN_FOCUS = 2;
-        private static float COOLDOWN_DRAW = 1;
+        private static float COOLDOWN_DRAW = 0.2f;
         private float currentCooldownDraw;
 
         private List<AEntity2D> hittableEntities2D;
@@ -107,8 +107,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 {
                     this.levelTurnPhase = value;
 
-                    if ((this.parentLayer as BoardPlayerLayer).IsActiveTurn)
-                    {
+                    //if ((this.parentLayer as BoardPlayerLayer).IsActiveTurn)
+                    //{
                         switch (this.levelTurnPhase)
                         {
                             case TurnPhase.CREATE_HAND:
@@ -123,7 +123,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                                 //this.endTurnButton.DeactiveButton();
                                 break;
                         }
-                    }
+                    //}
+                    //this.FocusedGraphicEntity2D = null;
                 }
             }
         }
@@ -367,7 +368,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             int i = 0;
             foreach (CardEntity2D cardEntity2D in this.cardsHand)
             {
-                cardEntity2D.Priority = 1000 + i;
+                cardEntity2D.Priority = 2000 - i;
                 i++;
             }
         }
@@ -377,7 +378,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             int i = 0;
             foreach (CardEntity2D cardEntity2D in this.cardsCemetery)
             {
-                cardEntity2D.Priority = 1000 + i;
+                cardEntity2D.Priority = 2000 - i;
                 i++;
             }
         }
@@ -497,43 +498,18 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             //}     
         }
 
-        public override bool OnControlActivated(Controls.ControlEventType eventType, string details)
+        public override bool OnControlActivated(Controls.ControlEventType eventType, string details, bool mustForwardEvent)
         {
             switch (this.levelTurnPhase)
             {
                 case TurnPhase.MAIN:
-                    //if(eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "pressed"
-                    //    && this.cardFocused != null)
-                    //{
-                    //    Vector2i mousePosition = this.MousePosition;
-
-                    //    mousePosition.Y -= (int)(this.view.Size.Y / 2);
-
-                    //    AEntity associatedCardFocused = this.object2DToObjects[this.cardFocused];
-
-                    //    if (this.world2D.TryGetTarget(out World2D world))
-                    //    {
-                    //        world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, associatedCardFocused, mousePosition.X + ":" + mousePosition.Y));
-                    //    }
-                    //}
-                    //else if(eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed")
-                    //{
-                    //    Vector2i mousePosition = this.MousePosition;
-
-                    //    mousePosition.Y -= (int)(this.view.Size.Y / 2);
-
-                    //    if (this.world2D.TryGetTarget(out World2D world))
-                    //    {
-                    //        world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y));
-                    //    }
-                    //}
 
                     if (eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed"
                         || eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "click")
                     {
                         this.SendUnpickEvent();
                     }
-                    base.OnControlActivated(eventType, details);
+                    mustForwardEvent = base.OnControlActivated(eventType, details, mustForwardEvent);
 
                     break;
             }

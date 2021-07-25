@@ -578,45 +578,14 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.SendEventToWorld(Model.Event.EventType.LEVEL_PHASE_CHANGE, null, Enum.GetName(typeof(TurnPhase), nextTurnPhase));
         }
 
-        public override bool OnControlActivated(Controls.ControlEventType eventType, string details)
+        public override bool OnControlActivated(Controls.ControlEventType eventType, string details, bool mustForwardEvent)
         {
 
             switch (this.LevelTurnPhase)
             {
                 case TurnPhase.MAIN:
-                    base.OnControlActivated(eventType, details);
+                    mustForwardEvent = base.OnControlActivated(eventType, details, mustForwardEvent);
 
-                    //if (eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "pressed")
-                    //{
-                    //    if (this.CardPicked != null)
-                    //    {
-                    //        StarEntity2D starEntity2D = this.focusedGraphicEntity2D as StarEntity2D;
-
-                    //        if (starEntity2D != null)
-                    //        {
-                    //            StarEntity starEntity = this.object2DToObjects[starEntity2D] as StarEntity;
-                    //            CardEntity cardEntity = this.object2DToObjects[this.CardPicked] as CardEntity;
-
-                    //            if (starEntity.CanSocketCard(cardEntity))
-                    //            {
-                    //                this.SendEventToWorld(Model.Event.EventType.SOCKET_CARD, this.object2DToObjects[starEntity2D], null);
-                    //            }
-                    //        }
-                    //    }
-                    //    Pick card on board
-                    //    else
-                    //    {
-                    //        CardEntity2D cardFocused = this.GetCardFocused();
-
-                    //        if (cardFocused != null)
-                    //        {
-                    //            if (this.world2D.TryGetTarget(out World2D world))
-                    //            {
-                    //                world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.PICK_CARD, this.object2DToObjects[cardFocused], null));
-                    //            }
-                    //        }
-                    //    }
-                    //}
                     if (eventType == ControlEventType.MOUSE_RIGHT_CLICK && details == "pressed"
                         || eventType == ControlEventType.MOUSE_LEFT_CLICK && details == "click")
                     {
@@ -632,7 +601,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                     break;
             }
 
-            return true;
+            return mustForwardEvent;
         }
 
         //private CardEntity2D GetCardFocused()

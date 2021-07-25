@@ -34,7 +34,7 @@ namespace Metempsychoid.Model.Card
             cardTemplate = new CardTemplate("strength", "strength_title", "strength_poem", "strength_effect", 0);
             cardTemplate.Patterns.Add(ConstellationPatternFactory.CreateStrengthConstellation());
 
-            cardTemplate.CardBehaviors.Add(new StrengthPassiveBehavior(2));
+            cardTemplate.CardBehaviors.Add(new StrengthPassiveBehavior(1));
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("justice", "justice_title", "justice_poem", "justice_effect", 1);

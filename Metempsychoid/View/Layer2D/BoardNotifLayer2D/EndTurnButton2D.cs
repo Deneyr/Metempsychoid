@@ -183,17 +183,18 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.PlayAnimation(1);
         }
 
-        public override void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
+        public override bool OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
         {
             this.Zoom = 1.1f;
+            return false;
         }
 
-        public override void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
+        public override bool OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
         {
-
+            return false;
         }
 
-        public override void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
+        public override bool OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
             if (parentLayer.FocusedGraphicEntity2D == this)
             {
@@ -212,6 +213,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             }
 
             this.Zoom = 1;
+
+            return false;
         }
 
         public override void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)

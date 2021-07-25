@@ -245,12 +245,12 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             window.Draw(this.ObjectSprite, this.render);
         }
 
-        public void OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
+        public bool OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
         {
-
+            return true;
         }
 
-        public void OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
+        public bool OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
         {
             if (parentLayer is BoardGameLayer2D)
             {
@@ -280,11 +280,12 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 }
                 
             }
+            return true;
         }
 
-        public void OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
+        public bool OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
-
+            return true;
         }
 
         public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)

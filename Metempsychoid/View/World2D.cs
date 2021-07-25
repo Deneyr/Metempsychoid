@@ -149,9 +149,9 @@ namespace Metempsychoid.View
             int nbLayer2D = this.LayersList.Count;
             bool continueToForwardEvent = true;
 
-            while(nbLayer2D > 0 && continueToForwardEvent)
+            while(nbLayer2D > 0)
             {
-                continueToForwardEvent = this.LayersList[nbLayer2D - 1].OnControlActivated(eventType, details);
+                continueToForwardEvent &= this.LayersList[nbLayer2D - 1].OnControlActivated(eventType, details, continueToForwardEvent);
 
                 nbLayer2D--;
             }
