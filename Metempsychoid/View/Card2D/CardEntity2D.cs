@@ -23,7 +23,6 @@ namespace Metempsychoid.View.Card2D
 
         private static float TIME_FLIP = 0.5f;
 
-        private CardEntity2DFactory factory;
         private string cardName;
 
         private Sprite canevasSprite;
@@ -47,6 +46,14 @@ namespace Metempsychoid.View.Card2D
         protected RenderStates render;
 
         //Clock timer = new Clock();
+
+        public CardEntity2DFactory Card2DFactory
+        {
+            get
+            {
+                return this.parentFactory as CardEntity2DFactory;
+            }
+        }
 
         public bool IsAwakened
         {
@@ -74,7 +81,7 @@ namespace Metempsychoid.View.Card2D
 
                     if (this.isFliped)
                     {
-                        this.InitializeFaceTransState(this.factory.GetIndexFromCardName(this.cardName));
+                        this.InitializeFaceTransState(this.Card2DFactory.GetIndexFromCardName(this.cardName));
                     }
                 }  
             }
@@ -100,7 +107,7 @@ namespace Metempsychoid.View.Card2D
                         }
                         else
                         {
-                            this.InitializeFaceTransState(this.factory.GetIndexFromCardName(this.cardName));
+                            this.InitializeFaceTransState(this.Card2DFactory.GetIndexFromCardName(this.cardName));
                         }
                         break;
                 }
@@ -363,10 +370,8 @@ namespace Metempsychoid.View.Card2D
 
 
         public CardEntity2D(IObject2DFactory factory, ALayer2D layer2D, CardEntity entity) :
-            base(layer2D, true)
+            base(layer2D, factory, true)
         {
-            this.factory = factory as CardEntity2DFactory;
-
             this.cardHalo = new CardHalo2D(factory, layer2D, this);
             this.cardLabel = new CardLabel2D(layer2D, entity.CardValue);
 
@@ -441,7 +446,7 @@ namespace Metempsychoid.View.Card2D
 
             if (this.isFliped)
             {
-                this.cardIndex = this.factory.GetIndexFromCardName(this.cardName);
+                this.cardIndex = this.Card2DFactory.GetIndexFromCardName(this.cardName);
             }
             else
             {
@@ -524,7 +529,7 @@ namespace Metempsychoid.View.Card2D
         private void InitializeFaceState()
         {
             this.isFliped = true;
-            this.ObjectSprite.Texture = this.factory.GetTextureByIndex(this.cardIndex);
+            this.ObjectSprite.Texture = this.Card2DFactory.GetTextureByIndex(this.cardIndex);
 
             this.sideState = CardSideState.FACE;
 
@@ -549,11 +554,11 @@ namespace Metempsychoid.View.Card2D
         {
             if (this.isFliped)
             {
-                this.ObjectSprite.Texture = this.factory.GetTextureByIndex(this.cardIndex);
+                this.ObjectSprite.Texture = this.Card2DFactory.GetTextureByIndex(this.cardIndex);
             }
             else
             {
-                this.ObjectSprite.Texture = this.factory.GetTextureByIndex(1);
+                this.ObjectSprite.Texture = this.Card2DFactory.GetTextureByIndex(1);
             }
 
             this.sideState = CardSideState.TRANSITIONING_END;

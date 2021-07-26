@@ -14,6 +14,8 @@ namespace Metempsychoid.View
     {
         protected static AnimationManager animationManager;
 
+        protected IObject2DFactory parentFactory;
+
         protected List<IAnimation> animationsList;
 
         public abstract float Zoom
@@ -62,14 +64,18 @@ namespace Metempsychoid.View
             AObject2D.animationManager = new AnimationManager();
         }
 
-        public AObject2D()
+        public AObject2D(IObject2DFactory parentFactory)
         {
+            this.parentFactory = parentFactory;
+
             this.animationsList = new List<IAnimation>();
         }
 
         public virtual void Dispose()
         {
             AObject2D.animationManager.StopAnimation(this);
+
+            this.parentFactory = null;
         }
 
         public abstract void DrawIn(RenderWindow window, Time deltaTime);

@@ -77,7 +77,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         }
 
         public EffectBanner2D(ALayer2D parentLayer)
-            : base(parentLayer, false)
+            : base(parentLayer, null, false)
         {
             this.bannerShape = new RectangleShape(new Vector2f(3000, 200));
             this.bannerShape.Origin = new Vector2f(this.bannerShape.Size.X / 2, this.bannerShape.Size.Y / 2);

@@ -233,6 +233,8 @@
     <Compile Include="View\Layer2D\MenuLayer2D\CJStartButton2D.cs" />
     <Compile Include="View\ResourcesManager\LayerResourcesLoader.cs" />
     <Compile Include="View\ResourcesManager\TextureManager.cs" />
+    <Compile Include="View\SoundsManager\LayerSoundsLoader.cs" />
+    <Compile Include="View\SoundsManager\SoundManager.cs" />
     <Compile Include="View\Text2D\AButton2D.cs" />
     <Compile Include="View\Text2D\TextCanevas2D.cs" />
     <Compile Include="View\Text2D\TextParagraph2D.cs" />
@@ -244,9 +246,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Sound\SoundManager\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Graphnode.SFML.Net.2.4\build\Graphnode.SFML.Net.targets" Condition="Exists('..\packages\Graphnode.SFML.Net.2.4\build\Graphnode.SFML.Net.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

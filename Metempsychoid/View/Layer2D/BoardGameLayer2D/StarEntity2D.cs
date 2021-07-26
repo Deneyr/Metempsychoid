@@ -78,7 +78,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         }
 
         public StarEntity2D(IObject2DFactory factory, ALayer2D parentLayer, StarEntity entity):
-            base(parentLayer, entity)
+            base(parentLayer, factory, entity)
         {
 
             Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\StarFrag.frag");

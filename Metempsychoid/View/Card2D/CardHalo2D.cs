@@ -48,7 +48,7 @@ namespace Metempsychoid.View.Card2D
         }
 
         public CardHalo2D(IObject2DFactory factory, ALayer2D parentLayer, CardEntity2D parentCard) :
-            base(parentLayer, false)
+            base(parentLayer, factory, false)
         {
 
             Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\StarFrag.frag");

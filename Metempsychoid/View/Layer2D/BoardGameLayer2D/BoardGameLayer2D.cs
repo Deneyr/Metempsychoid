@@ -207,7 +207,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         }
 
         public BoardGameLayer2D(World2D world2D, IObject2DFactory factory, BoardGameLayer layer) :
-            base(world2D, layer)
+            base(world2D, factory, layer)
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
 

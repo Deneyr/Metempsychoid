@@ -21,7 +21,7 @@ namespace Metempsychoid.View.ResourcesManager
         {
             if (this.layerToTexturePaths.ContainsKey(layer))
             {
-                throw new Exception("Try to load an already loaded chunk");
+                throw new Exception("Texture Manager : Try to load an already loaded chunk");
             }
 
             HashSet<string> resourcesPath = new HashSet<string>();
@@ -55,7 +55,7 @@ namespace Metempsychoid.View.ResourcesManager
         {
             if (this.layerToTexturePaths.ContainsKey(layer) == false)
             {
-                throw new Exception("Try to unload a not loaded chunk");
+                throw new Exception("Texture Manager : Try to unload a not loaded chunk");
             }
 
             HashSet<string> pathsLayerToRemove = this.layerToTexturePaths[layer];

@@ -187,7 +187,7 @@ namespace Metempsychoid.View.Text2D
         }
 
         public TextCanevas2D(ALayer2D parentLayer):
-            base(parentLayer, true)
+            base(parentLayer, null, true)
         {
             this.textParagraph2Ds = new List<TextParagraph2D>();
             //this.textParagraphHitRect2Ds = new List<IHitRect>();

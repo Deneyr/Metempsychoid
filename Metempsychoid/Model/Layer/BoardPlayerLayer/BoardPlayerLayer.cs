@@ -38,7 +38,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         public event Action<CardEntity> CardDestroyed;
         // public event Action<CardEntity> CardResurrected;
 
-        public event Action<CardEntity> CardDrew;
+        public event Action<CardEntity> CardDrawn;
 
         public event Action<CardEntity> CardFocused;
 
@@ -310,7 +310,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     this.CardsDeck[TOP_DECK - 1].IsActive = true;
                 }
 
-                this.NotifyCardDrew(cardEntity);
+                this.NotifyCardDrawn(cardEntity);
 
                 this.UpdateCardsHandPosition();
 
@@ -522,9 +522,9 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             }
         }
 
-        protected void NotifyCardDrew(CardEntity obj)
+        protected void NotifyCardDrawn(CardEntity obj)
         {
-            this.CardDrew?.Invoke(obj);
+            this.CardDrawn?.Invoke(obj);
         }
 
         protected void NotifyNbCardsToDraw()

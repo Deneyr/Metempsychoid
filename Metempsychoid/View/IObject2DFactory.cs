@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Model;
+using SFML.Audio;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,18 @@ namespace Metempsychoid.View
             get;
         }
 
+        Dictionary<string, SoundBuffer> Sounds
+        {
+            get;
+        }
+
         Texture GetTextureByIndex(int index);
+        SoundBuffer GetSoundById(string id);
 
         void OnTextureLoaded(string path, Texture texture);
-
         void OnTextureUnloaded(string path);
+
+        void OnSoundLoaded(string path, SoundBuffer texture);
+        void OnSoundUnloaded(string path);
     }
 }

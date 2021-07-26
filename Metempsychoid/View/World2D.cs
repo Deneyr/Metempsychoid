@@ -18,6 +18,7 @@ using Metempsychoid.View.Layer2D.BoardPlayerLayer2D;
 using Metempsychoid.View.Layer2D.EntityLayer2D;
 using Metempsychoid.View.Layer2D.MenuLayer2D;
 using Metempsychoid.View.ResourcesManager;
+using Metempsychoid.View.SoundsManager;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -33,14 +34,17 @@ namespace Metempsychoid.View
         public static readonly Dictionary<Type, IObject2DFactory> MappingObjectModelView;
 
         public static readonly TextureManager TextureManager;
+        public static readonly SoundManager SoundManager;
 
         private LayerResourcesLoader layerResourcesLoader;
+        private LayerSoundsLoader layerSoundsLoader;
 
         private World world;
 
         static World2D()
         {
             TextureManager = new TextureManager();
+            SoundManager = new SoundManager();
 
             MappingObjectModelView = new Dictionary<Type, IObject2DFactory>();
 
@@ -111,6 +115,7 @@ namespace Metempsychoid.View
             this.LayersList = new List<ALayer2D>();
 
             this.layerResourcesLoader = new LayerResourcesLoader();
+            this.layerSoundsLoader = new LayerSoundsLoader();
 
             this.world = mainWindow.World;
 
@@ -169,6 +174,7 @@ namespace Metempsychoid.View
         private void OnLayerAdded(ALayer layerToAdd)
         {
             this.layerResourcesLoader.LoadLayerResources(layerToAdd);
+            this.layerSoundsLoader.LoadLayerSounds(layerToAdd);
 
             IObject2DFactory layer2DFactory = World2D.MappingObjectModelView[layerToAdd.GetType()];
 
@@ -186,6 +192,9 @@ namespace Metempsychoid.View
 
             this.LayersDictionary.Remove(layerToRemove);
             this.LayersList.Remove(layer2D);
+
+            this.layerResourcesLoader.UnloadLayerResources(layerToRemove);
+            this.layerSoundsLoader.UnloadLayerSounds(layerToRemove);
         }
 
         private void OnLevelStarting(World world)
@@ -234,6 +243,7 @@ namespace Metempsychoid.View
         private void OnWorldStarting(World world)
         {
             TextureManager.UpdateTextures();
+            SoundManager.UpdateSounds();
         }
 
         private void OnWorldEnding(World world)

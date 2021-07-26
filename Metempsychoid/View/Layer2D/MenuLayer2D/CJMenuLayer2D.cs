@@ -19,7 +19,7 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
         private List<AEntity2D> focusableEntities;
 
         public CJMenuLayer2D(World2D world2D, IObject2DFactory factory, CJMenuLayer layer) :
-            base(world2D, layer)
+            base(world2D, factory, layer)
         {
             this.Area = new Vector2i(int.MaxValue, int.MaxValue);
 

@@ -193,6 +193,7 @@ namespace Metempsychoid.View.Text2D
         }
 
         public TextToken2D(string text, Color fillColor)
+            : base(null)
         {
             this.fullText = text;
 

@@ -30,6 +30,11 @@ namespace Metempsychoid.Model.Constellations
 
         public override bool IsStarValid(StarEntity star, StarEntity startStarEntity)
         {
+            if(base.IsStarValid(star, startStarEntity) == false)
+            {
+                return false;
+            }
+
             bool isValid = true;
             switch (this.Type)
             {
@@ -41,7 +46,7 @@ namespace Metempsychoid.Model.Constellations
                     break;
             }
 
-            return isValid && base.IsStarValid(star, startStarEntity) && startStarEntity.CardSocketed.Card.Name == this.CardName;
+            return isValid && star.CardSocketed.Card.Name == this.CardName;
         }
 
         public enum NodeType

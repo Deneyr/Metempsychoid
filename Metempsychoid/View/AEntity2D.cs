@@ -130,7 +130,8 @@ namespace Metempsychoid.View
             }
         }
 
-        public AEntity2D(ALayer2D parentLayer, bool isActive)
+        public AEntity2D(ALayer2D parentLayer, IObject2DFactory factory, bool isActive)
+            : base(factory)
         {
             this.parentLayer = new WeakReference<ALayer2D>(parentLayer);
 
@@ -140,7 +141,8 @@ namespace Metempsychoid.View
             this.IsActive = isActive;
         }
 
-        public AEntity2D(ALayer2D parentLayer, AEntity entity)
+        public AEntity2D(ALayer2D parentLayer, IObject2DFactory factory, AEntity entity)
+            : base(factory)
         {
             this.parentLayer = new WeakReference<ALayer2D>(parentLayer);
 

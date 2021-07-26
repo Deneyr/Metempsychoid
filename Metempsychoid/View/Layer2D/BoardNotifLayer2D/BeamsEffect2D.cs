@@ -28,7 +28,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         }
 
         public BeamsEffect2D(IObject2DFactory factory, ALayer2D parentLayer, CardEntityAwakenedDecorator2D parentCardDecorator2D) :
-            base(parentLayer, false)
+            base(parentLayer, factory, false)
         {
             this.Position = parentCardDecorator2D.Position;
 

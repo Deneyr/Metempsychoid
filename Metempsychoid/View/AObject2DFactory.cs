@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.Model;
 using Metempsychoid.View.Text2D;
+using SFML.Audio;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -15,14 +16,34 @@ namespace Metempsychoid.View
         private static Dictionary<Font, float> fontToWidths;
 
         private static readonly Texture BLANK_TEXTURE;
+        private static readonly SoundBuffer BLANK_SOUND;
 
         private Dictionary<string, Texture> resources;
+        private Dictionary<string, SoundBuffer> sounds;
 
         protected HashSet<string> texturesPath;
+        protected Dictionary<string, string> soundsPath;
+
+        public Dictionary<string, Texture> Resources
+        {
+            get
+            {
+                return this.resources;
+            }
+        }
+
+        public Dictionary<string, SoundBuffer> Sounds
+        {
+            get
+            {
+                return this.sounds;
+            }
+        }
 
         static AObject2DFactory()
         {
             BLANK_TEXTURE = new Texture((uint)MainWindow.MODEL_TO_VIEW * 16, (uint)MainWindow.MODEL_TO_VIEW * 16);
+            BLANK_SOUND = null;
 
             nameToFonts = new Dictionary<string, Font>();
             fontToWidths = new Dictionary<Font, float>();
@@ -70,15 +91,22 @@ namespace Metempsychoid.View
         public AObject2DFactory()
         {
             this.texturesPath = new HashSet<string>();
+            this.soundsPath = new Dictionary<string, string>();
         }
 
         protected void InitializeFactory()
         {
             this.resources = new Dictionary<string, Texture>();
-            Texture blankTexture = BLANK_TEXTURE;
+            this.sounds = new Dictionary<string, SoundBuffer>();
+
             foreach (string texturesPath in this.texturesPath)
             {
-                this.resources.Add(texturesPath, blankTexture);
+                this.resources.Add(texturesPath, BLANK_TEXTURE);
+            }
+
+            foreach (string texturesPath in this.soundsPath.Values)
+            {
+                this.sounds.Add(texturesPath, BLANK_SOUND);
             }
         }
 
@@ -89,17 +117,14 @@ namespace Metempsychoid.View
             return this.CreateObject2D(world2D, obj);
         }
 
-        public Dictionary<string, Texture> Resources
-        {
-            get
-            {
-                return this.resources;
-            }
-        }
-
         public Texture GetTextureByIndex(int index)
         {
             return this.Resources[this.texturesPath.ElementAt(index)];
+        }
+
+        public SoundBuffer GetSoundById(string id)
+        {
+            return this.Sounds[this.soundsPath[id]];
         }
 
         public virtual void OnTextureLoaded(string path, Texture texture)
@@ -115,6 +140,22 @@ namespace Metempsychoid.View
             if (this.Resources.ContainsKey(path))
             {
                 this.Resources[path] = BLANK_TEXTURE;
+            }
+        }
+
+        public virtual void OnSoundLoaded(string path, SoundBuffer sound)
+        {
+            if (this.Sounds.ContainsKey(path))
+            {
+                this.Sounds[path] = sound;
+            }
+        }
+
+        public virtual void OnSoundUnloaded(string path)
+        {
+            if (this.Sounds.ContainsKey(path))
+            {
+                this.Sounds[path] = BLANK_SOUND;
             }
         }
     }

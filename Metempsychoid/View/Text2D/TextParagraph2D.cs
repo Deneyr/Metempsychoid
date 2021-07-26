@@ -213,6 +213,7 @@ namespace Metempsychoid.View.Text2D
         }
 
         public TextParagraph2D(TextCanevas2D textCanevas2D, Vector2f positionOffsetTopLeft, Vector2f positionOffsetBotRight, Alignment alignment, uint characterSize)
+            : base(null)
         {
             this.positionOffsetTopLeft = positionOffsetTopLeft;
             this.positionOffsetBotRight = positionOffsetBotRight;

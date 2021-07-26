@@ -123,7 +123,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         }
 
         public CJStarDomain2D(ALayer2D layer2D, IObject2DFactory factory, CJStarDomain entity) :
-            base(layer2D, entity)
+            base(layer2D, factory, entity)
         {
             // TO REMOVE
             //this.Test();

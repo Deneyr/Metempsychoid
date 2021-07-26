@@ -215,8 +215,11 @@ namespace Metempsychoid.View
             private set;
         }
 
-        public ALayer2D(World2D world2D, ALayer layer)
+        public ALayer2D(World2D world2D, IObject2DFactory layerFactory, ALayer layer)
+            : base(layerFactory)
         {
+            this.parentFactory = layerFactory;
+
             this.ChildrenLayer2D = new List<ALayer2D>();
 
             this.view = new SFML.Graphics.View();
@@ -605,7 +608,7 @@ namespace Metempsychoid.View
 
             this.parentLayer.LevelStateChanged -= OnLevelStateChanged;
 
-            this.parentLayer = null;
+            base.Dispose();
         }
 
         protected class EntityComparer : IComparer<AEntity2D>

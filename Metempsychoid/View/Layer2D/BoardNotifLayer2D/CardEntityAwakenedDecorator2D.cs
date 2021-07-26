@@ -117,8 +117,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         {
             //SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(4), AnimationType.ONETIME);
 
-            this.starEffect2D = new StarEffect2D(factory, layer2D, this);
-            this.beamsEffect2D = new BeamsEffect2D(factory, layer2D, this);
+            this.starEffect2D = new StarEffect2D(this.Card2DFactory, layer2D, this);
+            this.beamsEffect2D = new BeamsEffect2D(this.Card2DFactory, layer2D, this);
 
             this.initialPosition = entity.CardDecoratedPosition;
 

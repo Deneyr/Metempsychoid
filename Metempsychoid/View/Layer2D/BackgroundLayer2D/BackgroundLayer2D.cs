@@ -30,7 +30,7 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
         }
 
         public BackgroundLayer2D(World2D world2D, IObject2DFactory factory, BackgroundLayer layer) : 
-            base(world2D, layer)
+            base(world2D, factory, layer)
         {
             this.Area = (factory as BackgroundLayer2DFactory).Area;
 
