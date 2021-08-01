@@ -90,6 +90,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 {
                     this.cardFocused = value;
 
+                    if (this.cardFocused != null)
+                    {
+                        this.cardFocused.PlaySound("cardFocused");
+                    }
+
                     this.CardFocusedChanged?.Invoke(this);
                 }
             }
@@ -295,6 +300,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             this.cardDrawn = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
+            this.cardDrawn.PlaySound("cardDrawn");
+
             this.cardsDeck.Remove(this.cardDrawn);
             this.cardsHand.Add(this.cardDrawn);
 
@@ -305,36 +312,38 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private void OnCardPicked(CardEntity obj)
         {
-            //this.cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
-
-            switch((this.parentLayer as BoardPlayerLayer).CardPileFocused)
-            {
-                case BoardPlayerLayer.PileFocused.HAND:
-                    this.cardsHand.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
-                    break;
-                case BoardPlayerLayer.PileFocused.CEMETERY:
-                    this.cardsCemetery.Remove(this.GetEntity2DFromEntity(obj) as CardEntity2D);
-                    break;
-            }
-
-            this.UpdateCardHandPriority();
-        }
-
-        private void OnCardUnpicked(CardEntity obj)
-        {
             CardEntity2D cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
             switch ((this.parentLayer as BoardPlayerLayer).CardPileFocused)
             {
                 case BoardPlayerLayer.PileFocused.HAND:
-                    this.cardsHand.Add(cardPicked);
+                    this.cardsHand.Remove(cardPicked);
+                    this.UpdateCardHandPriority();
                     break;
                 case BoardPlayerLayer.PileFocused.CEMETERY:
-                    this.cardsCemetery.Add(cardPicked);
+                    this.cardsCemetery.Remove(cardPicked);
+                    this.UpdateCardCimeteryPriority();
+                    break;
+            }
+        }
+
+        private void OnCardUnpicked(CardEntity obj)
+        {
+            CardEntity2D cardUnpicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
+
+            cardUnpicked.PlaySound("cardDrawn");
+
+            switch ((this.parentLayer as BoardPlayerLayer).CardPileFocused)
+            {
+                case BoardPlayerLayer.PileFocused.HAND:
+                    this.cardsHand.Add(cardUnpicked);
+                    break;
+                case BoardPlayerLayer.PileFocused.CEMETERY:
+                    this.cardsCemetery.Add(cardUnpicked);
                     break;
             }
 
-            cardPicked.SetCooldownFocus(COOLDOWN_FOCUS);
+            cardUnpicked.SetCooldownFocus(COOLDOWN_FOCUS);
 
             switch ((this.parentLayer as BoardPlayerLayer).CardPileFocused)
             {

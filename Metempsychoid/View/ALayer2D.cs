@@ -7,6 +7,8 @@ using Metempsychoid.Model;
 using Metempsychoid.Model.Event;
 using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.BackgroundLayer2D;
+using Metempsychoid.View.SoundsManager;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -267,11 +269,18 @@ namespace Metempsychoid.View
             return result;
         }
 
-        public Vector2f GetPositionInScene(Vector2f positionInScene)
+        public Vector2f GetNormalizedPositionInWindow(Vector2f positionInScene)
+        {
+            Vector2f positionInWindow = this.GetPositionInWindow(positionInScene);
+
+            return new Vector2f(positionInWindow.X / this.view.Size.X, positionInWindow.Y / this.view.Size.Y);
+        }
+
+        public Vector2f GetPositionInScene(Vector2f positionInWindow)
         {
             Vector2f windowPosition = new Vector2f(this.Position.X - this.view.Size.X / 2, this.Position.Y - this.view.Size.Y / 2);
 
-            Vector2f result = new Vector2f(positionInScene.X * this.Zoom + windowPosition.X, positionInScene.Y * this.Zoom + windowPosition.Y);
+            Vector2f result = new Vector2f(positionInWindow.X * this.Zoom + windowPosition.X, positionInWindow.Y * this.Zoom + windowPosition.Y);
             return result;
         }
 
@@ -542,6 +551,31 @@ namespace Metempsychoid.View
             {
                 world.SendEventToWorld(new GameEvent(eventType, this.parentLayer, entityConcerned, details));
             }
+        }
+
+        public override void PlaySound(string soundId)
+        {
+            SoundBuffer soundBuffer = this.parentFactory.GetSoundById(soundId);
+
+            AObject2D.soundMusicPlayer.PlaySound(new SoundObject2D(this, this, soundBuffer));
+        }
+
+        public void PlaySound(string soundId, IObject2D owner)
+        {
+            SoundBuffer soundBuffer = this.parentFactory.GetSoundById(soundId);
+
+            AObject2D.soundMusicPlayer.PlaySound(new SoundObject2D(this, owner, soundBuffer));
+        }
+
+        public void PlayMusic(string musicId)
+        {
+            string musicPath = this.parentFactory.GetMusicPathById(musicId);
+
+            AObject2D.soundMusicPlayer.PlayMusic(new MusicObject2D(this, this, musicPath));
+        }
+        public void StopMusic()
+        {
+            AObject2D.soundMusicPlayer.StopMusics(this);
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)

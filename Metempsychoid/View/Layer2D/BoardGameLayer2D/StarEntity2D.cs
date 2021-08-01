@@ -132,6 +132,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         {
             if (cardEntity != null)
             {
+                this.PlaySound("cardSocketed");
                 this.ObjectSprite.Color = cardEntity.Card.CurrentOwner.PlayerColor;
             }
             else

@@ -27,6 +27,7 @@ namespace Metempsychoid.View
 
         Texture GetTextureByIndex(int index);
         SoundBuffer GetSoundById(string id);
+        string GetMusicPathById(string id);
 
         void OnTextureLoaded(string path, Texture texture);
         void OnTextureUnloaded(string path);

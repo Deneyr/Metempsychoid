@@ -141,6 +141,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 if (this.cardPicked != value)
                 {
                     this.cardPicked = value;
+
+                    if(this.cardPicked != null)
+                    {
+                        this.cardPicked.PlaySound("cardPicked");
+                    }
                 }
             }
         }

@@ -13,15 +13,17 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
         {
         }
 
-        public override bool OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
-        {
-            return false;
-        }
+        //public override bool OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
+        //{
+        //    return base.OnMouseClicked(;
+        //}
 
         public override bool OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
         {
             if (parentLayer.FocusedGraphicEntity2D == this)
             {
+                base.OnMouseReleased(parentLayer, eventType);
+
                 parentLayer.SendEventToWorld(Model.Event.EventType.LEVEL_CHANGE, null, "TestLevel");
             }
 

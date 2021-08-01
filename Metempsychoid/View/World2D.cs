@@ -88,6 +88,9 @@ namespace Metempsychoid.View
             {
                 TextureManager.TextureLoaded += factory.OnTextureLoaded;
                 TextureManager.TextureUnloaded += factory.OnTextureUnloaded;
+
+                SoundManager.SoundLoaded += factory.OnSoundLoaded;
+                SoundManager.SoundUnloaded += factory.OnSoundUnloaded;
             }
         }
 

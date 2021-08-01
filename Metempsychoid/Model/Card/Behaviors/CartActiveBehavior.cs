@@ -27,12 +27,13 @@ namespace Metempsychoid.Model.Card.Behaviors
             if (starEntity.CardSocketed.Card.IsAwakened)
             {
                 IBoardGameAction selfSocketCardAction = actionsOccured.FirstOrDefault(pElem => pElem is SocketCardAction && (pElem as SocketCardAction).CardToSocket == starEntity.CardSocketed);
+                IBoardGameAction selfUnsocketCardAction = actionsOccured.FirstOrDefault(pElem => pElem is UnsocketCardAction && (pElem as UnsocketCardAction).CardToUnsocket == starEntity.CardSocketed);
 
-                if (selfSocketCardAction != null)
+                if (selfSocketCardAction != null && selfUnsocketCardAction != null)
                 {
                     if(layer.StarToLinks[starEntity]
                         .Select(pElem => pElem.StarFrom != starEntity ? pElem.StarFrom : pElem.StarTo)
-                        .Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner == starEntity.CardSocketed.Card.CurrentOwner).Any() == false)
+                        .Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner != starEntity.CardSocketed.Card.CurrentOwner).Any() == false)
                     {
                         return;
                     }

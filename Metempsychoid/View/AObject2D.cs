@@ -1,9 +1,12 @@
 ﻿using Metempsychoid.Animation;
 using Metempsychoid.View.Animation;
+using Metempsychoid.View.SoundsManager;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +17,13 @@ namespace Metempsychoid.View
     {
         protected static AnimationManager animationManager;
 
+        protected static SoundMusicPlayer soundMusicPlayer;
+
         protected IObject2DFactory parentFactory;
 
         protected List<IAnimation> animationsList;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public abstract float Zoom
         {
@@ -62,6 +69,8 @@ namespace Metempsychoid.View
         static AObject2D()
         {
             AObject2D.animationManager = new AnimationManager();
+
+            AObject2D.soundMusicPlayer = new SoundMusicPlayer();
         }
 
         public AObject2D(IObject2DFactory parentFactory)
@@ -74,6 +83,7 @@ namespace Metempsychoid.View
         public virtual void Dispose()
         {
             AObject2D.animationManager.StopAnimation(this);
+            AObject2D.soundMusicPlayer.DisposeAudioObject2D(this);
 
             this.parentFactory = null;
         }
@@ -105,6 +115,11 @@ namespace Metempsychoid.View
             AObject2D.animationManager.PlayAnimation(this, animation);
         }
 
+        public virtual void PlaySound(string soundId)
+        {
+            // to override
+        }
+
         public virtual bool IsAnimationRunning()
         {
             IAnimation animation = AObject2D.animationManager.GetAnimationFromAObject2D(this);
@@ -112,9 +127,16 @@ namespace Metempsychoid.View
             return animation != null;
         }
 
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public static void UpdateAnimationManager(Time deltaTime)
         {
             AObject2D.animationManager.Run(deltaTime);
+
+            AObject2D.soundMusicPlayer.Run(deltaTime);
         }
     }
 }

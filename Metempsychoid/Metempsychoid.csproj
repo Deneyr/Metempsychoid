@@ -158,6 +158,7 @@
     <Compile Include="View\AEntity2D.cs" />
     <Compile Include="View\ALayer2D.cs" />
     <Compile Include="Animation\AAnimation.cs" />
+    <Compile Include="View\Animation\AudioVolumeAnimation.cs" />
     <Compile Include="View\Animation\ColorAnimation.cs" />
     <Compile Include="View\Animation\CustomZoomAnimation.cs" />
     <Compile Include="View\Animation\FlipAnimation.cs" />
@@ -233,8 +234,12 @@
     <Compile Include="View\Layer2D\MenuLayer2D\CJStartButton2D.cs" />
     <Compile Include="View\ResourcesManager\LayerResourcesLoader.cs" />
     <Compile Include="View\ResourcesManager\TextureManager.cs" />
+    <Compile Include="View\SoundsManager\AAudioObject2D.cs" />
     <Compile Include="View\SoundsManager\LayerSoundsLoader.cs" />
+    <Compile Include="View\SoundsManager\MusicObject2D.cs" />
     <Compile Include="View\SoundsManager\SoundManager.cs" />
+    <Compile Include="View\SoundsManager\SoundMusicPlayer.cs" />
+    <Compile Include="View\SoundsManager\SoundObject2D.cs" />
     <Compile Include="View\Text2D\AButton2D.cs" />
     <Compile Include="View\Text2D\TextCanevas2D.cs" />
     <Compile Include="View\Text2D\TextParagraph2D.cs" />

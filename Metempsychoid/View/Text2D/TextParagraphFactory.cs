@@ -138,6 +138,8 @@ namespace Metempsychoid.View.Text2D
 
             str = str.Replace("à", "a");
 
+            str = str.Replace("ô", "o");
+
             return str;
         }
 

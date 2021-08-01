@@ -76,6 +76,11 @@ namespace Metempsychoid.View.Card2D
             this.cardNameToIndex.Add("sun", 27);
             this.cardNameToIndex.Add("star", 28);
 
+            // Sounds
+            this.soundsPath.Add("cardDrawn", @"Assets\Sounds\cardDrawn.ogg");
+            this.soundsPath.Add("cardFocused", @"Assets\Sounds\cardFocused.ogg");
+            this.soundsPath.Add("cardPicked", @"Assets\Sounds\cardPicked.ogg");
+
             this.InitializeFactory();
         }
 

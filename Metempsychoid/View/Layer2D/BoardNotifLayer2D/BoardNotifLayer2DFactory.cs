@@ -12,6 +12,10 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
     {
         public BoardNotifLayer2DFactory()
         {
+            // Sounds
+            this.soundsPath.Add("buttonClicked", @"Assets\Sounds\buttonClicked.ogg");
+            this.soundsPath.Add("buttonFocused", @"Assets\Sounds\buttonFocused.ogg");
+
             this.InitializeFactory();
         }
 

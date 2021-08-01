@@ -23,6 +23,7 @@ namespace Metempsychoid.View
 
         protected HashSet<string> texturesPath;
         protected Dictionary<string, string> soundsPath;
+        protected Dictionary<string, string> musicsPath;
 
         public Dictionary<string, Texture> Resources
         {
@@ -39,6 +40,14 @@ namespace Metempsychoid.View
                 return this.sounds;
             }
         }
+
+        //public HashSet<string> MusicsPath
+        //{
+        //    get
+        //    {
+        //        return this.musicsPath;
+        //    }
+        //}
 
         static AObject2DFactory()
         {
@@ -92,6 +101,7 @@ namespace Metempsychoid.View
         {
             this.texturesPath = new HashSet<string>();
             this.soundsPath = new Dictionary<string, string>();
+            this.musicsPath = new Dictionary<string, string>();
         }
 
         protected void InitializeFactory()
@@ -104,9 +114,9 @@ namespace Metempsychoid.View
                 this.resources.Add(texturesPath, BLANK_TEXTURE);
             }
 
-            foreach (string texturesPath in this.soundsPath.Values)
+            foreach (string soundsPath in this.soundsPath.Values)
             {
-                this.sounds.Add(texturesPath, BLANK_SOUND);
+                this.sounds.Add(soundsPath, BLANK_SOUND);
             }
         }
 
@@ -124,7 +134,20 @@ namespace Metempsychoid.View
 
         public SoundBuffer GetSoundById(string id)
         {
-            return this.Sounds[this.soundsPath[id]];
+            if (this.soundsPath.TryGetValue(id, out string soundPath))
+            {
+                return this.Sounds[soundPath];
+            }
+            return null;
+        }
+
+        public string GetMusicPathById(string id)
+        {
+            if (this.musicsPath.TryGetValue(id, out string musicPath))
+            {
+                return musicPath;
+            }
+            return null;
         }
 
         public virtual void OnTextureLoaded(string path, Texture texture)

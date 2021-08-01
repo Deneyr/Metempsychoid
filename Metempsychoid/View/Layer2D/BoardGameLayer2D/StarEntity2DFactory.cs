@@ -18,6 +18,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.texturesPath.Add(@"Assets\Graphics\Entities\Star.png");
             this.texturesPath.Add(@"Assets\Graphics\Shaders\distortion_map.png");
 
+            // Sounds
+            this.soundsPath.Add("cardSocketed", @"Assets\Sounds\cardSocketed.ogg");
+
             this.InitializeFactory();
         }
 

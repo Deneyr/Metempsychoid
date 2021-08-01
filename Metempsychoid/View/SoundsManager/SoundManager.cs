@@ -12,9 +12,9 @@ namespace Metempsychoid.View.SoundsManager
     {
         private Dictionary<string, SoundBuffer> soundsDictionary;
 
-        public event Action<string, SoundBuffer> TextureLoaded;
+        public event Action<string, SoundBuffer> SoundLoaded;
 
-        public event Action<string> TextureUnloaded;
+        public event Action<string> SoundUnloaded;
 
         public HashSet<string> bufferPathsToLoad;
         public HashSet<string> bufferPathsToUnload;
@@ -85,6 +85,7 @@ namespace Metempsychoid.View.SoundsManager
             {
                 if (this.soundsDictionary.ContainsKey(path))
                 {
+                    // Dispose or Destroy ???
                     this.soundsDictionary[path].Dispose();
 
                     this.soundsDictionary.Remove(path);
@@ -96,17 +97,17 @@ namespace Metempsychoid.View.SoundsManager
 
         private void NotifySoundLoaded(string path, SoundBuffer sound)
         {
-            if(this.TextureLoaded != null)
+            if(this.SoundLoaded != null)
             {
-                this.TextureLoaded(path, sound);
+                this.SoundLoaded(path, sound);
             }
         }
 
         private void NotifySoundUnloaded(string path)
         {
-            if (this.TextureUnloaded != null)
+            if (this.SoundUnloaded != null)
             {
-                this.TextureUnloaded(path);
+                this.SoundUnloaded(path);
             }
         }
     }

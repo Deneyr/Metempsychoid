@@ -119,6 +119,8 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
 
         public override void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
         {
+            base.OnMouseFocused(parentLayer, eventType);
+
             this.PlayAnimation(1);
         }
 

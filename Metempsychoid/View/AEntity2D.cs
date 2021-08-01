@@ -2,6 +2,8 @@
 using Metempsychoid.Model.Event;
 using Metempsychoid.View.Animation;
 using Metempsychoid.View.Controls;
+using Metempsychoid.View.SoundsManager;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -49,6 +51,8 @@ namespace Metempsychoid.View
             set
             {
                 this.sprite.Position = value * MainWindow.MODEL_TO_VIEW;
+
+                this.NotifyPropertyChanged("Position");
             }
         }
 
@@ -154,6 +158,28 @@ namespace Metempsychoid.View
             this.Rotation = entity.Rotation;
 
             this.IsActive = entity.IsActive;
+        }
+
+        public override void PlaySound(string soundId)
+        {
+            if (this.parentLayer.TryGetTarget(out ALayer2D parentLayer))
+            {
+                SoundBuffer soundBuffer = null;
+
+                if(this.parentFactory != null)
+                {
+                    soundBuffer = this.parentFactory.GetSoundById(soundId);
+                }
+
+                if (soundBuffer != null)
+                {
+                    AObject2D.soundMusicPlayer.PlaySound(new SoundObject2D(parentLayer, this, soundBuffer));
+                }
+                else
+                {
+                    parentLayer.PlaySound(soundId, this);
+                }
+            }
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
