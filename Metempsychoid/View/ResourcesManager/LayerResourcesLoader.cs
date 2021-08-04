@@ -28,7 +28,7 @@ namespace Metempsychoid.View.ResourcesManager
 
             HashSet<Type> objectTypes = layer.TypesInChunk;
 
-            IEnumerable<string> resources = World2D.MappingObjectModelView[layer.GetType()].Resources.Keys;
+            IEnumerable<string> resources = World2D.MappingObjectModelView[layer.GetType()].TexturesPath;
             foreach(string texturePath in resources)
             {
                 resourcesPath.Add(texturePath);
@@ -36,7 +36,7 @@ namespace Metempsychoid.View.ResourcesManager
 
             foreach (Type type in objectTypes)
             {
-                resources = World2D.MappingObjectModelView[type].Resources.Keys;
+                resources = World2D.MappingObjectModelView[type].TexturesPath;
                 foreach (string texturePath in resources)
                 {
                     resourcesPath.Add(texturePath);

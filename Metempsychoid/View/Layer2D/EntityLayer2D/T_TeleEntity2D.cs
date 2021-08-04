@@ -18,7 +18,7 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
             this.Position = entity.Position;
             this.Rotation = entity.Rotation;
 
-            this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
+            this.ObjectSprite.Texture = factory.GetTextureById("TVTexture");
 
             this.ObjectSprite.TextureRect = new SFML.Graphics.IntRect(0, 0, 86, 76);
 

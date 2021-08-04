@@ -93,6 +93,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer
             this.CardsHand = new List<CardEntity>();
 
             this.TypesInChunk.Add(typeof(CardEntityDecorator));
+            this.TypesInChunk.Add(typeof(CardEntityAwakenedDecorator));
         }
 
         public void ForwardGameEventsToBehavior(Dictionary<EventType, List<GameEvent>> gameEvents)

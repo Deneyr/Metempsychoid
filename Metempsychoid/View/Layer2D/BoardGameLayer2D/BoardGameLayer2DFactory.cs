@@ -12,7 +12,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
     {
         public BoardGameLayer2DFactory()
         {
-            this.InitializeFactory();
+            //this.InitializeFactory();
         }
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)

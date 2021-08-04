@@ -15,30 +15,26 @@ namespace Metempsychoid.View
         private static Dictionary<string, Font> nameToFonts;
         private static Dictionary<Font, float> fontToWidths;
 
-        private static readonly Texture BLANK_TEXTURE;
-        private static readonly SoundBuffer BLANK_SOUND;
+        //private static readonly Texture BLANK_TEXTURE;
+        //private static readonly SoundBuffer BLANK_SOUND;
 
-        private Dictionary<string, Texture> resources;
-        private Dictionary<string, SoundBuffer> sounds;
+        //private Dictionary<string, Texture> resources;
+        //private Dictionary<string, SoundBuffer> sounds;
 
-        protected HashSet<string> texturesPath;
-        protected Dictionary<string, string> soundsPath;
-        protected Dictionary<string, string> musicsPath;
+        private Dictionary<string, string> idTotexturesPath;
+        private Dictionary<string, string> idToSoundsPath;
+        protected Dictionary<string, string> idToMusicsPath;
 
-        public Dictionary<string, Texture> Resources
+        public HashSet<string> TexturesPath
         {
-            get
-            {
-                return this.resources;
-            }
+            get;
+            private set;
         }
 
-        public Dictionary<string, SoundBuffer> Sounds
+        public HashSet<string> SoundsPath
         {
-            get
-            {
-                return this.sounds;
-            }
+            get;
+            private set;
         }
 
         //public HashSet<string> MusicsPath
@@ -51,8 +47,8 @@ namespace Metempsychoid.View
 
         static AObject2DFactory()
         {
-            BLANK_TEXTURE = new Texture((uint)MainWindow.MODEL_TO_VIEW * 16, (uint)MainWindow.MODEL_TO_VIEW * 16);
-            BLANK_SOUND = null;
+            //BLANK_TEXTURE = new Texture((uint)MainWindow.MODEL_TO_VIEW * 16, (uint)MainWindow.MODEL_TO_VIEW * 16);
+            //BLANK_SOUND = null;
 
             nameToFonts = new Dictionary<string, Font>();
             fontToWidths = new Dictionary<Font, float>();
@@ -99,25 +95,40 @@ namespace Metempsychoid.View
 
         public AObject2DFactory()
         {
-            this.texturesPath = new HashSet<string>();
-            this.soundsPath = new Dictionary<string, string>();
-            this.musicsPath = new Dictionary<string, string>();
+            this.TexturesPath = new HashSet<string>();
+            this.SoundsPath = new HashSet<string>();
+
+            this.idTotexturesPath = new Dictionary<string, string>();
+            this.idToSoundsPath = new Dictionary<string, string>();
+            this.idToMusicsPath = new Dictionary<string, string>();
         }
 
-        protected void InitializeFactory()
+        //protected void InitializeFactory()
+        //{
+        //    this.resources = new Dictionary<string, Texture>();
+        //    this.sounds = new Dictionary<string, SoundBuffer>();
+
+        //    foreach (string texturesPath in this.idTotexturesPath)
+        //    {
+        //        this.resources.Add(texturesPath, BLANK_TEXTURE);
+        //    }
+
+        //    foreach (string soundsPath in this.idToSoundsPath.Values)
+        //    {
+        //        this.sounds.Add(soundsPath, BLANK_SOUND);
+        //    }
+        //}
+
+        protected void AddTexturePath(string id, string path)
         {
-            this.resources = new Dictionary<string, Texture>();
-            this.sounds = new Dictionary<string, SoundBuffer>();
+            this.idTotexturesPath.Add(id, path);
+            this.TexturesPath.Add(path);
+        }
 
-            foreach (string texturesPath in this.texturesPath)
-            {
-                this.resources.Add(texturesPath, BLANK_TEXTURE);
-            }
-
-            foreach (string soundsPath in this.soundsPath.Values)
-            {
-                this.sounds.Add(soundsPath, BLANK_SOUND);
-            }
+        protected void AddSoundPath(string id, string path)
+        {
+            this.idToSoundsPath.Add(id, path);
+            this.SoundsPath.Add(path);
         }
 
         public abstract IObject2D CreateObject2D(World2D world2D, IObject obj);
@@ -127,59 +138,63 @@ namespace Metempsychoid.View
             return this.CreateObject2D(world2D, obj);
         }
 
-        public Texture GetTextureByIndex(int index)
+        public Texture GetTextureById(string id)
         {
-            return this.Resources[this.texturesPath.ElementAt(index)];
+            if (this.idTotexturesPath.TryGetValue(id, out string texturePath))
+            {
+                return World2D.TextureManager.GetTexture(texturePath);
+            }
+            return null;
         }
 
         public SoundBuffer GetSoundById(string id)
         {
-            if (this.soundsPath.TryGetValue(id, out string soundPath))
+            if (this.idToSoundsPath.TryGetValue(id, out string soundPath))
             {
-                return this.Sounds[soundPath];
+                return World2D.SoundManager.GetSound(soundPath);
             }
             return null;
         }
 
         public string GetMusicPathById(string id)
         {
-            if (this.musicsPath.TryGetValue(id, out string musicPath))
+            if (this.idToMusicsPath.TryGetValue(id, out string musicPath))
             {
                 return musicPath;
             }
             return null;
         }
 
-        public virtual void OnTextureLoaded(string path, Texture texture)
-        {
-            if (this.Resources.ContainsKey(path))
-            {
-                this.Resources[path] = texture;
-            }
-        }
+        //public virtual void OnTextureLoaded(string path, Texture texture)
+        //{
+        //    if (this.Resources.ContainsKey(path))
+        //    {
+        //        this.Resources[path] = texture;
+        //    }
+        //}
 
-        public virtual void OnTextureUnloaded(string path)
-        {
-            if (this.Resources.ContainsKey(path))
-            {
-                this.Resources[path] = BLANK_TEXTURE;
-            }
-        }
+        //public virtual void OnTextureUnloaded(string path)
+        //{
+        //    if (this.Resources.ContainsKey(path))
+        //    {
+        //        this.Resources[path] = BLANK_TEXTURE;
+        //    }
+        //}
 
-        public virtual void OnSoundLoaded(string path, SoundBuffer sound)
-        {
-            if (this.Sounds.ContainsKey(path))
-            {
-                this.Sounds[path] = sound;
-            }
-        }
+        //public virtual void OnSoundLoaded(string path, SoundBuffer sound)
+        //{
+        //    if (this.Sounds.ContainsKey(path))
+        //    {
+        //        this.Sounds[path] = sound;
+        //    }
+        //}
 
-        public virtual void OnSoundUnloaded(string path)
-        {
-            if (this.Sounds.ContainsKey(path))
-            {
-                this.Sounds[path] = BLANK_SOUND;
-            }
-        }
+        //public virtual void OnSoundUnloaded(string path)
+        //{
+        //    if (this.Sounds.ContainsKey(path))
+        //    {
+        //        this.Sounds[path] = BLANK_SOUND;
+        //    }
+        //}
     }
 }

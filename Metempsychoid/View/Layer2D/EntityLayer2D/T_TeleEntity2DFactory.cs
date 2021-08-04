@@ -14,9 +14,9 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
     {
         public T_TeleEntity2DFactory()
         {
-            this.texturesPath.Add(@"Assets\Graphics\Entities\TV[86x76].png");
+            this.AddTexturePath("TVTexture", @"Assets\Graphics\Entities\TV[86x76].png");
 
-            this.InitializeFactory();
+            //this.InitializeFactory();
         }
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)
@@ -36,14 +36,14 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
             return null;
         }
 
-        public override void OnTextureLoaded(string path, Texture texture)
-        {
-            if (this.Resources.ContainsKey(path))
-            {
-                texture.Smooth = true;
+        //public override void OnTextureLoaded(string path, Texture texture)
+        //{
+        //    if (this.Resources.ContainsKey(path))
+        //    {
+        //        texture.Smooth = true;
 
-                this.Resources[path] = texture;
-            }
-        }
+        //        this.Resources[path] = texture;
+        //    }
+        //}
     }
 }

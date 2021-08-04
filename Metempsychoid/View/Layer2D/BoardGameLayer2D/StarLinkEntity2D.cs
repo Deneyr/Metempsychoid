@@ -193,8 +193,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
             Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\LinkSimpleFrag.frag");
 
-            Texture distortionMap = factory.GetTextureByIndex(0);
-            this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
+            Texture distortionMap = factory.GetTextureById("distorsionTexture");
+            this.ObjectSprite.Texture = factory.GetTextureById("distorsionTexture");
             this.ObjectSprite.Texture.Repeated = true;
 
             distortionMap.Repeated = true;

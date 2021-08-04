@@ -39,7 +39,7 @@ namespace Metempsychoid.View.Card2D
 
         protected bool isFliped;
         protected CardSideState sideState;
-        protected int cardIndex;
+        //protected int cardIndex;
 
         private float cooldownFocus;
 
@@ -81,7 +81,7 @@ namespace Metempsychoid.View.Card2D
 
                     if (this.isFliped)
                     {
-                        this.InitializeFaceTransState(this.Card2DFactory.GetIndexFromCardName(this.cardName));
+                        this.InitializeFaceTransState();
                     }
                 }  
             }
@@ -92,24 +92,28 @@ namespace Metempsychoid.View.Card2D
             get
             {
                 return sideState == CardSideState.FACE 
-                    && cardIndex > 1;
+                    && this.isFliped;
             }
             set
             {
-                this.isFliped = value;
-
-                switch (this.sideState)
+                if (this.isFliped != value)
                 {
-                    case CardSideState.FACE:
-                        if(this.isFliped == false)
-                        {
-                            this.InitializeFaceTransState(1);
-                        }
-                        else
-                        {
-                            this.InitializeFaceTransState(this.Card2DFactory.GetIndexFromCardName(this.cardName));
-                        }
-                        break;
+                    this.isFliped = value;
+
+                    this.InitializeFaceTransState();
+                    //switch (this.sideState)
+                    //{
+                    //    case CardSideState.FACE:
+                    //        if(this.isFliped == false)
+                    //        {
+                    //            this.InitializeFaceTransState();
+                    //        }
+                    //        else
+                    //        {
+                    //            this.InitializeFaceTransState(this.Card2DFactory.GetIndexFromCardName(this.cardName));
+                    //        }
+                    //        break;
+                    //}
                 }
             }
         }
@@ -375,7 +379,7 @@ namespace Metempsychoid.View.Card2D
             this.cardHalo = new CardHalo2D(factory, layer2D, this);
             this.cardLabel = new CardLabel2D(layer2D, entity.CardValue);
 
-            this.ObjectSprite.Texture = factory.GetTextureByIndex(1);
+            this.ObjectSprite.Texture = factory.GetTextureById("backCardTexture");
 
             this.ObjectSprite.Origin = new Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
 
@@ -397,7 +401,7 @@ namespace Metempsychoid.View.Card2D
 
             Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\cardCanevas.frag");
 
-            Texture distortionMap = factory.GetTextureByIndex(0);
+            Texture distortionMap = factory.GetTextureById("distorsionTexture");
             distortionMap.Repeated = true;
             distortionMap.Smooth = true;
             this.canevasSprite.Texture = distortionMap;
@@ -444,14 +448,14 @@ namespace Metempsychoid.View.Card2D
 
             this.cooldownFocus = 0;
 
-            if (this.isFliped)
-            {
-                this.cardIndex = this.Card2DFactory.GetIndexFromCardName(this.cardName);
-            }
-            else
-            {
-                this.cardIndex = 1;
-            }
+            //if (this.isFliped)
+            //{
+            //    this.cardIndex = this.Card2DFactory.GetIndexFromCardName(this.cardName);
+            //}
+            //else
+            //{
+            //    this.cardIndex = 1;
+            //}
 
             this.InitializeFaceState();
         }
@@ -528,21 +532,25 @@ namespace Metempsychoid.View.Card2D
 
         private void InitializeFaceState()
         {
-            this.isFliped = true;
-            this.ObjectSprite.Texture = this.Card2DFactory.GetTextureByIndex(this.cardIndex);
+            //this.isFliped = true;
+            //this.ObjectSprite.Texture = this.Card2DFactory.GetTextureById(this.cardName);
 
             this.sideState = CardSideState.FACE;
 
             if (this.IsFliped)
             {
+                this.ObjectSprite.Texture = this.Card2DFactory.GetTextureById(this.cardName);
+
                 this.cardLabel.ShowLabel();
+            }
+            else
+            {
+                this.ObjectSprite.Texture = this.Card2DFactory.GetTextureById("backCardTexture");
             }
         }
 
-        private void InitializeFaceTransState(int cardIndex)
+        private void InitializeFaceTransState()
         {
-            this.cardIndex = cardIndex;
-
             this.sideState = CardSideState.TRANSITIONING_START;
 
             this.PlayAnimation(0);
@@ -554,11 +562,11 @@ namespace Metempsychoid.View.Card2D
         {
             if (this.isFliped)
             {
-                this.ObjectSprite.Texture = this.Card2DFactory.GetTextureByIndex(this.cardIndex);
+                this.ObjectSprite.Texture = this.Card2DFactory.GetTextureById(this.cardName);
             }
             else
             {
-                this.ObjectSprite.Texture = this.Card2DFactory.GetTextureByIndex(1);
+                this.ObjectSprite.Texture = this.Card2DFactory.GetTextureById("backCardTexture");
             }
 
             this.sideState = CardSideState.TRANSITIONING_END;

@@ -83,7 +83,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
             Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\StarFrag.frag");
 
-            Texture distortionMap = factory.GetTextureByIndex(1);
+            Texture distortionMap = factory.GetTextureById("distortionTexture");
             distortionMap.Repeated = true;
             distortionMap.Smooth = true;
             shader.SetUniform("currentTexture", new Shader.CurrentTextureType());
@@ -97,7 +97,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
             this.SetCardSocketed(entity.CardSocketed);
 
-            this.ObjectSprite.Texture = factory.GetTextureByIndex(0);
+            this.ObjectSprite.Texture = factory.GetTextureById("starTexture");
 
             this.ObjectSprite.Origin = new SFML.System.Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
 

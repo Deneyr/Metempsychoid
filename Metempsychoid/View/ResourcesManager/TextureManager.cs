@@ -12,7 +12,6 @@ namespace Metempsychoid.View.ResourcesManager
         private Dictionary<string, Texture> texturesDictionary;
 
         public event Action<string, Texture> TextureLoaded;
-
         public event Action<string> TextureUnloaded;
 
         public HashSet<string> bufferPathsToLoad;
@@ -70,6 +69,7 @@ namespace Metempsychoid.View.ResourcesManager
                 if (this.texturesDictionary.ContainsKey(path) == false)
                 {
                     Texture texture = new Texture(path);
+                    texture.Smooth = true;
 
                     this.texturesDictionary.Add(path, texture);
 

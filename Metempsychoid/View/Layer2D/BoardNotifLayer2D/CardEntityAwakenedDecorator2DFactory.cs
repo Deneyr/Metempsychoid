@@ -13,6 +13,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         public CardEntityAwakenedDecorator2DFactory() :
             base()
         {
+            this.AddTexturePath("beamEffectTexture", @"Assets\Graphics\Cards\Effects\beamEffect.png");
+            this.AddTexturePath("starEffectTexture", @"Assets\Graphics\Cards\Effects\starEffect.png");
         }
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)

@@ -95,9 +95,10 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
 
             this.Rotation = this.parentLayer.Rotation;
 
-            foreach (KeyValuePair<string, Texture> keyValuePair in factory.Resources)
+            foreach (string texturePath in factory.TexturesPath)
             {
-                this.nameToTiles.Add(Path.GetFileNameWithoutExtension(keyValuePair.Key), new TileBackgoundObject2D(this, keyValuePair.Value, Path.GetFileNameWithoutExtension(keyValuePair.Key)));
+                string idTexture = Path.GetFileNameWithoutExtension(texturePath);
+                this.nameToTiles.Add(idTexture, new TileBackgoundObject2D(this, factory.GetTextureById(idTexture), idTexture));
             }
 
             this.ZoomRatio = 3;

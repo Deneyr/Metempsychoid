@@ -15,7 +15,7 @@ namespace Metempsychoid.View.Layer2D.EntityLayer2D
     {
         public EntityLayer2DFactory()
         {
-            this.InitializeFactory();
+            //this.InitializeFactory();
         }
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)

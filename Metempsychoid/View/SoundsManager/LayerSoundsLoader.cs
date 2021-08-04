@@ -28,7 +28,7 @@ namespace Metempsychoid.View.SoundsManager
 
             HashSet<Type> objectTypes = layer.TypesInChunk;
 
-            IEnumerable<string> sounds = World2D.MappingObjectModelView[layer.GetType()].Sounds.Keys;
+            IEnumerable<string> sounds = World2D.MappingObjectModelView[layer.GetType()].SoundsPath;
             foreach(string texturePath in sounds)
             {
                 soundsPath.Add(texturePath);
@@ -36,7 +36,7 @@ namespace Metempsychoid.View.SoundsManager
 
             foreach (Type type in objectTypes)
             {
-                sounds = World2D.MappingObjectModelView[type].Sounds.Keys;
+                sounds = World2D.MappingObjectModelView[type].SoundsPath;
                 foreach (string texturePath in sounds)
                 {
                     soundsPath.Add(texturePath);

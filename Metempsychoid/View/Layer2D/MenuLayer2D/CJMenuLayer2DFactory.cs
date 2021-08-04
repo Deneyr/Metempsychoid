@@ -13,10 +13,10 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
         public CJMenuLayer2DFactory()
         {
             // Sounds
-            this.soundsPath.Add("buttonClicked", @"Assets\Sounds\buttonClicked.ogg");
-            this.soundsPath.Add("buttonFocused", @"Assets\Sounds\buttonFocused.ogg");
+            this.AddSoundPath("buttonClicked", @"Assets\Sounds\buttonClicked.ogg");
+            this.AddSoundPath("buttonFocused", @"Assets\Sounds\buttonFocused.ogg");
 
-            this.InitializeFactory();
+            //this.InitializeFactory();
         }
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)

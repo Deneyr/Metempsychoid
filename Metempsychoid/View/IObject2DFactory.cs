@@ -15,24 +15,25 @@ namespace Metempsychoid.View
 
         IObject2D CreateObject2D(World2D world2D, ALayer2D layer2D, IObject obj);
 
-        Dictionary<string, Texture> Resources
+        HashSet<string> TexturesPath
         {
             get;
         }
 
-        Dictionary<string, SoundBuffer> Sounds
+        HashSet<string> SoundsPath
         {
             get;
         }
 
-        Texture GetTextureByIndex(int index);
+        // Texture GetTextureByIndex(int index);
+        Texture GetTextureById(string id);
         SoundBuffer GetSoundById(string id);
         string GetMusicPathById(string id);
 
-        void OnTextureLoaded(string path, Texture texture);
-        void OnTextureUnloaded(string path);
+        //void OnTextureLoaded(string path, Texture texture);
+        //void OnTextureUnloaded(string path);
 
-        void OnSoundLoaded(string path, SoundBuffer texture);
-        void OnSoundUnloaded(string path);
+        //void OnSoundLoaded(string path, SoundBuffer texture);
+        //void OnSoundUnloaded(string path);
     }
 }

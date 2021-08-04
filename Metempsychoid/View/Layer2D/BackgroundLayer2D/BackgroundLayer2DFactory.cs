@@ -38,11 +38,11 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
 
                 foreach(FileInfo image in images)
                 {
-                    this.texturesPath.Add(image.FullName);
+                    this.AddTexturePath(Path.GetFileNameWithoutExtension(image.Name), image.FullName);
                 }
             }
 
-            this.InitializeFactory();
+            //this.InitializeFactory();
         }
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)

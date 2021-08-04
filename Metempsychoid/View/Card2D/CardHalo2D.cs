@@ -53,7 +53,7 @@ namespace Metempsychoid.View.Card2D
 
             Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\StarFrag.frag");
 
-            Texture distortionMap = factory.GetTextureByIndex(0);
+            Texture distortionMap = factory.GetTextureById("distorsionTexture");
             distortionMap.Repeated = true;
             distortionMap.Smooth = true;
             shader.SetUniform("currentTexture", new Shader.CurrentTextureType());
@@ -63,7 +63,7 @@ namespace Metempsychoid.View.Card2D
             render.Shader = shader;
 
             this.SpriteColor = Color.Yellow;
-            this.ObjectSprite.Texture = factory.GetTextureByIndex(2);
+            this.ObjectSprite.Texture = factory.GetTextureById("starHaloTexture");
 
             this.ObjectSprite.Origin = new SFML.System.Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
 

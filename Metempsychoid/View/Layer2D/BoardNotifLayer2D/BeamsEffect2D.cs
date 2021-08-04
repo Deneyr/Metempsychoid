@@ -32,7 +32,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         {
             this.Position = parentCardDecorator2D.Position;
 
-            this.ObjectSprite.Texture = factory.GetTextureByIndex(4);
+            this.ObjectSprite.Texture = factory.GetTextureById("beamEffectTexture");
 
             this.ObjectSprite.Origin = new SFML.System.Vector2f(this.ObjectSprite.TextureRect.Width / 2, this.ObjectSprite.TextureRect.Height / 2);
 

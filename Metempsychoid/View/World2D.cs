@@ -84,14 +84,14 @@ namespace Metempsychoid.View
             // Test Entity mapping
             MappingObjectModelView.Add(typeof(T_TeleEntity), new T_TeleEntity2DFactory());
 
-            foreach (IObject2DFactory factory in MappingObjectModelView.Values)
-            {
-                TextureManager.TextureLoaded += factory.OnTextureLoaded;
-                TextureManager.TextureUnloaded += factory.OnTextureUnloaded;
+            //foreach (IObject2DFactory factory in MappingObjectModelView.Values)
+            //{
+            //    TextureManager.TextureLoaded += factory.OnTextureLoaded;
+            //    TextureManager.TextureUnloaded += factory.OnTextureUnloaded;
 
-                SoundManager.SoundLoaded += factory.OnSoundLoaded;
-                SoundManager.SoundUnloaded += factory.OnSoundUnloaded;
-            }
+            //    SoundManager.SoundLoaded += factory.OnSoundLoaded;
+            //    SoundManager.SoundUnloaded += factory.OnSoundUnloaded;
+            //}
         }
 
         public  Dictionary<ALayer, ALayer2D> LayersDictionary

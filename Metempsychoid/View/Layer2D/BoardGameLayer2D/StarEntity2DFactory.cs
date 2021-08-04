@@ -15,13 +15,13 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
     {
         public StarEntity2DFactory()
         {
-            this.texturesPath.Add(@"Assets\Graphics\Entities\Star.png");
-            this.texturesPath.Add(@"Assets\Graphics\Shaders\distortion_map.png");
+            this.AddTexturePath("starTexture", @"Assets\Graphics\Entities\Star.png");
+            this.AddTexturePath("distortionTexture", @"Assets\Graphics\Shaders\distortion_map.png");
 
             // Sounds
-            this.soundsPath.Add("cardSocketed", @"Assets\Sounds\cardSocketed.ogg");
+            this.AddSoundPath("cardSocketed", @"Assets\Sounds\cardSocketed.ogg");
 
-            this.InitializeFactory();
+            //this.InitializeFactory();
         }
 
         public override IObject2D CreateObject2D(World2D world2D, IObject obj)
@@ -41,14 +41,14 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             return null;
         }
 
-        public override void OnTextureLoaded(string path, Texture texture)
-        {
-            if (this.Resources.ContainsKey(path))
-            {
-                texture.Smooth = true;
+        //public override void OnTextureLoaded(string path, Texture texture)
+        //{
+        //    if (this.Resources.ContainsKey(path))
+        //    {
+        //        texture.Smooth = true;
 
-                this.Resources[path] = texture;
-            }
-        }
+        //        this.Resources[path] = texture;
+        //    }
+        //}
     }
 }
