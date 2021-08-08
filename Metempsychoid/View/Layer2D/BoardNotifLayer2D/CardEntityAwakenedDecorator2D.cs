@@ -120,7 +120,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.starEffect2D = new StarEffect2D(this.Card2DFactory, layer2D, this);
             this.beamsEffect2D = new BeamsEffect2D(this.Card2DFactory, layer2D, this);
 
-            this.initialPosition = entity.CardDecoratedPosition;
+            this.initialPosition = entity.ParentStar.Position;
 
             this.cardValue = entity.Card.Value;
             this.cardValueModifier = entity.Card.ValueModifier;
