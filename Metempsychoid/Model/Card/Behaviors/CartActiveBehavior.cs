@@ -65,7 +65,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             DeleteCardNotifBehavior moveCardBehavior = behavior as DeleteCardNotifBehavior;
             moveCardBehavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarToLinks[behavior.OwnerCardEntity.ParentStar]
                 .Select(pElem => pElem.StarFrom != behavior.OwnerCardEntity.ParentStar ? pElem.StarFrom : pElem.StarTo)
-                .Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner == behavior.OwnerCardEntity.Card.CurrentOwner).ToList();
+                .Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner != behavior.OwnerCardEntity.Card.CurrentOwner).ToList();
         }
 
         public void OnBehaviorEnd(ACardNotifBehavior behavior)
