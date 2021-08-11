@@ -32,12 +32,18 @@ namespace Metempsychoid.View.SoundsManager
             this.Owner = owner;
 
             this.Owner.PropertyChanged += this.OnOwnerPropertyChanged;
+            parentLayer.ViewChanged += this.OnViewChanged;
 
             IAnimation fadeInAnimation = new AudioVolumeAnimation(0, 100, SFML.System.Time.FromSeconds(FADE_PERIOD), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             this.animationsList.Add(fadeInAnimation);
 
             IAnimation fadeOutAnimation = new AudioVolumeAnimation(100, 0, SFML.System.Time.FromSeconds(FADE_PERIOD), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             this.animationsList.Add(fadeOutAnimation);
+        }
+
+        private void OnViewChanged(ALayer2D obj)
+        {
+            this.Position = new Vector2f(obj.GetNormalizedPositionInWindow(this.Owner.Position).X, 1f);
         }
 
         public void OnOwnerPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -57,6 +63,11 @@ namespace Metempsychoid.View.SoundsManager
             base.Dispose();
 
             this.Owner.PropertyChanged -= this.OnOwnerPropertyChanged;
+
+            if(this.parentLayer.TryGetTarget(out ALayer2D parentLayer))
+            {
+                parentLayer.ViewChanged -= this.OnViewChanged;
+            }
         }
     }
 }

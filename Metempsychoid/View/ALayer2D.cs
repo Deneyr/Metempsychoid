@@ -34,6 +34,8 @@ namespace Metempsychoid.View
         private Vector2i mousePositionRelativeToWindow;
         protected float zoom;
 
+        public event Action<ALayer2D> ViewChanged;
+
         public List<ALayer2D> ChildrenLayer2D
         {
             get;
@@ -99,6 +101,8 @@ namespace Metempsychoid.View
                     }
 
                     this.mustUpdateMousePosition = true;
+
+                    this.ViewChanged?.Invoke(this);
                 }
             }
         }
@@ -122,6 +126,8 @@ namespace Metempsychoid.View
                     }
 
                     this.mustUpdateMousePosition = true;
+
+                    this.ViewChanged?.Invoke(this);
                 }
             }
         }
@@ -148,6 +154,8 @@ namespace Metempsychoid.View
                     }
 
                     this.mustUpdateMousePosition = true;
+
+                    this.ViewChanged?.Invoke(this);
                 }
             }
         }
