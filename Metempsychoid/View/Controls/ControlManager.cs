@@ -93,7 +93,15 @@ namespace Metempsychoid.View.Controls
         private void OnMouseButtonPressed(object sender, SFML.Window.MouseButtonEventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch();
-            this.buttonToStopwatch.Add(e.Button, stopwatch);
+            if (this.buttonToStopwatch.TryGetValue(e.Button, out Stopwatch oldStopwatch))
+            {
+                oldStopwatch.Stop();
+                this.buttonToStopwatch[e.Button] = stopwatch;
+            }
+            else
+            {
+                this.buttonToStopwatch.Add(e.Button, stopwatch);
+            }
             stopwatch.Start();
 
             if (e.Button == Button.Left)

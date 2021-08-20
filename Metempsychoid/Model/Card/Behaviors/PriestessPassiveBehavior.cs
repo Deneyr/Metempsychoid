@@ -52,7 +52,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             {
                 if (layer.NameToOnBoardCardEntities.TryGetValue(cardName, out HashSet<CardEntity> cardEntities))
                 {
-                    bonus = cardEntities.Count;
+                    bonus += cardEntities.Count;
 
                     if (cardEntities.Contains(starEntity.CardSocketed))
                     {
