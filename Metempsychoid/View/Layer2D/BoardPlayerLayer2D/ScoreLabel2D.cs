@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Player;
 using Metempsychoid.View.Animation;
 using Metempsychoid.View.Text2D;
 using SFML.Graphics;
@@ -29,7 +30,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                 {
                     this.score = value;
 
-                    this.CreateTextOfParagraph(2, this.score.ToString(), "BannerTitle", Color.White);
+                    //this.CreateTextOfParagraph(2, this.score.ToString(), "BannerTitle", Color.White);
+
+                    this.textParagraph2Ds[2].UpdateParameterText(0, this.score.ToString());
 
                     this.PlayAnimation(0);
                 }
@@ -128,27 +131,30 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.CreateTextParagraph2D(new Vector2f(0, 110), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 20);
             this.CreateTextParagraph2D(new Vector2f(0, 30), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 70);
 
+            this.UpdateTextOfParagraph(2, "field_title");
+
             this.IsActive = false;
         }
 
-        public void DisplayScore(int indexPlayer, string playerName)
+        public void DisplayScore(int indexPlayer, Player player)
         {
             if (indexPlayer == 0)
             {
-                this.UpdateTextOfParagraph(0, "score_player_name", playerName);
+                this.UpdateTextOfParagraph(0, "score_player_name", player.PlayerName);
             }
             else
             {
-                this.UpdateTextOfParagraph(0, "score_opponent_name", playerName);
+                this.UpdateTextOfParagraph(0, "score_opponent_name", player.PlayerName);
             }
+            this.textParagraph2Ds[0].UpdateParameterColor(0, player.PlayerColor);
 
             if (indexPlayer == 0)
             {
-                this.UpdateTextOfParagraph(1, "score_player_content", playerName);
+                this.UpdateTextOfParagraph(1, "score_player_content");
             }
             else
             {
-                this.UpdateTextOfParagraph(1, "score_opponent_content", playerName);
+                this.UpdateTextOfParagraph(1, "score_opponent_content");
             }
 
             this.IsActive = true;

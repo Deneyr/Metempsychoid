@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Player;
 using Metempsychoid.View.Animation;
 using Metempsychoid.View.Text2D;
 using SFML.Graphics;
@@ -92,7 +93,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
         }
 
-        public ScoreDomainLabel2D(ALayer2D parentLayer, string playerName1, string playerName2)
+        public ScoreDomainLabel2D(ALayer2D parentLayer, Player player1, Player player2)
             : base(parentLayer)
         {
             this.ownerName = null;
@@ -122,18 +123,18 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             anim = new ColorAnimation(new Color(0, 0, 0, 255), new Color(0, 0, 0, 0), Time.FromSeconds(1f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             this.animationsList.Add(anim);
 
-            this.InitializeScoreDomainLabel(parentLayer, playerName1, playerName2);
+            this.InitializeScoreDomainLabel(parentLayer, player1, player2);
             this.Position = new Vector2f(0, 0);
 
             this.IsActive = false;
         }
 
-        private void InitializeScoreDomainLabel(ALayer2D parentLayer, string playerName1, string playerName2)
+        private void InitializeScoreDomainLabel(ALayer2D parentLayer, Player player1, Player player2)
         {
             this.playerNameToScoreDomain2D = new Dictionary<string, ScoreDomainPlayerLabel2D>();
 
-            this.playerNameToScoreDomain2D.Add(playerName1, new ScoreDomainPlayerLabel2D(parentLayer, 0, playerName1));
-            this.playerNameToScoreDomain2D.Add(playerName2, new ScoreDomainPlayerLabel2D(parentLayer, 1, playerName2));
+            this.playerNameToScoreDomain2D.Add(player1.PlayerName, new ScoreDomainPlayerLabel2D(parentLayer, 0, player1));
+            this.playerNameToScoreDomain2D.Add(player2.PlayerName, new ScoreDomainPlayerLabel2D(parentLayer, 1, player2));
         }
 
         public void UpdateScoreDomainLabel(string playerName, int score)

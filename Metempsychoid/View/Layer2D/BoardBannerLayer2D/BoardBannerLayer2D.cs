@@ -84,8 +84,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.LevelTurnPhase = TurnPhase.VOID;         
 
             BoardBannerLayer boardBannerLayer = this.parentLayer as BoardBannerLayer;
-            this.headerEntity2D = new HeaderEntity2D(this, boardBannerLayer.Player.PlayerName, boardBannerLayer.Opponent.PlayerName);
-            this.scoreDomainLabel2D = new ScoreDomainLabel2D(this, boardBannerLayer.Player.PlayerName, boardBannerLayer.Opponent.PlayerName);
+            this.headerEntity2D = new HeaderEntity2D(this, boardBannerLayer.Player, boardBannerLayer.Opponent);
+            this.scoreDomainLabel2D = new ScoreDomainLabel2D(this, boardBannerLayer.Player, boardBannerLayer.Opponent);
 
             this.cardFocused = null;
 

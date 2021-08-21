@@ -18,11 +18,11 @@ namespace Metempsychoid.View.Text2D
 
         private string fullText;
 
-        public int ParameterIndex
-        {
-            get;
-            private set;
-        }
+        //public int ParameterIndex
+        //{
+        //    get;
+        //    private set;
+        //}
 
         public string FullText
         {
@@ -95,6 +95,18 @@ namespace Metempsychoid.View.Text2D
             {
                 this.text2D.FillColor = new Color(this.text2D.FillColor.R, this.text2D.FillColor.G, this.text2D.FillColor.B, value.A);
                 this.text2D.OutlineColor = new Color(this.text2D.OutlineColor.R, this.text2D.OutlineColor.G, this.text2D.OutlineColor.B, value.A);
+            }
+        }
+
+        public Color FillTextColor
+        {
+            get
+            {
+                return this.text2D.FillColor;
+            }
+            set
+            {
+                this.text2D.FillColor = new Color(value.R, value.G, value.B, this.SpriteColor.A);
             }
         }
 
@@ -201,21 +213,21 @@ namespace Metempsychoid.View.Text2D
 
             this.text2D = new Text();
 
-            if(text.StartsWith("{") && text.EndsWith("}") && int.TryParse(text.Substring(1, text.Length - 2), out int parameterIndex))
-            {
-                this.ParameterIndex = parameterIndex;
-            }
-            else
-            {
-                this.ParameterIndex = -1;
-            }
+            //if(text.StartsWith("{") && text.EndsWith("}") && int.TryParse(text.Substring(1, text.Length - 2), out int parameterIndex))
+            //{
+            //    this.ParameterIndex = parameterIndex;
+            //}
+            //else
+            //{
+            //    this.ParameterIndex = -1;
+            //}
 
             this.TextCursor = this.FullText.Count();
             this.text2D.Font = AObject2DFactory.GetFontByName("Sans");
 
             this.text2D.FillColor = fillColor;
             this.text2D.OutlineThickness = 2;
-            this.text2D.OutlineColor = Color.Black;
+            this.text2D.OutlineColor = new Color(0, 0, 0, fillColor.A);
 
             this.UpdateCanevas();
         }

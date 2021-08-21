@@ -1,4 +1,5 @@
 ﻿using Metempsychoid.Animation;
+using Metempsychoid.Model.Player;
 using Metempsychoid.View.Animation;
 using Metempsychoid.View.Text2D;
 using SFML.Graphics;
@@ -23,7 +24,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
         }
 
-        public HeaderEntity2D(ALayer2D parentLayer, string playerName, string opponentName) : base(parentLayer)
+        public HeaderEntity2D(ALayer2D parentLayer, Player player, Player opponent) : base(parentLayer)
         {
             this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 60);
             this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 60);
@@ -35,13 +36,17 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.playerNameToIndex = new Dictionary<string, int>();
 
-            this.UpdateTextOfParagraph(0, "start_player_turn", playerName);
-            this.UpdateTextOfParagraph(1, "end_player_turn", playerName);
-            this.playerNameToIndex.Add(playerName, 0);
+            this.UpdateTextOfParagraph(0, "start_player_turn", player.PlayerName);
+            this.UpdateTextOfParagraph(1, "end_player_turn", player.PlayerName);
+            this.textParagraph2Ds[0].UpdateParameterColor(0, player.PlayerColor);
+            this.textParagraph2Ds[1].UpdateParameterColor(0, player.PlayerColor);
+            this.playerNameToIndex.Add(player.PlayerName, 0);
 
-            this.UpdateTextOfParagraph(2, "start_opponent_turn", opponentName);
-            this.UpdateTextOfParagraph(3, "end_opponent_turn", opponentName);
-            this.playerNameToIndex.Add(opponentName, 2);
+            this.UpdateTextOfParagraph(2, "start_opponent_turn", opponent.PlayerName);
+            this.UpdateTextOfParagraph(3, "end_opponent_turn", opponent.PlayerName);
+            this.textParagraph2Ds[2].UpdateParameterColor(0, opponent.PlayerColor);
+            this.textParagraph2Ds[3].UpdateParameterColor(0, opponent.PlayerColor);
+            this.playerNameToIndex.Add(opponent.PlayerName, 2);
 
             SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(6), AnimationType.ONETIME);
 

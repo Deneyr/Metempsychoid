@@ -624,7 +624,7 @@ namespace Metempsychoid.View
 
         public virtual void FlushEntities()
         {
-            this.focusedGraphicEntity2D = null;
+            this.FocusedGraphicEntity2D = null;
 
             foreach (IObject2D object2D in this.objectToObject2Ds.Values)
             {

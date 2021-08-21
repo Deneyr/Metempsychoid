@@ -50,16 +50,16 @@ namespace Metempsychoid.View.Text2D
             List<TextToken2D> textToken2Ds = this.idToTokens[id];
             textToken2Ds = textToken2Ds.Select(pElem => pElem.CloneToken()).ToList();
 
-            if (parameters.Count() > 0)
-            {
-                IEnumerable<TextToken2D> tokenParameters = textToken2Ds.Where(pElem => pElem.ParameterIndex >= 0);
-                foreach (TextToken2D textToken2D in tokenParameters)
-                {
-                    textToken2D.FullText = parameters[textToken2D.ParameterIndex];
-                }
-            }
+            //if (parameters.Count() > 0)
+            //{
+            //    IEnumerable<TextToken2D> tokenParameters = textToken2Ds.Where(pElem => pElem.ParameterIndex >= 0);
+            //    foreach (TextToken2D textToken2D in tokenParameters)
+            //    {
+            //        textToken2D.FullText = parameters[textToken2D.ParameterIndex];
+            //    }
+            //}
 
-            paragraph2D.UpdateTextTokens(textToken2Ds);
+            paragraph2D.UpdateTextTokens(textToken2Ds, parameters);
         }
 
         private void UpdateTextTokensFromCulture()
@@ -93,7 +93,7 @@ namespace Metempsychoid.View.Text2D
 
                                 content = CleanSpecialCaracters(content);
 
-                                List<TextToken2D> token2DsList = this.CreateTextTokens(content, Color.White);
+                                List<TextToken2D> token2DsList = CreateTextTokens("Normal", content, Color.White);
 
                                 this.idToTokens.Add(key, token2DsList);
                             }
@@ -143,7 +143,7 @@ namespace Metempsychoid.View.Text2D
             return str;
         }
 
-        private List<TextToken2D> CreateTextTokens(string text, Color fillColor)
+        public static List<TextToken2D> CreateTextTokens(string tokenType, string text, Color fillColor)
         {
             List<TextToken2D> tokens = new List<TextToken2D>();
 
@@ -152,12 +152,34 @@ namespace Metempsychoid.View.Text2D
             foreach (string textToken in textTokens)
             {
                 // Replace by ctr choice.
-                TextToken2D textToken2D = new TextToken2D(textToken, fillColor);
+                TextToken2D textToken2D = CreateTextToken(tokenType, textToken, fillColor);
 
                 tokens.Add(textToken2D);
             }
 
             return tokens;
+        }
+
+        public static TextToken2D CreateTextToken(string tokenType, string textToken, Color fillColor)
+        {
+            TextToken2D textToken2D = null;
+            switch (tokenType)
+            {
+                case "Normal":
+                    textToken2D = new TextToken2D(textToken, fillColor);
+                    break;
+                case "BannerTitle":
+                    textToken2D = new TitleBannerTextToken2D(textToken, fillColor);
+                    break;
+                case "CardLabel":
+                    textToken2D = new CardLabelTextToken2D(textToken, fillColor);
+                    break;
+                default:
+                    textToken2D = new TextToken2D(textToken, fillColor);
+                    break;
+            }
+
+            return textToken2D;
         }
 
         public void AppendTextTokens(List<TextToken2D> tokenListToAppend, string text, string tokenType, Color fillColor)
@@ -169,20 +191,28 @@ namespace Metempsychoid.View.Text2D
                 if (string.IsNullOrEmpty(textToken) == false)
                 {
                     TextToken2D textToken2D = null;
-                    switch (tokenType)
+
+                    if (textToken.StartsWith("{") && textToken.EndsWith("}") && int.TryParse(textToken.Substring(1, textToken.Length - 2), out int parameterIndex))
                     {
-                        case "Normal":
-                            textToken2D = new TextToken2D(textToken, fillColor);
-                            break;
-                        case "BannerTitle":
-                            textToken2D = new TitleBannerTextToken2D(textToken, fillColor);
-                            break;
-                        case "CardLabel":
-                            textToken2D = new CardLabelTextToken2D(textToken, fillColor);
-                            break;
-                        default:
-                            textToken2D = new TextToken2D(textToken, fillColor);
-                            break;
+                        textToken2D = new ParameterTextToken2D(tokenType, fillColor);
+                    }
+                    else
+                    {
+                        switch (tokenType)
+                        {
+                            case "Normal":
+                                textToken2D = new TextToken2D(textToken, fillColor);
+                                break;
+                            case "BannerTitle":
+                                textToken2D = new TitleBannerTextToken2D(textToken, fillColor);
+                                break;
+                            case "CardLabel":
+                                textToken2D = new CardLabelTextToken2D(textToken, fillColor);
+                                break;
+                            default:
+                                textToken2D = new TextToken2D(textToken, fillColor);
+                                break;
+                        }
                     }
 
                     tokenListToAppend.Add(textToken2D);

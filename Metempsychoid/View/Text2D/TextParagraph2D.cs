@@ -34,6 +34,8 @@ namespace Metempsychoid.View.Text2D
         private int tokenCursor;
         private float scrollingSpeed;
 
+        private Dictionary<int, ParameterTextToken2D> indexToParameterTextTokens;
+
         delegate int TextLineHandler(ref Vector2f cursor, List<TextToken2D> tokensInLine, int offsetLine);
 
         public override Vector2f Position
@@ -215,6 +217,8 @@ namespace Metempsychoid.View.Text2D
         public TextParagraph2D(TextCanevas2D textCanevas2D, Vector2f positionOffsetTopLeft, Vector2f positionOffsetBotRight, Alignment alignment, uint characterSize)
             : base(null)
         {
+            this.indexToParameterTextTokens = new Dictionary<int, ParameterTextToken2D>();
+
             this.positionOffsetTopLeft = positionOffsetTopLeft;
             this.positionOffsetBotRight = positionOffsetBotRight;
             this.rotationOffset = 0;
@@ -238,18 +242,64 @@ namespace Metempsychoid.View.Text2D
             this.Zoom = textCanevas2D.Zoom;
         }
 
-        public void UpdateTextTokens(List<TextToken2D> textTokens)
+        public void UpdateTextTokens(List<TextToken2D> textTokens, params string[] parameters)
         {
             this.textToken2Ds = textTokens;
 
+            this.indexToParameterTextTokens.Clear();
+            int index = 0;
+
             foreach (TextToken2D textToken in this.textToken2Ds)
             {
+                if(textToken is ParameterTextToken2D)
+                {
+                    ParameterTextToken2D parameterTextToken2D = textToken as ParameterTextToken2D;
+
+                    this.indexToParameterTextTokens.Add(index++, parameterTextToken2D);
+                }
+
                 textToken.CharacterSize = this.CharacterSize;
                 textToken.SpriteColor = this.SpriteColor;
                 textToken.CustomZoom = this.CustomZoom;
             }
 
+            index = 0;
+            foreach (string parameter in parameters)
+            {
+                this.SetParameterText(index, parameter);
+
+                index++;
+            }
+
             this.AlignTextTokens();
+        }
+
+        private void SetParameterText(int index, string text)
+        {
+            ParameterTextToken2D parameterTextToken2D = this.indexToParameterTextTokens[index];
+            int indexParameterTextToken = this.textToken2Ds.IndexOf(parameterTextToken2D) + 1;
+
+            this.textToken2Ds.RemoveRange(indexParameterTextToken, parameterTextToken2D.NbHandlingToken);
+
+            this.textToken2Ds.InsertRange(indexParameterTextToken, parameterTextToken2D.CreateTextToken2DFrom(text));
+        }
+
+        public void UpdateParameterText(int index, string text)
+        {
+            this.SetParameterText(index, text);
+
+            this.AlignTextTokens();
+        }
+
+        public void UpdateParameterColor(int index, Color color)
+        {
+            ParameterTextToken2D parameterTextToken2D = this.indexToParameterTextTokens[index];
+            int indexParameterTextToken = this.textToken2Ds.IndexOf(parameterTextToken2D);
+
+            for(int i = 0; i < parameterTextToken2D.NbHandlingToken + 1; i++)
+            {
+                this.textToken2Ds[indexParameterTextToken + i].FillTextColor = color;
+            }
         }
 
         public void LaunchAnimationScrolling(float speed)
@@ -464,7 +514,9 @@ namespace Metempsychoid.View.Text2D
 
             while (notReachEnd)
             {
-                notReachEnd = tokenEnumerator.MoveNext();
+                while ((notReachEnd = tokenEnumerator.MoveNext()) && tokenEnumerator.Current is ParameterTextToken2D) ;
+
+                //notReachEnd = tokenEnumerator.MoveNext();
 
                 if (notReachEnd)
                 {

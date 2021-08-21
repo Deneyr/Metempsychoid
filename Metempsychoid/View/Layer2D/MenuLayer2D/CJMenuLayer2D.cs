@@ -66,5 +66,25 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
 
             window.SetView(defaultView);
         }
+
+        public override void Dispose()
+        {
+            if (this.startButton != null)
+            {
+                this.startButton.Dispose();
+            }
+
+            if (this.player1DeckBuildingButton != null)
+            {
+                this.player1DeckBuildingButton.Dispose();
+            }
+
+            if (this.player2DeckBuildingButton != null)
+            {
+                this.player2DeckBuildingButton.Dispose();
+            }
+
+            base.Dispose();
+        }
     }
 }

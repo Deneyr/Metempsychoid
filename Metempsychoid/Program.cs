@@ -10,6 +10,10 @@ namespace Metempsychoid
     {
         static void Main(string[] args)
         {
+            //View.Text2D.TextParagraphFactory factory = new View.Text2D.TextParagraphFactory();
+
+            //factory.Culture = "fr";
+
             MainWindow mainWindow = new MainWindow();
 
             mainWindow.Run();

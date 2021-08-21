@@ -40,7 +40,9 @@ namespace Metempsychoid.View.Card2D
                 {
                     this.label = value;
 
-                    this.CreateTextOfParagraph(0, this.label.ToString(), "CardLabel", Color.White);
+                    //this.CreateTextOfParagraph(0, this.label.ToString(), "CardLabel", Color.White);
+
+                    this.textParagraph2Ds[0].UpdateParameterText(0, this.label.ToString());
 
                     if (this.IsActive)
                     {
@@ -64,15 +66,18 @@ namespace Metempsychoid.View.Card2D
 
                     if (this.bonus > 0)
                     {
-                        this.SpriteColor = Color.Green;
+                        //this.SpriteColor = Color.Green;
+                        this.textParagraph2Ds[0].UpdateParameterColor(0, Color.Green);
                     }
                     else if(this.bonus < 0)
                     {
-                        this.SpriteColor = Color.Red;
+                        //this.SpriteColor = Color.Red;
+                        this.textParagraph2Ds[0].UpdateParameterColor(0, Color.Red);
                     }
                     else
                     {
-                        this.SpriteColor = Color.White;
+                        //this.SpriteColor = Color.White;
+                        this.textParagraph2Ds[0].UpdateParameterColor(0, Color.White);
                     }
                 }
             }
@@ -143,6 +148,8 @@ namespace Metempsychoid.View.Card2D
 
             this.CreateTextParagraph2D(new Vector2f(0, 0), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 30);
 
+            this.UpdateTextOfParagraph(0, "field_content");
+
             this.SpriteColor = new Color(255, 255, 255, 0);
 
             IAnimation showAnimation = new ColorAnimation(new Color(255, 255, 255, 0), new Color(255, 255, 255, 255), Time.FromSeconds(0.5f), AnimationType.ONETIME, InterpolationMethod.LINEAR);
@@ -162,9 +169,9 @@ namespace Metempsychoid.View.Card2D
             IAnimation labelChangedAnimation = new ZoomAnimation(3, 1, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(labelChangedAnimation);
 
-            this.Label = label;
-
             this.IsActive = false;
+
+            this.Label = label;
         }
 
         public void ShowLabel()

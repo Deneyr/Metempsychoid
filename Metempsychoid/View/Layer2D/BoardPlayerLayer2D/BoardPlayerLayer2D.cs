@@ -247,7 +247,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             base.InitializeLayer(factory);
 
             BoardPlayerLayer parentBoardPlayerLayer = (this.parentLayer as BoardPlayerLayer);
-            this.scoreLabel.DisplayScore(parentBoardPlayerLayer.IndexPlayer, parentBoardPlayerLayer.SupportedPlayer.PlayerName);
+            this.scoreLabel.DisplayScore(parentBoardPlayerLayer.IndexPlayer, parentBoardPlayerLayer.SupportedPlayer);
             this.scoreLabel.Score = 0;
 
             foreach (AEntity2D entity in this.objectToObject2Ds.Values)

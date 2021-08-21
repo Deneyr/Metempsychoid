@@ -91,7 +91,9 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
                 {
                     this.label = value;
 
-                    this.CreateTextOfParagraph(2, this.label.ToString(), "BannerTitle", Color.Green);
+                    //this.CreateTextOfParagraph(2, this.label.ToString(), "BannerTitle", Color.Green);
+
+                    this.textParagraph2Ds[2].UpdateParameterText(0, this.label.ToString());
 
                     if (this.IsAnimationRunning() == false)
                     {
@@ -156,6 +158,8 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.UpdateTextOfParagraph(1, "behavior_using_label");
 
             this.CreateTextParagraph2D(new Vector2f(-370, 75), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 30);
+            this.UpdateTextOfParagraph(2, "field_title");
+            this.textParagraph2Ds[2].UpdateParameterColor(0, Color.Green);
 
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.MoveCardNotifBehavior), "move_behavior_label");
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.SwapCardNotifBehavior), "swap_behavior_label");
