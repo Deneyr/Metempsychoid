@@ -204,7 +204,7 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
-        public TextToken2D(string text, Color fillColor)
+        public TextToken2D(string text, Color fillColor, bool updateCanevas = true)
             : base(null)
         {
             this.fullText = text;
@@ -229,16 +229,19 @@ namespace Metempsychoid.View.Text2D
             this.text2D.OutlineThickness = 2;
             this.text2D.OutlineColor = new Color(0, 0, 0, fillColor.A);
 
-            this.UpdateCanevas();
+            if (updateCanevas)
+            {
+                this.UpdateCanevas();
+            }
         }
 
-        private void UpdateCanevas()
+        protected void UpdateCanevas()
         {
             int currentCursor = this.TextCursor;
 
             this.TextCursor = this.FullText.Count();
             FloatRect canevas = this.Bounds;
-            this.canevas = new IntRect((int)canevas.Left, (int)canevas.Left, (int)canevas.Width, (int)canevas.Height);
+            this.canevas = new IntRect((int)canevas.Left, (int)canevas.Top, (int)canevas.Width, (int)canevas.Height);
 
             this.TextCursor = currentCursor;
 

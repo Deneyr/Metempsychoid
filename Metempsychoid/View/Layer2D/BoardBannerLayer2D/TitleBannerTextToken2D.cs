@@ -11,13 +11,15 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
     public class TitleBannerTextToken2D : TextToken2D
     {
         public TitleBannerTextToken2D(string text, Color fillColor) 
-            : base(text, fillColor)
+            : base(text, fillColor, false)
         {
             this.text2D.Font = AObject2DFactory.GetFontByName("Protector");
 
             this.text2D.FillColor = fillColor;
             this.text2D.OutlineThickness = 2;
             this.text2D.OutlineColor = Color.Black;
+
+            this.UpdateCanevas();
         }
 
         public override TextToken2D CloneToken()

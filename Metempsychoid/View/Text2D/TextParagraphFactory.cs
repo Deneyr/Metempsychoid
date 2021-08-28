@@ -19,6 +19,12 @@ namespace Metempsychoid.View.Text2D
 
         private string culture;
 
+        public Dictionary<string, string> IdToTexts
+        {
+            get;
+            private set;
+        }
+
         public string Culture
         {
             get
@@ -40,6 +46,8 @@ namespace Metempsychoid.View.Text2D
         {
             this.idToTokens = new Dictionary<string, List<TextToken2D>>();
 
+            this.IdToTexts = new Dictionary<string, string>();
+
             this.localizationFolder = new DirectoryInfo(@"Assets\Localization");
 
             this.culture = null;
@@ -47,8 +55,7 @@ namespace Metempsychoid.View.Text2D
 
         public void CreateTextTokensIn(TextParagraph2D paragraph2D, string id, params string[] parameters)
         {
-            List<TextToken2D> textToken2Ds = this.idToTokens[id];
-            textToken2Ds = textToken2Ds.Select(pElem => pElem.CloneToken()).ToList();
+            List<TextToken2D> textToken2Ds = this.CreateTextTokens(id);
 
             //if (parameters.Count() > 0)
             //{
@@ -62,9 +69,18 @@ namespace Metempsychoid.View.Text2D
             paragraph2D.UpdateTextTokens(textToken2Ds, parameters);
         }
 
+        public List<TextToken2D> CreateTextTokens(string id)
+        {
+            List<TextToken2D> textToken2Ds = this.idToTokens[id];
+            textToken2Ds = textToken2Ds.Select(pElem => pElem.CloneToken()).ToList();
+
+            return textToken2Ds;
+        }
+
         private void UpdateTextTokensFromCulture()
         {
             this.idToTokens.Clear();
+            this.IdToTexts.Clear();
 
             FileInfo[] locFiles = this.localizationFolder.GetFiles("*.loc");
 
@@ -96,14 +112,23 @@ namespace Metempsychoid.View.Text2D
                                 List<TextToken2D> token2DsList = CreateTextTokens("Normal", content, Color.White);
 
                                 this.idToTokens.Add(key, token2DsList);
+                                this.IdToTexts.Add(key, content);
                             }
                             else
                             {
                                 List<TextToken2D> token2DsList = new List<TextToken2D>();
 
+                                StringBuilder fullContent = new StringBuilder();
+
+                                int i = 0;
                                 foreach (XElement paragraphElement in paragraphElements)
                                 {
                                     string content = paragraphElement.Value;
+                                    if(i != 0)
+                                    {
+                                        fullContent.Append(' ');
+                                    }
+                                    fullContent.Append(content.Trim());
 
                                     content = CleanSpecialCaracters(content);
 
@@ -119,9 +144,11 @@ namespace Metempsychoid.View.Text2D
                                     }
 
                                     this.AppendTextTokens(token2DsList, content, paragraphElement.Name.LocalName, tokenFillColor);
+                                    i++;
                                 }
 
                                 this.idToTokens.Add(key, token2DsList);
+                                this.IdToTexts.Add(key, fullContent.ToString());
                             }
                         }
                     }
@@ -139,6 +166,8 @@ namespace Metempsychoid.View.Text2D
             str = str.Replace("à", "a");
 
             str = str.Replace("ô", "o");
+
+            str = str.Replace("ù", "u");
 
             return str;
         }

@@ -1,5 +1,7 @@
 ﻿using Metempsychoid.Animation;
 using Metempsychoid.Model.Animation;
+using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
+using Metempsychoid.Model.Player;
 using Metempsychoid.View.Animation;
 using Metempsychoid.View.Text2D;
 using SFML.Graphics;
@@ -93,7 +95,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
                     //this.CreateTextOfParagraph(2, this.label.ToString(), "BannerTitle", Color.Green);
 
-                    this.textParagraph2Ds[2].UpdateParameterText(0, this.label.ToString());
+                    this.textParagraph2Ds[4].UpdateParameterText(0, this.label.ToString());
 
                     if (this.IsAnimationRunning() == false)
                     {
@@ -112,7 +114,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             set
             {
-                this.textParagraph2Ds[2].CustomZoom = value;
+                this.textParagraph2Ds[4].CustomZoom = value;
             }
         }
 
@@ -146,20 +148,28 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.startingPosition = new Vector2f(0, 0);
             this.offset = new Vector2f(0, 0);
 
-            this.bannerShape = new RectangleShape(new Vector2f(500, 150));
+            this.bannerShape = new RectangleShape(new Vector2f(500, 200));
             this.SpriteColor = new Color(0, 0, 0, 255);
 
             this.Position = new Vector2f(0, 0);
 
             this.idLabelToIndex = new Dictionary<Type, string>();
-            this.CreateTextParagraph2D(new Vector2f(0, 35), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
 
-            this.CreateTextParagraph2D(new Vector2f(25, 85), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
-            this.UpdateTextOfParagraph(1, "behavior_using_label");
+            this.CreateTextParagraph2D(new Vector2f(0, 15), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 30);
+            this.UpdateTextOfParagraph(0, "field_title");
+            this.textParagraph2Ds[0].UpdateParameterColor(0, new Color(200, 200, 200, 255));
 
-            this.CreateTextParagraph2D(new Vector2f(-370, 75), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 30);
-            this.UpdateTextOfParagraph(2, "field_title");
-            this.textParagraph2Ds[2].UpdateParameterColor(0, Color.Green);
+            this.CreateTextParagraph2D(new Vector2f(0, 60), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
+            this.UpdateTextOfParagraph(1, "behavior_header_label");
+
+            this.CreateTextParagraph2D(new Vector2f(0, 110), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
+
+            this.CreateTextParagraph2D(new Vector2f(25, 150), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
+            this.UpdateTextOfParagraph(3, "behavior_using_label");
+
+            this.CreateTextParagraph2D(new Vector2f(-355, 145), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 30);
+            this.UpdateTextOfParagraph(4, "field_title");
+            this.textParagraph2Ds[4].UpdateParameterColor(0, Color.Green);
 
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.MoveCardNotifBehavior), "move_behavior_label");
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.SwapCardNotifBehavior), "swap_behavior_label");
@@ -203,11 +213,13 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.bannerShape.Position = newPosition * MainWindow.MODEL_TO_VIEW;
         }
 
-        public void ActiveLabel(Type behaviorType)
+        public void ActiveLabel(IBoardNotifBehavior behavior)
         {
+            Type behaviorType = behavior.GetType();
+
             if (this.idLabelToIndex.ContainsKey(behaviorType))
             {
-                this.UpdateTextOfParagraph(0, this.idLabelToIndex[behaviorType]);
+                this.UpdateTextOfParagraph(2, this.idLabelToIndex[behaviorType]);
 
                 //this.SpriteColor = new Color(0, 0, 0, 0);
 
@@ -215,6 +227,13 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
                 this.PlayAnimation(0);
             }
+
+            Player behaviorOwner = behavior.OwnerCardEntity.Card.CurrentOwner;
+
+            this.textParagraph2Ds[0].UpdateParameterText(0, textParagraphFactory.IdToTexts[behavior.OwnerCardEntity.Card.NameIdLoc]);
+
+            this.textParagraph2Ds[1].UpdateParameterColor(0, behaviorOwner.PlayerColor);
+            this.textParagraph2Ds[1].UpdateParameterText(0, behaviorOwner.PlayerName);
         }
 
         public void DeactiveLabel()

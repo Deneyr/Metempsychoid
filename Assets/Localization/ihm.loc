@@ -1,5 +1,16 @@
 <localization>
     <paragraphEntry>
+        <key>field_content</key>
+        <paragraph culture="fr"><Normal>{0}</Normal></paragraph>
+        <paragraph culture="en"><Normal>{0}</Normal></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>field_title</key>
+        <paragraph culture="fr"><BannerTitle>{0}</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0}</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
         <key>start_game</key>
         <paragraph culture="fr"><BannerTitle>Commencer le duel !</BannerTitle></paragraph>
         <paragraph culture="en"><BannerTitle>Let's duel !</BannerTitle></paragraph>
@@ -101,6 +112,12 @@
         <key>pass_action</key>
         <paragraph culture="fr"><BannerTitle>Passer l'action</BannerTitle></paragraph>
         <paragraph culture="en"><BannerTitle>Pass action</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>behavior_header_label</key>
+        <paragraph culture="fr"><BannerTitle>Action de {0}</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0} 's action</BannerTitle></paragraph>
     </paragraphEntry>
     <paragraphEntry>
         <key>behavior_using_label</key>

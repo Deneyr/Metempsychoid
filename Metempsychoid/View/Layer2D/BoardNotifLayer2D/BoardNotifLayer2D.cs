@@ -227,7 +227,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
 
             if (obj.IsThereBehaviorLabel)
             {
-                this.effectBehaviorLabel2D.ActiveLabel(obj.GetType());
+                this.effectBehaviorLabel2D.ActiveLabel(obj);
 
                 if(obj is ACardNotifBehavior)
                 {

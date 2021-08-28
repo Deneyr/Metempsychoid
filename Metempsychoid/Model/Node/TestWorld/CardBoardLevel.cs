@@ -519,6 +519,13 @@ namespace Metempsychoid.Model.Node.TestWorld
         //    boardGameLayer.ReturnCardToBoard(cardEntityToRemove);
         //}
 
+        public void ClearLayersSelection()
+        {
+            this.BoardGameLayer.CardEntityFocused = null;
+
+            this.CurrentBoardPlayer.CardEntityFocused = null;
+        }
+
         private void UpdateEndTurnPhase(World world)
         {
             if (this.CheckNextTurnPhaseEvent(TurnPhase.START_TURN, null))

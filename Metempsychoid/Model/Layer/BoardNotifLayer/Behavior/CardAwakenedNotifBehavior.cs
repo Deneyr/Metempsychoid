@@ -29,6 +29,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
         public override void StartNotif(World world)
         {
+            this.NodeLevel.ClearLayersSelection();
+
             this.NodeLevel.BoardNotifLayer.NotifyCardAwakened(this.OwnerCardEntity, this.ValueBeforeAwakened);
         }
 
