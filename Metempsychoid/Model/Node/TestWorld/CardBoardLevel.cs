@@ -46,8 +46,14 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         public int TurnIndex
         {
-            get;
-            private set;
+            get
+            {
+                return this.BoardBannerLayer.TurnIndex;
+            }
+            set
+            {
+                this.BoardBannerLayer.TurnIndex = value;
+            }
         }
 
         public Player.Player MainPlayer
@@ -91,6 +97,10 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.Opponent = world.Opponent;
 
             this.playerIndex = 0;
+
+            this.BoardBannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
+            this.BoardBannerLayer.MaxTurnCount = 10;
+
             world.InitializeLevel(new List<string>()
             {
                 "VsO7nJK",
@@ -107,9 +117,6 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             this.BoardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
             this.BoardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
-            this.BoardBannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
-
-            this.TurnIndex = -1;
 
             this.InitializeStartLevelPhase(world);
         }
@@ -209,15 +216,14 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         private void InitializeStartTurnPhase(World world)
         {
+            BoardBannerLayer bannerLayer = this.BoardBannerLayer;
+            BoardGameLayer boardGameLayer = this.BoardGameLayer;
+
             this.TurnIndex++;
 
             BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer;
 
-            BoardBannerLayer bannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
             bannerLayer.PlayerTurn = boardPlayerLayer.SupportedPlayer;
-            bannerLayer.TurnIndex = this.TurnIndex;
-
-            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
             boardGameLayer.PlayerTurn = boardPlayerLayer.SupportedPlayer;
 
             this.SetCurrentTurnPhase(world, TurnPhase.START_TURN);
@@ -292,6 +298,11 @@ namespace Metempsychoid.Model.Node.TestWorld
             scoresOpponent.Add(opponentScore);
 
             this.SetCurrentTurnPhase(world, TurnPhase.COUNT_POINTS);
+        }
+
+        private void InitializeEndLevelPhase(World world)
+        {
+            this.SetCurrentTurnPhase(world, TurnPhase.END_LEVEL);
         }
 
         private void UpdateStartLevelPhase(World world)
@@ -550,7 +561,16 @@ namespace Metempsychoid.Model.Node.TestWorld
                     domain.TemporaryDomainOwner = null;
                 }
 
-                this.InitializeStartTurnPhase(world);
+                this.BoardBannerLayer.CurrentTurnCount++;
+
+                if (this.BoardBannerLayer.CurrentTurnCount < this.BoardBannerLayer.MaxTurnCount)
+                {
+                    this.InitializeStartTurnPhase(world);
+                }
+                else
+                {
+                    this.InitializeEndLevelPhase(world);
+                }
             }
         }
 

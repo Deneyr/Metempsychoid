@@ -10,6 +10,43 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
 {
     public class BoardBannerLayer: EntityLayer.EntityLayer
     {
+        private int currentTurnCount;
+        private int maxTurnCount;
+
+        public int CurrentTurnCount
+        {
+            get
+            {
+                return this.currentTurnCount;
+            }
+            set
+            {
+                if (this.currentTurnCount != value)
+                {
+                    this.currentTurnCount = value;
+
+                    this.TurnCountChanged?.Invoke(this.CurrentTurnCount, this.MaxTurnCount);
+                }
+            }
+        }
+
+        public int MaxTurnCount
+        {
+            get
+            {
+                return this.maxTurnCount;
+            }
+            set
+            {
+                if (this.maxTurnCount != value)
+                {
+                    this.maxTurnCount = value;
+
+                    this.TurnCountChanged?.Invoke(this.CurrentTurnCount, this.MaxTurnCount);
+                }
+            }
+        }
+
         public Dictionary<string, int> PlayerNameToModifier
         {
             get;
@@ -52,6 +89,8 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
             private set;
         }
 
+        public event Action<int, int> TurnCountChanged;
+
         public event Action<string, int> PlayerScoreUpdated;
 
         public void AddVictoryPointsTo(string playerName, int nbVictoryPointsToAdd)
@@ -76,11 +115,13 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
 
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
+            this.currentTurnCount = 1;
+            this.TurnIndex = -1;
+
             this.Player = world.Player;
             this.Opponent = (levelNode as CardBoardLevel).Opponent;
 
             this.PlayerTurn = this.Player;
-            this.TurnIndex = 0;
 
             this.ToolTip = new ToolTipEntity(this);
             this.AddEntityToLayer(this.ToolTip);
