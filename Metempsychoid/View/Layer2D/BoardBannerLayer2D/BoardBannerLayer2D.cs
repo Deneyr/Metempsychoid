@@ -27,6 +27,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         private TurnBanner2D turnBanner2D;
 
+        private EndLevelBanner2D endLevelBanner2D;
+
         private TurnPhase levelTurnPhase;
 
         private HashSet<ICardFocusedLayer> cardFocusedLayers;
@@ -60,6 +62,12 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                         case TurnPhase.COUNT_POINTS:
                             this.endDomainsEvaluated = false;
                             break;
+                        case TurnPhase.END_LEVEL:
+
+                            BoardBannerLayer boardBannerLayer = this.parentLayer as BoardBannerLayer;
+
+                            this.endLevelBanner2D.DisplayEndLevelBanner(boardBannerLayer.PlayerNameToTotalScores, boardBannerLayer.Player, boardBannerLayer.Opponent);
+                            break;
                     }
                 }
             }
@@ -74,6 +82,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             layer.TurnCountChanged += OnTurnCountChanged;  
 
             this.bannerEntity2D = new BannerEntity2D(this);
+
+            this.endLevelBanner2D = new EndLevelBanner2D(this);
 
             this.turnBanner2D = null;
 
@@ -249,6 +259,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 case TurnPhase.COUNT_POINTS:
                     this.UpdateCountPointsPhase(deltaTime);
                     break;
+                case TurnPhase.END_LEVEL:
+                    this.endLevelBanner2D.UpdateGraphics(deltaTime);
+                    break;
             }
         }
 
@@ -317,6 +330,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.headerEntity2D.DrawIn(window, deltaTime);
             this.scoreDomainLabel2D.DrawIn(window, deltaTime);
+
+            this.endLevelBanner2D.DrawIn(window, deltaTime);
 
             window.SetView(defaultView);
         }

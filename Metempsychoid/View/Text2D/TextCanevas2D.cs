@@ -144,11 +144,13 @@ namespace Metempsychoid.View.Text2D
             }
         }
 
-        public void CreateTextParagraph2D(Vector2f positionOffsetTopLeft, Vector2f positionOffsetBotRight, Alignment alignment, uint characterSize)
+        public TextParagraph2D CreateTextParagraph2D(Vector2f positionOffsetTopLeft, Vector2f positionOffsetBotRight, Alignment alignment, uint characterSize)
         {
             TextParagraph2D textParagraph2D = new TextParagraph2D(this, positionOffsetTopLeft, positionOffsetBotRight, alignment, characterSize);
 
             this.textParagraph2Ds.Add(textParagraph2D);
+
+            return textParagraph2D;
         }
 
         //public void AddTextParagraph2D(TextParagraph2D textParagraphToAdd)

@@ -99,7 +99,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.playerIndex = 0;
 
             this.BoardBannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
-            this.BoardBannerLayer.MaxTurnCount = 10;
+            this.BoardBannerLayer.MaxTurnCount = 5;
 
             world.InitializeLevel(new List<string>()
             {
@@ -181,7 +181,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                     this.UpdateCountPointsLevelPhase(world);
                     break;
                 case TurnPhase.END_LEVEL:
-
+                    this.UpdateEndLevelPhase(world);
                     break;
             }
         }
@@ -444,6 +444,14 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
+        public void UpdateEndLevelPhase(World world)
+        {
+            if (this.CheckNextTurnPhaseEvent(TurnPhase.END_LEVEL, null))
+            {
+                // End game
+            }
+        }
+
         public CardEntity PickCard(BoardPlayerLayer boardPlayerLayer, CardEntity cardPicked)
         {
             if (this.BoardGameLayer.CardEntityPicked == null)
@@ -561,10 +569,10 @@ namespace Metempsychoid.Model.Node.TestWorld
                     domain.TemporaryDomainOwner = null;
                 }
 
-                this.BoardBannerLayer.CurrentTurnCount++;
-
                 if (this.BoardBannerLayer.CurrentTurnCount < this.BoardBannerLayer.MaxTurnCount)
                 {
+                    this.BoardBannerLayer.CurrentTurnCount++;
+
                     this.InitializeStartTurnPhase(world);
                 }
                 else

@@ -190,6 +190,7 @@
     <Compile Include="View\Layer2D\BoardBannerLayer2D\BoardBannerLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\CardToolTip2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\CardToolTip2DFactory.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\EndLevelBanner2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\HeaderEntity2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\ICardFocusedLayer.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\IDomainsLayer.cs" />
