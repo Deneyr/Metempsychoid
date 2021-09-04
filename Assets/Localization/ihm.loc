@@ -11,6 +11,48 @@
     </paragraphEntry>
 
     <paragraphEntry>
+        <key>end_game_header</key>
+        <paragraph culture="fr"><BannerTitle>Fin de la bataille</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>End of the fight</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>end_game_header2</key>
+        <paragraph culture="fr"><BannerTitle>Les étoiles ont parlé</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Stars have spoken</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>end_game_player</key>
+        <paragraph culture="fr"><BannerTitle>Joueur {0}</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Player {0}</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>end_game_points</key>
+        <paragraph culture="fr"><BannerTitle>{0} point(s)</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0} point(s)</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>end_game_turns</key>
+        <paragraph culture="fr"><BannerTitle>Tour</BannerTitle><BannerTitle color="200:200:200">{0}</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Turn</BannerTitle><BannerTitle color="200:200:200">{0}</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>end_game_winner</key>
+        <paragraph culture="fr"><BannerTitle color="250:210:0">Vainqueur</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle color="250:210:0">Winner</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>end_game_draw</key>
+        <paragraph culture="fr"><BannerTitle color="200:200:200">Match nul</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle color="200:200:200">Draw</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>turn_banner</key>
+        <paragraph culture="fr"><BannerTitle>Tour</BannerTitle><BannerTitle color="200:200:200">{0}</BannerTitle><BannerTitle>sur</BannerTitle><BannerTitle color="200:200:200">{1}</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Turn</BannerTitle><BannerTitle color="200:200:200">{0}</BannerTitle><BannerTitle>on</BannerTitle><BannerTitle color="200:200:200">{1}</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
         <key>start_game</key>
         <paragraph culture="fr"><BannerTitle>Commencer le duel !</BannerTitle></paragraph>
         <paragraph culture="en"><BannerTitle>Let's duel !</BannerTitle></paragraph>
