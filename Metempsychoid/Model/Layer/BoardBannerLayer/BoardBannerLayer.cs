@@ -47,6 +47,14 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
             }
         }
 
+        public int PreInitMaxTurnCount
+        {
+            set
+            {
+                this.maxTurnCount = value;
+            }
+        }
+
         public Dictionary<string, int> PlayerNameToModifier
         {
             get;

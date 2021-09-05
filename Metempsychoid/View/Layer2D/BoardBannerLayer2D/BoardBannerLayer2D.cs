@@ -30,6 +30,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         private EndLevelBanner2D endLevelBanner2D;
 
         private ReturnMenuButton2D returnMenuButton2D;
+        private ReplayMenuButton2D replayMenuButton2D;
 
         private TurnPhase levelTurnPhase;
 
@@ -89,7 +90,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.endLevelBanner2D = new EndLevelBanner2D(this);
             this.returnMenuButton2D = new ReturnMenuButton2D(this);
-            this.returnMenuButton2D.Position = new Vector2f(0, this.endLevelBanner2D.Canevas.Height / 2 - this.returnMenuButton2D.Canevas.Height / 2 - 20);
+            this.returnMenuButton2D.Position = new Vector2f(-200, this.endLevelBanner2D.Canevas.Height / 2 - this.returnMenuButton2D.Canevas.Height / 2 - 20);
+            this.replayMenuButton2D = new ReplayMenuButton2D(this);
+            this.replayMenuButton2D.Position = new Vector2f(200, this.endLevelBanner2D.Canevas.Height / 2 - this.returnMenuButton2D.Canevas.Height / 2 - 20);
 
             this.hittableEntities2D = new List<AEntity2D>();
 
@@ -256,6 +259,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         {
             this.endLevelBanner2D.HideEndLevelBanner();
             this.returnMenuButton2D.DeactiveButton();
+            this.replayMenuButton2D.DeactiveButton();
 
             this.SendEventToWorld(Model.Event.EventType.LEVEL_CHANGE, null, levelId);
         }
@@ -283,6 +287,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                         && this.returnMenuButton2D.IsActive == false)
                     {
                         this.returnMenuButton2D.ActiveButton();
+                        this.replayMenuButton2D.ActiveButton();
                     }
 
                     break;
@@ -294,6 +299,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.hittableEntities2D.Clear();
 
             this.hittableEntities2D.Add(this.returnMenuButton2D);
+            this.hittableEntities2D.Add(this.replayMenuButton2D);
 
             return this.hittableEntities2D;
         }
@@ -366,6 +372,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.endLevelBanner2D.DrawIn(window, deltaTime);
             this.returnMenuButton2D.DrawIn(window, deltaTime);
+            this.replayMenuButton2D.DrawIn(window, deltaTime);
 
             window.SetView(defaultView);
         }

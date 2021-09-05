@@ -294,7 +294,7 @@ namespace Metempsychoid.View
 
         public virtual void InitializeLayer(IObject2DFactory factory)
         {
-            this.DefaultViewSize = this.view.Size;
+            this.DefaultViewSize = new Vector2f(0, 0);
 
             this.mustUpdateMousePosition = false;
 

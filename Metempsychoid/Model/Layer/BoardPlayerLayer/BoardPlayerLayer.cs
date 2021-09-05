@@ -261,9 +261,22 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             this.SourceCardEntitiesSet?.Invoke(this.BehaviorSourceCardEntities);
         }
 
+        public override void FlushLayer()
+        {
+            this.CardsDeck.Clear();
+            this.CardsHand.Clear();
+            this.CardsCemetery.Clear();
+
+            base.FlushLayer();
+        }
+
         protected override void InternalInitializeLayer(World world, ALevelNode levelNode)
         {
             int i = 0;
+
+            this.CardsDeck.Clear();
+            this.CardsHand.Clear();
+            this.CardsCemetery.Clear();
 
             this.pileFocused = PileFocused.HAND;
 

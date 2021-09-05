@@ -19,6 +19,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         private List<List<TextParagraph2D>> paragraphRows;
         private int currentRowIndex;
 
+        private bool isDraw;
+
         public BannerState State
         {
             get;
@@ -141,9 +143,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.bannerShape = new RectangleShape(new Vector2f(1000, 1000));
             this.bannerShape.FillColor = new Color(0, 0, 0, 200);
 
-            this.SpriteColor = new Color(0, 0, 0, 255);
-
             this.Position = new Vector2f(0, 0);
+
+            this.isDraw = false;
 
             IAnimation anim = new ZoomAnimation(0, 1, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             this.animationsList.Add(anim);
@@ -162,6 +164,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         public void DisplayEndLevelBanner(Dictionary<string, List<int>> scores, Player player, Player opponent)
         {
             this.State = BannerState.START;
+
+            this.SpriteColor = new Color(0, 0, 0, 255);
 
             this.paragraphRows.Clear();
             this.textParagraph2Ds.Clear();
@@ -228,6 +232,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             textParagraph2D = this.CreateTextParagraph2D(new Vector2f(0, offsetY), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 50);
             this.paragraphRows.Add(new List<TextParagraph2D>() { textParagraph2D });
 
+            this.isDraw = false;
             if (scorePlayer.Last() > scoreOpponent.Last())
             {
                 this.UpdateTextOfParagraph(this.textParagraph2Ds.Count - 1, "end_game_winner");
@@ -244,13 +249,14 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
                 textParagraph2D = this.CreateTextParagraph2D(new Vector2f(0, offsetY + 80), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 50);
                 this.paragraphRows.Add(new List<TextParagraph2D>() { textParagraph2D });
-                this.UpdateTextOfParagraph(this.textParagraph2Ds.Count - 1, "field_title", player.PlayerName);
+                this.UpdateTextOfParagraph(this.textParagraph2Ds.Count - 1, "field_title", opponent.PlayerName);
 
                 this.paragraphRows.Last()[0].UpdateParameterColor(0, opponent.PlayerColor);
             }
             else
             {
                 this.UpdateTextOfParagraph(this.textParagraph2Ds.Count - 1, "end_game_draw");
+                this.isDraw = true;
             }
 
             this.InitializeOpeningState();
@@ -288,7 +294,10 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         private void InitializeWinnerState()
         {
-            this.PlayAnimation(2);
+            if (this.isDraw == false)
+            {
+                this.PlayAnimation(2);
+            }
 
             this.State = BannerState.WINNER;
         }

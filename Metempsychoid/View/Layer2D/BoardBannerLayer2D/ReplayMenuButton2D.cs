@@ -1,9 +1,5 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.View.Animation;
-using Metempsychoid.View.Controls;
+﻿using Metempsychoid.View.Controls;
 using Metempsychoid.View.Layer2D.MenuLayer2D;
-using SFML.Graphics;
-using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 {
-    public class ReturnMenuButton2D : ACJButton2D
+    public class ReplayMenuButton2D : ACJButton2D
     {
-        public ReturnMenuButton2D(ALayer2D parentLayer) : base(parentLayer, 300, "end_game_menu_button")
+        public ReplayMenuButton2D(ALayer2D parentLayer) : base(parentLayer, 300, "end_game_restart_button")
         {
             this.IsActive = false;
         }
@@ -35,7 +31,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             {
                 base.OnMouseReleased(parentLayer, eventType);
 
-                (parentLayer as BoardBannerLayer2D).ChangeLevel("StartPageLevel");
+                (parentLayer as BoardBannerLayer2D).ChangeLevel("CardBoardLevel");
             }
 
             this.Zoom = 1f;
