@@ -16,6 +16,18 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
     {
         private RectangleShape bannerShape;
 
+        public override bool IsActive
+        {
+            get
+            {
+                return base.IsActive || this.IsAnimationRunning(); ;
+            }
+            set
+            {
+                base.IsActive = value;
+            }
+        }
+
         public override Vector2f Position
         {
             get
@@ -81,7 +93,7 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
             this.CreateTextParagraph2D(new Vector2f(0, 25), new Vector2f(0, 0), TextParagraph2D.Alignment.CENTER, 20);
             this.UpdateTextOfParagraph(0, idLabel);
 
-            IAnimation showAnimation = new ColorAnimation(new Color(128, 128, 128, 255), new Color(255, 255, 255, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            IAnimation showAnimation = new ColorAnimation(new Color(0, 0, 0, 0), new Color(128, 128, 128, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(showAnimation);
 
             SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(2), AnimationType.LOOP);
@@ -92,7 +104,7 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
             sequence.AddAnimation(1, focusedAnimation);
             this.animationsList.Add(sequence);
 
-            IAnimation hideAnimation = new ColorAnimation(new Color(255, 255, 255, 255), new Color(128, 128, 128, 128), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
+            IAnimation hideAnimation = new ColorAnimation(new Color(128, 128, 128, 255), new Color(0, 0, 0, 0), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(hideAnimation);
 
             this.IsActive = true;
@@ -103,14 +115,16 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
             return true;
         }
 
-        public void ActiveButton()
+        public virtual void ActiveButton()
         {
+            this.SpriteColor = new Color(0, 0, 0, 0);
+
             this.IsActive = true;
 
             this.PlayAnimation(0);
         }
 
-        public void DeactiveButton()
+        public virtual void DeactiveButton()
         {
             this.IsActive = false;
 

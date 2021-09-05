@@ -18,7 +18,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             base(world)
         {
             this.nameTolevelNodes.Add("StartPageLevel", new CJMenuLevel(world));
-            this.nameTolevelNodes.Add("TestLevel", new CardBoardLevel(world));
+            this.nameTolevelNodes.Add("CardBoardLevel", new CardBoardLevel(world));
         }
 
         public override void VisitStart(World world)

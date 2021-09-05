@@ -29,7 +29,11 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         private EndLevelBanner2D endLevelBanner2D;
 
+        private ReturnMenuButton2D returnMenuButton2D;
+
         private TurnPhase levelTurnPhase;
+
+        private List<AEntity2D> hittableEntities2D;
 
         private HashSet<ICardFocusedLayer> cardFocusedLayers;
         private HashSet<IDomainsLayer> domainsLayers;
@@ -84,8 +88,12 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.bannerEntity2D = new BannerEntity2D(this);
 
             this.endLevelBanner2D = new EndLevelBanner2D(this);
+            this.returnMenuButton2D = new ReturnMenuButton2D(this);
+            this.returnMenuButton2D.Position = new Vector2f(0, this.endLevelBanner2D.Canevas.Height / 2 - this.returnMenuButton2D.Canevas.Height / 2 - 20);
 
-            this.turnBanner2D = null;
+            this.hittableEntities2D = new List<AEntity2D>();
+
+            this.turnBanner2D = new TurnBanner2D(this);
 
             this.cardFocusedLayers = new HashSet<ICardFocusedLayer>();
             this.domainsLayers = new HashSet<IDomainsLayer>();
@@ -102,7 +110,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.headerEntity2D = new HeaderEntity2D(this, boardBannerLayer.Player, boardBannerLayer.Opponent);
             this.scoreDomainLabel2D = new ScoreDomainLabel2D(this, boardBannerLayer.Player, boardBannerLayer.Opponent);
 
-            this.turnBanner2D = new TurnBanner2D(this);
+            //this.turnBanner2D = new TurnBanner2D(this);
             this.turnBanner2D.ResetTurn(boardBannerLayer.MaxTurnCount);
 
             this.cardFocused = null;
@@ -219,10 +227,10 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                     base.DefaultViewSize = value;
 
                     //IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
-                    IntRect scoreLabelCanevas = this.turnBanner2D.Canevas;
+                    IntRect turnBannerCanevas = this.turnBanner2D.Canevas;
 
                     //this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
-                    this.turnBanner2D.Position = new Vector2f(- this.DefaultViewSize.X / 2 + scoreLabelCanevas.Width / 2, -this.DefaultViewSize.Y / 2 + scoreLabelCanevas.Height / 2);
+                    this.turnBanner2D.Position = new Vector2f(- this.DefaultViewSize.X / 2 + turnBannerCanevas.Width / 2, -this.DefaultViewSize.Y / 2 + turnBannerCanevas.Height / 2);
                 }
             }
         }
@@ -244,8 +252,18 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.LevelTurnPhase = (TurnPhase)Enum.Parse(typeof(TurnPhase), obj.ToString());
         }
 
+        public void ChangeLevel(string levelId)
+        {
+            this.endLevelBanner2D.HideEndLevelBanner();
+            this.returnMenuButton2D.DeactiveButton();
+
+            this.SendEventToWorld(Model.Event.EventType.LEVEL_CHANGE, null, levelId);
+        }
+
         public override void UpdateGraphics(Time deltaTime)
         {
+            base.UpdateGraphics(deltaTime);
+
             this.UpdateFocusedEntity();
 
             switch (this.LevelTurnPhase)
@@ -261,8 +279,23 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                     break;
                 case TurnPhase.END_LEVEL:
                     this.endLevelBanner2D.UpdateGraphics(deltaTime);
+                    if(this.endLevelBanner2D.State == EndLevelBanner2D.BannerState.END
+                        && this.returnMenuButton2D.IsActive == false)
+                    {
+                        this.returnMenuButton2D.ActiveButton();
+                    }
+
                     break;
             }
+        }
+
+        protected override IEnumerable<AEntity2D> GetEntities2DFocusable()
+        {
+            this.hittableEntities2D.Clear();
+
+            this.hittableEntities2D.Add(this.returnMenuButton2D);
+
+            return this.hittableEntities2D;
         }
 
         private void UpdateFocusedEntity()
@@ -332,6 +365,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.scoreDomainLabel2D.DrawIn(window, deltaTime);
 
             this.endLevelBanner2D.DrawIn(window, deltaTime);
+            this.returnMenuButton2D.DrawIn(window, deltaTime);
 
             window.SetView(defaultView);
         }
@@ -411,13 +445,6 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             {
                 this.headerEntity2D.IsActive = false;
                 this.headerEntity2D.Dispose();
-            }
-
-            if(this.turnBanner2D != null)
-            {
-                this.turnBanner2D.IsActive = false;
-                this.turnBanner2D.Dispose();
-                this.turnBanner2D = null;
             }
 
             foreach (IDomainsLayer domainLayer in this.domainsLayers)

@@ -24,7 +24,7 @@ namespace Metempsychoid.View.Layer2D.MenuLayer2D
             {
                 base.OnMouseReleased(parentLayer, eventType);
 
-                parentLayer.SendEventToWorld(Model.Event.EventType.LEVEL_CHANGE, null, "TestLevel");
+                parentLayer.SendEventToWorld(Model.Event.EventType.LEVEL_CHANGE, null, "CardBoardLevel");
             }
 
             this.Zoom = 1f;

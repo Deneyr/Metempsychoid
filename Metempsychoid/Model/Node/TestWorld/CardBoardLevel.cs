@@ -99,7 +99,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.playerIndex = 0;
 
             this.BoardBannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
-            this.BoardBannerLayer.MaxTurnCount = 5;
+            this.BoardBannerLayer.MaxTurnCount = 1;
 
             world.InitializeLevel(new List<string>()
             {
@@ -446,9 +446,9 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         public void UpdateEndLevelPhase(World world)
         {
-            if (this.CheckNextTurnPhaseEvent(TurnPhase.END_LEVEL, null))
+            if (this.CheckLevelChangeEvent(world, out string detailsEvent))
             {
-                // End game
+                world.NotifyInternalGameEvent(new InternalGameEvent(InternalEventType.GO_TO_LEVEL, detailsEvent));
             }
         }
 
@@ -764,6 +764,22 @@ namespace Metempsychoid.Model.Node.TestWorld
                     {
                         return true;
                     }
+                }
+            }
+            return false;
+        }
+
+        private bool CheckLevelChangeEvent(World world, out string details)
+        {
+            details = null;
+
+            if (this.pendingGameEvents.TryGetValue(EventType.LEVEL_CHANGE, out List<GameEvent> gameEventsList))
+            {
+                foreach (GameEvent gameEvent in gameEventsList)
+                {
+                    details = gameEvent.Details;
+
+                    return true;
                 }
             }
             return false;

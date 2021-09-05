@@ -195,6 +195,7 @@
     <Compile Include="View\Layer2D\BoardBannerLayer2D\ICardFocusedLayer.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\IDomainsLayer.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\IScoreLayer.cs" />
+    <Compile Include="View\Layer2D\BoardBannerLayer2D\ReturnMenuButton2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\ScoreDomainLabel2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\ScoreDomainPlayerLabel2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\TurnBanner2D.cs" />

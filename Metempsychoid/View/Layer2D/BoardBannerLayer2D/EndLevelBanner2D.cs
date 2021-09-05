@@ -14,12 +14,16 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 {
     public class EndLevelBanner2D : TextCanevas2D
     {
-        private BannerState bannerState;
-
         private RectangleShape bannerShape;
 
         private List<List<TextParagraph2D>> paragraphRows;
         private int currentRowIndex;
+
+        public BannerState State
+        {
+            get;
+            private set;
+        }
 
         public override Vector2f Position
         {
@@ -45,7 +49,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
             set
             {
-                switch (this.bannerState)
+                switch (this.State)
                 {
                     case BannerState.MAIN:
                         List<TextParagraph2D> paragraph2DRow = this.paragraphRows[this.currentRowIndex];
@@ -95,9 +99,9 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             set
             {
-                switch (this.bannerState)
+                switch (this.State)
                 {
-                    case BannerState.END:
+                    case BannerState.WINNER:
                         this.paragraphRows.Last()[0].CustomZoom = value;
 
                         break;
@@ -150,14 +154,14 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             anim = new ZoomAnimation(1, 2, Time.FromSeconds(3), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             this.animationsList.Add(anim);
 
-            this.bannerState = BannerState.END;
+            this.State = BannerState.START;
 
             this.IsActive = false;
         }
 
         public void DisplayEndLevelBanner(Dictionary<string, List<int>> scores, Player player, Player opponent)
         {
-            this.bannerState = BannerState.END;
+            this.State = BannerState.START;
 
             this.paragraphRows.Clear();
             this.textParagraph2Ds.Clear();
@@ -252,11 +256,13 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.InitializeOpeningState();
         }
 
-        public void ResetEndLevelBanner()
+        public void HideEndLevelBanner()
         {
             this.textParagraph2Ds.Clear();
 
             this.IsActive = false;
+
+            this.State = BannerState.START;
         }
 
         private void InitializeOpeningState()
@@ -268,7 +274,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.IsActive = true;
 
-            this.bannerState = BannerState.OPENING;
+            this.State = BannerState.OPENING;
         }
 
         private void InitializeMainState()
@@ -277,14 +283,19 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.PlayAnimation(1);
 
-            this.bannerState = BannerState.MAIN;
+            this.State = BannerState.MAIN;
+        }
+
+        private void InitializeWinnerState()
+        {
+            this.PlayAnimation(2);
+
+            this.State = BannerState.WINNER;
         }
 
         private void InitializeEndState()
         {
-            this.PlayAnimation(2);
-
-            this.bannerState = BannerState.END;
+            this.State = BannerState.END;
         }
 
         private void UpdateOpeningState()
@@ -307,20 +318,31 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 }
                 else
                 {
-                    this.InitializeEndState();
+                    this.InitializeWinnerState();
                 }
+            }
+        }
+
+        private void UpdateWinnerState()
+        {
+            if (this.IsAnimationRunning() == false)
+            {
+                this.InitializeEndState();
             }
         }
 
         public override void UpdateGraphics(Time deltaTime)
         {
-            switch (this.bannerState)
+            switch (this.State)
             {
                 case BannerState.OPENING:
                     this.UpdateOpeningState();
                     break;
                 case BannerState.MAIN:
                     this.UpdateMainState();
+                    break;
+                case BannerState.WINNER:
+                    this.UpdateWinnerState();
                     break;
             }
         }
@@ -337,8 +359,10 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
         public enum BannerState
         {
+            START,
             OPENING,
             MAIN,
+            WINNER,
             END
         }
     }
