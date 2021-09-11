@@ -23,6 +23,12 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             set;
         }
 
+        public List<CardEntity> CardEntitiesSelected
+        {
+            get;
+            private set;
+        }
+
         public virtual int NbCurrentBehaviorUse
         {
             get
@@ -82,6 +88,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             : base(cardBehaviorOwner, ownerCardEntity)
         {
             this.FromStarEntities = new List<StarEntity>();
+            this.CardEntitiesSelected = new List<CardEntity>();
 
             this.state = DeleteState.VOID;
         }
@@ -102,6 +109,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             this.nbCurrentBehaviorUse = 0;
 
             this.mustNotifyBehaviorEnd = false;
+
+            this.CardEntitiesSelected.Clear();
 
             //this.CardBehaviorOwner.OnBehaviorStart(this);
 
@@ -149,7 +158,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             {
                 if (gameEventsNextBehavior.Any())
                 {
-                    IEnumerable<StarEntity> starEntitiesConcerned = this.FromStarEntities.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.IsSelected);
+                    IEnumerable<StarEntity> starEntitiesConcerned = this.CardEntitiesSelected.Select(pElem => pElem.ParentStar);
                     foreach (StarEntity starEntity in starEntitiesConcerned)
                     {
                         starEntity.CardSocketed.IsSelected = false;
@@ -181,6 +190,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                             this.NbCurrentBehaviorUse--;
 
                             cardEntityPicked.IsSelected = false;
+                            this.CardEntitiesSelected.Remove(cardEntityPicked);
 
                             this.CardBehaviorOwner.OnBehaviorCardPicked(this, cardEntityPicked);
                         }
@@ -189,8 +199,23 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                             this.NbCurrentBehaviorUse++;
 
                             cardEntityPicked.IsSelected = true;
+                            this.CardEntitiesSelected.Add(cardEntityPicked);
 
                             this.CardBehaviorOwner.OnBehaviorCardPicked(this, cardEntityPicked);
+                        }
+                        else
+                        {
+                            CardEntity firstSelectedCardEntity = this.CardEntitiesSelected.FirstOrDefault();
+                            if(firstSelectedCardEntity != null)
+                            {
+                                firstSelectedCardEntity.IsSelected = false;
+                                this.CardEntitiesSelected.RemoveAt(0);
+                                this.CardBehaviorOwner.OnBehaviorCardPicked(this, firstSelectedCardEntity);
+
+                                cardEntityPicked.IsSelected = true;
+                                this.CardEntitiesSelected.Add(cardEntityPicked);
+                                this.CardBehaviorOwner.OnBehaviorCardPicked(this, cardEntityPicked);
+                            }
                         }
                     }
                 }
