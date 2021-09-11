@@ -293,7 +293,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         {
             StarEntity starEntity = parentLayer.GetEntityFromEntity2D(this) as StarEntity;
 
-            if (starEntity.CardSocketed != null && starEntity.CardSocketed.Card.IsAwakened)
+            if (starEntity.CardSocketed != null)
             {
                 parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_BOARD, starEntity.CardSocketed, null);
             }

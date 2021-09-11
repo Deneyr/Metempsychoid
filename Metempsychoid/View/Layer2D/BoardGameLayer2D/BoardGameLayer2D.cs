@@ -346,7 +346,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         private void ClearCardFocusedFillLink()
         {
-            if (this.CardFocused.IsAwakened)
+            if (this.linksFocused.Count > 0)
             {
                 foreach (StarLinkEntity2D starLinkEntity2D in this.linksFocused)
                 {
