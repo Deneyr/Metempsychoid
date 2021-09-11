@@ -227,7 +227,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 }
             }
 
-            offsetY += 100;
+            offsetY += 80;
 
             textParagraph2D = this.CreateTextParagraph2D(new Vector2f(0, offsetY), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 50);
             this.paragraphRows.Add(new List<TextParagraph2D>() { textParagraph2D });

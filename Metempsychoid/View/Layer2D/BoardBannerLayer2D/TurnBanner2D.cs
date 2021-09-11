@@ -131,7 +131,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         public TurnBanner2D(ALayer2D parentLayer)
             : base(parentLayer)
         {
-            this.bannerShape = new RectangleShape(new Vector2f(200, 50));
+            this.bannerShape = new RectangleShape(new Vector2f(250, 50));
 
             this.SpriteColor = new Color(0, 0, 0, 255);
 
