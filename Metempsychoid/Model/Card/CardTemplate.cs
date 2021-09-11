@@ -20,7 +20,7 @@ namespace Metempsychoid.Model.Card
         public virtual List<ICardBehavior> CardBehaviors
         {
             get;
-            set;
+            private set;
         }
 
         public virtual bool CanBeMoved
