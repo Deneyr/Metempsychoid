@@ -296,6 +296,10 @@ namespace Metempsychoid.View.Card2D
 
                     this.canevasSprite.Scale = value;
 
+                    this.cardLabel.CustomZoom = value;
+
+                    this.cardLabel.Position = new Vector2f(this.Position.X, this.Position.Y + (-this.Canevas.Height / 2 + WIDTH_BORDER + MARGIN_LABEL) * value.Y);
+
                     this.UpdateScaling();
                 }
             }
