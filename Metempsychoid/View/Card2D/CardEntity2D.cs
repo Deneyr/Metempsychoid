@@ -159,6 +159,7 @@ namespace Metempsychoid.View.Card2D
                 if(this.isFocused != value)
                 {
                     this.isFocused = value;
+                    this.cardHalo.IsFocused = value;
 
                     render.Shader.SetUniform("isFocused", this.isFocused);
                 }
@@ -296,8 +297,9 @@ namespace Metempsychoid.View.Card2D
 
                     this.canevasSprite.Scale = value;
 
-                    this.cardLabel.CustomZoom = value;
+                    //this.cardHalo.CustomZoom = value;
 
+                    this.cardLabel.CustomZoom = value;
                     this.cardLabel.Position = new Vector2f(this.Position.X, this.Position.Y + (-this.Canevas.Height / 2 + WIDTH_BORDER + MARGIN_LABEL) * value.Y);
 
                     this.UpdateScaling();
@@ -403,7 +405,7 @@ namespace Metempsychoid.View.Card2D
             this.isFocused = true;
             this.isSelected = !entity.IsSelected;
 
-            Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\cardCanevas.frag");
+            Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\CardCanevas.frag");
 
             Texture distortionMap = factory.GetTextureById("distorsionTexture");
             distortionMap.Repeated = true;

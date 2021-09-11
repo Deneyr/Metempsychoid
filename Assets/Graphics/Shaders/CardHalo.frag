@@ -45,6 +45,6 @@ void main()
         ratioFocused = (1 + sin(time * 10)) / 2;
     }
 
-    gl_FragColor = gl_Color * (1 - ratio) + ratio * vec4(1, 1, 1, 1) * ratioFocused + (1 - ratioFocused) * vec4(0.5, 0.5, 0.5, 1);
+    gl_FragColor = gl_Color * (1 - ratio) + (ratio * vec4(1, 1, 1, 1) * ratioFocused + vec4(0.1, 0.1, 0.1, 1) * (1 - ratioFocused));
     gl_FragColor.a = gl_Color.a * color.a;
 }

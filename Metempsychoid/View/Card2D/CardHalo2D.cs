@@ -12,13 +12,15 @@ namespace Metempsychoid.View.Card2D
 {
     public class CardHalo2D : AEntity2D
     {
-        private static float ZOOM_AWAKENED = 2;
+        private static float ZOOM_AWAKENED = 2f;
 
         RenderStates render;
 
         //Clock timer = new Clock();
 
         private bool isActive;
+
+        private bool isFocused;
 
         public override bool IsActive
         {
@@ -41,6 +43,23 @@ namespace Metempsychoid.View.Card2D
             }
         }
 
+        public bool IsFocused
+        {
+            get
+            {
+                return this.isFocused;
+            }
+            set
+            {
+                if (this.isFocused != value)
+                {
+                    this.isFocused = value;
+
+                    render.Shader.SetUniform("isFocused", this.isFocused);
+                }
+            }
+        }
+
         public CardHaloState HaloState
         {
             get;
@@ -50,8 +69,7 @@ namespace Metempsychoid.View.Card2D
         public CardHalo2D(IObject2DFactory factory, ALayer2D parentLayer, CardEntity2D parentCard) :
             base(parentLayer, factory, false)
         {
-
-            Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\StarFrag.frag");
+            Shader shader = new Shader(null, null, @"Assets\Graphics\Shaders\CardHalo.frag");
 
             Texture distortionMap = factory.GetTextureById("distorsionTexture");
             distortionMap.Repeated = true;
@@ -61,6 +79,8 @@ namespace Metempsychoid.View.Card2D
 
             render = new RenderStates(BlendMode.Alpha);
             render.Shader = shader;
+
+            this.isFocused = true;
 
             this.SpriteColor = Color.Yellow;
             this.ObjectSprite.Texture = factory.GetTextureById("starHaloTexture");
@@ -85,6 +105,7 @@ namespace Metempsychoid.View.Card2D
         {
             this.HaloState = CardHaloState.NOT_ACTIVE;
             this.Position = entity.Position;
+            this.IsFocused = false;
         }
 
         private IAnimation CreateTransitioningAnimation()
