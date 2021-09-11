@@ -128,6 +128,8 @@ namespace Metempsychoid.Model.Card
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("rock", "rock_title", "rock_poem", "rock_effect", 0);
+            cardTemplate.CanBeMoved = false;
+            cardTemplate.CanBeValueModified = false;
             cardTemplate.Patterns.Add(ConstellationPatternFactory.CreateRockConstellation());
 
             this.AddCardTemplateToLibrary(cardTemplate);

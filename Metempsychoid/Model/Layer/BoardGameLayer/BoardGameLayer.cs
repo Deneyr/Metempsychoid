@@ -327,7 +327,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public void MoveCard(StarEntity starEntity)
         {
-            if(this.CardEntityPicked.ParentStar != starEntity)
+            if(this.CardEntityPicked.Card.CanBeMoved 
+                && this.CardEntityPicked.ParentStar != starEntity)
             {
                 this.PendingActions.Add(new UnsocketCardAction(this.CardEntityPicked, false));
                 this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity));
@@ -358,7 +359,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public void SwapCard(StarEntity starEntity)
         {
-            if (this.CardEntityPicked.ParentStar != starEntity)
+            if (this.CardEntityPicked.Card.CanBeMoved 
+                && this.CardEntityPicked.ParentStar != starEntity)
             {
                 CardEntity toCardEntity = starEntity.CardSocketed;
                 StarEntity toStarEntity = this.CardEntityPicked.ParentStar;

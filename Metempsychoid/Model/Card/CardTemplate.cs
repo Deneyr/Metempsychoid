@@ -20,7 +20,19 @@ namespace Metempsychoid.Model.Card
         public virtual List<ICardBehavior> CardBehaviors
         {
             get;
-            private set;
+            set;
+        }
+
+        public virtual bool CanBeMoved
+        {
+            get;
+            set;
+        }
+
+        public virtual bool CanBeValueModified
+        {
+            get;
+            set;
         }
 
         public virtual int DefaultValue
@@ -75,6 +87,9 @@ namespace Metempsychoid.Model.Card
             this.NameIdLoc = nameIdLoc;
             this.PoemIdLoc = poemIdLoc;
             this.EffectIdLoc = effectIdLoc;
+
+            this.CanBeMoved = true;
+            this.CanBeValueModified = true;
 
             this.CardBehaviors = new List<ICardBehavior>();
 

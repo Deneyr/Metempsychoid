@@ -99,7 +99,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.playerIndex = 0;
 
             this.BoardBannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
-            this.BoardBannerLayer.PreInitMaxTurnCount = 1;
+            this.BoardBannerLayer.PreInitMaxTurnCount = 10;
 
             world.InitializeLevel(new List<string>()
             {

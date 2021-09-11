@@ -50,7 +50,11 @@ namespace Metempsychoid.Model.Card.Behaviors
             behavior.NbBehaviorUse = 1;
 
             MoveCardNotifBehavior moveCardBehavior = behavior as MoveCardNotifBehavior;
-            moveCardBehavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner == behavior.OwnerCardEntity.Card.CurrentOwner && pElem.CardSocketed != behavior.OwnerCardEntity).ToList();
+            moveCardBehavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem
+                .Where(pElem => pElem.CardSocketed != null
+                && pElem.CardSocketed.Card.CanBeMoved
+                && pElem.CardSocketed.Card.CurrentOwner == behavior.OwnerCardEntity.Card.CurrentOwner 
+                && pElem.CardSocketed != behavior.OwnerCardEntity).ToList();
         }
 
         public void OnBehaviorEnd(ACardNotifBehavior behavior)

@@ -22,6 +22,9 @@ namespace Metempsychoid.Model.Card
 
         private Player.Player currentOwner;
 
+        private bool canBeMoved;
+        private bool canBeValueModified;
+
         private List<ICardBehavior> cardBehaviorsCloned;
 
         public event Action<string> PropertyChanged;
@@ -37,6 +40,41 @@ namespace Metempsychoid.Model.Card
             get
             {
                 return this.cardBehaviorsCloned;
+            }
+        }
+
+        public override bool CanBeMoved
+        {
+            get
+            {
+                return this.canBeMoved;
+            }
+            set
+            {
+                if(this.canBeMoved != value)
+                {
+                    this.canBeMoved = value;
+
+                    this.PropertyChanged.Invoke("CanBeMoved");
+                }
+            }
+        }
+
+        public override bool CanBeValueModified
+        {
+            get
+            {
+                return this.canBeValueModified;
+            }
+            set
+            {
+                if(this.canBeValueModified != value)
+                {
+                    this.canBeValueModified = value;
+
+                    this.PropertyChanged.Invoke("CanBeValueModified");
+                    this.PropertyChanged.Invoke("Value");
+                }
             }
         }
 
@@ -148,7 +186,11 @@ namespace Metempsychoid.Model.Card
         {
             get
             {
-                return this.valueModificator;
+                if (this.CanBeValueModified)
+                {
+                    return this.valueModificator;
+                }
+                return 0;
             }
             set
             {
@@ -170,6 +212,9 @@ namespace Metempsychoid.Model.Card
 
             this.valueModificator = 0;
             this.BehaviorToValueModifier = new Dictionary<ICardBehavior, int>();
+
+            this.canBeMoved = cardTemplate.CanBeMoved;
+            this.canBeValueModified = cardTemplate.CanBeValueModified;
 
             this.cardBehaviorsCloned = cardTemplate.CardBehaviors.Select(pElem => pElem.Clone()).ToList();
 

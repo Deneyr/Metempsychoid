@@ -37,7 +37,7 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             behavior.NbBehaviorUse = 1;
 
-            (behavior as SwapCardNotifBehavior).FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null).ToList();
+            (behavior as SwapCardNotifBehavior).FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CanBeMoved).ToList();
         }
 
         public void OnBehaviorEnd(ACardNotifBehavior behavior)

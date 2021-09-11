@@ -52,7 +52,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             MoveCardNotifBehavior moveCardBehavior = behavior as MoveCardNotifBehavior;
             moveCardBehavior.FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarToLinks[behavior.OwnerCardEntity.ParentStar]
                 .Select(pElem => pElem.StarFrom != behavior.OwnerCardEntity.ParentStar ? pElem.StarFrom : pElem.StarTo)
-                .Where(pElem => pElem.CardSocketed != null).ToList();
+                .Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CanBeMoved).ToList();
         }
 
         public void OnBehaviorEnd(ACardNotifBehavior behavior)
