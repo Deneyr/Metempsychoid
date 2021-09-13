@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class SunPassiveBehavior : ICardBehavior
+    public class SunPassiveBehavior : ACardBehavior
     {
         private List<CardEntity> affectedCardEntities;
 
@@ -26,7 +26,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.affectedCardEntities = new List<CardEntity>();
         }
 
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        public override void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
         {
             if (starEntity.CardSocketed.Card.IsAwakened)
             {
@@ -37,7 +37,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
         }
 
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             this.affectedCardEntities.Clear();
 
@@ -70,7 +70,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.affectedCardEntities = currentAffectedStarEntity;
         }
 
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
+        public override void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
             foreach (CardEntity cardEntity in this.affectedCardEntities)
             {
@@ -80,12 +80,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.affectedCardEntities.Clear();
         }
 
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-
-        }
-
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new SunPassiveBehavior(this.Value);
         }

@@ -72,7 +72,7 @@ namespace Metempsychoid.Model.Constellations
 
             if (this.NodeSelf != null)
             {
-                this.Initialize(boardGameLayer, startStarEntity);
+                this.Initialize(startStarEntity);
 
                 while (this.constellationStack.Any())
                 {
@@ -135,7 +135,7 @@ namespace Metempsychoid.Model.Constellations
             return true;
         }
 
-        private void Initialize(BoardGameLayer boardGameLayer, StarEntity startStarEntity)
+        private void Initialize(StarEntity startStarEntity)
         {
             this.snapshotStack.Clear();
             this.constellationStack.Clear();
@@ -318,13 +318,13 @@ namespace Metempsychoid.Model.Constellations
             }
         }
 
-        public void UpdateConstellationOrder()
-        {
-            if (this.NodeSelf != null)
-            {
+        //public void UpdateConstellationOrder()
+        //{
+        //    if (this.NodeSelf != null)
+        //    {
 
-            }
-        }
+        //    }
+        //}
 
         private class Snapshot
         {

@@ -10,6 +10,16 @@ namespace Metempsychoid.Model.Card.Behaviors
 {
     public interface ICardBehavior
     {
+        //bool AllowAwakening
+        //{
+        //    get;
+        //}
+
+        //bool AllowUnawakening
+        //{
+        //    get;
+        //}
+
         void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionOccured);
 
         void OnAwakened(BoardGameLayer layer, StarEntity starEntity);

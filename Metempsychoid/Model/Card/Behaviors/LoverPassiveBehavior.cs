@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class LoverPassiveBehavior : ICardBehavior, ICardBehaviorOwner
+    public class LoverPassiveBehavior : ACardBehavior, ICardBehaviorOwner
     {
         public int NbCardsToConvert
         {
@@ -30,7 +30,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.ConvertedCards = new HashSet<CardEntity>();
         }
 
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        public override void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
         {
             if (this.ConvertedCards.Count > 0)
             {
@@ -41,7 +41,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
         }
 
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             this.ConvertedCards.Clear();
 
@@ -51,11 +51,6 @@ namespace Metempsychoid.Model.Card.Behaviors
             {
                 layer.RegisterNotifBehavior(new ConvertCardNotifBehavior(this, starEntity.CardSocketed));
             }
-        }
-
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
-        {
-
         }
 
         public void OnBehaviorStart(ACardNotifBehavior behavior)
@@ -98,7 +93,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
         }
 
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
+        public override void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
         {
             foreach (CardEntity cardEntityConverted in this.ConvertedCards)
             {
@@ -111,7 +106,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.ConvertedCards.Clear();
         }
 
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new LoverPassiveBehavior(this.NbCardsToConvert);
         }

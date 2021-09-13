@@ -9,29 +9,14 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class WorldActiveBehavior : ICardBehavior
+    public class WorldActiveBehavior : ACardBehavior
     {
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
-        {
-
-        }
-
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             layer.RegisterNotifBehavior(new SecureDomainNotifBehavior(starEntity.CardSocketed));
         }
 
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
-        {
-
-        }
-
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-
-        }
-
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new WorldActiveBehavior();
         }

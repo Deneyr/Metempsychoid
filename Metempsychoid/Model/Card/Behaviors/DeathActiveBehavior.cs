@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class DeathActiveBehavior : ICardBehavior, ICardBehaviorOwner
+    public class DeathActiveBehavior : ACardBehavior, ICardBehaviorOwner
     {
         public int NbUse
         {
@@ -22,24 +22,9 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.NbUse = nbUse;
         }
 
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
-        {
-
-        }
-
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             layer.RegisterNotifBehavior(new DeleteCardNotifBehavior(this, starEntity.CardSocketed));
-        }
-
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
-        {
-
-        }
-
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-
         }
 
         public void OnBehaviorStart(ACardNotifBehavior behavior)
@@ -59,7 +44,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         }
 
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new DeathActiveBehavior(this.NbUse);
         }

@@ -126,26 +126,26 @@ namespace Metempsychoid.Model.Constellations
             }
         }
 
-        public void OnCardSocketed(BoardGameLayer boardGameLayer, StarEntity starEntity)
-        {
-            //this.parentStarEntity = new WeakReference<StarEntity>(starEntity);
+        //public void OnCardSocketed(BoardGameLayer boardGameLayer, StarEntity starEntity)
+        //{
+        //    //this.parentStarEntity = new WeakReference<StarEntity>(starEntity);
 
-            this.IsAwakened = this.constellationPattern.CreateConstellationSystem(
-                boardGameLayer,
-                starEntity,
-                this.NodeToStarEntity,
-                this.LinkToStarLinkEntity);
-        }
+        //    this.IsAwakened = this.constellationPattern.CreateConstellationSystem(
+        //        boardGameLayer,
+        //        starEntity,
+        //        this.NodeToStarEntity,
+        //        this.LinkToStarLinkEntity);
+        //}
 
-        public void OnCardUnsocketed(BoardGameLayer boardGameLayer, StarEntity starEntity)
-        {
-            //this.parentStarEntity = null;
+        //public void OnCardUnsocketed(BoardGameLayer boardGameLayer, StarEntity starEntity)
+        //{
+        //    //this.parentStarEntity = null;
 
-            this.NodeToStarEntity.Clear();
-            this.LinkToStarLinkEntity.Clear();
+        //    this.NodeToStarEntity.Clear();
+        //    this.LinkToStarLinkEntity.Clear();
 
-            this.IsAwakened = false;
-        }
+        //    this.IsAwakened = false;
+        //}
 
         public void Dispose()
         {

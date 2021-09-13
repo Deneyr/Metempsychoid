@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class HangedManPassiveBehavior : ICardBehavior
+    public class HangedManPassiveBehavior : ACardBehavior
     {
         public int Value
         {
@@ -21,7 +21,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.Value = value;
         }
 
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        public override void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
         {
             if (starEntity.CardSocketed.Card.IsAwakened)
             {
@@ -32,7 +32,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
         }
 
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             this.UpdateValue(layer, starEntity);
         }
@@ -49,17 +49,12 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
         }
 
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
+        public override void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
             layer.PendingActions.Add(new ClearCardValueModifier(ownerCardEntity.Card, this));
         }
 
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-
-        }
-
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new HangedManPassiveBehavior(this.Value);
         }

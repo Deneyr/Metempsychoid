@@ -9,15 +9,9 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class MagicianActiveBehavior : ICardBehavior, ICardBehaviorOwner
+    public class MagicianActiveBehavior : ACardBehavior, ICardBehaviorOwner
     {
-
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
-        {
-
-        }
-
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             if(layer.StarSystem
                 .Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner == starEntity.CardSocketed.Card.CurrentOwner && pElem.CardSocketed != starEntity.CardSocketed).Any() == false)
@@ -33,16 +27,6 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
 
             layer.RegisterNotifBehavior(new MoveCardNotifBehavior(this, starEntity.CardSocketed));
-        }
-
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
-        {
-
-        }
-
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-
         }
 
         public void OnBehaviorStart(ACardNotifBehavior behavior)
@@ -71,7 +55,7 @@ namespace Metempsychoid.Model.Card.Behaviors
                 .Where(pElem => pElem.CardSocketed == null).ToList();
         }
 
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new MagicianActiveBehavior();
         }

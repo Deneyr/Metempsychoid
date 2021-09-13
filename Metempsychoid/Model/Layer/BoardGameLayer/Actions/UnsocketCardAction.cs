@@ -39,8 +39,6 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
         public void ExecuteAction(BoardGameLayer layerToPerform)
         {
             //this.CardToSocket.Card.CardUnsocketed(layerToPerform, this.OwnerStar);
-            this.OwnerStar.CardSocketed = null;
-
             layerToPerform.CardEntityPicked = null;
 
             if (this.OffBoard)
@@ -58,6 +56,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 
                 layerToPerform.CardsOffBoard.Add(this.CardToUnsocket);
             }
+
+            this.OwnerStar.CardSocketed = null;
             //else
             //{
             //    this.OwnerStar.CardSocketed = null;

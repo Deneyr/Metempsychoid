@@ -10,27 +10,11 @@ using Metempsychoid.Model.Node.TestWorld;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class FoolActiveBehavior : ICardBehavior, ICardBehaviorOwner
+    public class FoolActiveBehavior : ACardBehavior, ICardBehaviorOwner
     {
-
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
-        {
-            
-        }
-
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             layer.RegisterNotifBehavior(new SwapCardNotifBehavior(this, starEntity.CardSocketed));
-        }
-
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
-        {
-
-        }
-
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-
         }
 
         public void OnBehaviorStart(ACardNotifBehavior behavior)
@@ -50,10 +34,9 @@ namespace Metempsychoid.Model.Card.Behaviors
             CardEntity cardEntity = behavior.NodeLevel.BoardGameLayer.CardEntityPicked;
 
             (behavior as SwapCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed != cardEntity).ToList();
-
         }
 
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new FoolActiveBehavior();
         }

@@ -9,37 +9,11 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class JudgementActiveBehavior : ICardBehavior, ICardBehaviorOwner
+    public class JudgementActiveBehavior : ACardBehavior, ICardBehaviorOwner
     {
-        //public int NbUse
-        //{
-        //    get;
-        //    private set;
-        //}
-
-        //public JudgementActiveBehavior(int nbUse)
-        //{
-        //    this.NbUse = nbUse;
-        //}
-
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
-        {
-
-        }
-
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             layer.RegisterNotifBehavior(new DeleteCardNotifBehavior(this, starEntity.CardSocketed));
-        }
-
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
-        {
-
-        }
-
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-
         }
 
         public void OnBehaviorStart(ACardNotifBehavior behavior)
@@ -81,7 +55,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         }
 
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new JudgementActiveBehavior();//this.NbUse);
         }

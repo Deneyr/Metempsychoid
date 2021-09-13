@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class HierophantActiveBehavior : ICardBehavior, ICardBehaviorOwner
+    public class HierophantActiveBehavior : ACardBehavior, ICardBehaviorOwner
     {
         public List<string> NewCardsToAdd
         {
@@ -22,24 +22,9 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.NewCardsToAdd = newCardsToAdd;
         }
 
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
-        {
-
-        }
-
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             layer.RegisterNotifBehavior(new SocketNewCardNotifBehavior(this, starEntity.CardSocketed, this.NewCardsToAdd));
-        }
-
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
-        {
-
-        }
-
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-
         }
 
         public void OnBehaviorStart(ACardNotifBehavior behavior)
@@ -57,7 +42,7 @@ namespace Metempsychoid.Model.Card.Behaviors
             (behavior as SocketNewCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
         }
 
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new HierophantActiveBehavior(this.NewCardsToAdd);
         }

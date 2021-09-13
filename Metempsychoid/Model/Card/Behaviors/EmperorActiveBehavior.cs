@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class EmperorActiveBehavior : ICardBehavior
+    public class EmperorActiveBehavior : ACardBehavior
     {
         public int NbPoints
         {
@@ -22,27 +22,12 @@ namespace Metempsychoid.Model.Card.Behaviors
             this.NbPoints = nbPoints;
         }
 
-        public void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
-        {
-
-        }
-
-        public void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
+        public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
             layer.RegisterNotifBehavior(new AddVictoryPointsNotifBehavior(starEntity.CardSocketed, this.NbPoints));
         }
 
-        public void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
-        {
-
-        }
-
-        public void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-
-        }
-
-        public ICardBehavior Clone()
+        public override ICardBehavior Clone()
         {
             return new EmperorActiveBehavior(this.NbPoints);
         }
