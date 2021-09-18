@@ -71,10 +71,10 @@ namespace Metempsychoid.Model.Card
             private set;
         }
 
-        public List<ConstellationPattern> Patterns
+        public virtual IConstellation Constellation
         {
             get;
-            private set;
+            set;
         }
 
         public CardTemplate(string name, string nameIdLoc, string poemIdLoc, string effectIdLoc, int defaultValue)
@@ -93,7 +93,7 @@ namespace Metempsychoid.Model.Card
 
             this.CardBehaviors = new List<ICardBehavior>();
 
-            this.Patterns = new List<ConstellationPattern>();
+            this.Constellation = null;
         }
 
         public CardTemplate()

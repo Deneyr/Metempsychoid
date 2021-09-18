@@ -49,8 +49,10 @@ namespace Metempsychoid.Model.Card.Behaviors
             HashSet<StarLinkEntity> starLinkEntities = layer.StarToLinks[starEntity];
 
             List<CardEntity> currentAffectedStarEntity = new List<CardEntity>();
-            foreach (Constellation constellation in starEntity.CardSocketed.Card.Constellations)
+            if(starEntity.CardSocketed.Card.Constellation != null)
             {
+                IConstellation constellation = starEntity.CardSocketed.Card.Constellation;
+
                 currentAffectedStarEntity.AddRange(constellation.NodeToStarEntity.Values.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner == starEntity.CardSocketed.Card.CurrentOwner).Select(pElem => pElem.CardSocketed));
             }
 

@@ -53,6 +53,19 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
         }
 
+        public override void OnUnawakened(BoardGameLayer layer, CardEntity cardEntity)
+        {
+            foreach (CardEntity cardEntityConverted in this.ConvertedCards)
+            {
+                if (cardEntityConverted.ParentStar != null && cardEntityConverted.Card.CurrentOwner != cardEntityConverted.Card.FirstOwner)
+                {
+                    layer.ConvertCard(cardEntityConverted.ParentStar, cardEntityConverted.Card.FirstOwner);
+                }
+            }
+
+            this.ConvertedCards.Clear();
+        }
+
         public void OnBehaviorStart(ACardNotifBehavior behavior)
         {
             behavior.NbBehaviorUse = this.NbCardsToConvert;
@@ -82,7 +95,7 @@ namespace Metempsychoid.Model.Card.Behaviors
 
             List<CardEntity> notLinkedAnymore = this.ConvertedCards.Where(pElem => pElem.ParentStar == null || starLinkEntities.Any(pLinkElem => pLinkElem.StarFrom == pElem.ParentStar || pLinkElem.StarTo == pElem.ParentStar) == false).ToList();
 
-            foreach(CardEntity cardEntity in notLinkedAnymore)
+            foreach (CardEntity cardEntity in notLinkedAnymore)
             {
                 if (cardEntity.ParentStar != null && cardEntity.Card.CurrentOwner != cardEntity.Card.FirstOwner)
                 {
@@ -93,18 +106,18 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
         }
 
-        public override void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        {
-            foreach (CardEntity cardEntityConverted in this.ConvertedCards)
-            {
-                if (cardEntityConverted.ParentStar != null && cardEntityConverted.Card.CurrentOwner != cardEntityConverted.Card.FirstOwner)
-                {
-                    layer.ConvertCard(cardEntityConverted.ParentStar, cardEntityConverted.Card.FirstOwner);
-                }
-            }
+        //public override void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
+        //{
+        //    foreach (CardEntity cardEntityConverted in this.ConvertedCards)
+        //    {
+        //        if (cardEntityConverted.ParentStar != null && cardEntityConverted.Card.CurrentOwner != cardEntityConverted.Card.FirstOwner)
+        //        {
+        //            layer.ConvertCard(cardEntityConverted.ParentStar, cardEntityConverted.Card.FirstOwner);
+        //        }
+        //    }
 
-            this.ConvertedCards.Clear();
-        }
+        //    this.ConvertedCards.Clear();
+        //}
 
         public override ICardBehavior Clone()
         {

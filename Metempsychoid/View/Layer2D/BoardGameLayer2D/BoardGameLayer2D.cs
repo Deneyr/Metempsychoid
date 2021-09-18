@@ -363,8 +363,10 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 CardEntity cardEntity = this.object2DToObjects[this.CardFocused] as CardEntity;
 
                 this.linksFocused.Clear();
-                foreach (Constellation constellation in cardEntity.Card.Constellations)
+                if (cardEntity.Card.Constellation != null)
                 {
+                    IConstellation constellation = cardEntity.Card.Constellation;
+
                     foreach (List<StarLinkEntity> listStarLinks in constellation.LinkToStarLinkEntity.Values)
                     {
                         this.linksFocused.AddRange(listStarLinks.Select(pElem => this.objectToObject2Ds[pElem] as StarLinkEntity2D));

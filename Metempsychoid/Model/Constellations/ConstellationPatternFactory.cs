@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Metempsychoid.Model.Layer.BoardGameLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -463,6 +464,38 @@ namespace Metempsychoid.Model.Constellations
             //patternToCreate.AddNodeLink(link3);
             //ConstellationLink link4 = new ConstellationLink(self, node3);
             //patternToCreate.AddNodeLink(link4);
+
+            return patternToCreate;
+        }
+
+        public static ConstellationPattern CreateAssociatedCardsPatternFrom(ConstellationPattern modelPattern, IConstellation constellation)
+        {
+            ConstellationPattern patternToCreate = new ConstellationPattern();
+
+            Dictionary<ConstellationNode, ConstellationNode> nodeToNewNode = new Dictionary<ConstellationNode, ConstellationNode>();
+
+            ConstellationNode newNode;
+            foreach (ConstellationNode node in modelPattern.ConstellationNodeSystem)
+            {
+                if (node != modelPattern.NodeSelf)
+                {
+                    StarEntity associatedStarEntity = constellation.NodeToStarEntity[node];
+
+                    newNode = new ConstellationCardEntityNode(associatedStarEntity.CardSocketed);
+                    nodeToNewNode.Add(node, newNode);
+
+                    patternToCreate.AddNode(newNode);
+                }
+            }
+
+            newNode = new ConstellationNodeSelf();
+            nodeToNewNode.Add(modelPattern.NodeSelf, newNode);
+            patternToCreate.AddNode(newNode);
+
+            foreach (ConstellationLink link in modelPattern.ConstellationLinkSystem)
+            {
+                patternToCreate.AddNodeLink(new ConstellationLink(nodeToNewNode[link.Node1], nodeToNewNode[link.Node2]));
+            }
 
             return patternToCreate;
         }

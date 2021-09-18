@@ -14,7 +14,7 @@ namespace Metempsychoid.Model.Card
     {
         private CardTemplate cardTemplate;
 
-        private List<Constellation> constellations;
+        private IConstellation constellation;
 
         private bool isAwakened;
 
@@ -174,11 +174,15 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        public List<Constellation> Constellations
+        public override IConstellation Constellation
         {
             get
             {
-                return this.constellations;
+                return this.constellation;
+            }
+            set
+            {
+                this.constellation = value;
             }
         }
 
@@ -297,19 +301,21 @@ namespace Metempsychoid.Model.Card
 
         private void InitConstellations()
         {
-            this.constellations = new List<Constellation>();
-            foreach(ConstellationPattern pattern in this.cardTemplate.Patterns)
+            if (this.cardTemplate.Constellation != null)
             {
-                Constellation constellation = new Constellation(this, pattern);
-                this.constellations.Add(constellation);
+                this.constellation = this.cardTemplate.Constellation.Clone(this);
+            }
+            else
+            {
+                this.constellation = null;
             }
         }
 
         public void ResetConstellations(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
-            foreach (Constellation constellation in this.constellations)
+            if(this.Constellation != null)
             {
-                constellation.ResetConstellation();
+                this.Constellation.ResetConstellation();
             }
 
             this.IsAwakened = false;
@@ -320,19 +326,12 @@ namespace Metempsychoid.Model.Card
             }
         }
 
-        internal void OnConstellationAwakened(Constellation constellationAwakened)
-        {
-            bool isAwakened = true;
-
-            foreach (Constellation constellation in this.constellations)
-            {
-                isAwakened &= constellation.IsAwakened;
-            }
-
-            this.IsAwakened = isAwakened;
+        internal void OnConstellationAwakened(IConstellation constellationAwakened)
+        {           
+            this.IsAwakened = true;
         }
 
-        internal void OnConstellationUnawakened(Constellation constellationUnawakened)
+        internal void OnConstellationUnawakened(IConstellation constellationUnawakened)
         {
             this.IsAwakened = false;
         }
@@ -373,9 +372,9 @@ namespace Metempsychoid.Model.Card
 
         public void ReevaluateAwakening(BoardGameLayer layer, StarEntity starEntity, HashSet<StarEntity> starEntitiesChanged)
         {         
-            foreach (Constellation constellation in this.constellations)
+            if(this.Constellation != null)
             {
-                constellation.OnOtherStarEntitiesChanged(layer, starEntity, starEntitiesChanged);
+                this.Constellation.OnOtherStarEntitiesChanged(layer, starEntity, starEntitiesChanged);
             }
         }
 
