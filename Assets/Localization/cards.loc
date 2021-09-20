@@ -39,7 +39,7 @@
 
     <paragraphEntry>
         <key>strength_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Un géneral au charisme naturel qui galvanise ses troupes.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -58,7 +58,7 @@
 
     <paragraphEntry>
         <key>justice_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Révoque une condamnation à mort injuste.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -77,7 +77,7 @@
 
     <paragraphEntry>
         <key>moon_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Une rune ancestrale octroyant le pouvoir de la lune.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -96,7 +96,7 @@
 
     <paragraphEntry>
         <key>death_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">N’est éternel celui qui reçoit le doux baiser de la mort.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -115,7 +115,7 @@
 
     <paragraphEntry>
         <key>lover_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Un triangle amoureux maudit où les sentiments surpassent les allégeances.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -134,7 +134,7 @@
 
     <paragraphEntry>
         <key>priestess_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Ses chants quantiques entrent en résonance avec ses paires.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -153,7 +153,7 @@
 
     <paragraphEntry>
         <key>temperance_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Un négociateur à la volonté de calmer les tempêtes les plus impétueuses.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -172,7 +172,7 @@
 
     <paragraphEntry>
         <key>cart_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Un cheval de Troy qui détruit tout opposant assez fou pour se laisser approcher.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -191,7 +191,7 @@
 
     <paragraphEntry>
         <key>devil_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Sa puissance augmente à mesure qu’il corrompt l’esprit de ses ennemis.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -210,7 +210,7 @@
 
     <paragraphEntry>
         <key>fool_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Un esprit joueur qui sème la confusion sur le champs de bataille.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -229,7 +229,7 @@
 
     <paragraphEntry>
         <key>hierophant_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Ses sermonts invocateurs sont la parole directe d'une bienveillante déité.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -248,7 +248,7 @@
 
     <paragraphEntry>
         <key>magician_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Un magicien noir capable de distordre l'espace à sa guise.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -267,7 +267,7 @@
 
     <paragraphEntry>
         <key>world_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Les légendes racontent que celui qui possède le monde, possède la victoire.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -286,7 +286,7 @@
 
     <paragraphEntry>
         <key>emperor_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Souverain conquérant d'une nation en déclin.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -305,7 +305,7 @@
 
     <paragraphEntry>
         <key>hangedMan_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Les âmes dêchues de ses ennemis sont la source de son pouvoir.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -324,7 +324,7 @@
 
     <paragraphEntry>
         <key>hermite_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Il vit à l’écart de l’impureté de ce monde et se referme sur lui même pour renforcer son esprit.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -343,7 +343,7 @@
 
     <paragraphEntry>
         <key>rock_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Un gigantesque rocher immuable.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -362,7 +362,7 @@
 
     <paragraphEntry>
         <key>empress_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Occupe le trône en symbiose avec son époux.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -381,7 +381,7 @@
 
     <paragraphEntry>
         <key>wheel_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Un moyen de transport ingénieux permettant de déplacer autrui sans fatigue.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -400,7 +400,7 @@
 
     <paragraphEntry>
         <key>tower_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Une tour immense surmonté par imposante catapulte.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -419,7 +419,7 @@
 
     <paragraphEntry>
         <key>judgement_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Rétabli l’équilibre du pouvoir en provoquant la chute plus grand.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -438,7 +438,7 @@
 
     <paragraphEntry>
         <key>sun_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Une formation de prestige où se reunissent des combattants d’exception.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 

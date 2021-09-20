@@ -67,12 +67,12 @@ namespace Metempsychoid.Model.Card.Behaviors
 
             foreach (CardEntity cardEntity in noMoreAffected)
             {
-                layer.PendingActions.Add(new ClearCardValueModifier(cardEntity.Card, this));
+                layer.PendingActions.Add(new ClearCardValueModifier(cardEntity, this));
             }
 
             foreach (CardEntity cardEntity in newAffected)
             {
-                layer.PendingActions.Add(new SetCardValueModifier(cardEntity.Card, this, this.Value));
+                layer.PendingActions.Add(new SetCardValueModifier(cardEntity, this, this.Value));
             }
 
             this.affectedCardEntities = currentAffectedStarEntity;
@@ -82,7 +82,7 @@ namespace Metempsychoid.Model.Card.Behaviors
         {
             foreach (CardEntity cardEntity in this.affectedCardEntities)
             {
-                layer.PendingActions.Add(new ClearCardValueModifier(cardEntity.Card, this));
+                layer.PendingActions.Add(new ClearCardValueModifier(cardEntity, this));
             }
 
             this.affectedCardEntities.Clear();

@@ -9,5 +9,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
     public interface IBoardGameAction
     {
         void ExecuteAction(BoardGameLayer layerToPerform);
+
+        bool IsStillValid(BoardGameLayer layerToPerform);
     }
 }

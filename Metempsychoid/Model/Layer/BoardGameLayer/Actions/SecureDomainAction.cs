@@ -30,5 +30,10 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
         {
             this.DomainToSecure.TemporaryDomainOwner = this.DomainOwner;
         }
+
+        public bool IsStillValid(BoardGameLayer layerToPerform)
+        {
+            return true;
+        }
     }
 }

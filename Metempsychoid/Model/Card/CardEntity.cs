@@ -20,6 +20,12 @@ namespace Metempsychoid.Model.Card
 
         public event Action<string> PropertyChanged;
 
+        public bool IsValid
+        {
+            get;
+            private set;
+        }
+
         public virtual Card Card
         {
             get;
@@ -110,6 +116,8 @@ namespace Metempsychoid.Model.Card
 
         public CardEntity(EntityLayer entityLayer, Card card, bool isFliped) : base(entityLayer)
         {
+            this.IsValid = true;
+
             this.Card = card;
 
             this.Card.PropertyChanged += OnPropertyChanged;
@@ -154,6 +162,8 @@ namespace Metempsychoid.Model.Card
         public override void Dispose()
         {
             this.Card.PropertyChanged -= this.OnPropertyChanged;
+
+            this.IsValid = false;
 
             base.Dispose();
         }

@@ -324,6 +324,12 @@ namespace Metempsychoid.Model.Card
             {
                 cardBehavior.OnDestroyed(layer, ownerCardEntity);
             }
+
+            this.BehaviorToValueModifier.Clear();
+            this.ValueModifier = 0;
+
+            this.canBeMoved = cardTemplate.CanBeMoved;
+            this.canBeValueModified = cardTemplate.CanBeValueModified;
         }
 
         internal void OnConstellationAwakened(IConstellation constellationAwakened)

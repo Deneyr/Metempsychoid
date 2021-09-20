@@ -45,6 +45,11 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
         {
             this.CardToConvert.Card.CurrentOwner = this.NewCardOwner;
         }
+
+        public bool IsStillValid(BoardGameLayer layerToPerform)
+        {
+            return this.CardToConvert.IsValid;
+        }
     }
 }
 

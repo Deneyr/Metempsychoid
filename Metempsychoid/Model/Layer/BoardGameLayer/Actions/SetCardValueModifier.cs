@@ -1,4 +1,5 @@
-﻿using Metempsychoid.Model.Card.Behaviors;
+﻿using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Card.Behaviors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 {
     public class SetCardValueModifier : IBoardGameAction
     {
-        public Card.Card CardToSetValue
+        public CardEntity CardToSetValue
         {
             get;
             private set;
@@ -27,7 +28,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
             private set;
         }
 
-        public SetCardValueModifier(Card.Card cardToSetValue, ICardBehavior behaviorFrom, int value)
+        public SetCardValueModifier(CardEntity cardToSetValue, ICardBehavior behaviorFrom, int value)
         {
             this.CardToSetValue = cardToSetValue;
 
@@ -38,7 +39,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 
         public void ExecuteAction(BoardGameLayer layerToPerform)
         {
-            this.CardToSetValue.SetValueModifier(this.BehaviorFrom, this.Value);
+            this.CardToSetValue.Card.SetValueModifier(this.BehaviorFrom, this.Value);
+        }
+
+        public bool IsStillValid(BoardGameLayer layerToPerform)
+        {
+            return this.CardToSetValue.IsValid;
         }
     }
 }

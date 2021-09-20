@@ -61,7 +61,7 @@ namespace Metempsychoid.View
             nameToFonts.Add("perls", font);
             fontToWidths.Add(font, 250);
 
-            font = new Font(@"Assets\Graphics\Fonts\SansByAaron.ttf");
+            font = new Font(@"Assets\Graphics\Fonts\Bromine.ttf");
             nameToFonts.Add("Sans", font);
             fontToWidths.Add(font, 190);
 

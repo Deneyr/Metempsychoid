@@ -66,5 +66,10 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 
             layerToPerform.CardEntityPicked = null;
         }
+
+        public bool IsStillValid(BoardGameLayer layerToPerform)
+        {
+            return this.CardToSocket.IsValid;
+        }
     }
 }

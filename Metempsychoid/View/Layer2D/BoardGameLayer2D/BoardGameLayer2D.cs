@@ -358,10 +358,10 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         private void AddCardFocusedFillLink()
         {
-            if (this.CardFocused.IsAwakened)
-            {
-                CardEntity cardEntity = this.object2DToObjects[this.CardFocused] as CardEntity;
+            CardEntity cardEntity = this.object2DToObjects[this.CardFocused] as CardEntity;
 
+            if (cardEntity.Card.IsAwakened)
+            {
                 this.linksFocused.Clear();
                 if (cardEntity.Card.Constellation != null)
                 {

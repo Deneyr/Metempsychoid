@@ -10,7 +10,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 {
     public class AddCardValueModifier : IBoardGameAction
     {
-        public Card.Card CardToAddValue
+        public CardEntity CardToAddValue
         {
             get;
             private set;
@@ -34,7 +34,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
             private set;
         }
 
-        public AddCardValueModifier(Card.Card cardToAddValue, ICardBehavior behaviorFrom, int value, bool mustDeleteIfNull = false)
+        public AddCardValueModifier(CardEntity cardToAddValue, ICardBehavior behaviorFrom, int value, bool mustDeleteIfNull = false)
         {
             this.CardToAddValue = cardToAddValue;
 
@@ -47,7 +47,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
 
         public void ExecuteAction(BoardGameLayer layerToPerform)
         {
-            this.CardToAddValue.AddValueModifier(this.BehaviorFrom, this.Value, this.MustDeleteIfNull);
+            this.CardToAddValue.Card.AddValueModifier(this.BehaviorFrom, this.Value, this.MustDeleteIfNull);
+        }
+
+        public bool IsStillValid(BoardGameLayer layerToPerform)
+        {
+            return this.CardToAddValue.IsValid;
         }
     }
 }

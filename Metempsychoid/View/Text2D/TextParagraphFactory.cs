@@ -107,7 +107,7 @@ namespace Metempsychoid.View.Text2D
                             {
                                 string content = paragraph.Value;
 
-                                content = CleanSpecialCaracters(content);
+                                //content = CleanSpecialCaracters(content);
 
                                 List<TextToken2D> token2DsList = CreateTextTokens("Normal", content, Color.White);
 
@@ -130,7 +130,7 @@ namespace Metempsychoid.View.Text2D
                                     }
                                     fullContent.Append(content.Trim());
 
-                                    content = CleanSpecialCaracters(content);
+                                    //content = CleanSpecialCaracters(content);
 
                                     XAttribute colorAttribut = paragraphElement.Attribute("color");
                                     Color tokenFillColor = Color.White;
@@ -164,6 +164,7 @@ namespace Metempsychoid.View.Text2D
             str = str.Replace("ë", "e");
 
             str = str.Replace("à", "a");
+            str = str.Replace("â", "a");
 
             str = str.Replace("ô", "o");
 

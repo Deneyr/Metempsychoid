@@ -67,13 +67,13 @@ namespace Metempsychoid.Model.Card.Behaviors
 
             if (mustSetValue)
             {
-                layer.PendingActions.Add(new SetCardValueModifier(starEntity.CardSocketed.Card, this, bonus));
+                layer.PendingActions.Add(new SetCardValueModifier(starEntity.CardSocketed, this, bonus));
             }
         }
 
         public override void OnUnawakened(BoardGameLayer layer, CardEntity ownerCardEntity)
         {
-            layer.PendingActions.Add(new ClearCardValueModifier(ownerCardEntity.Card, this));
+            layer.PendingActions.Add(new ClearCardValueModifier(ownerCardEntity, this));
         }
 
         public override ICardBehavior Clone()
