@@ -19,6 +19,10 @@ namespace Metempsychoid.Model.Card.Behaviors
         //{
         //    get;
         //}
+        bool IsActive
+        {
+            get;
+        }
 
         void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionOccured);
 

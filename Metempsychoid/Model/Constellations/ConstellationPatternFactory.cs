@@ -9,6 +9,7 @@ namespace Metempsychoid.Model.Constellations
 {
     public static class ConstellationPatternFactory
     {
+
         public static ConstellationPattern CreateStrengthConstellation()
         {
             ConstellationPattern patternToCreate = new ConstellationPattern();
@@ -370,6 +371,16 @@ namespace Metempsychoid.Model.Constellations
             patternToCreate.AddNodeLink(link);
             ConstellationLink link2 = new ConstellationLink(node1, node2);
             patternToCreate.AddNodeLink(link2);
+
+            return patternToCreate;
+        }
+
+        public static ConstellationPattern CreateMinimalConstellation()
+        {
+            ConstellationPattern patternToCreate = new ConstellationPattern();
+
+            ConstellationNodeSelf self = new ConstellationNodeSelf();
+            patternToCreate.AddNode(self);
 
             return patternToCreate;
         }

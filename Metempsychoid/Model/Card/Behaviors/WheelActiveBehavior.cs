@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class WheelActiveBehavior : ACardBehavior, ICardBehaviorOwner
+    public class WheelActiveBehavior : ACardActiveBehavior
     {
         public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
@@ -26,10 +26,21 @@ namespace Metempsychoid.Model.Card.Behaviors
                 return;
             }
 
-            layer.RegisterNotifBehavior(new MoveCardNotifBehavior(this, starEntity.CardSocketed));
+            this.ActivateBehaviorEffect(layer, starEntity, null);
         }
 
-        public void OnBehaviorStart(ACardNotifBehavior behavior)
+        protected override bool ActivateBehaviorEffect(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        {
+            if (base.ActivateBehaviorEffect(layer, starEntity, actionsOccured))
+            {
+                layer.RegisterNotifBehavior(new MoveCardNotifBehavior(this, starEntity.CardSocketed));
+
+                return true;
+            }
+            return false;
+        }
+
+        public override void OnBehaviorStart(ACardNotifBehavior behavior)
         {
             behavior.NbBehaviorUse = 1;
 
@@ -39,12 +50,7 @@ namespace Metempsychoid.Model.Card.Behaviors
                 .Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CanBeMoved).ToList();
         }
 
-        public void OnBehaviorEnd(ACardNotifBehavior behavior)
-        {
-
-        }
-
-        public void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
+        public override void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
         {
             MoveCardNotifBehavior moveCardBehavior = behavior as MoveCardNotifBehavior;
 
@@ -53,7 +59,11 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public override ICardBehavior Clone()
         {
-            return new WheelActiveBehavior();
+            WheelActiveBehavior clone = new WheelActiveBehavior();
+
+            clone.InitFrom(this);
+
+            return clone;
         }
     }
 }

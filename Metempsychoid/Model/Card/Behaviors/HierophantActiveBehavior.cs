@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class HierophantActiveBehavior : ACardBehavior, ICardBehaviorOwner
+    public class HierophantActiveBehavior : ACardActiveBehavior
     {
         public List<string> NewCardsToAdd
         {
@@ -24,27 +24,37 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            layer.RegisterNotifBehavior(new SocketNewCardNotifBehavior(this, starEntity.CardSocketed, this.NewCardsToAdd));
+            this.ActivateBehaviorEffect(layer, starEntity, null);
         }
 
-        public void OnBehaviorStart(ACardNotifBehavior behavior)
+        protected override bool ActivateBehaviorEffect(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        {
+            if (base.ActivateBehaviorEffect(layer, starEntity, actionsOccured))
+            {
+                layer.RegisterNotifBehavior(new SocketNewCardNotifBehavior(this, starEntity.CardSocketed, this.NewCardsToAdd));
+
+                return true;
+            }
+            return false;
+        }
+
+        public override void OnBehaviorStart(ACardNotifBehavior behavior)
         {
             behavior.NbBehaviorUse = this.NewCardsToAdd.Count;
         }
 
-        public void OnBehaviorEnd(ACardNotifBehavior behavior)
-        {
-
-        }
-
-        public void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
+        public override void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
         {
             (behavior as SocketNewCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
         }
 
         public override ICardBehavior Clone()
         {
-            return new HierophantActiveBehavior(this.NewCardsToAdd);
+            HierophantActiveBehavior clone = new HierophantActiveBehavior(this.NewCardsToAdd);
+
+            clone.InitFrom(this);
+
+            return clone;
         }
     }
 }

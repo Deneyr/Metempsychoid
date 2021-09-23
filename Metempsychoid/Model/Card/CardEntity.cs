@@ -32,6 +32,14 @@ namespace Metempsychoid.Model.Card
             private set;
         }
 
+        public bool AreCardBehaviorsActive
+        {
+            get
+            {
+                return this.Card.CardBehaviors.Any(pElem => pElem.IsActive);
+            }
+        }
+
         //public virtual Vector2f PositionInNotifBoard
         //{
         //    get;

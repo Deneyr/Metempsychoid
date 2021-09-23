@@ -30,6 +30,7 @@ namespace Metempsychoid.Model.Card
             this.cardLibrary = new Dictionary<string, CardTemplate>();
 
             CardTemplate cardTemplate;
+            ACardActiveBehavior cardActiveBehavior;
 
             cardTemplate = new CardTemplate("strength", "strength_title", "strength_poem", "strength_effect", 0);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateStrengthConstellation());
@@ -40,7 +41,9 @@ namespace Metempsychoid.Model.Card
             cardTemplate = new CardTemplate("justice", "justice_title", "justice_poem", "justice_effect", 1);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateJusticeConstellation());
 
-            cardTemplate.CardBehaviors.Add(new JusticeActiveBehavior(1));
+            cardActiveBehavior = new JusticeActiveBehavior(1);
+            cardActiveBehavior.MaxActivationNb = 1;
+            cardTemplate.CardBehaviors.Add(cardActiveBehavior);
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("moon", "moon_title", "moon_poem", "moon_effect", 1);
@@ -52,7 +55,9 @@ namespace Metempsychoid.Model.Card
             cardTemplate = new CardTemplate("death", "death_title", "death_poem", "death_effect", 1);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateDeathConstellation());
 
-            cardTemplate.CardBehaviors.Add(new DeathActiveBehavior(1));
+            cardActiveBehavior = new DeathActiveBehavior(1);
+            cardActiveBehavior.MaxActivationNb = 1;
+            cardTemplate.CardBehaviors.Add(cardActiveBehavior);
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("lover", "lover_title", "lover_poem", "lover_effect", 1);
@@ -94,7 +99,9 @@ namespace Metempsychoid.Model.Card
             cardTemplate = new CardTemplate("hierophant", "hierophant_title", "hierophant_poem", "hierophant_effect", 1);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateHierophantConstellation());
 
-            cardTemplate.CardBehaviors.Add(new HierophantActiveBehavior(new List<string> { "priestess"}));
+            cardActiveBehavior = new HierophantActiveBehavior(new List<string> { "priestess" });
+            cardActiveBehavior.MaxActivationNb = 1;
+            cardTemplate.CardBehaviors.Add(cardActiveBehavior);
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("magician", "magician_title", "magician_poem", "magician_effect", 1);
@@ -106,7 +113,9 @@ namespace Metempsychoid.Model.Card
             cardTemplate = new CardTemplate("world", "world_title", "world_poem", "world_effect", 1);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateWorldConstellation());
 
-            cardTemplate.CardBehaviors.Add(new WorldActiveBehavior());
+            cardActiveBehavior = new WorldActiveBehavior();
+            cardActiveBehavior.MaxActivationNb = 1;
+            cardTemplate.CardBehaviors.Add(cardActiveBehavior);
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("emperor", "emperor_title", "emperor_poem", "emperor_effect", 1);
@@ -149,13 +158,17 @@ namespace Metempsychoid.Model.Card
             cardTemplate = new CardTemplate("tower", "tower_title", "tower_poem", "tower_effect", 1);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateTowerConstellation());
 
-            cardTemplate.CardBehaviors.Add(new HierophantActiveBehavior(new List<string> { "rock" }));
+            cardActiveBehavior = new HierophantActiveBehavior(new List<string> { "rock" });
+            cardActiveBehavior.MaxActivationNb = 1;
+            cardTemplate.CardBehaviors.Add(cardActiveBehavior);
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("judgement", "judgement_title", "judgement_poem", "judgement_effect", 1);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateJudgementConstellation());
 
-            cardTemplate.CardBehaviors.Add(new JudgementActiveBehavior());
+            cardActiveBehavior = new JudgementActiveBehavior();
+            cardActiveBehavior.MaxActivationNb = 1;
+            cardTemplate.CardBehaviors.Add(cardActiveBehavior);
             this.AddCardTemplateToLibrary(cardTemplate);
 
             cardTemplate = new CardTemplate("sun", "sun_title", "sun_poem", "sun_effect", 1);

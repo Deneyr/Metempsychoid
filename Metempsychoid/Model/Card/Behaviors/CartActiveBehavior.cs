@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class CartActiveBehavior : ACardBehavior, ICardBehaviorOwner
+    public class CartActiveBehavior : ACardActiveBehavior
     {
         public int NbUse
         {
@@ -38,12 +38,23 @@ namespace Metempsychoid.Model.Card.Behaviors
                         return;
                     }
 
-                    layer.RegisterNotifBehavior(new DeleteCardNotifBehavior(this, starEntity.CardSocketed));
+                    this.ActivateBehaviorEffect(layer, starEntity, actionsOccured);
                 }
             }
         }
 
-        public void OnBehaviorStart(ACardNotifBehavior behavior)
+        protected override bool ActivateBehaviorEffect(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        {
+            if(base.ActivateBehaviorEffect(layer, starEntity, actionsOccured))
+            {
+                layer.RegisterNotifBehavior(new DeleteCardNotifBehavior(this, starEntity.CardSocketed));
+
+                return true;
+            }
+            return false;
+        }
+
+        public override void OnBehaviorStart(ACardNotifBehavior behavior)
         {
             behavior.NbBehaviorUse = this.NbUse;
 
@@ -53,19 +64,13 @@ namespace Metempsychoid.Model.Card.Behaviors
                 .Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CurrentOwner != behavior.OwnerCardEntity.Card.CurrentOwner).ToList();
         }
 
-        public void OnBehaviorEnd(ACardNotifBehavior behavior)
-        {
-
-        }
-
-        public void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
-        {
-            
-        }
-
         public override ICardBehavior Clone()
         {
-            return new CartActiveBehavior(this.NbUse);
+            CartActiveBehavior clone = new CartActiveBehavior(this.NbUse);
+
+            clone.InitFrom(this);
+
+            return clone;
         }
     }
 }

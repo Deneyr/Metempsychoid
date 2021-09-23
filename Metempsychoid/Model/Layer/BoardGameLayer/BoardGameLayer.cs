@@ -519,7 +519,10 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                     CardEntity cardEntity = obj as CardEntity;
                     if (cardEntity.Card.IsAwakened)
                     {
-                        this.RegisterNotifBehavior(new CardAwakenedNotifBehavior(cardEntity));
+                        if (cardEntity.AreCardBehaviorsActive)
+                        {
+                            this.RegisterNotifBehavior(new CardAwakenedNotifBehavior(cardEntity));
+                        }
                     }
                     else
                     {

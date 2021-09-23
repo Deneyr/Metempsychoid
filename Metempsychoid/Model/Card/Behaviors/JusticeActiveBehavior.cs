@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class JusticeActiveBehavior : ACardBehavior, ICardBehaviorOwner
+    public class JusticeActiveBehavior : ACardActiveBehavior
     {
         public int NbUse
         {
@@ -24,29 +24,39 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            layer.RegisterNotifBehavior(new ResurrectCardNotifBehavior(this, starEntity.CardSocketed));
+            this.ActivateBehaviorEffect(layer, starEntity, null);
         }
 
-        public void OnBehaviorStart(ACardNotifBehavior behavior)
+        protected override bool ActivateBehaviorEffect(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        {
+            if (base.ActivateBehaviorEffect(layer, starEntity, actionsOccured))
+            {
+                layer.RegisterNotifBehavior(new ResurrectCardNotifBehavior(this, starEntity.CardSocketed));
+
+                return true;
+            }
+            return false;
+        }
+
+        public override void OnBehaviorStart(ACardNotifBehavior behavior)
         {
             behavior.NbBehaviorUse = this.NbUse;
 
             (behavior as ResurrectCardNotifBehavior).FromCardEntities = behavior.NodeLevel.GetLayerFromPlayer(behavior.OwnerCardEntity.Card.CurrentOwner).CardsCemetery.ToList();
         }
 
-        public void OnBehaviorEnd(ACardNotifBehavior behavior)
-        {
-
-        }
-
-        public void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
+        public override void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
         {
             (behavior as ResurrectCardNotifBehavior).ToStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList();
         }
 
         public override ICardBehavior Clone()
         {
-            return new JusticeActiveBehavior(this.NbUse);
+            JusticeActiveBehavior clone = new JusticeActiveBehavior(this.NbUse);
+
+            clone.InitFrom(this);
+
+            return clone;
         }
     }
 }

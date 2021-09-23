@@ -26,6 +26,14 @@ namespace Metempsychoid.Model.Card.Behaviors
         //    }
         //}
 
+        public virtual bool IsActive
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public virtual void OnActionsOccured(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionOccured)
         {
             
@@ -44,6 +52,11 @@ namespace Metempsychoid.Model.Card.Behaviors
         public virtual void OnUnawakened(BoardGameLayer layer, CardEntity cardEntity)
         {
             
+        }
+
+        protected virtual void InitFrom(ACardBehavior cardBehaviorModel)
+        {
+
         }
 
         public abstract ICardBehavior Clone();

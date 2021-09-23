@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class MagicianActiveBehavior : ACardBehavior, ICardBehaviorOwner
+    public class MagicianActiveBehavior : ACardActiveBehavior
     {
         public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
@@ -26,10 +26,21 @@ namespace Metempsychoid.Model.Card.Behaviors
                 return;
             }
 
-            layer.RegisterNotifBehavior(new MoveCardNotifBehavior(this, starEntity.CardSocketed));
+            this.ActivateBehaviorEffect(layer, starEntity, null);
         }
 
-        public void OnBehaviorStart(ACardNotifBehavior behavior)
+        protected override bool ActivateBehaviorEffect(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        {
+            if (base.ActivateBehaviorEffect(layer, starEntity, actionsOccured))
+            {
+                layer.RegisterNotifBehavior(new MoveCardNotifBehavior(this, starEntity.CardSocketed));
+
+                return true;
+            }
+            return false;
+        }
+
+        public override void OnBehaviorStart(ACardNotifBehavior behavior)
         {
             behavior.NbBehaviorUse = 1;
 
@@ -41,12 +52,7 @@ namespace Metempsychoid.Model.Card.Behaviors
                 && pElem.CardSocketed != behavior.OwnerCardEntity).ToList();
         }
 
-        public void OnBehaviorEnd(ACardNotifBehavior behavior)
-        {
-
-        }
-
-        public void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
+        public override void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
         {
             MoveCardNotifBehavior moveCardBehavior = behavior as MoveCardNotifBehavior;
 
@@ -57,7 +63,11 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public override ICardBehavior Clone()
         {
-            return new MagicianActiveBehavior();
+            MagicianActiveBehavior clone = new MagicianActiveBehavior();
+
+            clone.InitFrom(this);
+
+            return clone;
         }
     }
 }

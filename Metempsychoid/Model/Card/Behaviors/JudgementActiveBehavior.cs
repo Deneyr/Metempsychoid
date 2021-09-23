@@ -9,14 +9,25 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class JudgementActiveBehavior : ACardBehavior, ICardBehaviorOwner
+    public class JudgementActiveBehavior : ACardActiveBehavior
     {
         public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            layer.RegisterNotifBehavior(new DeleteCardNotifBehavior(this, starEntity.CardSocketed));
+            this.ActivateBehaviorEffect(layer, starEntity, null);
         }
 
-        public void OnBehaviorStart(ACardNotifBehavior behavior)
+        protected override bool ActivateBehaviorEffect(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        {
+            if (base.ActivateBehaviorEffect(layer, starEntity, actionsOccured))
+            {
+                layer.RegisterNotifBehavior(new DeleteCardNotifBehavior(this, starEntity.CardSocketed));
+
+                return true;
+            }
+            return false;
+        }
+
+        public override void OnBehaviorStart(ACardNotifBehavior behavior)
         {
             behavior.NbBehaviorUse = 1;
 
@@ -45,19 +56,13 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
         }
 
-        public void OnBehaviorEnd(ACardNotifBehavior behavior)
-        {
-
-        }
-
-        public void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
-        {
-
-        }
-
         public override ICardBehavior Clone()
         {
-            return new JudgementActiveBehavior();//this.NbUse);
+            JudgementActiveBehavior clone = new JudgementActiveBehavior();
+
+            clone.InitFrom(this);
+
+            return clone;
         }
     }
 }

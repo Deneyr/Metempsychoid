@@ -62,6 +62,7 @@
     <Compile Include="Model\AEntity.cs" />
     <Compile Include="Model\ALayer.cs" />
     <Compile Include="Model\AObject.cs" />
+    <Compile Include="Model\Card\Behaviors\ACardActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\ACardBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\AddValueToSelfBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\CartActiveBehavior.cs" />

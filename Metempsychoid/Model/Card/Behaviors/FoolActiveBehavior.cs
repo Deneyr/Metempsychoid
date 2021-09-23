@@ -10,26 +10,32 @@ using Metempsychoid.Model.Node.TestWorld;
 
 namespace Metempsychoid.Model.Card.Behaviors
 {
-    public class FoolActiveBehavior : ACardBehavior, ICardBehaviorOwner
+    public class FoolActiveBehavior : ACardActiveBehavior
     {
         public override void OnAwakened(BoardGameLayer layer, StarEntity starEntity)
         {
-            layer.RegisterNotifBehavior(new SwapCardNotifBehavior(this, starEntity.CardSocketed));
+            this.ActivateBehaviorEffect(layer, starEntity, null);
         }
 
-        public void OnBehaviorStart(ACardNotifBehavior behavior)
+        protected override bool ActivateBehaviorEffect(BoardGameLayer layer, StarEntity starEntity, List<IBoardGameAction> actionsOccured)
+        {
+            if (base.ActivateBehaviorEffect(layer, starEntity, actionsOccured))
+            {
+                layer.RegisterNotifBehavior(new SwapCardNotifBehavior(this, starEntity.CardSocketed));
+
+                return true;
+            }
+            return false;
+        }
+
+        public override void OnBehaviorStart(ACardNotifBehavior behavior)
         {
             behavior.NbBehaviorUse = 1;
 
             (behavior as SwapCardNotifBehavior).FromStarEntities = behavior.NodeLevel.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed != null && pElem.CardSocketed.Card.CanBeMoved).ToList();
         }
 
-        public void OnBehaviorEnd(ACardNotifBehavior behavior)
-        {
-
-        }
-
-        public void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
+        public override void OnBehaviorCardPicked(ACardNotifBehavior behavior, CardEntity cardEntityPicked)
         {
             CardEntity cardEntity = behavior.NodeLevel.BoardGameLayer.CardEntityPicked;
 
@@ -38,7 +44,11 @@ namespace Metempsychoid.Model.Card.Behaviors
 
         public override ICardBehavior Clone()
         {
-            return new FoolActiveBehavior();
+            FoolActiveBehavior clone = new FoolActiveBehavior();
+
+            clone.InitFrom(this);
+
+            return clone;
         }
     }
 }
