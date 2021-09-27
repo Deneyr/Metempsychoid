@@ -34,6 +34,8 @@ void main()
 
     float marginRatio = GetMarginRadiusRatio(canevasCoord + distortionMapValue.xy * 0.010);
 
+    marginRatio = min(1, marginRatio * 1.2);
+
     vec4 color = GetColor(gl_TexCoord[0].st, marginRatio);
 
     float ratioFocused = 1;
