@@ -83,7 +83,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
 
             currentPlayerLayer.SetBehaviorSourceCardEntities(this.FromCardEntities);
             this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(this.ToStarEntities);
-            currentPlayerLayer.CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.HAND;
+            currentPlayerLayer.CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.NONE;
 
             //this.NodeLevel.BoardGameLayer.SetBehaviorSourceStarEntities(this.FromStarEntities);
         }

@@ -81,7 +81,6 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             BoardPlayerLayer.BoardPlayerLayer currentPlayerLayer = this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner);
 
             //currentPlayerLayer.SetBehaviorSourceCardEntities(this.FromCardEntities);
-            currentPlayerLayer.CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.HAND;
 
             //this.NodeLevel.BoardGameLayer.SetBehaviorSourceStarEntities(this.FromStarEntities);
         }
@@ -103,7 +102,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                 this.NodeLevel.BoardNotifLayer.AddCardToBoard(newCard, new SFML.System.Vector2f(0, 0));
             }
 
-            this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner).CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.OTHER;
+            this.NodeLevel.GetLayerFromPlayer(this.OwnerCardEntity.Card.CurrentOwner).CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.NONE;
 
             this.State = SocketNewCardState.PICK_CARD;
         }

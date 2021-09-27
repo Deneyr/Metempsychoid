@@ -392,7 +392,7 @@ namespace Metempsychoid.Model.Constellations
 
         public static ConstellationPattern CreateJudgementConstellation()
         {
-            return CreateTemperanceConstellation();
+            return CreateFoolConstellation();
         }
 
         public static ConstellationPattern CreateSunConstellation()

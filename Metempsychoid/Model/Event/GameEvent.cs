@@ -54,6 +54,7 @@ namespace Metempsychoid.Model.Event
         DRAW_CARD,
         FOCUS_CARD_HAND,
         FOCUS_CARD_BOARD,
+        FOCUS_CARD_PILE,
         PICK_CARD,
         SOCKET_CARD,
         NEXT_BEHAVIOR,

@@ -17,35 +17,33 @@ namespace Metempsychoid.View.Card2D
         {
             this.AddTexturePath("distorsionTexture", @"Assets\Graphics\Shaders\distortion_map.png");
 
-            this.AddTexturePath("backCardTexture", @"Assets\Graphics\Cards\backCard.png");
+            this.AddTexturePath("backCardTexture", @"Assets\Graphics\Cards\Astrategia_Cartes_Verso.png");
 
             this.AddTexturePath("starHaloTexture", @"Assets\Graphics\Entities\StarHalo.png");
 
-            this.AddTexturePath("testWheelTexture", @"Assets\Graphics\Cards\wheelCard.jpg");
-
-            this.AddTexturePath("strength", @"Assets\Graphics\Cards\Carte_LaForce.png");
-            this.AddTexturePath("justice", @"Assets\Graphics\Cards\Carte_LaJustice.png");
-            this.AddTexturePath("moon", @"Assets\Graphics\Cards\Carte_LaLune.png");
-            this.AddTexturePath("death", @"Assets\Graphics\Cards\Carte_LaMort.png");
-            this.AddTexturePath("lover", @"Assets\Graphics\Cards\Carte_LAmoureux.png");
-            this.AddTexturePath("priestess", @"Assets\Graphics\Cards\Carte_LaPretresse.png");
-            this.AddTexturePath("temperance", @"Assets\Graphics\Cards\Carte_LaTemperence.png");
-            this.AddTexturePath("cart", @"Assets\Graphics\Cards\Carte_LeChariot.png");
-            this.AddTexturePath("devil", @"Assets\Graphics\Cards\Carte_LeDiable.png");
-            this.AddTexturePath("fool", @"Assets\Graphics\Cards\Carte_LeFou.png");
-            this.AddTexturePath("hierophant", @"Assets\Graphics\Cards\Carte_LeHierophante.png");
-            this.AddTexturePath("magician", @"Assets\Graphics\Cards\Carte_LeMagicien.png");
-            this.AddTexturePath("world", @"Assets\Graphics\Cards\Carte_LeMonde.png");
-            this.AddTexturePath("emperor", @"Assets\Graphics\Cards\Carte_LEmpereur.png");
-            this.AddTexturePath("hangedMan", @"Assets\Graphics\Cards\Carte_LePendu.png");
-            this.AddTexturePath("hermite", @"Assets\Graphics\Cards\Carte_LErmite.png");
-            this.AddTexturePath("rock", @"Assets\Graphics\Cards\Carte_LeRocher.png");
-            this.AddTexturePath("empress", @"Assets\Graphics\Cards\Carte_LImperatrice.png");
-            this.AddTexturePath("wheel", @"Assets\Graphics\Cards\LaRoue.png");
-            this.AddTexturePath("tower", @"Assets\Graphics\Cards\LaTour.png");
-            this.AddTexturePath("judgement", @"Assets\Graphics\Cards\LeJugement.png");
-            this.AddTexturePath("sun", @"Assets\Graphics\Cards\LeSoleil.png");
-            this.AddTexturePath("star", @"Assets\Graphics\Cards\LEtoile.png");
+            this.AddTexturePath("strength", @"Assets\Graphics\Cards\Astrategia_Cartes_Force.png");
+            this.AddTexturePath("justice", @"Assets\Graphics\Cards\Astrategia_Cartes_Justice.png");
+            this.AddTexturePath("moon", @"Assets\Graphics\Cards\Astrategia_Cartes_Lune.png");
+            this.AddTexturePath("death", @"Assets\Graphics\Cards\Astrategia_Cartes_Mort.png");
+            this.AddTexturePath("lover", @"Assets\Graphics\Cards\Astrategia_Cartes_Amoureux.png");
+            this.AddTexturePath("priestess", @"Assets\Graphics\Cards\Astrategia_Cartes_Pretresse.png");
+            this.AddTexturePath("temperance", @"Assets\Graphics\Cards\Astrategia_Cartes_Temperance.png");
+            this.AddTexturePath("cart", @"Assets\Graphics\Cards\Astrategia_Cartes_Chariot.png");
+            this.AddTexturePath("devil", @"Assets\Graphics\Cards\Astrategia_Cartes_Diable.png");
+            this.AddTexturePath("fool", @"Assets\Graphics\Cards\Astrategia_Cartes_Fou.png");
+            this.AddTexturePath("hierophant", @"Assets\Graphics\Cards\Astrategia_Cartes_Hierophante.png");
+            this.AddTexturePath("magician", @"Assets\Graphics\Cards\Astrategia_Cartes_Fou.png");
+            this.AddTexturePath("world", @"Assets\Graphics\Cards\Astrategia_Cartes_Monde.png");
+            this.AddTexturePath("emperor", @"Assets\Graphics\Cards\Astrategia_Cartes_Empereur.png");
+            this.AddTexturePath("hangedMan", @"Assets\Graphics\Cards\Astrategia_Cartes_Pendu.png");
+            this.AddTexturePath("hermite", @"Assets\Graphics\Cards\Astrategia_Cartes_Hermite.png");
+            this.AddTexturePath("rock", @"Assets\Graphics\Cards\Astrategia_Cartes_Rocher.png");
+            this.AddTexturePath("empress", @"Assets\Graphics\Cards\Astrategia_Cartes_Imperatrice.png");
+            this.AddTexturePath("wheel", @"Assets\Graphics\Cards\Astrategia_Cartes_Roue.png");
+            this.AddTexturePath("tower", @"Assets\Graphics\Cards\Astrategia_Cartes_Tour.png");
+            this.AddTexturePath("judgement", @"Assets\Graphics\Cards\Astrategia_Cartes_Jugement.png");
+            this.AddTexturePath("sun", @"Assets\Graphics\Cards\Astrategia_Cartes_Soleil.png");
+            this.AddTexturePath("star", @"Assets\Graphics\Cards\Astrategia_Cartes_Etoile.png");
 
             // this.cardNameToIndex = new Dictionary<string, int>();
             //this.cardNameToIndex.Add("wheel", 5);

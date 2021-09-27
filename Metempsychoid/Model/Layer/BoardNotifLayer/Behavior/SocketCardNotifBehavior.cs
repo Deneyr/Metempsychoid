@@ -26,6 +26,8 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
             currentPlayerLayer.SetBehaviorSourceCardEntities(this.FromCardEntities);
             this.NodeLevel.BoardGameLayer.SetBehaviorTargetStarEntities(this.ToStarEntities);
             //this.NodeLevel.BoardGameLayer.SetBehaviorSourceStarEntities(this.FromStarEntities);
+
+            currentPlayerLayer.CardPileFocused = BoardPlayerLayer.BoardPlayerLayer.PileFocused.NONE;
         }
 
         public override void StartNotif(World world)

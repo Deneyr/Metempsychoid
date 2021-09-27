@@ -35,10 +35,9 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
         private CardEntity2D cardDrawn;
         private CardEntity2D cardFocused;
-        //private CardEntity2D cardPicked;
 
-        //private CardToolTip cardToolTip;
-        //private EndTurnButton2D endTurnButton;
+        private BoardPlayerLayer.PileFocused pileFocused;
+
         private ScoreLabel2D scoreLabel;
 
         private int maxPriority;
@@ -134,6 +133,25 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
+        public BoardPlayerLayer.PileFocused PileFocused
+        {
+            get
+            {
+                return this.pileFocused;
+            }
+
+            set
+            {
+                if(this.pileFocused != value)
+                {
+                    this.pileFocused = value;
+
+                    this.UpdateCardHandPriority();
+                    this.UpdateCardCimeteryPriority();
+                }
+            }
+        }
+
 
         protected override Vector2f DefaultViewSize
         {
@@ -208,6 +226,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             layer.CardPicked += OnCardPicked;
             layer.CardUnpicked += OnCardUnpicked;
 
+            layer.PileFocusedChanged += OnPileFocusedChanged;
+
             layer.CardDestroyed += OnCardDestroyed;
             // layer.CardResurrected += OnCardResurrected;
 
@@ -220,6 +240,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.cardsDeck = new List<CardEntity2D>();
             this.cardsCemetery = new List<CardEntity2D>();
             this.cardsHand = new List<CardEntity2D>();
+
+            this.pileFocused = BoardPlayerLayer.PileFocused.NONE;
 
             layer.BoardToLayerPositionConverter = this;
         }
@@ -243,6 +265,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.sourceCardEntities = null;
             //this.cardPicked = null;
+
+            this.pileFocused = (this.parentLayer as BoardPlayerLayer).CardPileFocused;
 
             base.InitializeLayer(factory);
 
@@ -310,11 +334,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.UpdateCardHandPriority();
         }
 
-        private void OnCardPicked(CardEntity obj)
+        private void OnCardPicked(CardEntity obj, BoardPlayerLayer.PileFocused pilePicked)
         {
             CardEntity2D cardPicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
-            switch ((this.parentLayer as BoardPlayerLayer).CardPileFocused)
+            switch (pilePicked)
             {
                 case BoardPlayerLayer.PileFocused.HAND:
                     this.cardsHand.Remove(cardPicked);
@@ -327,13 +351,13 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             }
         }
 
-        private void OnCardUnpicked(CardEntity obj)
+        private void OnCardUnpicked(CardEntity obj, BoardPlayerLayer.PileFocused pilePicked)
         {
             CardEntity2D cardUnpicked = this.GetEntity2DFromEntity(obj) as CardEntity2D;
 
             cardUnpicked.PlaySound("cardDrawn");
 
-            switch ((this.parentLayer as BoardPlayerLayer).CardPileFocused)
+            switch (pilePicked)
             {
                 case BoardPlayerLayer.PileFocused.HAND:
                     this.cardsHand.Add(cardUnpicked);
@@ -345,7 +369,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             cardUnpicked.SetCooldownFocus(COOLDOWN_FOCUS);
 
-            switch ((this.parentLayer as BoardPlayerLayer).CardPileFocused)
+            switch (pilePicked)
             {
                 case BoardPlayerLayer.PileFocused.HAND:
                     this.UpdateCardHandPriority();
@@ -372,22 +396,41 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             this.UpdateCardCimeteryPriority();
         }
 
+        private void OnPileFocusedChanged(BoardPlayerLayer.PileFocused newPileFocused)
+        {
+            this.PileFocused = newPileFocused;
+        }
+
         private void UpdateCardHandPriority()
         {
-            int i = 0;
-            foreach (CardEntity2D cardEntity2D in this.cardsHand)
+            if(this.PileFocused == BoardPlayerLayer.PileFocused.HAND)
             {
-                cardEntity2D.Priority = 2000 - i;
-                i++;
+                this.UpdateCardsPriority(this.cardsHand, 4000);
+            }
+            else
+            {
+                this.UpdateCardsPriority(this.cardsHand, 2000);
             }
         }
 
         private void UpdateCardCimeteryPriority()
         {
-            int i = 0;
-            foreach (CardEntity2D cardEntity2D in this.cardsCemetery)
+            if (this.PileFocused == BoardPlayerLayer.PileFocused.CEMETERY)
             {
-                cardEntity2D.Priority = 2000 - i;
+                this.UpdateCardsPriority(this.cardsCemetery, 3000);
+            }
+            else
+            {
+                this.UpdateCardsPriority(this.cardsCemetery, 1000);
+            }
+        }
+
+        private void UpdateCardsPriority(IEnumerable<CardEntity2D> cards, int basePriority)
+        {
+            int i = 0;
+            foreach (CardEntity2D cardEntity2D in cards)
+            {
+                cardEntity2D.Priority = basePriority - i;
                 i++;
             }
         }
@@ -422,11 +465,18 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             this.hittableEntities2D.Clear();
 
-            if ((this.parentLayer as BoardPlayerLayer).CardPileFocused == BoardPlayerLayer.PileFocused.HAND)
+            if (this.PileFocused == BoardPlayerLayer.PileFocused.HAND)
             {
-                this.hittableEntities2D.AddRange(this.cardsHand);
+                if (this.SourceCardEntities2D != null)
+                {
+                    this.hittableEntities2D.AddRange(this.cardsHand.Where(pElem => this.SourceCardEntities2D.Contains(pElem)));
+                }
+                else
+                {
+                    this.hittableEntities2D.AddRange(this.cardsHand);
+                }
             }
-            else
+            else if(this.PileFocused == BoardPlayerLayer.PileFocused.CEMETERY)
             {
                 if (this.SourceCardEntities2D != null)
                 {
@@ -488,23 +538,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         {
             this.UpdateFocusedEntity2Ds();
 
-            //CardEntity2D cardFocused = this.GetCardFocused();
-
-            //if (cardFocused != this.cardFocused)
-            //{
-            //    this.cardFocused = cardFocused;
-
-            //    AEntity associatedCardFocused = null;
-            //    if (this.cardFocused != null)
-            //    {
-            //        associatedCardFocused = this.object2DToObjects[cardFocused];
-            //    }
-
-            //    if (this.world2D.TryGetTarget(out World2D world))
-            //    {
-            //        world.SendEventToWorld(new Model.Event.GameEvent(Model.Event.EventType.FOCUS_CARD_HAND, associatedCardFocused, null));
-            //    }
-            //}     
+            this.UpdatePileFocus(); 
         }
 
         public override bool OnControlActivated(Controls.ControlEventType eventType, string details, bool mustForwardEvent)
@@ -518,12 +552,45 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                     {
                         this.SendUnpickEvent();
                     }
+
                     mustForwardEvent = base.OnControlActivated(eventType, details, mustForwardEvent);
 
                     break;
             }
 
             return true;
+        }
+
+        private void UpdatePileFocus()
+        {
+            BoardPlayerLayer boardPlayerLayer = this.parentLayer as BoardPlayerLayer;
+            Vector2i mousePositionOnScreen = this.MousePosition;
+
+            float scaleY = mousePositionOnScreen.Y / this.OffsetCard;
+            float scaleX = mousePositionOnScreen.X / this.DefaultViewSize.X;
+
+            if (this.PileFocused == BoardPlayerLayer.PileFocused.NONE)
+            {
+                if(scaleY > 0.4)
+                {
+                    if(scaleX > 0.2)
+                    {
+                        this.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_PILE, null, ((int) BoardPlayerLayer.PileFocused.HAND).ToString());
+                    }
+                    else if(scaleX < -0.2)
+                    {
+                        this.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_PILE, null, ((int)BoardPlayerLayer.PileFocused.CEMETERY).ToString());
+                    }
+                } 
+            }
+            else
+            {
+                if(scaleY < 0.2)
+                {
+                    this.SendEventToWorld(Model.Event.EventType.FOCUS_CARD_PILE, null, ((int)BoardPlayerLayer.PileFocused.NONE).ToString());
+                }
+            }
+
         }
 
         public void SendUnpickEvent()
@@ -534,30 +601,6 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             this.SendEventToWorld(Model.Event.EventType.PICK_CARD, null, mousePosition.X + ":" + mousePosition.Y);
         }
-
-        //private CardEntity2D GetCardFocused()
-        //{
-        //    CardEntity2D cardFocused = null;
-
-        //    Vector2i mousePosition = this.MousePosition;
-
-        //    foreach (CardEntity2D cardDeck in this.cardsHand)
-        //    {
-        //        if(cardDeck.IsFocusable
-        //            && cardDeck is IHitRect
-        //            && (cardDeck as IHitRect).HitZone.Contains(mousePosition.X, mousePosition.Y))
-        //        {
-        //            if(cardFocused == null
-        //                || Math.Abs(mousePosition.X - cardDeck.Position.X) + Math.Abs(mousePosition.Y - cardDeck.Position.Y) 
-        //                < Math.Abs(mousePosition.X - cardFocused.Position.X) + Math.Abs(mousePosition.Y - cardFocused.Position.Y))
-        //            {
-        //                cardFocused = cardDeck;
-        //            }
-        //        }
-        //    }
-
-        //    return cardFocused;
-        //}
 
         public void GoOnTurnPhase(TurnPhase nextTurnPhase)
         {
@@ -667,6 +710,8 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
             (this.parentLayer as BoardPlayerLayer).CardPicked -= OnCardPicked;
             (this.parentLayer as BoardPlayerLayer).CardUnpicked -= OnCardUnpicked;
+
+            (this.parentLayer as BoardPlayerLayer).PileFocusedChanged -= OnPileFocusedChanged;
 
             (this.parentLayer as BoardPlayerLayer).CardDestroyed -= OnCardDestroyed;
             // (this.parentLayer as BoardPlayerLayer).CardResurrected -= OnCardResurrected;

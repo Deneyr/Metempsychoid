@@ -238,11 +238,21 @@ namespace Metempsychoid.Model.Node.TestWorld
             BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer; // world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
 
             boardPlayerLayer.NbCardsToDraw = 0;
+
+            foreach(BoardPlayerLayer playerLayer in this.BoardplayersList)
+            {
+                playerLayer.CardPileFocused = BoardPlayerLayer.PileFocused.HAND;
+            }
         }
 
         private void InitializeMainPhase(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.MAIN);
+
+            foreach (BoardPlayerLayer playerLayer in this.BoardplayersList)
+            {
+                playerLayer.CardPileFocused = BoardPlayerLayer.PileFocused.NONE;
+            }
         }
 
         private void InitializeEndTurnPhase(World world)
@@ -252,6 +262,11 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.SetCurrentTurnPhase(world, TurnPhase.END_TURN);
 
             boardPlayerLayer.OnEndTurn();
+
+            foreach (BoardPlayerLayer playerLayer in this.BoardplayersList)
+            {
+                playerLayer.CardPileFocused = BoardPlayerLayer.PileFocused.NONE;
+            }
         }
 
         private void InitializeCountPointsPhase(World world)
@@ -371,6 +386,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
             else
             {
+                this.FowardFocusPileEvent(world);
 
                 if (this.CheckMoveCardOverboardEvent(world, boardPlayerLayer, out CardEntity cardToMove, out string detailsMove))
                 {
@@ -595,6 +611,19 @@ namespace Metempsychoid.Model.Node.TestWorld
                 }
             }
             return false;
+        }
+
+        private void FowardFocusPileEvent(World world)
+        {
+            if (this.pendingGameEvents.TryGetValue(EventType.FOCUS_CARD_PILE, out List<GameEvent> gameEventsList))
+            {
+                foreach (GameEvent gameEvent in gameEventsList)
+                {
+                    BoardPlayerLayer.PileFocused pileFocused = (BoardPlayerLayer.PileFocused)int.Parse(gameEvent.Details);
+
+                    (gameEvent.Layer as BoardPlayerLayer).CardPileFocused = pileFocused;
+                }
+            }
         }
 
         private bool CheckPickCardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string details)

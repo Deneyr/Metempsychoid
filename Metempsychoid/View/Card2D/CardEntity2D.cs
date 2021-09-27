@@ -16,8 +16,9 @@ namespace Metempsychoid.View.Card2D
     public class CardEntity2D: AEntity2D, IHitRect
     {
         private static int WIDTH_BORDER = 15;
-        private static float RADIUS_BORDER = 50;
-        private static int MARGIN_LABEL = 25;
+        //private static float RADIUS_BORDER = 50;
+        private static float RADIUS_BORDER = 20;
+        private static int MARGIN_LABEL = 0;
 
         private static float SPEED_LINK = 0.6f;
 
@@ -436,8 +437,8 @@ namespace Metempsychoid.View.Card2D
             this.Initialize(entity);
 
             this.UpdateScaling();
-            render.Shader.SetUniform("margin", ((float)(WIDTH_BORDER - 5)) / this.canevasSprite.Texture.Size.X);
-            render.Shader.SetUniform("outMargin", 5f / this.canevasSprite.Texture.Size.X);
+            render.Shader.SetUniform("margin", (WIDTH_BORDER - 5f) / this.canevasSprite.Texture.Size.X);
+            render.Shader.SetUniform("outMargin", 2f / this.canevasSprite.Texture.Size.X);
             render.Shader.SetUniform("radius", RADIUS_BORDER / this.canevasSprite.Texture.Size.X);
         }
 

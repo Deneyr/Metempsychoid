@@ -20,20 +20,24 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         private static int TOP_DECK = 3;
 
         private static Vector2f DECK_POSITION = new Vector2f(-600, -150);
-        private static Vector2f CEMETERY_POSITION = new Vector2f(-380, -150);
-        private static Vector2f HAND_POSITION = new Vector2f(200, -150);
+        private static Vector2f CEMETERY_POSITION = new Vector2f(-600, -150);
+        private static Vector2f HAND_POSITION = new Vector2f(700, -150);
 
         private static int HAND_CARD_SPACE = 50;
         private static int CEMETERY_CARD_SPACE = 10;
+
+        private bool isHandShowed;
+        private bool isCemeteryShowed;
 
         private int nbCardsToDraw;
 
         private CardEntity cardFocused;
 
         private PileFocused pileFocused;
+        private PileFocused pilePicked;
 
-        public event Action<CardEntity> CardPicked;
-        public event Action<CardEntity> CardUnpicked;
+        public event Action<CardEntity, PileFocused> CardPicked;
+        public event Action<CardEntity, PileFocused> CardUnpicked;
 
         public event Action<CardEntity> CardDestroyed;
         // public event Action<CardEntity> CardResurrected;
@@ -41,6 +45,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         public event Action<CardEntity> CardDrawn;
 
         public event Action<CardEntity> CardFocused;
+
+        public event Action<PileFocused> PileFocusedChanged;
 
         public event Action<int> NbCardsToDrawChanged;
 
@@ -59,8 +65,27 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                 {
                     this.pileFocused = value;
 
-                    this.UpdateCardsHandPosition();
-                    this.UpdateCardsCimeteryPosition();
+                    switch (this.pileFocused)
+                    {
+                        case PileFocused.CEMETERY:
+                            this.IsHandShowed = false;
+                            this.IsCemeteryShowed = true;
+                            break;
+                        case PileFocused.HAND:
+                            this.IsHandShowed = true;
+                            this.IsCemeteryShowed = false;
+                            break;
+                        //case PileFocused.FULL:
+                        //    this.IsHandShowed = true;
+                        //    this.IsCemeteryShowed = true;
+                        //    break;
+                        case PileFocused.NONE:
+                            this.IsHandShowed = false;
+                            this.IsCemeteryShowed = false;
+                            break;
+                    }
+
+                    this.PileFocusedChanged?.Invoke(this.pileFocused);
                 }
             }
         }
@@ -121,6 +146,23 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     result.Y *= -1;
                 }
 
+                //if (this.isCemeteryShowed == false)
+                //{
+                //    if (this.IsActiveTurn)
+                //    {
+                //        result.Y *= -0.6f;
+                //    }
+                //    else
+                //    {
+                //        result.Y *= -2f;
+                //    }
+                //}
+
+                if (this.isCemeteryShowed)
+                {
+                    result.X = 0;
+                }
+
                 return result;
             }
         }
@@ -129,7 +171,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         {
             get
             {
-                if(this.pileFocused == PileFocused.CEMETERY)
+                if (this.pileFocused == PileFocused.CEMETERY)
                 {
                     return HAND_CARD_SPACE;
                 }
@@ -148,6 +190,23 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     result.Y *= -1;
                 }
 
+                //if (this.isHandShowed == false)
+                //{
+                //    if (this.IsActiveTurn)
+                //    {
+                //        result.Y *= -0.6f;
+                //    }
+                //    else
+                //    {
+                //        result.Y *= -1f;
+                //    }
+                //}
+
+                if (this.isHandShowed)
+                {
+                    result.X = 0;
+                }
+
                 return result;
             }
         }
@@ -161,6 +220,40 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     return HAND_CARD_SPACE;
                 }
                 return CEMETERY_CARD_SPACE;
+            }
+        }
+
+        protected bool IsHandShowed
+        {
+            get
+            {
+                return this.isHandShowed;
+            }
+            set
+            {
+                if(this.isHandShowed != value)
+                {
+                    this.isHandShowed = value;
+
+                    this.UpdateCardsHandPosition();
+                }
+            }
+        }
+
+        protected bool IsCemeteryShowed
+        {
+            get
+            {
+                return this.isCemeteryShowed;
+            }
+            set
+            {
+                if (this.isCemeteryShowed != value)
+                {
+                    this.isCemeteryShowed = value;
+
+                    this.UpdateCardsCimeteryPosition();
+                }
             }
         }
 
@@ -278,7 +371,10 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             this.CardsHand.Clear();
             this.CardsCemetery.Clear();
 
+            this.isCemeteryShowed = false;
+            this.isHandShowed = true;
             this.pileFocused = PileFocused.HAND;
+            this.pilePicked = PileFocused.NONE;
 
             this.IsActiveTurn = false;
 
@@ -308,6 +404,28 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         public bool DrawCard(bool isFliped = true)
         {
+            //Random random = new Random();
+            //if(random.NextDouble() < 0.4)
+            //{
+            //    if (this.CardsDeck.Any()
+            //    && this.NbCardsToDraw > 0)
+            //    {
+            //        CardEntity cardEntity = this.CardsDeck.FirstOrDefault();
+            //        this.CardsDeck.RemoveAt(0);
+
+            //        cardEntity.IsFliped = isFliped;
+
+            //        this.AddCardToCemetery(cardEntity.Card, new Vector2f(0, 0));
+            //        this.RemoveEntityFromLayer(cardEntity);
+
+            //        this.NbCardsToDraw -= 1;
+            //    }
+
+
+            //    return false;
+            //}
+
+
             if (this.CardsDeck.Any()
                 && this.NbCardsToDraw > 0)
             {
@@ -328,6 +446,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                 this.UpdateCardsHandPosition();
 
                 this.NbCardsToDraw -= 1;
+
+                return true;
             }
 
             return false;
@@ -355,10 +475,14 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
         public bool PickCard(CardEntity cardToPick)
         {
-            if (this.CardsHand.Contains(cardToPick)
-                || this.CardsCemetery.Contains(cardToPick))
+            bool isCardHand = this.CardsHand.Contains(cardToPick);
+            bool isCardCemetery = this.CardsCemetery.Contains(cardToPick);
+
+            if (isCardHand || isCardCemetery)
             {
-                this.NotifyCardPicked(cardToPick);
+                this.pilePicked = isCardHand ? PileFocused.HAND : PileFocused.CEMETERY;
+
+                this.NotifyCardPicked(cardToPick, this.pilePicked);
 
                 this.RemoveEntityFromLayer(cardToPick);
 
@@ -377,7 +501,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
 
             cardEntity.Position = startPosition;
 
-            switch (this.CardPileFocused)
+            switch (this.pilePicked)
             {
                 case PileFocused.HAND:
                     this.CardsHand.Add(cardEntity);
@@ -387,9 +511,9 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     break;
             }
 
-            this.NotifyCardUnpicked(cardEntity);
+            this.NotifyCardUnpicked(cardEntity, this.pilePicked);
 
-            switch (this.CardPileFocused)
+            switch (this.pilePicked)
             {
                 case PileFocused.HAND:
                     this.UpdateCardsHandPosition();
@@ -398,6 +522,8 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
                     this.UpdateCardsCimeteryPosition();
                     break;
             }
+
+            this.pilePicked = PileFocused.NONE;
 
             return cardEntity;
         }
@@ -545,9 +671,9 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             this.NbCardsToDrawChanged?.Invoke(this.NbCardsToDraw);
         }
 
-        protected void NotifyCardPicked(CardEntity cardPicked)
+        protected void NotifyCardPicked(CardEntity cardPicked, PileFocused pilePicked)
         {
-            this.CardPicked?.Invoke(cardPicked);
+            this.CardPicked?.Invoke(cardPicked, pilePicked);
         }
 
         protected void NotifyCardFocused(CardEntity cardFocused)
@@ -555,16 +681,16 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             this.CardFocused?.Invoke(cardFocused);
         }
 
-        protected void NotifyCardUnpicked(CardEntity cardUnpicked)
+        protected void NotifyCardUnpicked(CardEntity cardUnpicked, PileFocused pilePicked)
         {
-            this.CardUnpicked?.Invoke(cardUnpicked);
+            this.CardUnpicked?.Invoke(cardUnpicked, pilePicked);
         }
 
         public enum PileFocused
         {
-            HAND,
-            CEMETERY,
-            OTHER
+            HAND = 0,
+            CEMETERY = 1,
+            NONE = 2
         }
     }
 }
