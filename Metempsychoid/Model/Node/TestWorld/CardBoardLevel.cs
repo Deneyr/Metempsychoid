@@ -18,30 +18,30 @@ namespace Metempsychoid.Model.Node.TestWorld
     {
         private static int NB_CARDS_HAND = 4;
 
-        private int playerIndex;
+        protected int playerIndex;
 
         public List<BoardPlayerLayer> BoardplayersList
         {
             get;
-            private set;
+            protected set;
         }
 
         public BoardNotifLayer BoardNotifLayer
         {
             get;
-            private set;
+            protected set;
         }
 
         public BoardGameLayer BoardGameLayer
         {
             get;
-            private set;
+            protected set;
         }
 
         public BoardBannerLayer BoardBannerLayer
         {
             get;
-            private set;
+            protected set;
         }
 
         public int TurnIndex
@@ -59,13 +59,13 @@ namespace Metempsychoid.Model.Node.TestWorld
         public Player.Player MainPlayer
         {
             get;
-            private set;
+            protected set;
         }
 
         public Player.Player Opponent
         {
             get;
-            private set;
+            protected set;
         }
 
         public CardBoardLevel(World world) :
@@ -78,7 +78,7 @@ namespace Metempsychoid.Model.Node.TestWorld
         public TurnPhase CurrentTurnPhase
         {
             get;
-            private set;
+            protected set;
         }
 
         protected BoardPlayerLayer CurrentBoardPlayer
@@ -101,6 +101,9 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.BoardBannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
             this.BoardBannerLayer.PreInitMaxTurnCount = 10;
 
+            this.BoardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+            this.BoardGameLayer.PreInitGalaxyName = "Standard";
+
             world.InitializeLevel(new List<string>()
             {
                 "VsO7nJK",
@@ -116,7 +119,6 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.BoardplayersList.Add(world.LoadedLayers["opponentLayer"] as BoardPlayerLayer);
 
             this.BoardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
-            this.BoardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
 
             this.InitializeStartLevelPhase(world);
         }
@@ -198,12 +200,12 @@ namespace Metempsychoid.Model.Node.TestWorld
         //    }
         //}
 
-        private void InitializeStartLevelPhase(World world)
+        protected void InitializeStartLevelPhase(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.START_LEVEL);
         }
 
-        private void InitializeCreateHandPhase(World world)
+        protected void InitializeCreateHandPhase(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.CREATE_HAND);
 
@@ -214,7 +216,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             boardPlayerLayer.NbCardsToDraw = this.Opponent.Deck.CardIds.Count;
         }
 
-        private void InitializeStartTurnPhase(World world)
+        protected void InitializeStartTurnPhase(World world)
         {
             BoardBannerLayer bannerLayer = this.BoardBannerLayer;
             BoardGameLayer boardGameLayer = this.BoardGameLayer;
@@ -231,7 +233,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             boardPlayerLayer.OnStartTurn();
         }
 
-        private void InitializeDrawPhase(World world)
+        protected void InitializeDrawPhase(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.DRAW);
 
@@ -245,7 +247,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
-        private void InitializeMainPhase(World world)
+        protected virtual void InitializeMainPhase(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.MAIN);
 
@@ -255,7 +257,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
-        private void InitializeEndTurnPhase(World world)
+        protected void InitializeEndTurnPhase(World world)
         {
             BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer;
 
@@ -269,7 +271,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
-        private void InitializeCountPointsPhase(World world)
+        protected void InitializeCountPointsPhase(World world)
         {
             BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
             BoardBannerLayer bannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
@@ -315,12 +317,12 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.SetCurrentTurnPhase(world, TurnPhase.COUNT_POINTS);
         }
 
-        private void InitializeEndLevelPhase(World world)
+        protected void InitializeEndLevelPhase(World world)
         {
             this.SetCurrentTurnPhase(world, TurnPhase.END_LEVEL);
         }
 
-        private void UpdateStartLevelPhase(World world)
+        protected void UpdateStartLevelPhase(World world)
         {
             if (this.CheckNextTurnPhaseEvent(TurnPhase.CREATE_HAND, null))
             {
@@ -328,7 +330,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
-        private void UpdateCreateHandPhase(World world)
+        protected virtual void UpdateCreateHandPhase(World world)
         {
             BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
             BoardPlayerLayer boardOpponentLayer = world.LoadedLayers["opponentLayer"] as BoardPlayerLayer;
@@ -374,7 +376,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
-        private void UpdateMainPhase(World world)
+        protected virtual void UpdateMainPhase(World world)
         {
             BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer; // world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
             BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
@@ -598,7 +600,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
-        private bool CheckDrawCardEvent(World world, BoardPlayerLayer boardPlayerLayer)
+        protected bool CheckDrawCardEvent(World world, BoardPlayerLayer boardPlayerLayer)
         {
             if (this.pendingGameEvents.TryGetValue(EventType.DRAW_CARD, out List<GameEvent> gameEventsList))
             {
@@ -613,7 +615,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
-        private void FowardFocusPileEvent(World world)
+        protected virtual void FowardFocusPileEvent(World world)
         {
             if (this.pendingGameEvents.TryGetValue(EventType.FOCUS_CARD_PILE, out List<GameEvent> gameEventsList))
             {
@@ -626,7 +628,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             }
         }
 
-        private bool CheckPickCardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string details)
+        protected bool CheckPickCardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string details)
         {
             cardEntity = null;
             details = null;
@@ -650,7 +652,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
-        private bool CheckUnPickCardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string details)
+        protected bool CheckUnPickCardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string details)
         {
             cardEntity = null;
             details = null;
@@ -674,7 +676,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
-        private bool CheckSocketCardEvent(World world, BoardPlayerLayer boardPlayerLayer, out StarEntity starEntity)
+        protected bool CheckSocketCardEvent(World world, BoardPlayerLayer boardPlayerLayer, out StarEntity starEntity)
         {
             starEntity = null;
             if (this.pendingGameEvents.TryGetValue(EventType.SOCKET_CARD, out List<GameEvent> gameEventsList))
@@ -692,7 +694,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
-        private bool CheckFocusCardHandEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string detailsFocused)
+        protected bool CheckFocusCardHandEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string detailsFocused)
         {
             cardEntity = null;
             detailsFocused = null;
@@ -720,7 +722,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return encounterGameEvent;
         }
 
-        private bool CheckFocusCardBoardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string detailsFocused)
+        protected bool CheckFocusCardBoardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string detailsFocused)
         {
             cardEntity = null;
             detailsFocused = null;
@@ -748,7 +750,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return encounterGameEvent;
         }
 
-        private bool CheckMoveCardOverboardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string details)
+        protected bool CheckMoveCardOverboardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CardEntity cardEntity, out string details)
         {
             cardEntity = null;
             details = null;
@@ -776,7 +778,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return new Vector2f(float.Parse(token[0]), float.Parse(token[1]));
         }
 
-        private bool CheckNextTurnPhaseEvent(TurnPhase nextTurnPhase, BoardPlayerLayer boardPlayerLayer)
+        protected bool CheckNextTurnPhaseEvent(TurnPhase nextTurnPhase, BoardPlayerLayer boardPlayerLayer)
         {
             string nextTurnPhaseString = Enum.GetName(typeof(TurnPhase), nextTurnPhase);
 
@@ -798,7 +800,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
-        private bool CheckLevelChangeEvent(World world, out string details)
+        protected bool CheckLevelChangeEvent(World world, out string details)
         {
             details = null;
 
@@ -814,7 +816,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             return false;
         }
 
-        private void SetCurrentTurnPhase(World world, TurnPhase newPhase)
+        protected void SetCurrentTurnPhase(World world, TurnPhase newPhase)
         {
             if(this.CurrentTurnPhase != newPhase)
             {

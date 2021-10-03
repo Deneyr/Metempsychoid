@@ -9,6 +9,83 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 {
     public class GalaxyFactory
     {
+        public delegate void GalaxyCreator(BoardGameLayer boardGameLayer);
+
+        public static Dictionary<string, GalaxyCreator> NameToGalaxyCreators
+        {
+            get;
+            private set;
+        }
+
+        static GalaxyFactory()
+        {
+            NameToGalaxyCreators = new Dictionary<string, GalaxyCreator>();
+
+            NameToGalaxyCreators.Add("Menu", CreateMenuGalaxy);
+            NameToGalaxyCreators.Add("Default", CreateDefaultGalaxy);
+            NameToGalaxyCreators.Add("Standard", CreateStandardGalaxy);
+        }
+
+
+        public static void CreateMenuGalaxy(BoardGameLayer boardGameLayer)
+        {
+            float cosPi4 = (float)Math.Cos(Math.PI / 4);
+
+            // Circle
+            StarEntity star = new StarEntity(boardGameLayer);
+            star.Name = "0";
+            boardGameLayer.AddStar(star);
+
+
+            StarEntity star1 = new StarEntity(boardGameLayer);
+            star1.Position = new Vector2f(600, 0);
+            star1.Name = "1";
+            boardGameLayer.AddStar(star1);
+
+            StarEntity star2 = new StarEntity(boardGameLayer);
+            star2.Position = new Vector2f(0, 600);
+            star2.Name = "2";
+            boardGameLayer.AddStar(star2);
+
+            StarEntity star3 = new StarEntity(boardGameLayer);
+            star3.Position = new Vector2f(-600, 0);
+            star3.Name = "3";
+            boardGameLayer.AddStar(star3);
+
+            StarEntity star4 = new StarEntity(boardGameLayer);
+            star4.Position = new Vector2f(0, -600);
+            star4.Name = "4";
+            boardGameLayer.AddStar(star4);
+
+            boardGameLayer.AddStarLink(star, star1);
+            boardGameLayer.AddStarLink(star, star2);
+            boardGameLayer.AddStarLink(star, star3);
+            boardGameLayer.AddStarLink(star, star4);
+            boardGameLayer.AddCurvedStarLink(star1, star2, 600);
+            boardGameLayer.AddCurvedStarLink(star2, star3, 600);
+            boardGameLayer.AddCurvedStarLink(star3, star4, 600);
+            boardGameLayer.AddCurvedStarLink(star4, star1, 600);
+
+            //// Star Domains
+            //CJStarDomain domain1 = new CJStarDomain(boardGameLayer, new List<StarEntity>()
+            //{
+            //    star1,
+            //    star2,
+            //    star3,
+            //    star
+            //}, -1);
+            //boardGameLayer.AddStarDomain(domain1);
+
+            //CJStarDomain domain2 = new CJStarDomain(boardGameLayer, new List<StarEntity>()
+            //{
+            //    star7,
+            //    star8,
+            //    star9,
+            //    star10
+            //}, -2, false);
+            //boardGameLayer.AddStarDomain(domain2);
+        }
+
         public static void CreateDefaultGalaxy(BoardGameLayer boardGameLayer)
         {
             float cosPi4 = (float)Math.Cos(Math.PI / 4);

@@ -9,6 +9,72 @@ namespace Metempsychoid.Model.Constellations
 {
     public static class ConstellationPatternFactory
     {
+        // Meta
+
+        public static ConstellationPattern CreateBeginningConstellation()
+        {
+            ConstellationPattern patternToCreate = new ConstellationPattern();
+
+            ConstellationNode node1 = new ConstellationOpponentNode();
+            patternToCreate.AddNode(node1);
+            ConstellationNode node2 = new ConstellationOpponentNode();
+            patternToCreate.AddNode(node2);
+            ConstellationNodeSelf self = new ConstellationNodeSelf();
+            patternToCreate.AddNode(self);
+
+            ConstellationLink link = new ConstellationLink(self, node2);
+            patternToCreate.AddNodeLink(link);
+            ConstellationLink link2 = new ConstellationLink(self, node1);
+            patternToCreate.AddNodeLink(link2);
+            ConstellationLink link3 = new ConstellationLink(node1, node2);
+            patternToCreate.AddNodeLink(link3);
+
+            return patternToCreate;
+        }
+
+        public static ConstellationPattern CreateArchitectsConstellation()
+        {
+            ConstellationPattern patternToCreate = new ConstellationPattern();
+
+            ConstellationNode node1 = new ConstellationAllyNode();
+            patternToCreate.AddNode(node1);
+            ConstellationNode node2 = new ConstellationAllyNode();
+            patternToCreate.AddNode(node2);
+            ConstellationNodeSelf self = new ConstellationNodeSelf();
+            patternToCreate.AddNode(self);
+
+            ConstellationLink link = new ConstellationLink(self, node1);
+            patternToCreate.AddNodeLink(link);
+            ConstellationLink link2 = new ConstellationLink(node1, node2);
+            patternToCreate.AddNodeLink(link2);
+
+            return patternToCreate;
+        }
+
+        public static ConstellationPattern CreateToolsConstellation()
+        {
+            ConstellationPattern patternToCreate = new ConstellationPattern();
+
+            ConstellationNode node1 = new ConstellationAllyNode();
+            patternToCreate.AddNode(node1);
+            ConstellationNode node2 = new ConstellationAllyNode();
+            patternToCreate.AddNode(node2);
+            ConstellationNode node3 = new ConstellationOpponentNode();
+            patternToCreate.AddNode(node2);
+            ConstellationNodeSelf self = new ConstellationNodeSelf();
+            patternToCreate.AddNode(self);
+
+            ConstellationLink link = new ConstellationLink(self, node1);
+            patternToCreate.AddNodeLink(link);
+            ConstellationLink link2 = new ConstellationLink(self, node2);
+            patternToCreate.AddNodeLink(link2);
+            ConstellationLink link3 = new ConstellationLink(self, node3);
+            patternToCreate.AddNodeLink(link3);
+
+            return patternToCreate;
+        }
+
+        // Intra
 
         public static ConstellationPattern CreateStrengthConstellation()
         {

@@ -1,5 +1,43 @@
 <localization>
     <paragraphEntry>
+        <key>beginning_title</key>
+        <paragraph culture="fr"><Normal>Le Commencement</Normal></paragraph>
+        <paragraph culture="en"><Normal>The Beginning</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>beginning_poem</key>
+        <paragraph culture="fr"><Normal>Soit maitre de ton destin &#10; et de celui de ton adversaire &#10; et la victoire sera à ta portée</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; poem</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>beginning_effect</key>
+        <paragraph culture="fr"><Normal>Lance la bataille</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>architects_title</key>
+        <paragraph culture="fr"><Normal>Les Architects</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>architects_poem</key>
+        <paragraph culture="fr"><Normal>Un univers est comme une maison &#10; il a besoin d'un architect &#10; il a besoin d'ouvriers &#10; et il a besoin d'habitants</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; poem</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>architects_effect</key>
+        <paragraph culture="fr"><Normal>Affiche les créateurs du jeu</Normal><Normal color="0:255:0">2</Normal><Normal>points de puissance</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+
+
+    <paragraphEntry>
         <key>wheel_of_fortune_title</key>
         <paragraph culture="fr"><Normal>Roue de la Fortune</Normal></paragraph>
         <paragraph culture="en"><Normal>Wheel of Fortune</Normal></paragraph>

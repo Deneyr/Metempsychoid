@@ -32,6 +32,22 @@ namespace Metempsychoid.Model.Card
             CardTemplate cardTemplate;
             ACardActiveBehavior cardActiveBehavior;
 
+            // Meta
+
+            cardTemplate = new CardTemplate("META_beginning", "beginning_title", "beginning_poem", "beginning_effect", 0);
+            cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateBeginningConstellation());
+
+            cardTemplate.CardBehaviors.Add(new META_BeginningActiveBehavior());
+            this.AddCardTemplateToLibrary(cardTemplate);
+
+            cardTemplate = new CardTemplate("META_architects", "architects_title", "architects_poem", "architects_effect", 0);
+            cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateArchitectsConstellation());
+
+            //cardTemplate.CardBehaviors.Add(new StrengthPassiveBehavior(1));
+            this.AddCardTemplateToLibrary(cardTemplate);
+
+            // Intra
+
             cardTemplate = new CardTemplate("strength", "strength_title", "strength_poem", "strength_effect", 0);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateStrengthConstellation());
 

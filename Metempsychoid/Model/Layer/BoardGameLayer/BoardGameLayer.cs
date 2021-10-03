@@ -23,6 +23,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         private Player.Player playerTurn;
 
+        public string PreInitGalaxyName
+        {
+            get;
+            set;
+        }
+
         public List<StarEntity> BehaviorSourceStarEntities
         {
             get;
@@ -145,6 +151,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public BoardGameLayer()
         {
+            this.PreInitGalaxyName = "Default";
+
             this.StarSystem = new HashSet<StarEntity>();
             this.StarLinkSystem = new HashSet<StarLinkEntity>();
 
@@ -270,11 +278,11 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.TargetStarEntitiesSet?.Invoke(this.BehaviorTargetStarEntities);
         }
 
-        public CardEntity PickCard(Card.Card card)
+        public CardEntity PickCard(Card.Card card, bool isFliped = true)
         {
             if (this.CardEntityPicked == null)
             {
-                CardEntity cardEntity = new CardEntity(this, card, true);
+                CardEntity cardEntity = new CardEntity(this, card, isFliped);
 
                 this.AddEntityToLayer(cardEntity);
 
@@ -384,6 +392,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 this.NbCardsAbleToBeSocketed--;
 
                 this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity));
+
+                this.CardEntityPicked = null;
             }
         }
 
@@ -571,7 +581,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.PendingActions.Clear();
             this.NameToOnBoardCardEntities.Clear();
 
-            GalaxyFactory.CreateStandardGalaxy(this);
+            GalaxyFactory.NameToGalaxyCreators[this.PreInitGalaxyName](this);
         }
 
         protected void NotifyCardPicked(CardEntity cardPicked)

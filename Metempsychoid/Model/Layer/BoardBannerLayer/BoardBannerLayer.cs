@@ -126,8 +126,9 @@ namespace Metempsychoid.Model.Layer.BoardBannerLayer
             this.currentTurnCount = 1;
             this.TurnIndex = -1;
 
-            this.Player = world.Player;
-            this.Opponent = (levelNode as CardBoardLevel).Opponent;
+            CardBoardLevel cardBoardLevel = levelNode as CardBoardLevel;
+            this.Player = cardBoardLevel.MainPlayer;
+            this.Opponent = cardBoardLevel.Opponent;
 
             this.PlayerTurn = this.Player;
 

@@ -21,14 +21,14 @@ namespace Metempsychoid.Model.Node
             this.nextWorldNodeName = null;
             this.currentWorldNode = null;
 
-            this.nameToWorldNodes.Add("TestWorld", new TestWorld.TestWorld(world));
+            this.nameToWorldNodes.Add("AstraWorld", new TestWorld.AstraWorld(world));
         }
 
         public override void VisitStart(World world)
         {
             base.VisitStart(world);
 
-            this.nextWorldNodeName = "TestWorld";
+            this.nextWorldNodeName = "AstraWorld";
             this.UpdateCurrentWorldNode(world);
         }
 

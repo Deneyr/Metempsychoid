@@ -77,6 +77,7 @@
     <Compile Include="Model\Card\Behaviors\JusticeActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\LoverPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\MagicianActiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\META_BeginningActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\MoonPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\HierophantActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\PriestessPassiveBehavior.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ConvertCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ResurrectCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SecureDomainNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SendInternalEventNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SocketCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\SocketNewCardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\CardEntityDecorator.cs" />
@@ -154,6 +156,8 @@
     <Compile Include="Model\Node\AWorldNode.cs" />
     <Compile Include="Model\Node\ALevelNode.cs" />
     <Compile Include="Model\Node\RootGameNode.cs" />
+    <Compile Include="Model\Node\TestWorld\AstraMenuLevel.cs" />
+    <Compile Include="Model\Node\TestWorld\AstraWorld.cs" />
     <Compile Include="Model\Node\TestWorld\CJMenuLevel.cs" />
     <Compile Include="Model\Node\TestWorld\CardBoardLevel.cs" />
     <Compile Include="Model\Node\TestWorld\TestWorld.cs" />

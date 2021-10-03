@@ -21,6 +21,9 @@ namespace Metempsychoid.View.Card2D
 
             this.AddTexturePath("starHaloTexture", @"Assets\Graphics\Entities\StarHalo.png");
 
+            this.AddTexturePath("META_beginning", @"Assets\Graphics\Cards\Astrategia_Cartes_Bataille.png");
+            this.AddTexturePath("META_architects", @"Assets\Graphics\Cards\Astrategia_Cartes_Credits.png");
+
             this.AddTexturePath("strength", @"Assets\Graphics\Cards\Astrategia_Cartes_Force.png");
             this.AddTexturePath("justice", @"Assets\Graphics\Cards\Astrategia_Cartes_Justice.png");
             this.AddTexturePath("moon", @"Assets\Graphics\Cards\Astrategia_Cartes_Lune.png");
@@ -32,7 +35,7 @@ namespace Metempsychoid.View.Card2D
             this.AddTexturePath("devil", @"Assets\Graphics\Cards\Astrategia_Cartes_Diable.png");
             this.AddTexturePath("fool", @"Assets\Graphics\Cards\Astrategia_Cartes_Fou.png");
             this.AddTexturePath("hierophant", @"Assets\Graphics\Cards\Astrategia_Cartes_Hierophante.png");
-            this.AddTexturePath("magician", @"Assets\Graphics\Cards\Astrategia_Cartes_Fou.png");
+            this.AddTexturePath("magician", @"Assets\Graphics\Cards\Astrategia_Cartes_Magicien.png");
             this.AddTexturePath("world", @"Assets\Graphics\Cards\Astrategia_Cartes_Monde.png");
             this.AddTexturePath("emperor", @"Assets\Graphics\Cards\Astrategia_Cartes_Empereur.png");
             this.AddTexturePath("hangedMan", @"Assets\Graphics\Cards\Astrategia_Cartes_Pendu.png");
