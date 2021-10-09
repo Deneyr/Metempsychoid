@@ -3,6 +3,7 @@ using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardNotifLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
+using Metempsychoid.Model.Layer.MenuTextLayer;
 using Metempsychoid.Model.MenuLayer;
 using System;
 using System.Collections.Generic;
@@ -32,17 +33,25 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             BoardPlayerLayer boardPlayerLayer = new BoardPlayerLayer();
             BoardPlayerLayer boardOpponentLayer = new BoardPlayerLayer();
+            MenuBoardPlayerLayer menuPlayerLayer = new MenuBoardPlayerLayer();
 
             BoardNotifLayer boardNotifLayer = new BoardNotifLayer();
+            MenuBoardNotifLayer menuBoardNotifLayer = new MenuBoardNotifLayer();
 
             BoardBannerLayer bannerLayer = new BoardBannerLayer();
 
+            MenuTextLayer menuTextLayer = new MenuTextLayer();
+            menuTextLayer.ParentLayer = background;
+
             world.InitializeWorld(new List<Tuple<string, ALayer>>() {
                 new Tuple<string, ALayer>("VsO7nJK", background),
+                new Tuple<string, ALayer>("menuTextLayer", menuTextLayer),
                 new Tuple<string, ALayer>("gameLayer", boardGameLayer),
                 new Tuple<string, ALayer>("playerLayer", boardPlayerLayer),
                 new Tuple<string, ALayer>("opponentLayer", boardOpponentLayer),
+                new Tuple<string, ALayer>("menuPlayerLayer", menuPlayerLayer),
                 new Tuple<string, ALayer>("notifLayer", boardNotifLayer),
+                new Tuple<string, ALayer>("menuNotifLayer", menuBoardNotifLayer),
                 new Tuple<string, ALayer>("bannerLayer", bannerLayer)
             });
 

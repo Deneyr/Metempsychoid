@@ -28,7 +28,22 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             }
             set
             {
-                this.isActive = value;
+                if (this.isActive != value)
+                {
+                    this.isActive = value;
+
+                    if (this.animationsList.Count > 0)
+                    {
+                        if (this.isActive)
+                        {
+                            this.PlayAnimation(0);
+                        }
+                        else
+                        {
+                            this.PlayAnimation(2);
+                        }
+                    }
+                }
             }
         }
 
@@ -127,7 +142,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             IAnimation labelChangedAnimation = new ZoomAnimation(2, 1, Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(labelChangedAnimation);
 
-            this.IsActive = false;
+            this.isActive = false;
         }
 
         public override bool IsFocusable(ALayer2D parentLayer)
@@ -142,8 +157,6 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.IsActive = true;
 
             this.ActiveOnlyParagraph(paragraphIndex);
-
-            this.PlayAnimation(0);
         }
 
         public void SetParagraph(string paragraphId)
@@ -172,8 +185,6 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         public void DeactiveButton()
         {
             this.IsActive = false;
-
-            this.PlayAnimation(2);
         }
 
         public override void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)

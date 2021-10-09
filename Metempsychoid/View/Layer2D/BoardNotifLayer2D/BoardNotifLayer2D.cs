@@ -34,9 +34,9 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         private List<AEntity2D> hittableEntities2D;
 
         private EndTurnButton2D endTurnButton;
-        private EffectBehaviorLabel2D effectBehaviorLabel2D;
+        protected EffectBehaviorLabel2D effectBehaviorLabel2D;
 
-        private TurnPhase levelTurnPhase;
+        protected TurnPhase levelTurnPhase;
 
         private List<CardEntity2D> pendingRemovingCardEntities;
 
@@ -45,16 +45,16 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
         public bool IsRunningBehavior
         {
             get;
-            private set;
+            protected set;
         }
 
-        public TurnPhase LevelTurnPhase
+        public virtual TurnPhase LevelTurnPhase
         {
             get
             {
                 return this.levelTurnPhase;
             }
-            private set
+            protected set
             {
                 if (this.levelTurnPhase != value)
                 {
@@ -221,7 +221,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             cardEntity2DToRemove.PlayRemoveAnimation();
         }
 
-        private void OnNotifBehaviorStarted(IBoardNotifBehavior obj)
+        protected virtual void OnNotifBehaviorStarted(IBoardNotifBehavior obj)
         {
             this.IsRunningBehavior = true;
 
@@ -268,7 +268,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             }
         }
 
-        private void OnNotifBehaviorEnded(IBoardNotifBehavior obj)
+        protected virtual void OnNotifBehaviorEnded(IBoardNotifBehavior obj)
         {
             this.IsRunningBehavior = false;
 

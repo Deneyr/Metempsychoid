@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
+using Metempsychoid.View.Layer2D.MenuTextLayer2D;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -201,6 +202,9 @@ namespace Metempsychoid.View.Text2D
                 case "BannerTitle":
                     textToken2D = new TitleBannerTextToken2D(textToken, fillColor);
                     break;
+                case "MenuTitle":
+                    textToken2D = new TitleTextToken2D(textToken, fillColor);
+                    break;
                 case "CardLabel":
                     textToken2D = new CardLabelTextToken2D(textToken, fillColor);
                     break;
@@ -228,21 +232,7 @@ namespace Metempsychoid.View.Text2D
                     }
                     else
                     {
-                        switch (tokenType)
-                        {
-                            case "Normal":
-                                textToken2D = new TextToken2D(textToken, fillColor);
-                                break;
-                            case "BannerTitle":
-                                textToken2D = new TitleBannerTextToken2D(textToken, fillColor);
-                                break;
-                            case "CardLabel":
-                                textToken2D = new CardLabelTextToken2D(textToken, fillColor);
-                                break;
-                            default:
-                                textToken2D = new TextToken2D(textToken, fillColor);
-                                break;
-                        }
+                        textToken2D = CreateTextToken(tokenType, textToken, fillColor);
                     }
 
                     tokenListToAppend.Add(textToken2D);

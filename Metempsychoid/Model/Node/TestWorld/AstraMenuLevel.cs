@@ -44,18 +44,19 @@ namespace Metempsychoid.Model.Node.TestWorld
             world.InitializeLevel(new List<string>()
             {
                 "VsO7nJK",
+                "menuTextLayer",
                 "gameLayer",
-                "playerLayer",
+                "menuPlayerLayer",
                 //"opponentLayer",
-                "notifLayer",
+                "menuNotifLayer"
                 //"bannerLayer"
             }, this);
 
-            this.BoardplayersList.Clear();
-            this.BoardplayersList.Add(world.LoadedLayers["playerLayer"] as BoardPlayerLayer);
-            this.BoardplayersList.Add(world.LoadedLayers["opponentLayer"] as BoardPlayerLayer);
+            this.BoardPlayersList.Clear();
+            this.BoardPlayersList.Add(world.LoadedLayers["menuPlayerLayer"] as BoardPlayerLayer);
+            //this.BoardplayersList.Add(world.LoadedLayers["opponentLayer"] as BoardPlayerLayer);
 
-            this.BoardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
+            this.BoardNotifLayer = world.LoadedLayers["menuNotifLayer"] as BoardNotifLayer;
 
             this.InitializeStartLevelPhase(world);
         }
@@ -67,18 +68,17 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         protected override void UpdateCreateHandPhase(World world)
         {
-            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
-            BoardPlayerLayer boardOpponentLayer = world.LoadedLayers["opponentLayer"] as BoardPlayerLayer;
+            BoardPlayerLayer boardPlayerLayer = this.BoardPlayersList[0];
 
             if (this.CheckDrawCardEvent(world, boardPlayerLayer))
             {
                 boardPlayerLayer.DrawCard();
             }
 
-            if (this.CheckDrawCardEvent(world, boardOpponentLayer))
-            {
-                boardOpponentLayer.DrawCard(false);
-            }
+            //if (this.CheckDrawCardEvent(world, boardOpponentLayer))
+            //{
+            //    boardOpponentLayer.DrawCard(false);
+            //}
 
             if (this.CheckNextTurnPhaseEvent(TurnPhase.START_TURN, null))
             {
@@ -95,7 +95,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             this.SetCurrentTurnPhase(world, TurnPhase.MAIN);
 
-            foreach (BoardPlayerLayer playerLayer in this.BoardplayersList)
+            foreach (BoardPlayerLayer playerLayer in this.BoardPlayersList)
             {
                 playerLayer.CardPileFocused = BoardPlayerLayer.PileFocused.HAND;
             }
@@ -125,6 +125,16 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             star = this.BoardGameLayer.StarSystem.First(pElem => pElem.Name == "4");
             card = world.CardLibrary.CreateCard("rock", this.MainPlayer);
+            this.BoardGameLayer.PickCard(card, false);
+            this.BoardGameLayer.SocketCard(star);
+
+            star = this.BoardGameLayer.StarSystem.First(pElem => pElem.Name == "5");
+            card = world.CardLibrary.CreateCard("moon", this.MainPlayer);
+            this.BoardGameLayer.PickCard(card, false);
+            this.BoardGameLayer.SocketCard(star);
+
+            star = this.BoardGameLayer.StarSystem.First(pElem => pElem.Name == "6");
+            card = world.CardLibrary.CreateCard("sun", this.Opponent);
             this.BoardGameLayer.PickCard(card, false);
             this.BoardGameLayer.SocketCard(star);
         }

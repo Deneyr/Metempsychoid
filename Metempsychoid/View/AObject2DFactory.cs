@@ -69,6 +69,10 @@ namespace Metempsychoid.View
             nameToFonts.Add("Nzoda", font);
             fontToWidths.Add(font, 200);
 
+            font = new Font(@"Assets\Graphics\Fonts\dum1.ttf");
+            nameToFonts.Add("dumbTitle", font);
+            fontToWidths.Add(font, 1500);
+
             //InitFontToWidths();
         }
 

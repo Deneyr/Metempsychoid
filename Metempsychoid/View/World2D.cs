@@ -7,6 +7,7 @@ using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardNotifLayer;
 using Metempsychoid.Model.Layer.BoardPlayerLayer;
 using Metempsychoid.Model.Layer.EntityLayer;
+using Metempsychoid.Model.Layer.MenuTextLayer;
 using Metempsychoid.Model.MenuLayer;
 using Metempsychoid.View.Card2D;
 using Metempsychoid.View.Controls;
@@ -17,6 +18,7 @@ using Metempsychoid.View.Layer2D.BoardNotifLayer2D;
 using Metempsychoid.View.Layer2D.BoardPlayerLayer2D;
 using Metempsychoid.View.Layer2D.EntityLayer2D;
 using Metempsychoid.View.Layer2D.MenuLayer2D;
+using Metempsychoid.View.Layer2D.MenuTextLayer2D;
 using Metempsychoid.View.ResourcesManager;
 using Metempsychoid.View.SoundsManager;
 using SFML.Graphics;
@@ -54,14 +56,18 @@ namespace Metempsychoid.View
             // Layer background mapping
             MappingObjectModelView.Add(typeof(BackgroundLayer), new BackgroundLayer2DFactory("skyBackground"));
 
+            MappingObjectModelView.Add(typeof(MenuTextLayer), new MenuTextLayer2DFactory());
+
             // Layer entity Mapping
             MappingObjectModelView.Add(typeof(EntityLayer), new EntityLayer2DFactory());
 
             MappingObjectModelView.Add(typeof(BoardGameLayer), new BoardGameLayer2DFactory());
 
             MappingObjectModelView.Add(typeof(BoardPlayerLayer), new BoardPlayerLayer2DFactory());
+            MappingObjectModelView.Add(typeof(MenuBoardPlayerLayer), new MenuBoardPlayerLayer2DFactory());
 
             MappingObjectModelView.Add(typeof(BoardNotifLayer), new BoardNotifLayer2DFactory());
+            MappingObjectModelView.Add(typeof(MenuBoardNotifLayer), new MenuBoardNotifLayer2DFactory());
 
             // Layer foreground mapping
             MappingObjectModelView.Add(typeof(BoardBannerLayer), new BoardBannerLayer2DFactory());

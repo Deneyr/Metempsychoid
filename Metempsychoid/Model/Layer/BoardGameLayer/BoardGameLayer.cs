@@ -449,14 +449,14 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public int GetNbOpponentDeadCard(Player.Player player)
         {
-            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as CardBoardLevel).BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer != player);
+            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as CardBoardLevel).BoardPlayersList.FirstOrDefault(pElem => pElem.SupportedPlayer != player);
 
             return playerLayer.CardsCemetery.Count;
         }
 
         public int GetNbDeadCard(Player.Player player)
         {
-            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as CardBoardLevel).BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer == player);
+            BoardPlayerLayer.BoardPlayerLayer playerLayer = (this.ownerLevelNode as CardBoardLevel).BoardPlayersList.FirstOrDefault(pElem => pElem.SupportedPlayer == player);
 
             return playerLayer.CardsCemetery.Count;
         }

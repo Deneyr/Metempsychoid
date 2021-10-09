@@ -20,7 +20,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         protected int playerIndex;
 
-        public List<BoardPlayerLayer> BoardplayersList
+        public List<BoardPlayerLayer> BoardPlayersList
         {
             get;
             protected set;
@@ -72,7 +72,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             base(world)
         {
             this.CurrentTurnPhase = TurnPhase.VOID;
-            this.BoardplayersList = new List<BoardPlayerLayer>();
+            this.BoardPlayersList = new List<BoardPlayerLayer>();
         }
 
         public TurnPhase CurrentTurnPhase
@@ -85,7 +85,7 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             get
             {
-                return this.BoardplayersList[this.TurnIndex % this.BoardplayersList.Count];
+                return this.BoardPlayersList[this.TurnIndex % this.BoardPlayersList.Count];
             }
         }
 
@@ -114,9 +114,9 @@ namespace Metempsychoid.Model.Node.TestWorld
                 "bannerLayer"
             }, this);
 
-            this.BoardplayersList.Clear();
-            this.BoardplayersList.Add(world.LoadedLayers["playerLayer"] as BoardPlayerLayer);
-            this.BoardplayersList.Add(world.LoadedLayers["opponentLayer"] as BoardPlayerLayer);
+            this.BoardPlayersList.Clear();
+            this.BoardPlayersList.Add(world.LoadedLayers["playerLayer"] as BoardPlayerLayer);
+            this.BoardPlayersList.Add(world.LoadedLayers["opponentLayer"] as BoardPlayerLayer);
 
             this.BoardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
 
@@ -141,7 +141,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         public BoardPlayerLayer GetLayerFromPlayer(Player.Player player)
         {
-            return this.BoardplayersList.FirstOrDefault(pElem => pElem.SupportedPlayer == player);
+            return this.BoardPlayersList.FirstOrDefault(pElem => pElem.SupportedPlayer == player);
         }
 
         //public override void UpdateLogic(World world, Time timeElapsed)
@@ -209,11 +209,14 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             this.SetCurrentTurnPhase(world, TurnPhase.CREATE_HAND);
 
-            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
+            BoardPlayerLayer boardPlayerLayer = this.BoardPlayersList[0];
             boardPlayerLayer.NbCardsToDraw = this.MainPlayer.Deck.CardIds.Count;
 
-            boardPlayerLayer = world.LoadedLayers["opponentLayer"] as BoardPlayerLayer;
-            boardPlayerLayer.NbCardsToDraw = this.Opponent.Deck.CardIds.Count;
+            if (this.BoardPlayersList.Count > 1)
+            {
+                boardPlayerLayer = this.BoardPlayersList[1];
+                boardPlayerLayer.NbCardsToDraw = this.Opponent.Deck.CardIds.Count;
+            }
         }
 
         protected void InitializeStartTurnPhase(World world)
@@ -241,7 +244,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             boardPlayerLayer.NbCardsToDraw = 0;
 
-            foreach(BoardPlayerLayer playerLayer in this.BoardplayersList)
+            foreach(BoardPlayerLayer playerLayer in this.BoardPlayersList)
             {
                 playerLayer.CardPileFocused = BoardPlayerLayer.PileFocused.HAND;
             }
@@ -251,7 +254,7 @@ namespace Metempsychoid.Model.Node.TestWorld
         {
             this.SetCurrentTurnPhase(world, TurnPhase.MAIN);
 
-            foreach (BoardPlayerLayer playerLayer in this.BoardplayersList)
+            foreach (BoardPlayerLayer playerLayer in this.BoardPlayersList)
             {
                 playerLayer.CardPileFocused = BoardPlayerLayer.PileFocused.NONE;
             }
@@ -265,7 +268,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             boardPlayerLayer.OnEndTurn();
 
-            foreach (BoardPlayerLayer playerLayer in this.BoardplayersList)
+            foreach (BoardPlayerLayer playerLayer in this.BoardPlayersList)
             {
                 playerLayer.CardPileFocused = BoardPlayerLayer.PileFocused.NONE;
             }
@@ -332,17 +335,19 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         protected virtual void UpdateCreateHandPhase(World world)
         {
-            BoardPlayerLayer boardPlayerLayer = world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
-            BoardPlayerLayer boardOpponentLayer = world.LoadedLayers["opponentLayer"] as BoardPlayerLayer;
-
+            BoardPlayerLayer boardPlayerLayer = this.BoardPlayersList[0];
             if (this.CheckDrawCardEvent(world, boardPlayerLayer))
             {
                 boardPlayerLayer.DrawCard();
             }
 
-            if (this.CheckDrawCardEvent(world, boardOpponentLayer))
+            if (this.BoardPlayersList.Count > 1)
             {
-                boardOpponentLayer.DrawCard(false);
+                BoardPlayerLayer boardOpponentLayer = this.BoardPlayersList[1];
+                if (this.CheckDrawCardEvent(world, boardOpponentLayer))
+                {
+                    boardOpponentLayer.DrawCard(false);
+                }
             }
 
             if (this.CheckNextTurnPhaseEvent(TurnPhase.START_TURN, null))
@@ -379,12 +384,12 @@ namespace Metempsychoid.Model.Node.TestWorld
         protected virtual void UpdateMainPhase(World world)
         {
             BoardPlayerLayer boardPlayerLayer = this.CurrentBoardPlayer; // world.LoadedLayers["playerLayer"] as BoardPlayerLayer;
-            BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
-            BoardNotifLayer boardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
+            //BoardGameLayer boardGameLayer = world.LoadedLayers["gameLayer"] as BoardGameLayer;
+            //BoardNotifLayer boardNotifLayer = world.LoadedLayers["notifLayer"] as BoardNotifLayer;
 
-            if (boardNotifLayer.CurrentNotifBehavior != null)
+            if (this.BoardNotifLayer.CurrentNotifBehavior != null)
             {
-                boardNotifLayer.ForwardGameEventsToBehavior(this.pendingGameEvents);
+                this.BoardNotifLayer.ForwardGameEventsToBehavior(this.pendingGameEvents);
             }
             else
             {
@@ -401,7 +406,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                     //{
                     boardPlayerLayer.CardEntityFocused = cardHandFocused;
 
-                    boardGameLayer.CardEntityFocused = null;
+                    this.BoardGameLayer.CardEntityFocused = null;
                     //}
                 }
 
@@ -410,7 +415,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                 {
                     if (/*boardGameLayer.CardEntityPicked == null && */boardPlayerLayer.CardEntityFocused == null)
                     {
-                        boardGameLayer.CardEntityFocused = cardBoardFocused;
+                        this.BoardGameLayer.CardEntityFocused = cardBoardFocused;
                     }
                 }
 
@@ -419,7 +424,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                 {
                     if (starEntity != null)
                     {
-                        boardGameLayer.SocketCard(starEntity);
+                        this.BoardGameLayer.SocketCard(starEntity);
                     }
                 }
                 else
@@ -427,7 +432,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                     bool IsTherePickCardEvent = this.CheckPickCardEvent(world, boardPlayerLayer, out CardEntity cardPicked, out string detailsPicked);
                     bool IsThereUnpickCardEvent = this.CheckUnPickCardEvent(world, boardPlayerLayer, out CardEntity cardUnpicked, out string detailsUnpicked);
 
-                    if (boardGameLayer.CardEntityPicked == null)
+                    if (this.BoardGameLayer.CardEntityPicked == null)
                     {
                         if (IsTherePickCardEvent)
                         {
@@ -451,10 +456,10 @@ namespace Metempsychoid.Model.Node.TestWorld
                 if (this.CheckNextTurnPhaseEvent(TurnPhase.END_TURN, null))
                 {
                     boardPlayerLayer.CardEntityFocused = null;
-                    boardGameLayer.CardEntityFocused = null;
+                    this.BoardGameLayer.CardEntityFocused = null;
 
-                    if (boardGameLayer.CardEntityPicked == null
-                        && boardGameLayer.PendingActions.Count == 0)
+                    if (this.BoardGameLayer.CardEntityPicked == null
+                        && this.BoardGameLayer.PendingActions.Count == 0)
                     {
                         this.InitializeEndTurnPhase(world);
                     }

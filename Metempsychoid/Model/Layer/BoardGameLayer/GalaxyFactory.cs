@@ -36,26 +36,38 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             star.Name = "0";
             boardGameLayer.AddStar(star);
 
-
+            float radius = 600;
             StarEntity star1 = new StarEntity(boardGameLayer);
-            star1.Position = new Vector2f(600, 0);
+            star1.Position = new Vector2f(radius, 0);
             star1.Name = "1";
             boardGameLayer.AddStar(star1);
 
             StarEntity star2 = new StarEntity(boardGameLayer);
-            star2.Position = new Vector2f(0, 600);
+            star2.Position = new Vector2f(0, radius);
             star2.Name = "2";
             boardGameLayer.AddStar(star2);
 
             StarEntity star3 = new StarEntity(boardGameLayer);
-            star3.Position = new Vector2f(-600, 0);
+            star3.Position = new Vector2f(-radius, 0);
             star3.Name = "3";
             boardGameLayer.AddStar(star3);
 
             StarEntity star4 = new StarEntity(boardGameLayer);
-            star4.Position = new Vector2f(0, -600);
+            star4.Position = new Vector2f(0, -radius);
             star4.Name = "4";
             boardGameLayer.AddStar(star4);
+
+            // Sides
+            float radiusSide = 1400;
+            StarEntity star5 = new StarEntity(boardGameLayer);
+            star5.Position = new Vector2f(0, radiusSide);
+            star5.Name = "5";
+            boardGameLayer.AddStar(star5);
+
+            StarEntity star6 = new StarEntity(boardGameLayer);
+            star6.Position = new Vector2f(0, -radiusSide);
+            star6.Name = "6";
+            boardGameLayer.AddStar(star6);
 
             boardGameLayer.AddStarLink(star, star1);
             boardGameLayer.AddStarLink(star, star2);
@@ -65,6 +77,12 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             boardGameLayer.AddCurvedStarLink(star2, star3, 600);
             boardGameLayer.AddCurvedStarLink(star3, star4, 600);
             boardGameLayer.AddCurvedStarLink(star4, star1, 600);
+
+            float radiusFinal = (radiusSide * radiusSide + radius * radius) / (2 * radius);
+            boardGameLayer.AddCurvedStarLink(star1, star5, radiusFinal);
+            boardGameLayer.AddCurvedStarLink(star6, star1, radiusFinal);
+            boardGameLayer.AddCurvedStarLink(star5, star3, radiusFinal);
+            boardGameLayer.AddCurvedStarLink(star3, star6, radiusFinal);
 
             //// Star Domains
             //CJStarDomain domain1 = new CJStarDomain(boardGameLayer, new List<StarEntity>()

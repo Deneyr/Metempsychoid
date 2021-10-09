@@ -57,7 +57,10 @@ namespace Metempsychoid.Model.Constellations
 
                     result.Push(starEntity);
 
-                    starEntityToStarLinks.Add(starEntity, new List<StarLinkEntity>() { starLinks });
+                    if (starEntityToStarLinks.ContainsKey(starEntity) == false)
+                    {
+                        starEntityToStarLinks.Add(starEntity, new List<StarLinkEntity>() { starLinks });
+                    }
                 }
             }
 

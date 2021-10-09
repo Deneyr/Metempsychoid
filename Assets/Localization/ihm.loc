@@ -1,5 +1,12 @@
 <localization>
     <paragraphEntry>
+        <key>menu_title</key>
+        <paragraph culture="fr"><MenuTitle>Astra tegiA</MenuTitle></paragraph>
+        <paragraph culture="en"><MenuTitle>Astra tegiA</MenuTitle></paragraph>
+    </paragraphEntry>
+
+
+    <paragraphEntry>
         <key>field_content</key>
         <paragraph culture="fr"><Normal>{0}</Normal></paragraph>
         <paragraph culture="en"><Normal>{0}</Normal></paragraph>
