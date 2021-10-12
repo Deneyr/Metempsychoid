@@ -22,6 +22,7 @@ namespace Metempsychoid.View.Card2D
             this.AddTexturePath("starHaloTexture", @"Assets\Graphics\Entities\StarHalo.png");
 
             this.AddTexturePath("META_beginning", @"Assets\Graphics\Cards\Astrategia_Cartes_Bataille.png");
+            this.AddTexturePath("META_rules", @"Assets\Graphics\Cards\Astrategia_Cartes_Regles.png");
             this.AddTexturePath("META_architects", @"Assets\Graphics\Cards\Astrategia_Cartes_Credits.png");
 
             this.AddTexturePath("strength", @"Assets\Graphics\Cards\Astrategia_Cartes_Force.png");

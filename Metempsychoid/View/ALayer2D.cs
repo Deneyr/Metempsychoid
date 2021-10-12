@@ -561,6 +561,11 @@ namespace Metempsychoid.View
             }
         }
 
+        public Texture GetLayerTextureFromId(string textureId)
+        {
+            return this.parentFactory.GetTextureById(textureId);
+        }
+
         public override void PlaySound(string soundId)
         {
             SoundBuffer soundBuffer = this.parentFactory.GetSoundById(soundId);

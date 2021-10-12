@@ -32,6 +32,11 @@ namespace Metempsychoid.Model.Constellations
             return patternToCreate;
         }
 
+        public static ConstellationPattern CreateRulesConstellation()
+        {
+            return CreateFoolConstellation();
+        }
+
         public static ConstellationPattern CreateArchitectsConstellation()
         {
             ConstellationPattern patternToCreate = new ConstellationPattern();

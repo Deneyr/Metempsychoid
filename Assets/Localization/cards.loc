@@ -18,6 +18,24 @@
     </paragraphEntry>
 
     <paragraphEntry>
+        <key>rules_title</key>
+        <paragraph culture="fr"><Normal>Les Règles</Normal></paragraph>
+        <paragraph culture="en"><Normal>The Rules</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>rules_poem</key>
+        <paragraph culture="fr"><Normal>L'existence implique l'ordre&#10; L'ordre implique des règles</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; poem</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
+        <key>rules_effect</key>
+        <paragraph culture="fr"><Normal>Consulte les règles du jeu</Normal></paragraph>
+        <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
         <key>architects_title</key>
         <paragraph culture="fr"><Normal>Les Architects</Normal></paragraph>
         <paragraph culture="en"><Normal>Wheel of Fortune</Normal></paragraph>
@@ -31,7 +49,7 @@
 
     <paragraphEntry>
         <key>architects_effect</key>
-        <paragraph culture="fr"><Normal>Affiche les créateurs du jeu</Normal><Normal color="0:255:0">2</Normal><Normal>points de puissance</Normal></paragraph>
+        <paragraph culture="fr"><Normal>Affiche les créateurs du jeu</Normal></paragraph>
         <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
     </paragraphEntry>
 

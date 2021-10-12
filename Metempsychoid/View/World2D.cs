@@ -55,6 +55,7 @@ namespace Metempsychoid.View
 
             // Layer background mapping
             MappingObjectModelView.Add(typeof(BackgroundLayer), new BackgroundLayer2DFactory("skyBackground"));
+            MappingObjectModelView.Add(typeof(ImageBackgroundLayer), new ImageBackgroundLayer2DFactory());
 
             MappingObjectModelView.Add(typeof(MenuTextLayer), new MenuTextLayer2DFactory());
 

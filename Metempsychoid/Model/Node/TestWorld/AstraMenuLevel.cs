@@ -22,10 +22,12 @@ namespace Metempsychoid.Model.Node.TestWorld
 
         public override void VisitStart(World world)
         {
+            this.NodeState = NodeState.ACTIVE;
             this.pendingGameEvents = new Dictionary<EventType, List<GameEvent>>();
 
             Player.Player player = new Player.Player(Color.Green, "startPlayer");
             player.Deck.CardIds.Add("META_beginning");
+            player.Deck.CardIds.Add("META_rules");
             player.Deck.CardIds.Add("META_architects");
 
             Player.Player opponent = new Player.Player(Color.Red, "startOppPlayer");

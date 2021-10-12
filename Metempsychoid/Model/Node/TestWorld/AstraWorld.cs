@@ -19,6 +19,9 @@ namespace Metempsychoid.Model.Node.TestWorld
             base(world)
         {
             this.nameTolevelNodes.Add("StartPageLevel", new AstraMenuLevel(world));
+            this.nameTolevelNodes.Add("RulesLevel", new AstraRulesLevel(world));
+            this.nameTolevelNodes.Add("CreditsLevel", new AstraCreditsLevel(world));
+
             this.nameTolevelNodes.Add("CardBoardLevel", new CardBoardLevel(world));
         }
 
@@ -27,7 +30,8 @@ namespace Metempsychoid.Model.Node.TestWorld
             base.VisitStart(world);
 
             BackgroundLayer background = new BackgroundLayer();
-            //EntityLayer entityLayer = new EntityLayer();
+            ImageBackgroundLayer imageBackground = new ImageBackgroundLayer();
+
             BoardGameLayer boardGameLayer = new BoardGameLayer();
             boardGameLayer.ParentLayer = background;
 
@@ -45,6 +49,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             world.InitializeWorld(new List<Tuple<string, ALayer>>() {
                 new Tuple<string, ALayer>("VsO7nJK", background),
+                new Tuple<string, ALayer>("slidesLayer", imageBackground),
                 new Tuple<string, ALayer>("menuTextLayer", menuTextLayer),
                 new Tuple<string, ALayer>("gameLayer", boardGameLayer),
                 new Tuple<string, ALayer>("playerLayer", boardPlayerLayer),

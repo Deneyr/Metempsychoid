@@ -78,6 +78,8 @@
     <Compile Include="Model\Card\Behaviors\LoverPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\MagicianActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\META_BeginningActiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\META_CreditsActiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\META_RulesActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\MoonPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\HierophantActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\PriestessPassiveBehavior.cs" />
@@ -107,6 +109,7 @@
     <Compile Include="Model\Constellations\IConstellation.cs" />
     <Compile Include="Model\Event\InternalGameEvent.cs" />
     <Compile Include="Model\Event\IGameEventListener.cs" />
+    <Compile Include="Model\Layer\BackgroundLayer\ImageBackgroundLayer.cs" />
     <Compile Include="Model\Layer\BoardBannerLayer\ToolTipEntity.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\AddCardValueModifier.cs" />
     <Compile Include="Model\Layer\BoardGameLayer\Actions\ClearCardValueModifier.cs" />
@@ -159,7 +162,9 @@
     <Compile Include="Model\Node\AWorldNode.cs" />
     <Compile Include="Model\Node\ALevelNode.cs" />
     <Compile Include="Model\Node\RootGameNode.cs" />
+    <Compile Include="Model\Node\TestWorld\AstraCreditsLevel.cs" />
     <Compile Include="Model\Node\TestWorld\AstraMenuLevel.cs" />
+    <Compile Include="Model\Node\TestWorld\AstraRulesLevel.cs" />
     <Compile Include="Model\Node\TestWorld\AstraWorld.cs" />
     <Compile Include="Model\Node\TestWorld\CJMenuLevel.cs" />
     <Compile Include="Model\Node\TestWorld\CardBoardLevel.cs" />
@@ -198,6 +203,9 @@
     <Compile Include="View\IObject2DFactory.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\BackgroundLayer2D.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\BackgroundLayer2DFactory.cs" />
+    <Compile Include="View\Layer2D\BackgroundLayer2D\ImageBackgroundLayer2D.cs" />
+    <Compile Include="View\Layer2D\BackgroundLayer2D\ImageBackgroundLayer2DFactory.cs" />
+    <Compile Include="View\Layer2D\BackgroundLayer2D\ImageBackgroundObject2D.cs" />
     <Compile Include="View\Layer2D\BackgroundLayer2D\TileBackgoundObject2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\BannerEntity2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\BoardBannerLayer2D.cs" />

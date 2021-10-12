@@ -40,10 +40,16 @@ namespace Metempsychoid.Model.Card
             cardTemplate.CardBehaviors.Add(new META_BeginningActiveBehavior());
             this.AddCardTemplateToLibrary(cardTemplate);
 
+            cardTemplate = new CardTemplate("META_rules", "rules_title", "rules_poem", "rules_effect", 0);
+            cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateFoolConstellation());
+
+            cardTemplate.CardBehaviors.Add(new META_RulesActiveBehavior());
+            this.AddCardTemplateToLibrary(cardTemplate);
+
             cardTemplate = new CardTemplate("META_architects", "architects_title", "architects_poem", "architects_effect", 0);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateArchitectsConstellation());
 
-            //cardTemplate.CardBehaviors.Add(new StrengthPassiveBehavior(1));
+            cardTemplate.CardBehaviors.Add(new META_CreditsActiveBehavior());
             this.AddCardTemplateToLibrary(cardTemplate);
 
             // Intra

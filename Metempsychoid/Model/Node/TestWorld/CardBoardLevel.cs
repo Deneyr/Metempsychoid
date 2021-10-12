@@ -68,13 +68,6 @@ namespace Metempsychoid.Model.Node.TestWorld
             protected set;
         }
 
-        public CardBoardLevel(World world) :
-            base(world)
-        {
-            this.CurrentTurnPhase = TurnPhase.VOID;
-            this.BoardPlayersList = new List<BoardPlayerLayer>();
-        }
-
         public TurnPhase CurrentTurnPhase
         {
             get;
@@ -87,6 +80,13 @@ namespace Metempsychoid.Model.Node.TestWorld
             {
                 return this.BoardPlayersList[this.TurnIndex % this.BoardPlayersList.Count];
             }
+        }
+
+        public CardBoardLevel(World world) :
+            base(world)
+        {
+            this.CurrentTurnPhase = TurnPhase.VOID;
+            this.BoardPlayersList = new List<BoardPlayerLayer>();
         }
 
         public override void VisitStart(World world)
