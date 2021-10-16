@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.View.Controls;
 using SFML.Graphics;
+using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace Metempsychoid.View
         }
 
         bool IsFocusable(ALayer2D parentLayer);
+
+        bool IsPointHit(ALayer2D parentLayer, Vector2i position);
 
         bool OnMousePressed(ALayer2D parentLayer, ControlEventType eventType);
 

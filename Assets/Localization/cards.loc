@@ -184,7 +184,7 @@
 
     <paragraphEntry>
         <key>priestess_title</key>
-        <paragraph culture="fr"><Normal>La Papesse</Normal></paragraph>
+        <paragraph culture="fr"><Normal>La Prêtresse</Normal></paragraph>
         <paragraph culture="en"><Normal>High Priestess</Normal></paragraph>
     </paragraphEntry>
 
@@ -203,7 +203,7 @@
 
     <paragraphEntry>
         <key>temperance_title</key>
-        <paragraph culture="fr"><Normal>La Temperance</Normal></paragraph>
+        <paragraph culture="fr"><Normal>La Tempérance</Normal></paragraph>
         <paragraph culture="en"><Normal>Temperance</Normal></paragraph>
     </paragraphEntry>
 
@@ -215,7 +215,7 @@
 
     <paragraphEntry>
         <key>temperance_effect</key>
-        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="255:0:0">-1</Normal><Normal> points de puissance aux cartes liées</Normal></paragraph>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="255:0:0">-1</Normal><Normal> point de puissance aux cartes liées</Normal></paragraph>
         <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
     </paragraphEntry>
 
@@ -253,7 +253,7 @@
 
     <paragraphEntry>
         <key>devil_effect</key>
-        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+1</Normal><Normal> point de puissance par carte ennemie liée</Normal></paragraph>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+1</Normal><Normal> point de puissance par cartes ennemies liées</Normal></paragraph>
         <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
     </paragraphEntry>
 
@@ -279,7 +279,7 @@
 
     <paragraphEntry>
         <key>hierophant_title</key>
-        <paragraph culture="fr"><Normal>Le Pape</Normal></paragraph>
+        <paragraph culture="fr"><Normal>La Hiérophante</Normal></paragraph>
         <paragraph culture="en"><Normal>Hierophant</Normal></paragraph>
     </paragraphEntry>
 
@@ -329,7 +329,7 @@
 
     <paragraphEntry>
         <key>world_effect</key>
-        <paragraph culture="fr"><Normal>Actif : Sécurise le point de victoire du territoire pour cette manche</Normal></paragraph>
+        <paragraph culture="fr"><Normal>Actif : Sécurise le point de victoire du territoire pour ce tour</Normal></paragraph>
         <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
     </paragraphEntry>
 
@@ -405,7 +405,7 @@
 
     <paragraphEntry>
         <key>rock_effect</key>
-        <paragraph culture="fr"><Normal>No effect</Normal></paragraph>
+        <paragraph culture="fr"><Normal>Ne peut être déplacé</Normal></paragraph>
         <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
     </paragraphEntry>
 
@@ -431,7 +431,7 @@
 
     <paragraphEntry>
         <key>wheel_title</key>
-        <paragraph culture="fr"><Normal>La Roue de la Fortune</Normal></paragraph>
+        <paragraph culture="fr"><Normal>La Roue</Normal></paragraph>
         <paragraph culture="en"><Normal>Wheel of Fortune</Normal></paragraph>
     </paragraphEntry>
 
@@ -456,7 +456,7 @@
 
     <paragraphEntry>
         <key>tower_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Une tour immense surmonté par imposante catapulte.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Une tour immense surmonté par une imposante catapulte.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
@@ -475,7 +475,7 @@
 
     <paragraphEntry>
         <key>judgement_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Rétabli l’équilibre du pouvoir en provoquant la chute plus grand.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Rétabli l’équilibre du pouvoir en provoquant la chute du plus grand.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 

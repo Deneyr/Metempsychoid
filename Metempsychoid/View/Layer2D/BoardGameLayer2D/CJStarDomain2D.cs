@@ -10,10 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Metempsychoid.Maths;
+using Metempsychoid.View.Controls;
 
 namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 {
-    public class CJStarDomain2D : AEntity2D
+    public class CJStarDomain2D : AEntity2D, IHitRect
     {
         private static int NB_MAX_POINTS = 20;
         private static int MARGIN_DOMAIN = 200;
@@ -22,16 +23,14 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
         protected RenderStates render;
 
-        //protected Clock timer = new Clock();
-
         protected List<Vector2f> domainPoints;
         protected List<StarEntity2D> domainStars;
 
-        //private float widthRatio;
-
-        //private float heightRatio;
+        protected bool isFocused;
 
         private Color targetedColor;
+
+        private bool isFilled;
 
         public override bool IsActive
         {
@@ -45,39 +44,22 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
         }
 
-        //public float WidthRatio
-        //{
-        //    get
-        //    {
-        //        return this.widthRatio;
-        //    }
-        //    private set
-        //    {
-        //        if(this.widthRatio != value)
-        //        {
-        //            this.widthRatio = value;
+        public bool IsFocused
+        {
+            get
+            {
+                return this.isFocused;
+            }
+            set
+            {
+                if (this.isFocused != value)
+                {
+                    this.isFocused = value;
 
-        //            render.Shader.SetUniform("widthRatio", value);
-        //        }
-        //    }
-        //}
-
-        //public float HeightRatio
-        //{
-        //    get
-        //    {
-        //        return this.heightRatio;
-        //    }
-        //    private set
-        //    {
-        //        if (this.heightRatio != value)
-        //        {
-        //            this.heightRatio = value;
-
-        //            render.Shader.SetUniform("heightRatio", value);
-        //        }
-        //    }
-        //}
+                    render.Shader.SetUniform("isFocused", this.isFocused);
+                }
+            }
+        }
 
         public Color TargetedColor
         {
@@ -122,6 +104,17 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
         }
 
+        public IntRect HitZone
+        {
+            get
+            {
+                return new IntRect((int)(this.Position.X - this.Canevas.Width / 2),
+                    (int)(this.Position.Y - this.Canevas.Height / 2),
+                    this.Canevas.Width,
+                    this.Canevas.Height);
+            }
+        }
+
         public CJStarDomain2D(ALayer2D layer2D, IObject2DFactory factory, CJStarDomain entity) :
             base(layer2D, factory, entity)
         {
@@ -146,10 +139,14 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             render = new RenderStates(BlendMode.Alpha);
             render.Shader = shader;
 
+            this.isFocused = true;
+            this.IsFocused = false;
+
             this.Priority = entity.Priority;
 
             this.domainStars = entity.Domain.Select(pElem => layer2D.GetEntity2DFromEntity(pElem) as StarEntity2D).ToList();
-            shader.SetUniform("isFilled", entity.IsFilled);
+            this.isFilled = entity.IsFilled;
+            shader.SetUniform("isFilled", this.isFilled);
 
             SequenceAnimation sequence = new SequenceAnimation(Time.FromSeconds(6), AnimationType.ONETIME);
             IAnimation anim = new ZoomAnimation(1f, 2f, Time.FromSeconds(2), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
@@ -468,6 +465,130 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 window.Draw(this.ObjectSprite, this.render);
             }
+        }
+
+        public bool IsFocusable(ALayer2D parentLayer)
+        {
+            return true;
+        }
+
+        public bool IsPointHit(ALayer2D parentLayer, Vector2i position)
+        {
+            return this.HitZone.Contains(position.X, position.Y) && this.IsPointInsideDomain(new Vector2f(position.X, position.Y));
+        }
+
+        public bool OnMousePressed(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            return true;
+        }
+
+        public bool OnMouseReleased(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            return true;
+        }
+
+        public bool OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            return true;
+        }
+
+        public void OnMouseFocused(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            CJStarDomain domainEntity = parentLayer.GetEntityFromEntity2D(this) as CJStarDomain;
+
+            if (domainEntity != null)
+            {
+                parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_DOMAIN_BOARD, domainEntity, null);
+            }
+        }
+
+        public void OnMouseUnFocused(ALayer2D parentLayer, ControlEventType eventType)
+        {
+            parentLayer.SendEventToWorld(Model.Event.EventType.FOCUS_DOMAIN_BOARD, null, null);
+        }
+
+        private bool IsPointInsideDomain(Vector2f coordinate)
+        {
+            bool result = false;
+
+            Vector2f origin = new Vector2f(-100000, -100000);
+
+            float minDist = int.MaxValue;
+
+            int nbIntersect = 0;
+            for (int i = 0; i < this.domainPoints.Count; i++)
+            {
+                Vector2f point1 = this.domainPoints[i];
+                Vector2f point2;
+                if (i == this.domainPoints.Count - 1)
+                {
+                    point2 = this.domainPoints[0];
+                }
+                else
+                {
+                    point2 = this.domainPoints[i + 1];
+                }
+
+                float num1 = point1.X * point2.Y - point1.Y * point2.X;
+                float num2 = origin.X * coordinate.Y - origin.Y * coordinate.X;
+                float denum = (point1.X - point2.X) * (origin.Y - coordinate.Y) - (point1.Y - point2.Y) * (origin.X - coordinate.X);
+
+                if (denum != 0)
+                {
+                    float intersecX = (num1 * (origin.X - coordinate.X) - num2 * (point1.X - point2.X)) / denum;
+                    float intersecY = (num1 * (origin.Y - coordinate.Y) - num2 * (point1.Y - point2.Y)) / denum;
+
+                    Vector2f intersect = new Vector2f(intersecX, intersecY);
+
+                    if (intersect != point2
+                        && (intersect - point1).Dot(intersect - point2) < 0 
+                        && (intersect - origin).Dot(intersect - coordinate) < 0)
+                    {
+                        nbIntersect++;
+                    }
+                }
+
+                Vector2f firstVector = coordinate - point1;
+
+                Vector2f normalizedEdge = (point2 - point1).Normalize();
+                //vec2 vector = vector - normalizedEdge * dot(normalizedEdge, vector);
+
+                //vec3 crossVector = cross(vec3(firstVector, 0), vec3(normalizedEdge, 0));
+                //vec3 crossVector2 = cross(vec3(vector2, 0), vec3(-normalizedEdge, 0));
+
+                Vector2f secondVector = coordinate - point2;
+                if (normalizedEdge.Dot(firstVector) * normalizedEdge.Dot(secondVector) < 0)
+                {
+                    float crossLen = Math.Abs(firstVector.CrossZ(normalizedEdge));
+
+                    if (crossLen < minDist)
+                    {
+                        minDist = crossLen;
+                    }
+                }
+
+                float lenToPoint = firstVector.Len();
+                if (lenToPoint < minDist)
+                {
+                    minDist = lenToPoint;
+                }
+
+            }
+
+            if (this.isFilled)
+            {
+                if (nbIntersect % 2 == 1)
+                {
+                    result = true;
+                }
+            }
+
+            if (minDist < MARGIN_DOMAIN / 2)
+            {
+                result = true;
+            }
+
+            return result;
         }
 
         public enum DomainState

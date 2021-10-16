@@ -692,6 +692,11 @@ namespace Metempsychoid.View.Card2D
             return false;
         }
 
+        public bool IsPointHit(ALayer2D parentLayer, Vector2i position)
+        {
+            return this.HitZone.Contains(position.X, position.Y);
+        }
+
         public override void Dispose()
         {
             base.Dispose();

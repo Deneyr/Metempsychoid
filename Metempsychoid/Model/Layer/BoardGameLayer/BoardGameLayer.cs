@@ -19,6 +19,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
     {
         private CardEntity cardFocused;
 
+        private CJStarDomain domainFocused;
+
         private CardEntity cardPicked;
 
         private Player.Player playerTurn;
@@ -112,7 +114,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 {
                     this.cardPicked = value;
 
-                    this.NotifyCardPicked(this.cardPicked);
+                    this.CardPicked?.Invoke(this.cardPicked);
                 }
             }
         }
@@ -131,7 +133,27 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                     {
                         this.cardFocused = value;
 
-                        this.NotifyCardFocused(this.cardFocused);
+                        this.CardFocused?.Invoke(this.cardFocused);
+                    }
+                }
+            }
+        }
+
+        public CJStarDomain DomainEntityFocused
+        {
+            get
+            {
+                return this.domainFocused;
+            }
+            set
+            {
+                if (value != this.domainFocused)
+                {
+                    if (value == null || this.Entities.Contains(value))
+                    {
+                        this.domainFocused = value;
+
+                        this.DomainFocused?.Invoke(this.domainFocused);
                     }
                 }
             }
@@ -145,6 +167,8 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public event Action<CardEntity> CardPicked;
         public event Action<CardEntity> CardFocused;
+
+        public event Action<CJStarDomain> DomainFocused;
 
         public event Action<List<StarEntity>> SourceStarEntitiesSet;
         public event Action<List<StarEntity>> TargetStarEntitiesSet;
@@ -250,6 +274,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.UnPickCard();
 
             this.CardEntityFocused = null;
+            this.DomainEntityFocused = null;
 
             this.BehaviorTargetStarEntities = null;
             if (sourceStarEntities != null && sourceStarEntities.Count > 0)
@@ -568,6 +593,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
         {
             this.cardPicked = null;
             this.cardFocused = null;
+            this.domainFocused = null;
 
             this.playerTurn = null;
 
@@ -582,16 +608,6 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.NameToOnBoardCardEntities.Clear();
 
             GalaxyFactory.NameToGalaxyCreators[this.PreInitGalaxyName](this);
-        }
-
-        protected void NotifyCardPicked(CardEntity cardPicked)
-        {
-            this.CardPicked?.Invoke(cardPicked);
-        }
-
-        protected void NotifyCardFocused(CardEntity cardFocused)
-        {
-            this.CardFocused?.Invoke(cardFocused);
         }
     }
 }

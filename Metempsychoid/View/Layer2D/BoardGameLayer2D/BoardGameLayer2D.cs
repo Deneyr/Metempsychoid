@@ -29,6 +29,8 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         private CardEntity2D cardPicked;
         private CardEntity2D cardFocused;
 
+        private CJStarDomain2D domainFocused;
+
         private List<CardEntity2D> sourceCardEntities;
         private List<StarEntity2D> sourceStarEntities;
         private List<CardEntity2D> targetCardEntities;
@@ -43,6 +45,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
         public event Action StartDomainEvaluated;
         public event Action<CJStarDomain> DomainEvaluated;
         public event Action EndDomainEvaluated;
+        public event Action<IDomainsLayer> DomainFocusedChanged;
 
         public List<CardEntity2D> SourceCardEntities2D
         {
@@ -181,6 +184,33 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             }
         }
 
+        public CJStarDomain2D DomainFocused
+        {
+            get
+            {
+                return this.domainFocused;
+            }
+            set
+            {
+                if (this.domainFocused != value)
+                {
+                    if (this.domainFocused != null)
+                    {
+                        this.domainFocused.IsFocused = false;
+                    }
+
+                    this.domainFocused = value;
+
+                    if (this.domainFocused != null)
+                    {
+                        this.domainFocused.IsFocused = true;
+                    }
+
+                    this.DomainFocusedChanged?.Invoke(this);
+                }
+            }
+        }
+
         public TurnPhase LevelTurnPhase
         {
             get
@@ -225,6 +255,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             //layer.CardUnpicked += this.OnCardUnPicked;
 
             layer.CardFocused += this.OnCardFocused;
+            layer.DomainFocused += this.OnDomainFocused;
 
             layer.SourceStarEntitiesSet += OnSourceStarEntitiesSet;
             layer.TargetStarEntitiesSet += OnTargetStarEntitiesSet;
@@ -294,6 +325,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
             this.cardPicked = null;
             this.cardFocused = null;
+            this.domainFocused = null;
         }
 
         protected override AEntity2D AddEntity(AEntity obj)
@@ -341,6 +373,18 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             else
             {
                 this.CardFocused = null;
+            }
+        }
+
+        private void OnDomainFocused(CJStarDomain obj)
+        {
+            if (obj != null)
+            {
+                this.DomainFocused = this.objectToObject2Ds[obj] as CJStarDomain2D;
+            }
+            else
+            {
+                this.DomainFocused = null;
             }
         }
 
@@ -527,7 +571,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             {
                 return this.sourceStarEntities;
             }
-            return this.objectToObject2Ds.Values.Where(pElem => pElem is StarEntity2D);
+            return this.objectToObject2Ds.Values.Where(pElem => pElem is StarEntity2D || pElem is CJStarDomain2D);
         }
 
         private void InitializeCountPointsPhase()
@@ -651,6 +695,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             //(this.parentLayer as BoardGameLayer).CardUnpicked -= this.OnCardUnPicked;
 
             (this.parentLayer as BoardGameLayer).CardFocused -= this.OnCardFocused;
+            (this.parentLayer as BoardGameLayer).DomainFocused -= this.OnDomainFocused;
 
             (this.parentLayer as BoardGameLayer).SourceStarEntitiesSet -= OnSourceStarEntitiesSet;
             (this.parentLayer as BoardGameLayer).TargetStarEntitiesSet -= OnTargetStarEntitiesSet;

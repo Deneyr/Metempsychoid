@@ -17,6 +17,19 @@
         <paragraph culture="en"><BannerTitle>{0}</BannerTitle></paragraph>
     </paragraphEntry>
 
+
+    <paragraphEntry>
+        <key>domain_header_tooltip</key>
+        <paragraph culture="fr"><Normal>Conquète du domaine :</Normal></paragraph>
+        <paragraph culture="en"><Normal>Domain conquest :</Normal></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>domain_content_tooltip</key>
+        <paragraph culture="fr"><Normal>{0} / {1}</Normal></paragraph>
+        <paragraph culture="en"><Normal>{0} / {1}</Normal></paragraph>
+    </paragraphEntry>
+
+
     <paragraphEntry>
         <key>end_game_header</key>
         <paragraph culture="fr"><BannerTitle>Fin de la bataille</BannerTitle></paragraph>

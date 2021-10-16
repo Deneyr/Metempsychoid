@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Metempsychoid.Model;
 using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Layer.BoardBannerLayer;
+using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Node.TestWorld;
 using Metempsychoid.Model.Player;
 using Metempsychoid.View.Card2D;
@@ -24,6 +25,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         private ScoreDomainLabel2D scoreDomainLabel2D;
 
         private CardToolTip2D cardToolTip;
+        private DomainToolTip2D domainToolTip;
+        private ALayer2D domainLayerFocused;
 
         private TurnBanner2D turnBanner2D;
 
@@ -98,6 +101,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             this.turnBanner2D = new TurnBanner2D(this);
 
+            this.domainToolTip = new DomainToolTip2D(this);
+
             this.cardFocusedLayers = new HashSet<ICardFocusedLayer>();
             this.domainsLayers = new HashSet<IDomainsLayer>();
             this.scoreLayers = new Dictionary<string, IScoreLayer>();
@@ -113,10 +118,12 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             this.headerEntity2D = new HeaderEntity2D(this, boardBannerLayer.Player, boardBannerLayer.Opponent);
             this.scoreDomainLabel2D = new ScoreDomainLabel2D(this, boardBannerLayer.Player, boardBannerLayer.Opponent);
 
-            //this.turnBanner2D = new TurnBanner2D(this);
             this.turnBanner2D.ResetTurn(boardBannerLayer.MaxTurnCount);
 
+            this.domainToolTip.HideToolTip();
+
             this.cardFocused = null;
+            this.domainLayerFocused = null;
 
             this.cardFocusedLayers.Clear();
             this.domainsLayers.Clear();
@@ -140,6 +147,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                         domainLayer.StartDomainEvaluated += OnStartDomainsEvaluated;
                         domainLayer.DomainEvaluated += OnDomainEvaluated;
                         domainLayer.EndDomainEvaluated += OnEndDomainsEvaluated;
+
+                        domainLayer.DomainFocusedChanged += OnDomainFocusedChanged;
                     }
 
                     IScoreLayer scoreLayer = layer as IScoreLayer;
@@ -221,6 +230,23 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
         }
 
+        private void OnDomainFocusedChanged(IDomainsLayer obj)
+        {
+            this.domainLayerFocused = obj as ALayer2D;
+
+            if (obj.DomainFocused != null)
+            {
+                CJStarDomain domainFocused = (obj as ALayer2D).GetEntityFromEntity2D(obj.DomainFocused) as CJStarDomain;
+                BoardBannerLayer parentBannerLayer = this.parentLayer as BoardBannerLayer;
+
+                this.domainToolTip.DisplayToolTip(domainFocused, parentBannerLayer.Player, parentBannerLayer.Opponent);
+            }
+            else
+            {
+                this.domainToolTip.HideToolTip();
+            }
+        }
+
         protected override Vector2f DefaultViewSize
         {
             set
@@ -268,7 +294,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
         {
             base.UpdateGraphics(deltaTime);
 
-            this.UpdateFocusedEntity();
+            this.UpdateFocusedEntity(deltaTime);
 
             switch (this.LevelTurnPhase)
             {
@@ -304,7 +330,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             return this.hittableEntities2D;
         }
 
-        private void UpdateFocusedEntity()
+        private void UpdateFocusedEntity(Time deltaTime)
         {
             ICardFocusedLayer firstCardLayerFocused = this.cardFocusedLayers.FirstOrDefault(pElem => pElem.CardFocused != null);
             ALayer2D layer2D = firstCardLayerFocused as ALayer2D;
@@ -354,6 +380,22 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
                 this.cardFocused = null;
             }
+
+            if (this.domainToolTip.IsActive)
+            {
+                Vector2f mousePositionInWindow = this.domainLayerFocused.GetPositionInWindow(new Vector2f(this.domainLayerFocused.MousePosition.X, this.domainLayerFocused.MousePosition.Y));
+                Vector2f domainTooltipPosition = this.GetPositionInScene(mousePositionInWindow);
+
+                if (mousePositionInWindow.Y > this.defaultViewSize.Y / 2)
+                {
+                    domainTooltipPosition.Y -= this.domainToolTip.Canevas.Height;
+                }
+                //domainTooltipPosition.X -= this.domainToolTip.Canevas.Width / 2;
+
+                this.domainToolTip.Position = domainTooltipPosition;
+
+                this.domainToolTip.UpdateGraphics(deltaTime);
+            }
         }
 
         public override void DrawIn(RenderWindow window, Time deltaTime)
@@ -362,6 +404,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 
             SFML.Graphics.View defaultView = window.DefaultView;
             window.SetView(this.view);
+
+            this.domainToolTip.DrawIn(window, deltaTime);
 
             this.turnBanner2D.DrawIn(window, deltaTime);
 
@@ -459,6 +503,8 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
                 domainLayer.StartDomainEvaluated -= this.OnStartDomainsEvaluated;
                 domainLayer.DomainEvaluated -= OnDomainEvaluated;
                 domainLayer.EndDomainEvaluated -= OnEndDomainsEvaluated;
+
+                domainLayer.DomainFocusedChanged -= OnDomainFocusedChanged;
             }
 
             if (this.scoreDomainLabel2D != null)

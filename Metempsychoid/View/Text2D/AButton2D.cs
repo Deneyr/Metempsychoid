@@ -27,6 +27,11 @@ namespace Metempsychoid.View.Text2D
 
         public abstract bool IsFocusable(ALayer2D parentLayer);
 
+        public bool IsPointHit(ALayer2D parentLayer, Vector2i position)
+        {
+            return this.HitZone.Contains(position.X, position.Y);
+        }
+
         public abstract bool OnMousePressed(ALayer2D parentLayer, ControlEventType eventType);
 
         public virtual bool OnMouseClicked(ALayer2D parentLayer, ControlEventType eventType)

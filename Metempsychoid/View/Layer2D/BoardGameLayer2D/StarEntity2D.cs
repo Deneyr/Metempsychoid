@@ -309,6 +309,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             return this.IsActive;
         }
 
+        public bool IsPointHit(ALayer2D parentLayer, Vector2i position)
+        {
+            return this.HitZone.Contains(position.X, position.Y);
+        }
+
         public enum StarState
         {
             NOT_ACTIVE,

@@ -528,19 +528,34 @@ namespace Metempsychoid.View
 
             AEntity2D newFocusedEntity2D = null;
             IEnumerable<AEntity2D> focusableEntities2D = this.GetEntities2DFocusable();
+
+            int bestPriority = int.MinValue;
             foreach (AEntity2D entity2D in focusableEntities2D)
             {
                 IHitRect hitRect = entity2D as IHitRect;
 
                 if (hitRect != null
                     && hitRect.IsFocusable(this)
-                    && hitRect.HitZone.Contains(mousePosition.X, mousePosition.Y))
+                    && hitRect.IsPointHit(this, mousePosition))
                 {
-                    if (newFocusedEntity2D == null
-                        || (Math.Abs(mousePosition.X - entity2D.Position.X) + Math.Abs(mousePosition.Y - entity2D.Position.Y)
-                            < Math.Abs(mousePosition.X - newFocusedEntity2D.Position.X) + Math.Abs(mousePosition.Y - newFocusedEntity2D.Position.Y)))
+                    if (newFocusedEntity2D != null)
+                    {
+                        if (bestPriority < entity2D.Priority)
+                        {
+                            newFocusedEntity2D = entity2D;
+                            bestPriority = entity2D.Priority;
+                        }
+                        else if (bestPriority == entity2D.Priority
+                                && Math.Abs(mousePosition.X - entity2D.Position.X) + Math.Abs(mousePosition.Y - entity2D.Position.Y)
+                                    < Math.Abs(mousePosition.X - newFocusedEntity2D.Position.X) + Math.Abs(mousePosition.Y - newFocusedEntity2D.Position.Y))
+                        {
+                            newFocusedEntity2D = entity2D;
+                        }
+                    }
+                    else
                     {
                         newFocusedEntity2D = entity2D;
+                        bestPriority = entity2D.Priority;
                     }
                 }
             }

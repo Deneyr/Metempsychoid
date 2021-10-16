@@ -1,7 +1,8 @@
 ﻿using Metempsychoid.Animation;
-using Metempsychoid.Model.Card;
+using Metempsychoid.Model.Layer.BoardGameLayer;
+using Metempsychoid.Model.Player;
 using Metempsychoid.View.Animation;
-using Metempsychoid.View.Card2D;
+using Metempsychoid.View.Layer2D.BoardGameLayer2D;
 using Metempsychoid.View.Text2D;
 using SFML.Graphics;
 using SFML.System;
@@ -13,15 +14,9 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
 {
-    public class CardToolTip2D : TextCanevas2D
+    public class DomainToolTip2D : TextCanevas2D
     {
         private RectangleShape bannerShape;
-
-        public CardEntity2D CardFocused
-        {
-            get;
-            private set;
-        }
 
         public override Vector2f Position
         {
@@ -50,7 +45,7 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             {
                 base.SpriteColor = value;
 
-                this.bannerShape.FillColor = new Color(value.R, value.G, value.B, (byte) (value.A / 2));
+                this.bannerShape.FillColor = new Color(value.R, value.G, value.B, (byte)(value.A / 2));
             }
         }
 
@@ -86,41 +81,58 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
         }
 
-        public CardToolTip2D(ALayer2D parentLayer) 
+        public DomainToolTip2D(ALayer2D parentLayer)
             : base(parentLayer)
         {
-            this.bannerShape = new RectangleShape(new Vector2f(200, 300));
+            this.bannerShape = new RectangleShape(new Vector2f(180, 110));
             //this.bannerShape.Origin = new Vector2f(this.bannerShape.Size.X / 2, this.bannerShape.Size.Y / 2);
 
             this.bannerShape.FillColor = new Color(0, 0, 0, 255);
 
             this.Position = new Vector2f(0, 0);
 
-            this.CardFocused = null;
-
             IAnimation showAnimation = new ColorAnimation(new Color(0, 0, 0, 0), new Color(0, 0, 0, 255), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(showAnimation);
 
             this.CreateTextParagraph2D(new Vector2f(0, 10), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 20);
-            this.CreateTextParagraph2D(new Vector2f(0, 60), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
-            this.CreateTextParagraph2D(new Vector2f(0, 200), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 14);
+            this.CreateTextParagraph2D(new Vector2f(0, 60), new Vector2f(0, 0), Text2D.TextParagraph2D.Alignment.CENTER, 30);
+
+            this.UpdateTextOfParagraph(0, "domain_header_tooltip");
+            this.UpdateTextOfParagraph(1, "domain_content_tooltip");
+
             this.IsActive = false;
         }
 
-        public void DisplayToolTip(Card card, CardEntity2D cardFocused)
+        public void DisplayToolTip(CJStarDomain domain, Player player, Player opponent)
         {
-            this.CardFocused = cardFocused;
-
             this.SpriteColor = new Color(0, 0, 0, 0);
             this.PlayAnimation(0);
 
             this.IsActive = true;
-            this.UpdateTextOfParagraph(0, card.NameIdLoc);
-            this.UpdateTextOfParagraph(1, card.PoemIdLoc);
-            this.UpdateTextOfParagraph(2, card.EffectIdLoc);
 
+            if (domain.PlayerToPoints.TryGetValue(player, out int pointsPlayer))
+            {
+                this.textParagraph2Ds[1].UpdateParameterText(0, pointsPlayer.ToString());
+            }
+            else
+            {
+                this.textParagraph2Ds[1].UpdateParameterText(0, "0");
+            }
+
+            if (domain.PlayerToPoints.TryGetValue(opponent, out int pointsOpponent))
+            {
+                this.textParagraph2Ds[1].UpdateParameterText(1, pointsOpponent.ToString());
+            }
+            else
+            {
+                this.textParagraph2Ds[1].UpdateParameterText(1, "0");
+            }
+
+            this.textParagraph2Ds[1].UpdateParameterColor(0, player.PlayerColor);
+            this.textParagraph2Ds[1].UpdateParameterColor(1, opponent.PlayerColor);
+
+            this.LaunchTextOfParagraphScrolling(0, 100);
             this.LaunchTextOfParagraphScrolling(1, 100);
-            this.LaunchTextOfParagraphScrolling(2, 100);
         }
 
         public void HideToolTip()

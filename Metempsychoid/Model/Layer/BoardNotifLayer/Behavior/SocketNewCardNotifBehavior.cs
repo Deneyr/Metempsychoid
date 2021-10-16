@@ -172,6 +172,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                 if (encounterGameEvent)
                 {
                     this.NodeLevel.BoardGameLayer.CardEntityFocused = null;
+                    this.NodeLevel.BoardGameLayer.DomainEntityFocused = null;
 
                     this.NodeLevel.BoardNotifLayer.CardEntityFocused = cardEntity;
                 }

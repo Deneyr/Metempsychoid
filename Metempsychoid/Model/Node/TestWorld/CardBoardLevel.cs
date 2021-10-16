@@ -402,20 +402,26 @@ namespace Metempsychoid.Model.Node.TestWorld
 
                 if (this.CheckFocusCardHandEvent(world, boardPlayerLayer, out CardEntity cardHandFocused, out string detailsHandFocused))
                 {
-                    //if (boardGameLayer.CardEntityPicked == null)
-                    //{
                     boardPlayerLayer.CardEntityFocused = cardHandFocused;
 
                     this.BoardGameLayer.CardEntityFocused = null;
-                    //}
+                    this.BoardGameLayer.DomainEntityFocused = null;
                 }
 
 
-                if (this.CheckFocusCardBoardEvent(world, null, out CardEntity cardBoardFocused, out string detailsBoardFocused))
+                if (this.CheckFocusCardBoardEvent(world, null, out CardEntity cardBoardFocused, out string detailsCardBoardFocused))
                 {
-                    if (/*boardGameLayer.CardEntityPicked == null && */boardPlayerLayer.CardEntityFocused == null)
+                    if (boardPlayerLayer.CardEntityFocused == null)
                     {
                         this.BoardGameLayer.CardEntityFocused = cardBoardFocused;
+                    }
+                }
+
+                if (this.CheckFocusDomainBoardEvent(world, null, out CJStarDomain domainBoardFocused, out string detailsDomainBoardFocused))
+                {
+                    if (boardPlayerLayer.CardEntityFocused == null)
+                    {
+                        this.BoardGameLayer.DomainEntityFocused = domainBoardFocused;
                     }
                 }
 
@@ -457,6 +463,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                 {
                     boardPlayerLayer.CardEntityFocused = null;
                     this.BoardGameLayer.CardEntityFocused = null;
+                    this.BoardGameLayer.DomainEntityFocused = null;
 
                     if (this.BoardGameLayer.CardEntityPicked == null
                         && this.BoardGameLayer.PendingActions.Count == 0)
@@ -564,6 +571,7 @@ namespace Metempsychoid.Model.Node.TestWorld
         public void ClearLayersSelection()
         {
             this.BoardGameLayer.CardEntityFocused = null;
+            this.BoardGameLayer.DomainEntityFocused = null;
 
             this.CurrentBoardPlayer.CardEntityFocused = null;
         }
@@ -743,6 +751,34 @@ namespace Metempsychoid.Model.Node.TestWorld
                             || gameEvent.Entity != null)
                         {
                             cardEntity = gameEvent.Entity as CardEntity;
+
+                            detailsFocused = gameEvent.Details;
+
+                            encounterGameEvent = true;
+                        }
+                    }
+                }
+            }
+
+            return encounterGameEvent;
+        }
+
+        protected bool CheckFocusDomainBoardEvent(World world, BoardPlayerLayer boardPlayerLayer, out CJStarDomain domainEntity, out string detailsFocused)
+        {
+            domainEntity = null;
+            detailsFocused = null;
+            bool encounterGameEvent = false;
+
+            if (this.pendingGameEvents.TryGetValue(EventType.FOCUS_DOMAIN_BOARD, out List<GameEvent> gameEventsList))
+            {
+                foreach (GameEvent gameEvent in gameEventsList)
+                {
+                    if (boardPlayerLayer == null || gameEvent.Layer == boardPlayerLayer)
+                    {
+                        if (domainEntity == null
+                            || gameEvent.Entity != null)
+                        {
+                            domainEntity = gameEvent.Entity as CJStarDomain;
 
                             detailsFocused = gameEvent.Details;
 

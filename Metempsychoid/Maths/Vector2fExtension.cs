@@ -50,6 +50,11 @@ namespace Metempsychoid.Maths
             return obj.X * vector.X + obj.Y * vector.Y;
         }
 
+        public static float CrossZ(this Vector2f obj, Vector2f vector)
+        {
+            return obj.X * vector.Y - obj.Y * vector.X;
+        }
+
         public static Vector2f Projection (this Vector2f obj, Vector2f vector)
         {
             float vectorLen = vector.Len();
@@ -61,6 +66,11 @@ namespace Metempsychoid.Maths
         public static Vector2f OppProjection(this Vector2f obj, Vector2f vector)
         {
             return obj - obj.Projection(vector);
+        }
+
+        public static Vector2f Normalize(this Vector2f obj)
+        {
+            return obj / obj.Len();
         }
 
     }
