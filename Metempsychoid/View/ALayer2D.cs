@@ -568,7 +568,7 @@ namespace Metempsychoid.View
             return this.objectToObject2Ds.Values; 
         }
 
-        internal void SendEventToWorld(Model.Event.EventType eventType, AEntity entityConcerned, string details)
+        internal virtual void SendEventToWorld(Model.Event.EventType eventType, AEntity entityConcerned, string details)
         {
             if (this.world2D.TryGetTarget(out World2D world))
             {
@@ -595,11 +595,11 @@ namespace Metempsychoid.View
             AObject2D.soundMusicPlayer.PlaySound(new SoundObject2D(this, owner, soundBuffer));
         }
 
-        public void PlayMusic(string musicId)
+        public void PlayMusic(string musicId, bool isLooping)
         {
             string musicPath = this.parentFactory.GetMusicPathById(musicId);
 
-            AObject2D.soundMusicPlayer.PlayMusic(new MusicObject2D(this, this, musicPath));
+            AObject2D.soundMusicPlayer.PlayMusic(new MusicObject2D(this, this, musicPath), isLooping);
         }
         public void StopMusic()
         {

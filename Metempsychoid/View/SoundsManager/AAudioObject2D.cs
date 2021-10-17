@@ -12,7 +12,8 @@ namespace Metempsychoid.View.SoundsManager
 {
     public abstract class AAudioObject2D : AEntity2D
     {
-        private float FADE_PERIOD = 2;
+        private float FADE_PERIOD = 5;
+        private int VOLUME = 50;
 
         public IObject2D Owner
         {
@@ -34,10 +35,10 @@ namespace Metempsychoid.View.SoundsManager
             this.Owner.PropertyChanged += this.OnOwnerPropertyChanged;
             parentLayer.ViewChanged += this.OnViewChanged;
 
-            IAnimation fadeInAnimation = new AudioVolumeAnimation(0, 100, SFML.System.Time.FromSeconds(FADE_PERIOD), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            IAnimation fadeInAnimation = new AudioVolumeAnimation(0, VOLUME, SFML.System.Time.FromSeconds(FADE_PERIOD), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             this.animationsList.Add(fadeInAnimation);
 
-            IAnimation fadeOutAnimation = new AudioVolumeAnimation(100, 0, SFML.System.Time.FromSeconds(FADE_PERIOD), AnimationType.ONETIME, InterpolationMethod.LINEAR);
+            IAnimation fadeOutAnimation = new AudioVolumeAnimation(VOLUME, 0, SFML.System.Time.FromSeconds(FADE_PERIOD), AnimationType.ONETIME, InterpolationMethod.LINEAR);
             this.animationsList.Add(fadeOutAnimation);
         }
 

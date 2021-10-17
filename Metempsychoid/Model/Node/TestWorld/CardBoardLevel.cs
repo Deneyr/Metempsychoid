@@ -16,7 +16,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 {
     public class CardBoardLevel: ALevelNode
     {
-        private static int NB_CARDS_HAND = 4;
+        //private static int NB_CARDS_HAND = 4;
 
         protected int playerIndex;
 
@@ -106,7 +106,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             world.InitializeLevel(new List<string>()
             {
-                "VsO7nJK",
+                "backgroundLayer",
                 "gameLayer",
                 "playerLayer",
                 "opponentLayer",
@@ -430,7 +430,7 @@ namespace Metempsychoid.Model.Node.TestWorld
                 {
                     if (starEntity != null)
                     {
-                        this.BoardGameLayer.SocketCard(starEntity);
+                        this.BoardGameLayer.SocketCard(starEntity, true);
                     }
                 }
                 else

@@ -48,7 +48,7 @@ namespace Metempsychoid.Model.Node.TestWorld
             menuTextLayer.ParentLayer = background;
 
             world.InitializeWorld(new List<Tuple<string, ALayer>>() {
-                new Tuple<string, ALayer>("VsO7nJK", background),
+                new Tuple<string, ALayer>("backgroundLayer", background),
                 new Tuple<string, ALayer>("slidesLayer", imageBackground),
                 new Tuple<string, ALayer>("menuTextLayer", menuTextLayer),
                 new Tuple<string, ALayer>("gameLayer", boardGameLayer),

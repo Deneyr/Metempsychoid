@@ -1,3 +1,4 @@
+using Metempsychoid.AI;
 using Metempsychoid.Model;
 using Metempsychoid.View;
 using Metempsychoid.View.Controls;
@@ -16,6 +17,12 @@ namespace Metempsychoid
         public static readonly int MODEL_TO_VIEW = 1;
 
         public World World
+        {
+            get;
+            private set;
+        }
+
+        public AIWorld WorldAI
         {
             get;
             private set;
@@ -43,6 +50,8 @@ namespace Metempsychoid
             this.World = new World();
 
             this.World2D = new World2D(this);
+
+            this.WorldAI = new AIWorld(this);
         }
 
         public void Run()
@@ -74,12 +83,16 @@ namespace Metempsychoid
 
                 this.World2D.DrawIn(this.Window, deltaTime);
 
+                // Update AI logic
+                this.WorldAI.UpdateAI(deltaTime);
+
                 // Finally, display the rendered frame on screen
                 this.Window.Display();
             }
 
             this.World.Dispose();
             this.World2D.Dispose();
+            this.WorldAI.Dispose();
         }      
     }
 }

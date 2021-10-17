@@ -79,7 +79,7 @@ namespace Metempsychoid.View.SoundsManager
             soundToRemove.Dispose();
         }
 
-        public void PlayMusic(MusicObject2D musicToPlay, bool isLooping = false)
+        public void PlayMusic(MusicObject2D musicToPlay, bool isLooping)
         {
             if (this.object2DToMusics.TryGetValue(musicToPlay.Owner, out MusicObject2D music))
             {
@@ -94,7 +94,8 @@ namespace Metempsychoid.View.SoundsManager
                 this.object2DToMusics.Add(musicToPlay.Owner, musicToPlay);
             }
 
-            music.PlayAnimation(0);
+            musicToPlay.Volume = 0;
+            musicToPlay.PlayAnimation(0);
 
             musicToPlay.Loop = isLooping;
             musicToPlay.Play();

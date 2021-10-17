@@ -225,6 +225,9 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
 
                     switch (this.levelTurnPhase)
                     {
+                        case TurnPhase.START_LEVEL:
+                            this.PlayMusic("cardLevelMusic", true);
+                            break;
                         case TurnPhase.COUNT_POINTS:
                             this.InitializeCountPointsPhase();
                             break;

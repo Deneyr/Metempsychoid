@@ -273,7 +273,7 @@ namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
                 this.ModifiedCardEntities.Add(this.NodeLevel.BoardGameLayer.CardEntityPicked);
             }
 
-            this.NodeLevel.BoardGameLayer.SocketCard(starEntity);
+            this.NodeLevel.BoardGameLayer.SocketCard(starEntity, false);
         }
 
         public enum SocketNewCardState

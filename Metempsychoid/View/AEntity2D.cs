@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Metempsychoid.View
 {
-    public class AEntity2D: AObject2D
+    public abstract class AEntity2D: AObject2D
     {
         protected static Clock timer = new Clock();
 

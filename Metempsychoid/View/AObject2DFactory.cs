@@ -57,17 +57,9 @@ namespace Metempsychoid.View
             nameToFonts.Add("Protector", font);
             fontToWidths.Add(font, 600);
 
-            font = new Font(@"Assets\Graphics\Fonts\PERLS.ttf");
-            nameToFonts.Add("perls", font);
-            fontToWidths.Add(font, 250);
-
             font = new Font(@"Assets\Graphics\Fonts\Bromine.ttf");
             nameToFonts.Add("Sans", font);
             fontToWidths.Add(font, 190);
-
-            font = new Font(@"Assets\Graphics\Fonts\nzoda.ttf");
-            nameToFonts.Add("Nzoda", font);
-            fontToWidths.Add(font, 200);
 
             font = new Font(@"Assets\Graphics\Fonts\dum1.ttf");
             nameToFonts.Add("dumbTitle", font);

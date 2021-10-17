@@ -45,7 +45,7 @@ namespace Metempsychoid.Model.Node.TestWorld
 
             world.InitializeLevel(new List<string>()
             {
-                "VsO7nJK",
+                "backgroundLayer",
                 "menuTextLayer",
                 "gameLayer",
                 "menuPlayerLayer",
@@ -113,32 +113,32 @@ namespace Metempsychoid.Model.Node.TestWorld
             star = this.BoardGameLayer.StarSystem.First(pElem => pElem.Name == "1");
             card = world.CardLibrary.CreateCard("rock", this.Opponent);
             this.BoardGameLayer.PickCard(card, false);
-            this.BoardGameLayer.SocketCard(star);
+            this.BoardGameLayer.SocketCard(star, false);
 
             star = this.BoardGameLayer.StarSystem.First(pElem => pElem.Name == "2");
             card = world.CardLibrary.CreateCard("rock", this.Opponent);
             this.BoardGameLayer.PickCard(card, false);
-            this.BoardGameLayer.SocketCard(star);
+            this.BoardGameLayer.SocketCard(star, false);
 
             star = this.BoardGameLayer.StarSystem.First(pElem => pElem.Name == "3");
             card = world.CardLibrary.CreateCard("rock", this.MainPlayer);
             this.BoardGameLayer.PickCard(card, false);
-            this.BoardGameLayer.SocketCard(star);
+            this.BoardGameLayer.SocketCard(star, false);
 
             star = this.BoardGameLayer.StarSystem.First(pElem => pElem.Name == "4");
             card = world.CardLibrary.CreateCard("rock", this.MainPlayer);
             this.BoardGameLayer.PickCard(card, false);
-            this.BoardGameLayer.SocketCard(star);
+            this.BoardGameLayer.SocketCard(star, false);
 
             star = this.BoardGameLayer.StarSystem.First(pElem => pElem.Name == "5");
             card = world.CardLibrary.CreateCard("moon", this.MainPlayer);
             this.BoardGameLayer.PickCard(card, false);
-            this.BoardGameLayer.SocketCard(star);
+            this.BoardGameLayer.SocketCard(star, false);
 
             star = this.BoardGameLayer.StarSystem.First(pElem => pElem.Name == "6");
             card = world.CardLibrary.CreateCard("sun", this.Opponent);
             this.BoardGameLayer.PickCard(card, false);
-            this.BoardGameLayer.SocketCard(star);
+            this.BoardGameLayer.SocketCard(star, false);
         }
     }
 }

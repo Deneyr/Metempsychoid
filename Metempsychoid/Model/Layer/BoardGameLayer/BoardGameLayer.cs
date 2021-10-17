@@ -79,7 +79,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
                 {
                     this.playerTurn = value;
 
-                    this.NbCardsAbleToBeSocketed = 100;
+                    this.NbCardsAbleToBeSocketed = 1;
                 }
             }
         }
@@ -408,17 +408,23 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             }
         }
 
-        public void SocketCard(StarEntity starEntity) //, Vector2f positionInNotifBoard)
+        public void SocketCard(StarEntity starEntity, bool isTurnLimited) //, Vector2f positionInNotifBoard)
         {
-            if(this.CardEntityPicked != null && this.NbCardsAbleToBeSocketed > 0)
+            if(this.CardEntityPicked != null)
             {
-                this.CardEntityPicked.IsFliped = true;
+                if (isTurnLimited == false || this.NbCardsAbleToBeSocketed > 0)
+                {
+                    this.CardEntityPicked.IsFliped = true;
 
-                this.NbCardsAbleToBeSocketed--;
+                    this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity));
 
-                this.PendingActions.Add(new SocketCardAction(this.CardEntityPicked, starEntity));
+                    this.CardEntityPicked = null;
 
-                this.CardEntityPicked = null;
+                    if (isTurnLimited)
+                    {
+                        this.NbCardsAbleToBeSocketed--;
+                    }
+                }
             }
         }
 

@@ -57,6 +57,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\AAIEntity.cs" />
+    <Compile Include="AI\AIWorld.cs" />
+    <Compile Include="AI\AAILayer.cs" />
+    <Compile Include="AI\AAIObject.cs" />
+    <Compile Include="AI\AAIObjectFactory.cs" />
+    <Compile Include="AI\IAIObject.cs" />
+    <Compile Include="AI\IAIObjectFactory.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="Maths\Vector2fExtension.cs" />
     <Compile Include="Model\AEntity.cs" />
@@ -148,8 +155,10 @@
     <Compile Include="Model\Layer\BoardNotifLayer\BoardNotifLayer.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\CardEntityAwakenedDecorator.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\MenuBoardNotifLayer.cs" />
+    <Compile Include="Model\Layer\BoardPlayerLayer\AvatarBoardPlayerLayer.cs" />
     <Compile Include="Model\Layer\BoardPlayerLayer\BoardPlayerLayer.cs" />
     <Compile Include="Model\Layer\BoardPlayerLayer\MenuBoardPlayerLayer.cs" />
+    <Compile Include="Model\Layer\BoardPlayerLayer\OppBoardPlayerLayer.cs" />
     <Compile Include="Model\Layer\EntityLayer\T_TeleEntity.cs" />
     <Compile Include="Model\Event\GameEvent.cs" />
     <Compile Include="Model\IObject.cs" />
@@ -239,6 +248,8 @@
     <Compile Include="View\Layer2D\BoardNotifLayer2D\StarEffect2D.cs" />
     <Compile Include="View\Layer2D\BoardPlayerLayer2D\MenuBoardPlayerLayer2D.cs" />
     <Compile Include="View\Layer2D\BoardPlayerLayer2D\MenuBoardPlayerLayer2DFactory.cs" />
+    <Compile Include="View\Layer2D\BoardPlayerLayer2D\OppBoardPlayerLayer2D.cs" />
+    <Compile Include="View\Layer2D\BoardPlayerLayer2D\OppBoardPlayerLayer2DFactory.cs" />
     <Compile Include="View\Layer2D\BoardPlayerLayer2D\ScoreLabel2D.cs" />
     <Compile Include="View\Layer2D\BoardBannerLayer2D\TitleBannerTextToken2D.cs" />
     <Compile Include="View\Layer2D\BoardGameLayer2D\BoardGameLayer2D.cs" />

@@ -65,6 +65,8 @@ namespace Metempsychoid.View
             MappingObjectModelView.Add(typeof(BoardGameLayer), new BoardGameLayer2DFactory());
 
             MappingObjectModelView.Add(typeof(BoardPlayerLayer), new BoardPlayerLayer2DFactory());
+            MappingObjectModelView.Add(typeof(AvatarBoardPlayerLayer), new BoardPlayerLayer2DFactory());
+            MappingObjectModelView.Add(typeof(OppBoardPlayerLayer), new OppBoardPlayerLayer2DFactory());
             MappingObjectModelView.Add(typeof(MenuBoardPlayerLayer), new MenuBoardPlayerLayer2DFactory());
 
             MappingObjectModelView.Add(typeof(BoardNotifLayer), new BoardNotifLayer2DFactory());
@@ -284,16 +286,6 @@ namespace Metempsychoid.View
         public void SendEventToWorld(GameEvent gameEvent)
         {
             this.world.NotifyGameEvent(gameEvent);
-        }
-
-        public void SetCanevas(IntRect newCanevas)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetZoom(float newZoom)
-        {
-            throw new NotImplementedException();
         }
     }
 }

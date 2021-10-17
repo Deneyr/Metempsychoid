@@ -117,7 +117,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
         public bool IsActiveTurn
         {
             get;
-            private set;
+            protected set;
         }
 
         protected Vector2f DeckPosition
@@ -453,7 +453,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             return false;
         }
 
-        public void OnStartTurn()
+        public virtual void OnStartTurn()
         {
             this.IsActiveTurn = true;
 
@@ -463,7 +463,7 @@ namespace Metempsychoid.Model.Layer.BoardPlayerLayer
             }
         }
 
-        public void OnEndTurn()
+        public virtual void OnEndTurn()
         {
             this.IsActiveTurn = false;
 
