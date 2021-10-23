@@ -90,6 +90,7 @@
     <Compile Include="Model\Card\Behaviors\MoonPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\HierophantActiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\PriestessPassiveBehavior.cs" />
+    <Compile Include="Model\Card\Behaviors\StarPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\StrengthPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\SunPassiveBehavior.cs" />
     <Compile Include="Model\Card\Behaviors\TemperancePassiveBehavior.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Model\Layer\BoardBannerLayer\BoardBannerLayer.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ABoardNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ACardNotifBehavior.cs" />
+    <Compile Include="Model\Layer\BoardNotifLayer\Behavior\AddPointsNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\AddVictoryPointsNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\CardAwakenedNotifBehavior.cs" />
     <Compile Include="Model\Layer\BoardNotifLayer\Behavior\ConvertCardNotifBehavior.cs" />

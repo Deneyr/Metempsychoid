@@ -497,7 +497,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             if (this.PendingActions.Count > 0)
             {
                 // Clear the actions pending list to allow it to be fill by the next generation of events raised by card awakening ...
-                List<IBoardGameAction> currentPendingActions = this.PendingActions.Where(pElem => pElem.IsStillValid(this)).ToList();
+                List<IBoardGameAction> currentPendingActions = this.PendingActions.ToList();//Where(pElem => pElem.IsStillValid(this)).ToList();
                 this.PendingActions.Clear();
 
                 foreach (IBoardGameAction actionToResolve in currentPendingActions)

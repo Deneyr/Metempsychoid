@@ -513,13 +513,13 @@
 
     <paragraphEntry>
         <key>star_poem</key>
-        <paragraph culture="fr"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
+        <paragraph culture="fr"><Normal color="200:200:200">Une bonne étoile qui veille même lors des moments les plus difficiles.</Normal></paragraph>
         <paragraph culture="en"><Normal color="200:200:200">Lorem ipsum dolor sit amet, &#10; consectetur adipiscing elit. &#10; Sed non risus. Suspendisse lectus tortor, &#10; dignissim sit amet, adipiscing nec, &#10; ultricies sed, dolor.</Normal></paragraph>
     </paragraphEntry>
 
     <paragraphEntry>
         <key>star_effect</key>
-        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+3</Normal><Normal> points de puissance</Normal></paragraph>
+        <paragraph culture="fr"><Normal>Passif : </Normal><Normal color="0:255:0">+1</Normal><Normal> points de puissance à une carte n'importe où sur le plateau</Normal></paragraph>
         <paragraph culture="en"><Normal>Wheel of Fortune &#10; effect</Normal></paragraph>
     </paragraphEntry>
 </localization>

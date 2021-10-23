@@ -252,6 +252,17 @@
     </paragraphEntry>
 
     <paragraphEntry>
+        <key>addPoints_behavior_label</key>
+        <paragraph culture="fr"><BannerTitle>Ajouter les points aux cartes indiquées</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Add points to the focused cards</BannerTitle></paragraph>
+    </paragraphEntry>
+    <paragraphEntry>
+        <key>addPoints_action</key>
+        <paragraph culture="fr"><BannerTitle>Ajouter les points</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Add points</BannerTitle></paragraph>
+    </paragraphEntry>
+
+    <paragraphEntry>
         <key>awakened_label</key>
         <paragraph culture="fr"><BannerTitle>EVEIL</BannerTitle></paragraph>
         <paragraph culture="en"><BannerTitle>ENLIGHTENMENT</BannerTitle></paragraph>

@@ -178,6 +178,7 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.SocketCardNotifBehavior), "play_behavior_label");
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.SocketNewCardNotifBehavior), "play_new_behavior_label");
             this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.ConvertCardNotifBehavior), "convert_behavior_label");
+            this.idLabelToIndex.Add(typeof(Model.Layer.BoardNotifLayer.Behavior.AddPointsNotifBehavior), "addPoints_behavior_label");
 
             IAnimation showAnimation = new PositionAnimation(new Vector2f(0, 0), new Vector2f(this.Canevas.Width, 0), Time.FromSeconds(1), AnimationType.ONETIME, InterpolationMethod.SQUARE_ACC);
             this.animationsList.Add(showAnimation);

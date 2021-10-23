@@ -106,19 +106,6 @@ namespace Metempsychoid.Model.Card.Behaviors
             }
         }
 
-        //public override void OnDestroyed(BoardGameLayer layer, CardEntity cardEntity)
-        //{
-        //    foreach (CardEntity cardEntityConverted in this.ConvertedCards)
-        //    {
-        //        if (cardEntityConverted.ParentStar != null && cardEntityConverted.Card.CurrentOwner != cardEntityConverted.Card.FirstOwner)
-        //        {
-        //            layer.ConvertCard(cardEntityConverted.ParentStar, cardEntityConverted.Card.FirstOwner);
-        //        }
-        //    }
-
-        //    this.ConvertedCards.Clear();
-        //}
-
         public override ICardBehavior Clone()
         {
             return new LoverPassiveBehavior(this.NbCardsToConvert);

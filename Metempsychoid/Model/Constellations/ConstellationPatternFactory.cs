@@ -495,14 +495,14 @@ namespace Metempsychoid.Model.Constellations
         {
             ConstellationPattern patternToCreate = new ConstellationPattern();
 
-            ConstellationNode node1 = new ConstellationNode();
+            ConstellationNode node1 = new ConstellationAllyNode();
             patternToCreate.AddNode(node1);
             ConstellationNode node2 = new ConstellationNode();
             patternToCreate.AddNode(node2);
 
             ConstellationNode node3 = new ConstellationNode();
             patternToCreate.AddNode(node3);
-            ConstellationNode node4 = new ConstellationNode();
+            ConstellationNode node4 = new ConstellationOpponentNode();
             patternToCreate.AddNode(node4);
 
             ConstellationNodeSelf self = new ConstellationNodeSelf();
