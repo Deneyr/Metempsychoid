@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.View.Layer2D.BoardGameLayer2D;
+﻿using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.View.Layer2D.BoardGameLayer2D;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
+namespace Astrategia.View.Layer2D.BoardBannerLayer2D
 {
     public interface IDomainsLayer
     {

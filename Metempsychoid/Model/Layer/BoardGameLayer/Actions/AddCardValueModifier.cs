@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model.Card;
-using Metempsychoid.Model.Card.Behaviors;
+﻿using Astrategia.Model.Card;
+using Astrategia.Model.Card.Behaviors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
+namespace Astrategia.Model.Layer.BoardGameLayer.Actions
 {
     public class AddCardValueModifier : IBoardGameAction
     {

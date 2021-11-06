@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SFML.Graphics;
 using SFML.System;
 
-namespace Metempsychoid.View.Text2D
+namespace Astrategia.View.Text2D
 {
     public class ParameterTextToken2D : TextToken2D
     {

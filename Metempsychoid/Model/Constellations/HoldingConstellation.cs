@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Card;
-using Metempsychoid.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Card;
+using Astrategia.Model.Layer.BoardGameLayer;
 
-namespace Metempsychoid.Model.Constellations
+namespace Astrategia.Model.Constellations
 {
     public class HoldingConstellation : AConstellation
     {

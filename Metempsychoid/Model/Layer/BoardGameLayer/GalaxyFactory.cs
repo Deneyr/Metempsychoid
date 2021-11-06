@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardGameLayer
+namespace Astrategia.Model.Layer.BoardGameLayer
 {
     public class GalaxyFactory
     {

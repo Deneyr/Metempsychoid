@@ -1,4 +1,4 @@
-﻿using Metempsychoid.Model;
+﻿using Astrategia.Model;
 using SFML.Audio;
 using SFML.Graphics;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View
+namespace Astrategia.View
 {
     public interface IObject2DFactory
     {

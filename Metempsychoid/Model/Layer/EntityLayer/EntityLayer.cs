@@ -1,6 +1,6 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model.Animation;
-using Metempsychoid.Model.Node;
+﻿using Astrategia.Animation;
+using Astrategia.Model.Animation;
+using Astrategia.Model.Node;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.EntityLayer
+namespace Astrategia.Model.Layer.EntityLayer
 {
     public class EntityLayer: ALayer
     {

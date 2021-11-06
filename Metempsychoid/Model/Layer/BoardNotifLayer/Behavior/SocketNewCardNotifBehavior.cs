@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Card;
-using Metempsychoid.Model.Event;
-using Metempsychoid.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Card;
+using Astrategia.Model.Event;
+using Astrategia.Model.Layer.BoardGameLayer;
 
-namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
+namespace Astrategia.Model.Layer.BoardNotifLayer.Behavior
 {
     public class SocketNewCardNotifBehavior : ACardNotifBehavior
     {

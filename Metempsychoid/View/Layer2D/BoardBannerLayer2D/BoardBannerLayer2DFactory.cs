@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BoardBannerLayer;
+using Astrategia.Model;
+using Astrategia.Model.Layer.BoardBannerLayer;
 
-namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
+namespace Astrategia.View.Layer2D.BoardBannerLayer2D
 {
     public class BoardBannerLayer2DFactory : AObject2DFactory
     {

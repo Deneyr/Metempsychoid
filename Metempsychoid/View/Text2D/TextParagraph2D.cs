@@ -1,4 +1,4 @@
-﻿using Metempsychoid.View.Animation;
+﻿using Astrategia.View.Animation;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Text2D
+namespace Astrategia.View.Text2D
 {
     public class TextParagraph2D: AObject2D
     {
@@ -322,7 +322,7 @@ namespace Metempsychoid.View.Text2D
             {
                 TextToken2D textToken2D = this.textToken2Ds[this.tokenCursor];
 
-                TextScrollingAnimation textScrollingAnimation = new TextScrollingAnimation(0, textToken2D.FullText.Length, Time.FromSeconds(textToken2D.FullText.Length * 1 / this.scrollingSpeed), Metempsychoid.Animation.AnimationType.ONETIME, Metempsychoid.Animation.InterpolationMethod.LINEAR);
+                TextScrollingAnimation textScrollingAnimation = new TextScrollingAnimation(0, textToken2D.FullText.Length, Time.FromSeconds(textToken2D.FullText.Length * 1 / this.scrollingSpeed), Astrategia.Animation.AnimationType.ONETIME, Astrategia.Animation.InterpolationMethod.LINEAR);
                 textToken2D.PlayAnimation(textScrollingAnimation);
             }
         }

@@ -1,4 +1,4 @@
-﻿using Metempsychoid.Model;
+﻿using Astrategia.Model;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Animation
+namespace Astrategia.Animation
 {
     public abstract class AAnimation: IAnimation
     {

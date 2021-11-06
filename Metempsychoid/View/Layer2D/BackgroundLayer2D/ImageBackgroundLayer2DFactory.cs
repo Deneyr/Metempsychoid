@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BackgroundLayer;
+﻿using Astrategia.Model;
+using Astrategia.Model.Layer.BackgroundLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
+namespace Astrategia.View.Layer2D.BackgroundLayer2D
 {
     public class ImageBackgroundLayer2DFactory : AObject2DFactory
     {

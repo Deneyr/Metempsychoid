@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BoardNotifLayer;
+﻿using Astrategia.Model;
+using Astrategia.Model.Layer.BoardNotifLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
+namespace Astrategia.View.Layer2D.BoardNotifLayer2D
 {
     class CardEntityAwakenedDecorator2DFactory : CardEntityDecorator2DFactory
     {

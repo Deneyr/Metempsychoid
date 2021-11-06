@@ -1,4 +1,4 @@
-﻿using Metempsychoid.Model.Card;
+﻿using Astrategia.Model.Card;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Player
+namespace Astrategia.Model.Player
 {
     public class Player
     {

@@ -1,4 +1,4 @@
-﻿using Metempsychoid.Maths;
+﻿using Astrategia.Maths;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardGameLayer
+namespace Astrategia.Model.Layer.BoardGameLayer
 {
     public class CurvedStarLinkEntity : StarLinkEntity
     {

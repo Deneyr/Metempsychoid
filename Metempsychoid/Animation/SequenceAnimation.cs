@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model;
+using Astrategia.Model;
 using SFML.System;
 
-namespace Metempsychoid.Animation
+namespace Astrategia.Animation
 {
     public class SequenceAnimation : IAnimation
     {

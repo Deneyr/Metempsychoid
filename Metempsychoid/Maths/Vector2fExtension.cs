@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Maths
+namespace Astrategia.Maths
 {
     public static class Vector2fExtension
     {

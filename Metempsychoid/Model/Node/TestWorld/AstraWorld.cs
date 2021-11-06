@@ -1,17 +1,17 @@
-﻿using Metempsychoid.Model.Layer.BackgroundLayer;
-using Metempsychoid.Model.Layer.BoardBannerLayer;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.Model.Layer.BoardNotifLayer;
-using Metempsychoid.Model.Layer.BoardPlayerLayer;
-using Metempsychoid.Model.Layer.MenuTextLayer;
-using Metempsychoid.Model.MenuLayer;
+﻿using Astrategia.Model.Layer.BackgroundLayer;
+using Astrategia.Model.Layer.BoardBannerLayer;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Layer.BoardNotifLayer;
+using Astrategia.Model.Layer.BoardPlayerLayer;
+using Astrategia.Model.Layer.MenuTextLayer;
+using Astrategia.Model.MenuLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Node.TestWorld
+namespace Astrategia.Model.Node.TestWorld
 {
     public class AstraWorld : AWorldNode
     {

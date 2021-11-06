@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Text2D
+namespace Astrategia.View.Text2D
 {
     public class TextToken2D: AObject2D
     {

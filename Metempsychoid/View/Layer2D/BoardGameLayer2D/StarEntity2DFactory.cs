@@ -1,6 +1,6 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.Model.Layer.EntityLayer;
+﻿using Astrategia.Model;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Layer.EntityLayer;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
+namespace Astrategia.View.Layer2D.BoardGameLayer2D
 {
     public class StarEntity2DFactory : AObject2DFactory
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Maths;
+using Astrategia.Maths;
 using SFML.System;
 
-namespace Metempsychoid.Model.Layer.BoardGameLayer
+namespace Astrategia.Model.Layer.BoardGameLayer
 {
     public class StarLinkEntity: AEntity
     {
@@ -58,7 +58,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         protected virtual void OnEntityPropertyChanged(AEntity entity, string propertyName)
         {
-            if (this.parentLayer.TryGetTarget(out Metempsychoid.Model.Layer.EntityLayer.EntityLayer target))
+            if (this.parentLayer.TryGetTarget(out Astrategia.Model.Layer.EntityLayer.EntityLayer target))
             {
                 if (entity == this.StarTo
                     || entity == this.StarFrom)
@@ -71,7 +71,7 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
 
         public override void Dispose()
         {
-            if(this.parentLayer.TryGetTarget(out Metempsychoid.Model.Layer.EntityLayer.EntityLayer target))
+            if(this.parentLayer.TryGetTarget(out Astrategia.Model.Layer.EntityLayer.EntityLayer target))
             {
                 target.EntityPropertyChanged -= this.OnEntityPropertyChanged;
             }

@@ -1,5 +1,5 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.View.Animation;
+﻿using Astrategia.Animation;
+using Astrategia.View.Animation;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
+namespace Astrategia.View.Layer2D.BackgroundLayer2D
 {
     public class ImageBackgroundObject2D : AEntity2D
     {

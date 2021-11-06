@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Controls
+namespace Astrategia.View.Controls
 {
     public enum ControlEventType
     {

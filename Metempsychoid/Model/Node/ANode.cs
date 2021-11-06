@@ -1,4 +1,4 @@
-﻿using Metempsychoid.Model.Event;
+﻿using Astrategia.Model.Event;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Node
+namespace Astrategia.Model.Node
 {
     public class ANode: IGameEventListener
     {

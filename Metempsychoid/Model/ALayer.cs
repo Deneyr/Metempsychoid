@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Event;
-using Metempsychoid.Model.Node;
+using Astrategia.Model.Event;
+using Astrategia.Model.Node;
 using SFML.System;
 
-namespace Metempsychoid.Model
+namespace Astrategia.Model
 {
     public abstract class ALayer : AObject
     {

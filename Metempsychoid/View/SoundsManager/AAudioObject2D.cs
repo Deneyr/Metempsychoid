@@ -1,5 +1,5 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.View.Animation;
+﻿using Astrategia.Animation;
+using Astrategia.View.Animation;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.SoundsManager
+namespace Astrategia.View.SoundsManager
 {
     public abstract class AAudioObject2D : AEntity2D
     {

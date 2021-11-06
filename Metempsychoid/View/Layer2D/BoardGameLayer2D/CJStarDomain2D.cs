@@ -1,6 +1,6 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.View.Animation;
+﻿using Astrategia.Animation;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.View.Animation;
 using SFML.Graphics;
 using SFML.Graphics.Glsl;
 using SFML.System;
@@ -9,10 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Maths;
-using Metempsychoid.View.Controls;
+using Astrategia.Maths;
+using Astrategia.View.Controls;
 
-namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
+namespace Astrategia.View.Layer2D.BoardGameLayer2D
 {
     public class CJStarDomain2D : AEntity2D, IHitRect
     {
@@ -73,7 +73,7 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
                 {
                     this.targetedColor = value;
 
-                    this.PlayAnimation(new ColorAnimation(base.SpriteColor, this.TargetedColor, Time.FromSeconds(2), Metempsychoid.Animation.AnimationType.ONETIME, Metempsychoid.Animation.InterpolationMethod.LINEAR));
+                    this.PlayAnimation(new ColorAnimation(base.SpriteColor, this.TargetedColor, Time.FromSeconds(2), Astrategia.Animation.AnimationType.ONETIME, Astrategia.Animation.InterpolationMethod.LINEAR));
                 }
             }
         }

@@ -1,9 +1,9 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model.Animation;
-using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
-using Metempsychoid.Model.Player;
-using Metempsychoid.View.Animation;
-using Metempsychoid.View.Text2D;
+﻿using Astrategia.Animation;
+using Astrategia.Model.Animation;
+using Astrategia.Model.Layer.BoardNotifLayer.Behavior;
+using Astrategia.Model.Player;
+using Astrategia.View.Animation;
+using Astrategia.View.Text2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
+namespace Astrategia.View.Layer2D.BoardNotifLayer2D
 {
     public class EffectBehaviorLabel2D : TextCanevas2D
     {

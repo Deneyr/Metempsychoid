@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Constellations;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.Model.Layer.EntityLayer;
+using Astrategia.Model.Constellations;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Layer.EntityLayer;
 using SFML.System;
 
-namespace Metempsychoid.Model.Card
+namespace Astrategia.Model.Card
 {
     public class CardEntity : AEntity
     {

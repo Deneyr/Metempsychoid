@@ -1,11 +1,11 @@
-﻿using Metempsychoid.Model.Layer.BoardGameLayer;
+﻿using Astrategia.Model.Layer.BoardGameLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Constellations
+namespace Astrategia.Model.Constellations
 {
     public class ConstellationNode
     {

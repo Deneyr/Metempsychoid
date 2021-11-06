@@ -1,8 +1,8 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model.Card;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.View.Animation;
-using Metempsychoid.View.Controls;
+﻿using Astrategia.Animation;
+using Astrategia.Model.Card;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.View.Animation;
+using Astrategia.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
+namespace Astrategia.View.Layer2D.BoardGameLayer2D
 {
     public class StarEntity2D : AEntity2D, IHitRect
     {

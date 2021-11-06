@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardPlayerLayer
+namespace Astrategia.Model.Layer.BoardPlayerLayer
 {
     public class MenuBoardPlayerLayer: BoardPlayerLayer
     {

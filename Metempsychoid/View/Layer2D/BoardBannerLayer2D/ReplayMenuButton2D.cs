@@ -1,12 +1,12 @@
-﻿using Metempsychoid.View.Controls;
-using Metempsychoid.View.Layer2D.MenuLayer2D;
+﻿using Astrategia.View.Controls;
+using Astrategia.View.Layer2D.MenuLayer2D;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
+namespace Astrategia.View.Layer2D.BoardBannerLayer2D
 {
     public class ReplayMenuButton2D : ACJButton2D
     {

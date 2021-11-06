@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BoardPlayerLayer;
+using Astrategia.Model;
+using Astrategia.Model.Layer.BoardPlayerLayer;
 
-namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
+namespace Astrategia.View.Layer2D.BoardPlayerLayer2D
 {
     public class OppBoardPlayerLayer2D : BoardPlayerLayer2D
     {

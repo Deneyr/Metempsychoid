@@ -1,5 +1,5 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Card;
+﻿using Astrategia.Model;
+using Astrategia.Model.Card;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Card2D
+namespace Astrategia.View.Card2D
 {
     public class CardEntity2DFactory : AObject2DFactory
     {

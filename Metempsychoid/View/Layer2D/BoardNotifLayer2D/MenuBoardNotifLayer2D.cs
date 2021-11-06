@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Layer.BoardNotifLayer;
-using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
-using Metempsychoid.Model.Node.TestWorld;
+using Astrategia.Model.Layer.BoardNotifLayer;
+using Astrategia.Model.Layer.BoardNotifLayer.Behavior;
+using Astrategia.Model.Node.TestWorld;
 
-namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
+namespace Astrategia.View.Layer2D.BoardNotifLayer2D
 {
     public class MenuBoardNotifLayer2D : BoardNotifLayer2D
     {

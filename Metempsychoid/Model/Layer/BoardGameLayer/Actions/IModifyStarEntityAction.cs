@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
+namespace Astrategia.Model.Layer.BoardGameLayer.Actions
 {
     public interface IModifyStarEntityAction : IBoardGameAction
     {

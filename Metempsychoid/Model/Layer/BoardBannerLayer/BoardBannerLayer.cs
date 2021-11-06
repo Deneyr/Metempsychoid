@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model.Node;
-using Metempsychoid.Model.Node.TestWorld;
+﻿using Astrategia.Model.Node;
+using Astrategia.Model.Node.TestWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardBannerLayer
+namespace Astrategia.Model.Layer.BoardBannerLayer
 {
     public class BoardBannerLayer: EntityLayer.EntityLayer
     {

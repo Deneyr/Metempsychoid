@@ -1,13 +1,13 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model;
-using Metempsychoid.Model.Animation;
-using Metempsychoid.Model.Layer.BoardNotifLayer;
-using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
-using Metempsychoid.Model.Node.TestWorld;
-using Metempsychoid.View.Card2D;
-using Metempsychoid.View.Controls;
-using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
-using Metempsychoid.View.Layer2D.BoardPlayerLayer2D;
+﻿using Astrategia.Animation;
+using Astrategia.Model;
+using Astrategia.Model.Animation;
+using Astrategia.Model.Layer.BoardNotifLayer;
+using Astrategia.Model.Layer.BoardNotifLayer.Behavior;
+using Astrategia.Model.Node.TestWorld;
+using Astrategia.View.Card2D;
+using Astrategia.View.Controls;
+using Astrategia.View.Layer2D.BoardBannerLayer2D;
+using Astrategia.View.Layer2D.BoardPlayerLayer2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -16,7 +16,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
+namespace Astrategia.View.Layer2D.BoardNotifLayer2D
 {
     public class BoardNotifLayer2D : ALayer2D, ICardFocusedLayer
     {

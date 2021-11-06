@@ -4,12 +4,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model;
+using Astrategia.Model;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 
-namespace Metempsychoid.View.SoundsManager
+namespace Astrategia.View.SoundsManager
 {
     public class SoundObject2D : AAudioObject2D
     {

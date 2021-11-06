@@ -1,4 +1,4 @@
-﻿using Metempsychoid.Model.MenuLayer;
+﻿using Astrategia.Model.MenuLayer;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.MenuLayer2D
+namespace Astrategia.View.Layer2D.MenuLayer2D
 {
     public class CJMenuLayer2D: ALayer2D
     {

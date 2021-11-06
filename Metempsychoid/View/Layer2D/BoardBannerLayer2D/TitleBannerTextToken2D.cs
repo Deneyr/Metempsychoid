@@ -1,4 +1,4 @@
-﻿using Metempsychoid.View.Text2D;
+﻿using Astrategia.View.Text2D;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
+namespace Astrategia.View.Layer2D.BoardBannerLayer2D
 {
     public class TitleBannerTextToken2D : TextToken2D
     {

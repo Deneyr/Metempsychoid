@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.View.Controls;
+using Astrategia.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 
-namespace Metempsychoid.View.Text2D
+namespace Astrategia.View.Text2D
 {
     public abstract class AButton2D : TextCanevas2D, IHitRect
     {

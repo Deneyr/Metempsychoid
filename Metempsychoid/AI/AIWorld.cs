@@ -1,5 +1,5 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Event;
+﻿using Astrategia.Model;
+using Astrategia.Model.Event;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.AI
+namespace Astrategia.AI
 {
     public class AIWorld : IDisposable
     {

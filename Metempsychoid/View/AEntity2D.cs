@@ -1,8 +1,8 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Event;
-using Metempsychoid.View.Animation;
-using Metempsychoid.View.Controls;
-using Metempsychoid.View.SoundsManager;
+﻿using Astrategia.Model;
+using Astrategia.Model.Event;
+using Astrategia.View.Animation;
+using Astrategia.View.Controls;
+using Astrategia.View.SoundsManager;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View
+namespace Astrategia.View
 {
     public abstract class AEntity2D: AObject2D
     {

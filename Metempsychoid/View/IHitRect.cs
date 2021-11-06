@@ -1,4 +1,4 @@
-﻿using Metempsychoid.View.Controls;
+﻿using Astrategia.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View
+namespace Astrategia.View
 {
     public interface IHitRect
     {

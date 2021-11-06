@@ -1,6 +1,6 @@
-﻿using Metempsychoid.View.Card2D;
-using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
-using Metempsychoid.View.Layer2D.MenuTextLayer2D;
+﻿using Astrategia.View.Card2D;
+using Astrategia.View.Layer2D.BoardBannerLayer2D;
+using Astrategia.View.Layer2D.MenuTextLayer2D;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Metempsychoid.View.Text2D
+namespace Astrategia.View.Text2D
 {
     public class TextParagraphFactory
     {

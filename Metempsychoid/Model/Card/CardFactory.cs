@@ -1,13 +1,13 @@
-﻿using Metempsychoid.Model.Card.Behaviors;
-using Metempsychoid.Model.Constellations;
-using Metempsychoid.Model.Layer.BoardGameLayer;
+﻿using Astrategia.Model.Card.Behaviors;
+using Astrategia.Model.Constellations;
+using Astrategia.Model.Layer.BoardGameLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Card
+namespace Astrategia.Model.Card
 {
     public class CardFactory
     {

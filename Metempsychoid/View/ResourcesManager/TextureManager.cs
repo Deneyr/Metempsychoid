@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.ResourcesManager
+namespace Astrategia.View.ResourcesManager
 {
     public class TextureManager
     {

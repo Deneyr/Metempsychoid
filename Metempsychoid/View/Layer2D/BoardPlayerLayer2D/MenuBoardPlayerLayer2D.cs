@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Layer.BoardPlayerLayer;
+using Astrategia.Model.Layer.BoardPlayerLayer;
 using SFML.Graphics;
 using SFML.System;
 
-namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
+namespace Astrategia.View.Layer2D.BoardPlayerLayer2D
 {
     public class MenuBoardPlayerLayer2D : BoardPlayerLayer2D
     {

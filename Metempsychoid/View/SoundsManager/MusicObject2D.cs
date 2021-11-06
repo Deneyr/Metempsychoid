@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.SoundsManager
+namespace Astrategia.View.SoundsManager
 {
     public class MusicObject2D : AAudioObject2D
     {

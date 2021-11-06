@@ -1,6 +1,6 @@
-﻿using Metempsychoid.Model.Event;
-using Metempsychoid.Model.Layer.BackgroundLayer;
-using Metempsychoid.Model.Layer.BoardPlayerLayer;
+﻿using Astrategia.Model.Event;
+using Astrategia.Model.Layer.BackgroundLayer;
+using Astrategia.Model.Layer.BoardPlayerLayer;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Node.TestWorld
+namespace Astrategia.Model.Node.TestWorld
 {
     public class AstraRulesLevel : ALevelNode
     {

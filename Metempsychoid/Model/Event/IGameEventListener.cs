@@ -1,11 +1,11 @@
-﻿using Metempsychoid.Model.Event;
+﻿using Astrategia.Model.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Event
+namespace Astrategia.Model.Event
 {
     public interface IGameEventListener
     {

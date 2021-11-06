@@ -1,4 +1,4 @@
-﻿using Metempsychoid.View.Controls;
+﻿using Astrategia.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Metempsychoid.View.Text2D.TextParagraph2D;
+using static Astrategia.View.Text2D.TextParagraph2D;
 
-namespace Metempsychoid.View.Text2D
+namespace Astrategia.View.Text2D
 {
     public class TextCanevas2D : AEntity2D
     {

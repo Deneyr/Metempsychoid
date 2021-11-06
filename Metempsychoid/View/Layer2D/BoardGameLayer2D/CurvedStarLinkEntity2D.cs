@@ -1,5 +1,5 @@
-﻿using Metempsychoid.Maths;
-using Metempsychoid.Model.Layer.BoardGameLayer;
+﻿using Astrategia.Maths;
+using Astrategia.Model.Layer.BoardGameLayer;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
+namespace Astrategia.View.Layer2D.BoardGameLayer2D
 {
     public class CurvedStarLinkEntity2D : StarLinkEntity2D
     { 

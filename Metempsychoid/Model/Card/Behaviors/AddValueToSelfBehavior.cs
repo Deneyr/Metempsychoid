@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.Model.Layer.BoardGameLayer.Actions;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Layer.BoardGameLayer.Actions;
 
-namespace Metempsychoid.Model.Card.Behaviors
+namespace Astrategia.Model.Card.Behaviors
 {
     public class AddValueToSelfBehavior : ACardBehavior
     {

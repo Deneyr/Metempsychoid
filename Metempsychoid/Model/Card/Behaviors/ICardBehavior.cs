@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.Model.Layer.BoardGameLayer.Actions;
+﻿using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Layer.BoardGameLayer.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Card.Behaviors
+namespace Astrategia.Model.Card.Behaviors
 {
     public interface ICardBehavior
     {

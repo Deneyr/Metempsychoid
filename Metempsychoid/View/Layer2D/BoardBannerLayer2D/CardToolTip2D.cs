@@ -1,8 +1,8 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model.Card;
-using Metempsychoid.View.Animation;
-using Metempsychoid.View.Card2D;
-using Metempsychoid.View.Text2D;
+﻿using Astrategia.Animation;
+using Astrategia.Model.Card;
+using Astrategia.View.Animation;
+using Astrategia.View.Card2D;
+using Astrategia.View.Text2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
+namespace Astrategia.View.Layer2D.BoardBannerLayer2D
 {
     public class CardToolTip2D : TextCanevas2D
     {

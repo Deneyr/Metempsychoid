@@ -1,6 +1,6 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model.Animation;
-using Metempsychoid.View.Animation;
+﻿using Astrategia.Animation;
+using Astrategia.Model.Animation;
+using Astrategia.View.Animation;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
+namespace Astrategia.View.Layer2D.BoardNotifLayer2D
 {
     public class BeamsEffect2D : AEntity2D
     {

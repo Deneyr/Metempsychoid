@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BoardPlayerLayer;
+﻿using Astrategia.Model;
+using Astrategia.Model.Layer.BoardPlayerLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
+namespace Astrategia.View.Layer2D.BoardPlayerLayer2D
 {
     public class MenuBoardPlayerLayer2DFactory: BoardPlayerLayer2DFactory
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Event
+namespace Astrategia.Model.Event
 {
     public class GameEvent
     {

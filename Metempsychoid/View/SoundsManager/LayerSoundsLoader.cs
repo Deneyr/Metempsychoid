@@ -1,4 +1,4 @@
-﻿using Metempsychoid.Model;
+﻿using Astrategia.Model;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.SoundsManager
+namespace Astrategia.View.SoundsManager
 {
     public class LayerSoundsLoader
     {

@@ -1,7 +1,7 @@
-using Metempsychoid.AI;
-using Metempsychoid.Model;
-using Metempsychoid.View;
-using Metempsychoid.View.Controls;
+using Astrategia.AI;
+using Astrategia.Model;
+using Astrategia.View;
+using Astrategia.View.Controls;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Metempsychoid
+namespace Astrategia
 {
     public class MainWindow
     {
@@ -44,7 +44,7 @@ namespace Metempsychoid
         {
             var mode = new SFML.Window.VideoMode(1366, 768);
             this.Window = new SFML.Graphics.RenderWindow(SFML.Window.VideoMode.DesktopMode, "Astrategia", Styles.Fullscreen);
-            //this.Window = new SFML.Graphics.RenderWindow(mode, "Metempsychoid");
+            //this.Window = new SFML.Graphics.RenderWindow(mode, "Astrategia");
             this.Window.SetVerticalSyncEnabled(true);
 
             this.World = new World();

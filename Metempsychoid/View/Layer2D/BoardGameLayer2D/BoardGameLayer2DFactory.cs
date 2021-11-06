@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BoardGameLayer;
+﻿using Astrategia.Model;
+using Astrategia.Model.Layer.BoardGameLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
+namespace Astrategia.View.Layer2D.BoardGameLayer2D
 {
     public class BoardGameLayer2DFactory : AObject2DFactory
     {

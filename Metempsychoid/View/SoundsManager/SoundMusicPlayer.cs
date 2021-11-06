@@ -1,4 +1,4 @@
-﻿using Metempsychoid.Model;
+﻿using Astrategia.Model;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.SoundsManager
+namespace Astrategia.View.SoundsManager
 {
     public class SoundMusicPlayer
     {

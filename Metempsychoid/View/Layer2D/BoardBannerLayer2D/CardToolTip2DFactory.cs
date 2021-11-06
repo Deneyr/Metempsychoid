@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BoardBannerLayer;
+﻿using Astrategia.Model;
+using Astrategia.Model.Layer.BoardBannerLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
+namespace Astrategia.View.Layer2D.BoardBannerLayer2D
 {
     public class CardToolTip2DFactory : AObject2DFactory
     {

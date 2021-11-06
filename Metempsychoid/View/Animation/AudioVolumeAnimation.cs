@@ -1,6 +1,6 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model;
-using Metempsychoid.View.SoundsManager;
+﻿using Astrategia.Animation;
+using Astrategia.Model;
+using Astrategia.View.SoundsManager;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Animation
+namespace Astrategia.View.Animation
 {
     public class AudioVolumeAnimation : AAnimation
     {

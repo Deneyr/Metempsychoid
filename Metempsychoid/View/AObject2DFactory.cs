@@ -1,5 +1,5 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.View.Text2D;
+﻿using Astrategia.Model;
+using Astrategia.View.Text2D;
 using SFML.Audio;
 using SFML.Graphics;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View
+namespace Astrategia.View
 {
     public abstract class AObject2DFactory: IObject2DFactory
     {

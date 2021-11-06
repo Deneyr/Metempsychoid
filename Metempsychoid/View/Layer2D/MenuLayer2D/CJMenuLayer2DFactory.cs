@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model;
-using Metempsychoid.Model.MenuLayer;
+using Astrategia.Model;
+using Astrategia.Model.MenuLayer;
 
-namespace Metempsychoid.View.Layer2D.MenuLayer2D
+namespace Astrategia.View.Layer2D.MenuLayer2D
 {
     public class CJMenuLayer2DFactory : AObject2DFactory
     {

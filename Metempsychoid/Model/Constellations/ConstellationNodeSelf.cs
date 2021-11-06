@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Constellations
+namespace Astrategia.Model.Constellations
 {
     public class ConstellationNodeSelf : ConstellationNode
     {

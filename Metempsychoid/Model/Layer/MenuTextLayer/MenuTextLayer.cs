@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Node;
+using Astrategia.Model.Node;
 
-namespace Metempsychoid.Model.Layer.MenuTextLayer
+namespace Astrategia.Model.Layer.MenuTextLayer
 {
     public class MenuTextLayer : ALayer
     {

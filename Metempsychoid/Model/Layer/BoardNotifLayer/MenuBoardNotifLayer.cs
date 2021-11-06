@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardNotifLayer
+namespace Astrategia.Model.Layer.BoardNotifLayer
 {
     public class MenuBoardNotifLayer : BoardNotifLayer
     {

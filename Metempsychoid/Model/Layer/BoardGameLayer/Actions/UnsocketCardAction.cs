@@ -1,11 +1,11 @@
-﻿using Metempsychoid.Model.Card;
+﻿using Astrategia.Model.Card;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardGameLayer.Actions
+namespace Astrategia.Model.Layer.BoardGameLayer.Actions
 {
     public class UnsocketCardAction : IModifyStarEntityAction
     {

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Animation;
-using Metempsychoid.Model.Animation;
-using Metempsychoid.Model.Card;
-using Metempsychoid.Model.Event;
-using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
-using Metempsychoid.Model.Node;
+using Astrategia.Animation;
+using Astrategia.Model.Animation;
+using Astrategia.Model.Card;
+using Astrategia.Model.Event;
+using Astrategia.Model.Layer.BoardNotifLayer.Behavior;
+using Astrategia.Model.Node;
 using SFML.System;
 
-namespace Metempsychoid.Model.Layer.BoardNotifLayer
+namespace Astrategia.Model.Layer.BoardNotifLayer
 {
     public class BoardNotifLayer : EntityLayer.EntityLayer
     {

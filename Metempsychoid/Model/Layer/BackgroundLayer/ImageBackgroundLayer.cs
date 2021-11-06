@@ -1,11 +1,11 @@
-﻿using Metempsychoid.Model.Node;
+﻿using Astrategia.Model.Node;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BackgroundLayer
+namespace Astrategia.Model.Layer.BackgroundLayer
 {
     public class ImageBackgroundLayer: ALayer
     {

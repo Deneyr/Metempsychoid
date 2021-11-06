@@ -1,6 +1,6 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.View.Animation;
-using Metempsychoid.View.SoundsManager;
+﻿using Astrategia.Animation;
+using Astrategia.View.Animation;
+using Astrategia.View.SoundsManager;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.AI
+namespace Astrategia.AI
 {
     public abstract class AAIObject: IAIObject
     {

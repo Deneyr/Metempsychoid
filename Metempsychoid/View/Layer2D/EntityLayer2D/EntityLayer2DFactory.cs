@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BackgroundLayer;
-using Metempsychoid.Model.Layer.EntityLayer;
+using Astrategia.Model;
+using Astrategia.Model.Layer.BackgroundLayer;
+using Astrategia.Model.Layer.EntityLayer;
 using SFML.System;
 
-namespace Metempsychoid.View.Layer2D.EntityLayer2D
+namespace Astrategia.View.Layer2D.EntityLayer2D
 {
     public class EntityLayer2DFactory : AObject2DFactory
     {

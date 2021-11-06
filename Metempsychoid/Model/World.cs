@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Card;
-using Metempsychoid.Model.Event;
-using Metempsychoid.Model.Layer.BackgroundLayer;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.Model.Layer.EntityLayer;
-using Metempsychoid.Model.Node;
-using Metempsychoid.Model.Node.TestWorld;
-using Metempsychoid.Model.Player;
+using Astrategia.Model.Card;
+using Astrategia.Model.Event;
+using Astrategia.Model.Layer.BackgroundLayer;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Layer.EntityLayer;
+using Astrategia.Model.Node;
+using Astrategia.Model.Node.TestWorld;
+using Astrategia.Model.Player;
 using SFML.System;
 
-namespace Metempsychoid.Model
+namespace Astrategia.Model
 {
     public class World : IUpdatable, IDisposable
     {

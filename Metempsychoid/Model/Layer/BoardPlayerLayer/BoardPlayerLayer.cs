@@ -1,11 +1,11 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model.Animation;
-using Metempsychoid.Model.Card;
-using Metempsychoid.Model.Event;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
-using Metempsychoid.Model.Node;
-using Metempsychoid.Model.Node.TestWorld;
+﻿using Astrategia.Animation;
+using Astrategia.Model.Animation;
+using Astrategia.Model.Card;
+using Astrategia.Model.Event;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Layer.BoardNotifLayer.Behavior;
+using Astrategia.Model.Node;
+using Astrategia.Model.Node.TestWorld;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardPlayerLayer
+namespace Astrategia.Model.Layer.BoardPlayerLayer
 {
     public class BoardPlayerLayer : EntityLayer.EntityLayer
     {

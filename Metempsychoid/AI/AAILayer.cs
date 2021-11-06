@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model;
-using Metempsychoid.Model.Event;
-using Metempsychoid.View.Controls;
-using Metempsychoid.View.Layer2D.BackgroundLayer2D;
-using Metempsychoid.View.SoundsManager;
+using Astrategia.Model;
+using Astrategia.Model.Event;
+using Astrategia.View.Controls;
+using Astrategia.View.Layer2D.BackgroundLayer2D;
+using Astrategia.View.SoundsManager;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-namespace Metempsychoid.AI
+namespace Astrategia.AI
 {
     public abstract class AAILayer : AAIObject
     {

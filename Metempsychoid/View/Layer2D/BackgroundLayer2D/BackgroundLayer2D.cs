@@ -4,13 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model;
-using Metempsychoid.Model.Layer.BackgroundLayer;
-using Metempsychoid.View.Controls;
+using Astrategia.Model;
+using Astrategia.Model.Layer.BackgroundLayer;
+using Astrategia.View.Controls;
 using SFML.Graphics;
 using SFML.System;
 
-namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
+namespace Astrategia.View.Layer2D.BackgroundLayer2D
 {
     public class BackgroundLayer2D : ALayer2D
     {

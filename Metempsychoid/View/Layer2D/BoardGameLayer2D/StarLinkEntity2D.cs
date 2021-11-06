@@ -1,7 +1,7 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Maths;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.View.Animation;
+﻿using Astrategia.Animation;
+using Astrategia.Maths;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.View.Animation;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
+namespace Astrategia.View.Layer2D.BoardGameLayer2D
 {
     public class StarLinkEntity2D: AEntity2D
     {

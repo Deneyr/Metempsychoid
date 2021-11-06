@@ -1,4 +1,4 @@
-﻿using Metempsychoid.Model.Card;
+﻿using Astrategia.Model.Card;
 using SFML.Graphics;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Metempsychoid.Model.Player
+namespace Astrategia.Model.Player
 {
     public static class PlayerSerializer
     {

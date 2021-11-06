@@ -1,5 +1,5 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model;
+﻿using Astrategia.Animation;
+using Astrategia.Model;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Animation
+namespace Astrategia.View.Animation
 {
     public class ColorAnimation : AAnimation
     {

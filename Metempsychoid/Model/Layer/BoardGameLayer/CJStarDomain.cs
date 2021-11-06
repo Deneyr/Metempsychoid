@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model.Layer.EntityLayer;
-using Metempsychoid.Model.Player;
+using Astrategia.Model.Layer.EntityLayer;
+using Astrategia.Model.Player;
 
-namespace Metempsychoid.Model.Layer.BoardGameLayer
+namespace Astrategia.Model.Layer.BoardGameLayer
 {
     public class CJStarDomain : AEntity
     {

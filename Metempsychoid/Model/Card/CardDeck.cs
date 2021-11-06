@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Card
+namespace Astrategia.Model.Card
 {
     public class CardDeck
     {

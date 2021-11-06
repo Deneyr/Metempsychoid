@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Metempsychoid.Model;
-using Metempsychoid.Model.Node.TestWorld;
-using Metempsychoid.View.Text2D;
+using Astrategia.Model;
+using Astrategia.Model.Node.TestWorld;
+using Astrategia.View.Text2D;
 using SFML.Graphics;
 using SFML.System;
 
-namespace Metempsychoid.View.Layer2D.MenuTextLayer2D
+namespace Astrategia.View.Layer2D.MenuTextLayer2D
 {
     public class MenuTextLayer2D : ALayer2D
     {

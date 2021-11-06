@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model
+namespace Astrategia.Model
 {
     public interface IUpdatable
     {

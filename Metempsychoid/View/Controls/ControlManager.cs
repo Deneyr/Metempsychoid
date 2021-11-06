@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using static SFML.Window.Keyboard;
 using static SFML.Window.Mouse;
 
-namespace Metempsychoid.View.Controls
+namespace Astrategia.View.Controls
 {
     public class ControlManager
     {

@@ -1,5 +1,5 @@
-﻿using Metempsychoid.Model.Event;
-using Metempsychoid.Model.Layer.BackgroundLayer;
+﻿using Astrategia.Model.Event;
+using Astrategia.Model.Layer.BackgroundLayer;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Node.TestWorld
+namespace Astrategia.Model.Node.TestWorld
 {
     public class AstraCreditsLevel : AstraRulesLevel
     {

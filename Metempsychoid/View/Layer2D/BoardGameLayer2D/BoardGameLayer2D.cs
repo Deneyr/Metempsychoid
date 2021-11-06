@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model;
-using Metempsychoid.Model.Card;
-using Metempsychoid.Model.Constellations;
-using Metempsychoid.Model.Layer.BoardGameLayer;
-using Metempsychoid.Model.Node.TestWorld;
-using Metempsychoid.Model.Player;
-using Metempsychoid.View.Card2D;
-using Metempsychoid.View.Controls;
-using Metempsychoid.View.Layer2D.BoardBannerLayer2D;
+﻿using Astrategia.Model;
+using Astrategia.Model.Card;
+using Astrategia.Model.Constellations;
+using Astrategia.Model.Layer.BoardGameLayer;
+using Astrategia.Model.Node.TestWorld;
+using Astrategia.Model.Player;
+using Astrategia.View.Card2D;
+using Astrategia.View.Controls;
+using Astrategia.View.Layer2D.BoardBannerLayer2D;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
+namespace Astrategia.View.Layer2D.BoardGameLayer2D
 {
     public class BoardGameLayer2D : ALayer2D, ICardFocusedLayer, IDomainsLayer
     {

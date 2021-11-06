@@ -1,6 +1,6 @@
-﻿using Metempsychoid.Animation;
-using Metempsychoid.Model.Layer.EntityLayer;
-using Metempsychoid.View.Animation;
+﻿using Astrategia.Animation;
+using Astrategia.Model.Layer.EntityLayer;
+using Astrategia.View.Animation;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.View.Layer2D.EntityLayer2D
+namespace Astrategia.View.Layer2D.EntityLayer2D
 {
     public class T_TeleEntity2D : AEntity2D
     {

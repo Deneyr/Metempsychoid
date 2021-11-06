@@ -1,12 +1,12 @@
-﻿using Metempsychoid.Model.Card;
-using Metempsychoid.Model.Event;
+﻿using Astrategia.Model.Card;
+using Astrategia.Model.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Metempsychoid.Model.Layer.BoardNotifLayer.Behavior
+namespace Astrategia.Model.Layer.BoardNotifLayer.Behavior
 {
     public class SendInternalEventNotifBehavior : ABoardNotifBehavior
     {
