@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metempsychoid", "Metempsychoid\Metempsychoid.csproj", "{8F322B5B-39DF-4B1E-A183-E533E66AECE3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astrategia", "Metempsychoid\Astrategia.csproj", "{8F322B5B-39DF-4B1E-A183-E533E66AECE3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tiler", "Tiler\Tiler.csproj", "{A8230C22-D2DB-42A2-BD66-DC8E25DA42CF}"
 EndProject

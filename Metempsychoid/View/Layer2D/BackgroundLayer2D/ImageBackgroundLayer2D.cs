@@ -33,6 +33,15 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
             this.imageBackground2D.DisplayImage((this.parentLayer as ImageBackgroundLayer).CurrentImageId);
         }
 
+        public override void InitializeSpatialLayer()
+        {
+            IntRect imageCanevas = this.imageBackground2D.Canevas;
+
+            float maxZoom = Math.Max(imageCanevas.Width / this.DefaultViewSize.X, imageCanevas.Height / this.DefaultViewSize.Y);
+
+            this.Zoom = maxZoom;
+        }
+
         private void OnCurrentImageIdChanged(string obj)
         {
             this.PlaySound("slidePassed");

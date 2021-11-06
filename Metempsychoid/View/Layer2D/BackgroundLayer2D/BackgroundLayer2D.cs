@@ -100,8 +100,6 @@ namespace Metempsychoid.View.Layer2D.BackgroundLayer2D
                 string idTexture = Path.GetFileNameWithoutExtension(texturePath);
                 this.nameToTiles.Add(idTexture, new TileBackgoundObject2D(this, factory.GetTextureById(idTexture), idTexture));
             }
-
-            this.ZoomRatio = 3;
         }
 
         public override void FlushEntities()

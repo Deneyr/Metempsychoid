@@ -115,22 +115,22 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             }
         }
 
-        protected override Vector2f DefaultViewSize
-        {
-            set
-            {
-                if (value != this.DefaultViewSize)
-                {
-                    base.DefaultViewSize = value;
+        //protected override Vector2f DefaultViewSize
+        //{
+        //    set
+        //    {
+        //        if (value != this.DefaultViewSize)
+        //        {
+        //            base.DefaultViewSize = value;
 
-                    IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
-                    this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
+        //            IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+        //            this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
 
-                    IntRect effectBehaviorLabelCanvevas = this.effectBehaviorLabel2D.Canevas;
-                    this.effectBehaviorLabel2D.StartingPosition = new Vector2f(-this.DefaultViewSize.X / 2 - effectBehaviorLabelCanvevas.Width, 0);
-                }
-            }
-        }
+        //            IntRect effectBehaviorLabelCanvevas = this.effectBehaviorLabel2D.Canevas;
+        //            this.effectBehaviorLabel2D.StartingPosition = new Vector2f(-this.DefaultViewSize.X / 2 - effectBehaviorLabelCanvevas.Width, 0);
+        //        }
+        //    }
+        //}
 
         public BoardNotifLayer2D(World2D world2D, IObject2DFactory factory, BoardNotifLayer layer) :
             base(world2D, factory, layer)
@@ -315,11 +315,22 @@ namespace Metempsychoid.View.Layer2D.BoardNotifLayer2D
             this.LevelTurnPhase = TurnPhase.VOID;
 
             this.IsRunningBehavior = false;
+        }
 
-            //if (this.world2D.TryGetTarget(out World2D world2D))
-            //{
-            //    this.boardGameLayer2D = world2D.LayersList.First(pElem => pElem is BoardGameLayer2D.BoardGameLayer2D) as BoardGameLayer2D.BoardGameLayer2D;
-            //}
+        public override void InitializeSpatialLayer()
+        {
+            float maxZoom = Math.Max(1920 / this.DefaultViewSize.X, 1080 / this.DefaultViewSize.Y);
+
+            this.Zoom = maxZoom;
+        }
+
+        protected override void OnDefaultViewSizeChanged()
+        {
+            IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+            this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y * this.Zoom / 2 - endTurnButtonCanvevas.Height);
+
+            IntRect effectBehaviorLabelCanvevas = this.effectBehaviorLabel2D.Canevas;
+            this.effectBehaviorLabel2D.StartingPosition = new Vector2f(-this.DefaultViewSize.X * this.Zoom / 2 - effectBehaviorLabelCanvevas.Width, 0);
         }
 
         protected override void OnLevelStateChanged(string obj)

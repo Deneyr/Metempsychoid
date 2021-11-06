@@ -160,6 +160,22 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
         }
 
+        public override void InitializeSpatialLayer()
+        {
+            float maxZoom = Math.Max(1920 / this.DefaultViewSize.X, 1080 / this.DefaultViewSize.Y);
+
+            this.Zoom = maxZoom;
+        }
+
+        protected override void OnDefaultViewSizeChanged()
+        {
+            //IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+            IntRect turnBannerCanevas = this.turnBanner2D.Canevas;
+
+            //this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
+            this.turnBanner2D.Position = new Vector2f(-this.DefaultViewSize.X * this.Zoom / 2 + turnBannerCanevas.Width / 2, -this.DefaultViewSize.Y * this.Zoom / 2 + turnBannerCanevas.Height / 2);
+        }
+
         private void OnTurnCountChanged(int arg1, int arg2)
         {
             if (this.turnBanner2D != null)
@@ -247,22 +263,22 @@ namespace Metempsychoid.View.Layer2D.BoardBannerLayer2D
             }
         }
 
-        protected override Vector2f DefaultViewSize
-        {
-            set
-            {
-                if (value != this.DefaultViewSize)
-                {
-                    base.DefaultViewSize = value;
+        //protected override Vector2f DefaultViewSize
+        //{
+        //    set
+        //    {
+        //        if (value != this.DefaultViewSize)
+        //        {
+        //            base.DefaultViewSize = value;
 
-                    //IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
-                    IntRect turnBannerCanevas = this.turnBanner2D.Canevas;
+        //            //IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+        //            IntRect turnBannerCanevas = this.turnBanner2D.Canevas;
 
-                    //this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
-                    this.turnBanner2D.Position = new Vector2f(- this.DefaultViewSize.X / 2 + turnBannerCanevas.Width / 2, -this.DefaultViewSize.Y / 2 + turnBannerCanevas.Height / 2);
-                }
-            }
-        }
+        //            //this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
+        //            this.turnBanner2D.Position = new Vector2f(- this.DefaultViewSize.X / 2 + turnBannerCanevas.Width / 2, -this.DefaultViewSize.Y / 2 + turnBannerCanevas.Height / 2);
+        //        }
+        //    }
+        //}
 
         protected override AEntity2D AddEntity(AEntity obj)
         {

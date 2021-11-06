@@ -1,5 +1,6 @@
 ﻿using Metempsychoid.Model.Card;
 using Metempsychoid.Model.Event;
+using Metempsychoid.Model.Layer.BackgroundLayer;
 using Metempsychoid.Model.Layer.BoardBannerLayer;
 using Metempsychoid.Model.Layer.BoardGameLayer;
 using Metempsychoid.Model.Layer.BoardNotifLayer;
@@ -36,6 +37,8 @@ namespace Metempsychoid.Model.Node.TestWorld
             this.Opponent = opponent;
 
             this.playerIndex = 0;
+
+            this.BoardBackgroundLayer = world.LoadedLayers["backgroundLayer"] as BackgroundLayer;
 
             this.BoardBannerLayer = world.LoadedLayers["bannerLayer"] as BoardBannerLayer;
             this.BoardBannerLayer.PreInitMaxTurnCount = 1;

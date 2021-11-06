@@ -6,6 +6,7 @@ using Metempsychoid.Model.Layer.BoardNotifLayer;
 using Metempsychoid.Model.Layer.BoardNotifLayer.Behavior;
 using Metempsychoid.Model.Node;
 using Metempsychoid.Model.Node.TestWorld;
+using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -614,6 +615,40 @@ namespace Metempsychoid.Model.Layer.BoardGameLayer
             this.NameToOnBoardCardEntities.Clear();
 
             GalaxyFactory.NameToGalaxyCreators[this.PreInitGalaxyName](this);
+
+            FloatRect galaxyArea = this.GetGalaxyArea();
+            (levelNode as CardBoardLevel).BoardBackgroundLayer.Position = new Vector2f(galaxyArea.Left + galaxyArea.Width / 2f, galaxyArea.Top + galaxyArea.Height / 2f) * (1 / 0.75f);
+            (levelNode as CardBoardLevel).BoardBackgroundLayer.StartingArea = new Vector2f(galaxyArea.Width + 1000, galaxyArea.Height + 1000);
+        }
+
+        protected FloatRect GetGalaxyArea()
+        {
+            FloatRect galaxyArea = new FloatRect(float.MaxValue, float.MaxValue, float.MinValue, float.MinValue);
+            foreach (StarEntity starEntity in this.StarSystem)
+            {
+                if(starEntity.Position.X < galaxyArea.Left)
+                {
+                    galaxyArea.Left = starEntity.Position.X;
+                }
+                if (starEntity.Position.X > galaxyArea.Width)
+                {
+                    galaxyArea.Width = starEntity.Position.X;
+                }
+
+                if (starEntity.Position.Y < galaxyArea.Top)
+                {
+                    galaxyArea.Top = starEntity.Position.Y;
+                }
+                if (starEntity.Position.Y > galaxyArea.Height)
+                {
+                    galaxyArea.Height = starEntity.Position.Y;
+                }
+            }
+
+            galaxyArea.Width -= galaxyArea.Left;
+            galaxyArea.Height -= galaxyArea.Top;
+
+            return galaxyArea;
         }
     }
 }

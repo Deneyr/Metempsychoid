@@ -199,10 +199,10 @@ namespace Metempsychoid.Model.Card
             cardTemplate.CardBehaviors.Add(new SunPassiveBehavior(1));
             this.AddCardTemplateToLibrary(cardTemplate);
 
-            cardTemplate = new CardTemplate("star", "star_title", "star_poem", "star_effect", 0);
+            cardTemplate = new CardTemplate("star", "star_title", "star_poem", "star_effect", 1);
             cardTemplate.Constellation = new Constellation(ConstellationPatternFactory.CreateStarConstellation());
 
-            cardTemplate.CardBehaviors.Add(new StarPassiveBehavior(2, 1));
+            cardTemplate.CardBehaviors.Add(new StarPassiveBehavior(1, 1));
             this.AddCardTemplateToLibrary(cardTemplate);
         }
 

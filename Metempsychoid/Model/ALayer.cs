@@ -85,6 +85,12 @@ namespace Metempsychoid.Model
             }
         }
 
+        public virtual Vector2f? StartingArea
+        {
+            get;
+            set;
+        }
+
         public ALayer()
         {
             this.TypesInChunk = new HashSet<Type>();
@@ -93,6 +99,8 @@ namespace Metempsychoid.Model
 
             this.position = new Vector2f(0, 0);
             this.rotation = 0;
+
+            this.StartingArea = null;
 
             this.ownerLevelNode = null;
 

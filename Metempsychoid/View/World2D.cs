@@ -43,6 +43,8 @@ namespace Metempsychoid.View
 
         private World world;
 
+        private Vector2f currentViewSize;
+
         static World2D()
         {
             TextureManager = new TextureManager();
@@ -121,6 +123,21 @@ namespace Metempsychoid.View
             private set;
         }
 
+        public Vector2f CurrentViewSize
+        {
+            get
+            {
+                return this.currentViewSize;
+            }
+            set
+            {
+                if(this.currentViewSize != value)
+                {
+                    this.currentViewSize = value;
+                }
+            }
+        }
+
         public World2D(MainWindow mainWindow)
         {
             this.LayersDictionary = new Dictionary<ALayer, ALayer2D>();
@@ -130,6 +147,8 @@ namespace Metempsychoid.View
             this.layerSoundsLoader = new LayerSoundsLoader();
 
             this.world = mainWindow.World;
+
+            this.currentViewSize = mainWindow.Window.DefaultView.Size;
 
             this.world.LayerAdded += OnLayerAdded;
             this.world.LayerRemoved += OnLayerRemoved;
@@ -150,6 +169,8 @@ namespace Metempsychoid.View
             //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 
             //sw.Start();
+
+            this.CurrentViewSize = window.DefaultView.Size;
 
             foreach (ALayer2D layer2D in this.LayersList)
             {
@@ -239,6 +260,16 @@ namespace Metempsychoid.View
             {
                 ALayer2D layer2D = this.LayersDictionary[layer];
                 layer2D.InitializeLayer(World2D.MappingObjectModelView[layer.GetType()]);
+            }
+
+            foreach (ALayer2D layer2D in this.LayersList)
+            {
+                layer2D.InitializeViewSizeLayer(this.CurrentViewSize);
+            }
+
+            foreach (ALayer2D layer2D in this.LayersList)
+            {
+                layer2D.InitializeSpatialLayer();
             }
         }
 

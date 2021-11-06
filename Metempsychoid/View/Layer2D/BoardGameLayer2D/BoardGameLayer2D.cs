@@ -331,6 +331,11 @@ namespace Metempsychoid.View.Layer2D.BoardGameLayer2D
             this.domainFocused = null;
         }
 
+        public override void InitializeSpatialLayer()
+        {
+            // Nothing to do.
+        }
+
         protected override AEntity2D AddEntity(AEntity obj)
         {
             AEntity2D entityAdded =  base.AddEntity(obj);

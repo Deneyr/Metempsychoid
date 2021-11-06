@@ -147,6 +147,8 @@ namespace Metempsychoid.View
 
                     this.ClampPosition(this.Position);
 
+                    this.OnDefaultViewSizeChanged();
+
                     foreach (ALayer2D child in this.ChildrenLayer2D)
                     {
                         child.Position = this.Position;
@@ -207,6 +209,8 @@ namespace Metempsychoid.View
                     this.ClampZoom(this.Zoom);
 
                     this.ClampPosition(this.Position);
+
+                    this.OnDefaultViewSizeChanged();
                 }
             }
         }
@@ -233,7 +237,7 @@ namespace Metempsychoid.View
             this.ChildrenLayer2D = new List<ALayer2D>();
 
             this.view = new SFML.Graphics.View();
-            this.defaultViewSize = this.view.Size;
+            this.defaultViewSize = new Vector2f(-1, -1);
 
             this.Position = new Vector2f(0, 0);
             this.Area = new Vector2i(0, 0);
@@ -294,7 +298,7 @@ namespace Metempsychoid.View
 
         public virtual void InitializeLayer(IObject2DFactory factory)
         {
-            this.DefaultViewSize = new Vector2f(0, 0);
+            this.defaultViewSize = new Vector2f(-1, -1);
 
             this.mustUpdateMousePosition = false;
 
@@ -308,6 +312,24 @@ namespace Metempsychoid.View
             }
         }
 
+        public virtual void InitializeViewSizeLayer(Vector2f currentViewSize)
+        {
+            this.DefaultViewSize = currentViewSize;
+        }
+
+        public virtual void InitializeSpatialLayer()
+        {
+            this.Position = this.parentLayer.Position;
+            this.Rotation = this.parentLayer.Rotation;
+
+            if (this.parentLayer.StartingArea is Vector2f startingArea)
+            {
+                float maxZoom = Math.Max(startingArea.X / this.DefaultViewSize.X, startingArea.Y / this.DefaultViewSize.Y);
+
+                this.Zoom = maxZoom;
+            }
+        }
+
         private void OnRotationChanged(float rotation)
         {
             this.Rotation = rotation;
@@ -316,6 +338,11 @@ namespace Metempsychoid.View
         private void OnPositionChanged(Vector2f position)
         {
             this.Position = position;
+        }
+
+        protected virtual void OnDefaultViewSizeChanged()
+        {
+            // To override
         }
 
         protected virtual void OnEntityRemoved(AEntity obj)

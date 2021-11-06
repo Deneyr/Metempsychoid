@@ -153,27 +153,27 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
         }
 
 
-        protected override Vector2f DefaultViewSize
-        {
-            set
-            {
-                if (value != this.DefaultViewSize)
-                {
-                    base.DefaultViewSize = value;
+        //protected override Vector2f DefaultViewSize
+        //{
+        //    set
+        //    {
+        //        if (value != this.DefaultViewSize)
+        //        {
+        //            base.DefaultViewSize = value;
 
-                    //IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
-                    IntRect scoreLabelCanevas = this.scoreLabel.Canevas;
+        //            //IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
+        //            IntRect scoreLabelCanevas = this.scoreLabel.Canevas;
 
-                    //this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
-                    this.scoreLabel.Position = new Vector2f(scoreLabelCanevas.Width / 2 - this.DefaultViewSize.X / 2 + 20, this.OffsetCard * 3/4);
+        //            //this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
+        //            this.scoreLabel.Position = new Vector2f(scoreLabelCanevas.Width / 2 - this.DefaultViewSize.X / 2 + 20, this.OffsetCard * 3/4);
 
-                    foreach (KeyValuePair<AEntity, AEntity2D> pairEntity in this.objectToObject2Ds)
-                    {
-                        pairEntity.Value.Position = new Vector2f(pairEntity.Key.Position.X, pairEntity.Key.Position.Y + this.OffsetCard);
-                    }
-                }
-            }
-        }
+        //            foreach (KeyValuePair<AEntity, AEntity2D> pairEntity in this.objectToObject2Ds)
+        //            {
+        //                pairEntity.Value.Position = new Vector2f(pairEntity.Key.Position.X, pairEntity.Key.Position.Y + this.OffsetCard);
+        //            }
+        //        }
+        //    }
+        //}
 
         protected float OffsetCard
         {
@@ -181,11 +181,11 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
             {
                 if ((this.parentLayer as BoardPlayerLayer).IndexPlayer == 0)
                 {
-                    return this.DefaultViewSize.Y / 2;
+                    return this.DefaultViewSize.Y / 2 * this.Zoom;
                 }
                 else
                 {
-                    return -this.DefaultViewSize.Y / 2;
+                    return -this.DefaultViewSize.Y / 2 * this.Zoom;
                 }
             }
         }
@@ -284,6 +284,27 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
 
                     this.cardsDeck.Add(cardEntity2D);
                 }
+            }
+        }
+
+        public override void InitializeSpatialLayer()
+        {
+            float maxZoom = Math.Max(1920 / this.DefaultViewSize.X, 1080 / this.DefaultViewSize.Y);
+
+            this.Zoom = maxZoom;
+        }
+
+        protected override void OnDefaultViewSizeChanged()
+        {
+            IntRect scoreLabelCanevas = this.scoreLabel.Canevas;
+
+            this.scoreLabel.Position = new Vector2f(scoreLabelCanevas.Width / 2 - this.DefaultViewSize.X * this.Zoom / 2 + 20, this.OffsetCard + Math.Sign(this.OffsetCard) * -135);
+            //this.scoreLabel.Position *= this.Zoom;
+
+            foreach (KeyValuePair<AEntity, AEntity2D> pairEntity in this.objectToObject2Ds)
+            {
+                pairEntity.Value.Position = new Vector2f(pairEntity.Key.Position.X, pairEntity.Key.Position.Y + this.OffsetCard);
+                //pairEntity.Value.Position *= this.Zoom;
             }
         }
 
@@ -639,6 +660,7 @@ namespace Metempsychoid.View.Layer2D.BoardPlayerLayer2D
                     AEntity2D entity2D = this.objectToObject2Ds[obj];
 
                     entity2D.Position = new Vector2f(obj.Position.X, obj.Position.Y + this.OffsetCard);
+                    //entity2D.Position *= this.Zoom;
 
                     //if(this.cardToolTip.CardFocused != null && this.cardToolTip.CardFocused == entity2D)
                     //{
