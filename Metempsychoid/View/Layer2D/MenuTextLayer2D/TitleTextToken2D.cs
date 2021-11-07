@@ -16,7 +16,7 @@ namespace Astrategia.View.Layer2D.MenuTextLayer2D
             this.text2D.Font = AObject2DFactory.GetFontByName("dumbTitle");
 
             this.text2D.FillColor = fillColor;
-            this.text2D.OutlineThickness = 20;
+            this.text2D.OutlineThickness = 0;
             this.text2D.OutlineColor = Color.Black;
 
             this.UpdateCanevas();

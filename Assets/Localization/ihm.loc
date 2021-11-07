@@ -42,8 +42,8 @@
     </paragraphEntry>
     <paragraphEntry>
         <key>end_game_player</key>
-        <paragraph culture="fr"><BannerTitle>Joueur {0}</BannerTitle></paragraph>
-        <paragraph culture="en"><BannerTitle>Player {0}</BannerTitle></paragraph>
+        <paragraph culture="fr"><BannerTitle>{0}</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0}</BannerTitle></paragraph>
     </paragraphEntry>
     <paragraphEntry>
         <key>end_game_points</key>
@@ -77,11 +77,19 @@
         <paragraph culture="en"><BannerTitle>Replay</BannerTitle></paragraph>
     </paragraphEntry>
 
+
+    <paragraphEntry>
+        <key>turn_banner_socket_cards</key>
+        <paragraph culture="fr"><BannerTitle>Encore</BannerTitle><BannerTitle color="200:200:200">{0}</BannerTitle><BannerTitle>carte(s) à poser</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>Still</BannerTitle><BannerTitle color="200:200:200">{0}</BannerTitle><BannerTitle>card(s) to place</BannerTitle></paragraph>
+    </paragraphEntry>
+
     <paragraphEntry>
         <key>turn_banner</key>
         <paragraph culture="fr"><BannerTitle>Tour</BannerTitle><BannerTitle color="200:200:200">{0}</BannerTitle><BannerTitle>sur</BannerTitle><BannerTitle color="200:200:200">{1}</BannerTitle></paragraph>
         <paragraph culture="en"><BannerTitle>Turn</BannerTitle><BannerTitle color="200:200:200">{0}</BannerTitle><BannerTitle>on</BannerTitle><BannerTitle color="200:200:200">{1}</BannerTitle></paragraph>
     </paragraphEntry>
+
 
     <paragraphEntry>
         <key>start_game</key>
@@ -101,13 +109,13 @@
 
     <paragraphEntry>
         <key>score_player_name</key>
-        <paragraph culture="fr"><BannerTitle>Joueur {0} :</BannerTitle></paragraph>
-        <paragraph culture="en"><BannerTitle>Player {0} :</BannerTitle></paragraph>
+        <paragraph culture="fr"><BannerTitle>{0} :</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0} :</BannerTitle></paragraph>
     </paragraphEntry>
     <paragraphEntry>
         <key>score_opponent_name</key>
-        <paragraph culture="fr"><BannerTitle>Joueur {0} :</BannerTitle></paragraph>
-        <paragraph culture="en"><BannerTitle>Player {0} :</BannerTitle></paragraph>
+        <paragraph culture="fr"><BannerTitle>{0} :</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0} :</BannerTitle></paragraph>
     </paragraphEntry>
     <paragraphEntry>
         <key>score_player_content</key>
@@ -132,13 +140,13 @@
     </paragraphEntry>
     <paragraphEntry>
         <key>score_domain_player_label</key>
-        <paragraph culture="fr"><BannerTitle>Joueur {0} :</BannerTitle></paragraph>
-        <paragraph culture="en"><BannerTitle>Player {0} :</BannerTitle></paragraph>
+        <paragraph culture="fr"><BannerTitle>{0} :</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0} :</BannerTitle></paragraph>
     </paragraphEntry>
     <paragraphEntry>
         <key>score_domain_opponent_label</key>
-        <paragraph culture="fr"><BannerTitle>Joueur {0} :</BannerTitle></paragraph>
-        <paragraph culture="en"><BannerTitle>Player {0} :</BannerTitle></paragraph>
+        <paragraph culture="fr"><BannerTitle>{0} :</BannerTitle></paragraph>
+        <paragraph culture="en"><BannerTitle>{0} :</BannerTitle></paragraph>
     </paragraphEntry>
     <paragraphEntry>
         <key>score_domain_player_content</key>

@@ -16,6 +16,8 @@ namespace Astrategia.View.Layer2D.BoardBannerLayer2D
 
         event Action<IDomainsLayer> DomainFocusedChanged;
 
+        event Action<int> NbCardsToPlaceChanged;
+
         CJStarDomain2D DomainFocused
         {
             get;

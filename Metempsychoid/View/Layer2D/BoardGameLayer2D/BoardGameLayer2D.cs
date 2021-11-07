@@ -46,6 +46,7 @@ namespace Astrategia.View.Layer2D.BoardGameLayer2D
         public event Action<CJStarDomain> DomainEvaluated;
         public event Action EndDomainEvaluated;
         public event Action<IDomainsLayer> DomainFocusedChanged;
+        public event Action<int> NbCardsToPlaceChanged;
 
         public List<CardEntity2D> SourceCardEntities2D
         {
@@ -262,6 +263,48 @@ namespace Astrategia.View.Layer2D.BoardGameLayer2D
 
             layer.SourceStarEntitiesSet += OnSourceStarEntitiesSet;
             layer.TargetStarEntitiesSet += OnTargetStarEntitiesSet;
+
+            layer.NbCardsToPlaceChanged += OnNbCardsToPlaceChanged;
+        }
+
+        public override void InitializeLayer(IObject2DFactory factory)
+        {
+            this.maxAwakenedPriority = 0;
+
+            this.cardsOnBoard.Clear();
+            this.domainsOwnedByPlayers.Clear();
+
+            this.linksFocused.Clear();
+
+            this.sourceCardEntities = null;
+            this.sourceStarEntities = null;
+            this.targetCardEntities = null;
+            this.targetStarEntities = null;
+
+            base.InitializeLayer(factory);
+
+            this.LevelTurnPhase = TurnPhase.VOID;
+
+            this.cardPicked = null;
+            this.cardFocused = null;
+            this.domainFocused = null;
+        }
+
+        public override void InitializeSpatialLayer()
+        {
+            // Nothing to do.
+        }
+
+        protected override AEntity2D AddEntity(AEntity obj)
+        {
+            AEntity2D entityAdded =  base.AddEntity(obj);
+
+            if(entityAdded is CardEntity2D)
+            {
+                this.cardsOnBoard.Add(entityAdded as CardEntity2D);
+            }
+
+            return entityAdded;
         }
 
         private void OnSourceStarEntitiesSet(List<StarEntity> obj)
@@ -306,46 +349,6 @@ namespace Astrategia.View.Layer2D.BoardGameLayer2D
                 this.sourceStarEntities = null;
                 this.TargetStarEntities2D = null;
             }
-        }
-
-        public override void InitializeLayer(IObject2DFactory factory)
-        {
-            this.maxAwakenedPriority = 0;
-
-            this.cardsOnBoard.Clear();
-            this.domainsOwnedByPlayers.Clear();
-
-            this.linksFocused.Clear();
-
-            this.sourceCardEntities = null;
-            this.sourceStarEntities = null;
-            this.targetCardEntities = null;
-            this.targetStarEntities = null;
-
-            base.InitializeLayer(factory);
-
-            this.LevelTurnPhase = TurnPhase.VOID;
-
-            this.cardPicked = null;
-            this.cardFocused = null;
-            this.domainFocused = null;
-        }
-
-        public override void InitializeSpatialLayer()
-        {
-            // Nothing to do.
-        }
-
-        protected override AEntity2D AddEntity(AEntity obj)
-        {
-            AEntity2D entityAdded =  base.AddEntity(obj);
-
-            if(entityAdded is CardEntity2D)
-            {
-                this.cardsOnBoard.Add(entityAdded as CardEntity2D);
-            }
-
-            return entityAdded;
         }
 
         protected override void OnEntityRemoved(AEntity obj)
@@ -394,6 +397,11 @@ namespace Astrategia.View.Layer2D.BoardGameLayer2D
             {
                 this.DomainFocused = null;
             }
+        }
+
+        private void OnNbCardsToPlaceChanged(int obj)
+        {
+            this.NbCardsToPlaceChanged?.Invoke(obj);
         }
 
         private void ClearCardFocusedFillLink()
@@ -707,6 +715,8 @@ namespace Astrategia.View.Layer2D.BoardGameLayer2D
 
             (this.parentLayer as BoardGameLayer).SourceStarEntitiesSet -= OnSourceStarEntitiesSet;
             (this.parentLayer as BoardGameLayer).TargetStarEntitiesSet -= OnTargetStarEntitiesSet;
+
+            (this.parentLayer as BoardGameLayer).NbCardsToPlaceChanged -= OnNbCardsToPlaceChanged;
 
             base.Dispose();
         }

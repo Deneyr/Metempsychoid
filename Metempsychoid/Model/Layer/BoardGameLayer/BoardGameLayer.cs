@@ -26,6 +26,8 @@ namespace Astrategia.Model.Layer.BoardGameLayer
 
         private Player.Player playerTurn;
 
+        private int nbCardsToPlace;
+
         public string PreInitGalaxyName
         {
             get;
@@ -62,10 +64,21 @@ namespace Astrategia.Model.Layer.BoardGameLayer
             private set;
         }
 
-        public int NbCardsAbleToBeSocketed
+        public int NbCardsToPlace
         {
-            get;
-            private set;
+            get
+            {
+                return this.nbCardsToPlace;
+            }
+            private set
+            {
+                if(this.nbCardsToPlace != value)
+                {
+                    this.nbCardsToPlace = value;
+
+                    this.NbCardsToPlaceChanged?.Invoke(this.nbCardsToPlace);
+                }
+            }
         }
 
         public Player.Player PlayerTurn
@@ -80,7 +93,7 @@ namespace Astrategia.Model.Layer.BoardGameLayer
                 {
                     this.playerTurn = value;
 
-                    this.NbCardsAbleToBeSocketed = 1;
+                    this.NbCardsToPlace = 1;
                 }
             }
         }
@@ -173,6 +186,8 @@ namespace Astrategia.Model.Layer.BoardGameLayer
 
         public event Action<List<StarEntity>> SourceStarEntitiesSet;
         public event Action<List<StarEntity>> TargetStarEntitiesSet;
+
+        public event Action<int> NbCardsToPlaceChanged;
 
         public BoardGameLayer()
         {
@@ -413,7 +428,7 @@ namespace Astrategia.Model.Layer.BoardGameLayer
         {
             if(this.CardEntityPicked != null)
             {
-                if (isTurnLimited == false || this.NbCardsAbleToBeSocketed > 0)
+                if (isTurnLimited == false || this.NbCardsToPlace > 0)
                 {
                     this.CardEntityPicked.IsFliped = true;
 
@@ -423,7 +438,7 @@ namespace Astrategia.Model.Layer.BoardGameLayer
 
                     if (isTurnLimited)
                     {
-                        this.NbCardsAbleToBeSocketed--;
+                        this.NbCardsToPlace--;
                     }
                 }
             }
@@ -603,6 +618,8 @@ namespace Astrategia.Model.Layer.BoardGameLayer
             this.domainFocused = null;
 
             this.playerTurn = null;
+
+            this.nbCardsToPlace = 0;
 
             this.StarSystem.Clear();
             this.StarLinkSystem.Clear();

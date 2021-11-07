@@ -74,7 +74,7 @@ namespace Astrategia.Model.Layer.BoardGameLayer
 
             if(this.parentLayer.TryGetTarget(out EntityLayer.EntityLayer entityLayer))
             {
-                canSocketOnBoard = (entityLayer as BoardGameLayer).NbCardsAbleToBeSocketed > 0;
+                canSocketOnBoard = (entityLayer as BoardGameLayer).NbCardsToPlace > 0;
             }
 
             return this.IsActive && this.CardSocketed == null && canSocketOnBoard;

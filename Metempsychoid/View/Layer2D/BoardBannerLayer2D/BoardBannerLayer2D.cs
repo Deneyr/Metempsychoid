@@ -29,6 +29,7 @@ namespace Astrategia.View.Layer2D.BoardBannerLayer2D
         private ALayer2D domainLayerFocused;
 
         private TurnBanner2D turnBanner2D;
+        private CardsToPlaceBanner2D cardsToPlaceBanner2D;
 
         private EndLevelBanner2D endLevelBanner2D;
 
@@ -100,6 +101,7 @@ namespace Astrategia.View.Layer2D.BoardBannerLayer2D
             this.hittableEntities2D = new List<AEntity2D>();
 
             this.turnBanner2D = new TurnBanner2D(this);
+            this.cardsToPlaceBanner2D = new CardsToPlaceBanner2D(this);
 
             this.domainToolTip = new DomainToolTip2D(this);
 
@@ -119,6 +121,7 @@ namespace Astrategia.View.Layer2D.BoardBannerLayer2D
             this.scoreDomainLabel2D = new ScoreDomainLabel2D(this, boardBannerLayer.Player, boardBannerLayer.Opponent);
 
             this.turnBanner2D.ResetTurn(boardBannerLayer.MaxTurnCount);
+            this.cardsToPlaceBanner2D.ResetTurn();
 
             this.domainToolTip.HideToolTip();
 
@@ -149,6 +152,8 @@ namespace Astrategia.View.Layer2D.BoardBannerLayer2D
                         domainLayer.EndDomainEvaluated += OnEndDomainsEvaluated;
 
                         domainLayer.DomainFocusedChanged += OnDomainFocusedChanged;
+
+                        domainLayer.NbCardsToPlaceChanged += OnNbCardsToPlaceChanged;
                     }
 
                     IScoreLayer scoreLayer = layer as IScoreLayer;
@@ -171,9 +176,12 @@ namespace Astrategia.View.Layer2D.BoardBannerLayer2D
         {
             //IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
             IntRect turnBannerCanevas = this.turnBanner2D.Canevas;
+            IntRect cardsToPlaceBannerCanevas = this.cardsToPlaceBanner2D.Canevas;
 
             //this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
             this.turnBanner2D.Position = new Vector2f(-this.DefaultViewSize.X * this.Zoom / 2 + turnBannerCanevas.Width / 2, -this.DefaultViewSize.Y * this.Zoom / 2 + turnBannerCanevas.Height / 2);
+
+            this.cardsToPlaceBanner2D.Position = new Vector2f(this.turnBanner2D.Position.X + turnBannerCanevas.Width + cardsToPlaceBannerCanevas.Width / 2, this.turnBanner2D.Position.Y + cardsToPlaceBannerCanevas.Height / 2);
         }
 
         private void OnTurnCountChanged(int arg1, int arg2)
@@ -263,22 +271,10 @@ namespace Astrategia.View.Layer2D.BoardBannerLayer2D
             }
         }
 
-        //protected override Vector2f DefaultViewSize
-        //{
-        //    set
-        //    {
-        //        if (value != this.DefaultViewSize)
-        //        {
-        //            base.DefaultViewSize = value;
-
-        //            //IntRect endTurnButtonCanvevas = this.endTurnButton.Canevas;
-        //            IntRect turnBannerCanevas = this.turnBanner2D.Canevas;
-
-        //            //this.endTurnButton.Position = new Vector2f(-endTurnButtonCanvevas.Width / 2, this.DefaultViewSize.Y / 2 - endTurnButtonCanvevas.Height);
-        //            this.turnBanner2D.Position = new Vector2f(- this.DefaultViewSize.X / 2 + turnBannerCanevas.Width / 2, -this.DefaultViewSize.Y / 2 + turnBannerCanevas.Height / 2);
-        //        }
-        //    }
-        //}
+        private void OnNbCardsToPlaceChanged(int obj)
+        {
+            this.cardsToPlaceBanner2D.UpdateCardsToPlaceCount(obj);
+        }
 
         protected override AEntity2D AddEntity(AEntity obj)
         {
@@ -424,6 +420,7 @@ namespace Astrategia.View.Layer2D.BoardBannerLayer2D
             this.domainToolTip.DrawIn(window, deltaTime);
 
             this.turnBanner2D.DrawIn(window, deltaTime);
+            this.cardsToPlaceBanner2D.DrawIn(window, deltaTime);
 
             this.bannerEntity2D.DrawIn(window, deltaTime);
 
@@ -521,6 +518,8 @@ namespace Astrategia.View.Layer2D.BoardBannerLayer2D
                 domainLayer.EndDomainEvaluated -= OnEndDomainsEvaluated;
 
                 domainLayer.DomainFocusedChanged -= OnDomainFocusedChanged;
+
+                domainLayer.NbCardsToPlaceChanged -= OnNbCardsToPlaceChanged;
             }
 
             if (this.scoreDomainLabel2D != null)
