@@ -1,5 +1,9 @@
-﻿using Astrategia.Model;
+﻿using Astrategia.AI.AICard;
+using Astrategia.AI.AICardBoardLayers;
+using Astrategia.Model;
+using Astrategia.Model.Card;
 using Astrategia.Model.Event;
+using Astrategia.Model.Layer.BoardGameLayer;
 using SFML.System;
 using System;
 using System.Collections.Generic;
@@ -28,10 +32,10 @@ namespace Astrategia.AI
 
             //MappingObjectModelView.Add(typeof(MenuTextLayer), new MenuTextLayer2DFactory());
 
-            //// Layer entity Mapping
+            // Layer entity Mapping
             //MappingObjectModelView.Add(typeof(EntityLayer), new EntityLayer2DFactory());
 
-            //MappingObjectModelView.Add(typeof(BoardGameLayer), new BoardGameLayer2DFactory());
+            MappingObjectModelView.Add(typeof(BoardGameLayer), new AIBoardGameLayerFactory());
 
             //MappingObjectModelView.Add(typeof(BoardPlayerLayer), new BoardPlayerLayer2DFactory());
             //MappingObjectModelView.Add(typeof(MenuBoardPlayerLayer), new MenuBoardPlayerLayer2DFactory());
@@ -42,15 +46,15 @@ namespace Astrategia.AI
             //// Layer foreground mapping
             //MappingObjectModelView.Add(typeof(BoardBannerLayer), new BoardBannerLayer2DFactory());
 
-            //// Star entities
-            //MappingObjectModelView.Add(typeof(StarEntity), new StarEntity2DFactory());
-            //MappingObjectModelView.Add(typeof(StarLinkEntity), new StarLinkEntity2DFactory());
-            //MappingObjectModelView.Add(typeof(CurvedStarLinkEntity), new CurvedStarLinkEntity2DFactory());
+            // Star entities
+            MappingObjectModelView.Add(typeof(StarEntity), new AIStarEntityFactory());
+            MappingObjectModelView.Add(typeof(StarLinkEntity), new AIStarLinkEntityFactory());
+            MappingObjectModelView.Add(typeof(CurvedStarLinkEntity), new AIStarLinkEntityFactory());
 
-            //MappingObjectModelView.Add(typeof(CJStarDomain), new CJStarDomain2DFactory());
+            MappingObjectModelView.Add(typeof(CJStarDomain), new AICJStarDomainFactory());
 
-            //// Card entities
-            //MappingObjectModelView.Add(typeof(CardEntity), new CardEntity2DFactory());
+            // Card entities
+            MappingObjectModelView.Add(typeof(CardEntity), new AICardEntityFactory());
 
             //MappingObjectModelView.Add(typeof(CardEntityDecorator), new CardEntityDecorator2DFactory());
             //MappingObjectModelView.Add(typeof(CardEntityAwakenedDecorator), new CardEntityAwakenedDecorator2DFactory());

@@ -23,6 +23,10 @@ namespace Astrategia.AI
         protected Dictionary<AEntity, AAIEntity> objectToObjectAIs;
         protected Dictionary<AAIEntity, AEntity> objectAIToObjects;
 
+        public Queue<GameEventContainer> pendingGameEvent;
+        public Time gameEventTimer;
+        public Time gameEventPeriod;
+
         public AAILayer(AIWorld world2D, IAIObjectFactory layerFactory, ALayer layer)
             : base(layerFactory)
         {
@@ -34,6 +38,9 @@ namespace Astrategia.AI
             //this.focusedEntity2Ds = new HashSet<IHitRect>();
 
             this.worldAI = new WeakReference<AIWorld>(world2D);
+
+            this.pendingGameEvent = new Queue<GameEventContainer>();
+            this.gameEventPeriod = Time.FromSeconds(2);
 
             this.parentLayer = layer;
             this.parentLayer.EntityAdded += OnEntityAdded;
@@ -47,12 +54,12 @@ namespace Astrategia.AI
             this.parentLayer.LevelStateChanged += OnLevelStateChanged;
         }
 
-        public AAIEntity GetEntity2DFromEntity(AEntity entity)
+        public AAIEntity GetAIEntityFromEntity(AEntity entity)
         {
             return this.objectToObjectAIs[entity];
         }
 
-        public AEntity GetEntityFromEntity2D(AAIEntity entity2D)
+        public AEntity GetEntityFromAIEntity(AAIEntity entity2D)
         {
             return this.objectAIToObjects[entity2D];
         }
@@ -62,6 +69,25 @@ namespace Astrategia.AI
             foreach (AEntity entity in this.parentLayer.Entities)
             {
                 this.AddEntity(entity);
+            }
+
+            this.pendingGameEvent.Clear();
+            this.gameEventTimer = Time.Zero;
+        }
+
+        public override void UpdateAI(Time deltaTime)
+        {
+            if (this.pendingGameEvent.Any())
+            {
+                this.gameEventTimer += deltaTime;
+                if (this.gameEventTimer >= this.gameEventPeriod)
+                {
+                    GameEventContainer gameEventToSend = this.pendingGameEvent.Dequeue();
+
+                    this.SendEventToWorld(gameEventToSend.Type, gameEventToSend.Entity, gameEventToSend.Details);
+
+                    this.gameEventTimer = Time.Zero;
+                }
             }
         }
 
@@ -77,12 +103,13 @@ namespace Astrategia.AI
 
         protected virtual void OnEntityRemoved(AEntity obj)
         {
-            AAIEntity entity2DToRemove = this.objectToObjectAIs[obj];
+            if (this.objectToObjectAIs.TryGetValue(obj, out AAIEntity entity2DToRemove))
+            {
+                this.objectAIToObjects.Remove(entity2DToRemove);
+                this.objectToObjectAIs.Remove(obj);
 
-            this.objectAIToObjects.Remove(entity2DToRemove);
-            this.objectToObjectAIs.Remove(obj);
-
-            entity2DToRemove.Dispose();
+                entity2DToRemove.Dispose();
+            }
         }
 
         protected virtual void OnEntityAdded(AEntity obj)
@@ -109,16 +136,26 @@ namespace Astrategia.AI
 
         protected virtual void OnEntityPropertyChanged(AEntity obj, string propertyName)
         {
+            AAIEntity entityAI;
             switch (propertyName)
             {
                 case "Position":
-                    this.objectToObjectAIs[obj].Position = obj.Position;
+                    if (this.objectToObjectAIs.TryGetValue(obj, out entityAI))
+                    {
+                        entityAI.Position = obj.Position;
+                    }
                     break;
                 case "Rotation":
-                    this.objectToObjectAIs[obj].Rotation = obj.Rotation;
+                    if (this.objectToObjectAIs.TryGetValue(obj, out entityAI))
+                    {
+                        entityAI.Rotation = obj.Rotation;
+                    }
                     break;
                 case "IsActive":
-                    this.objectToObjectAIs[obj].IsActive = obj.IsActive;
+                    if (this.objectToObjectAIs.TryGetValue(obj, out entityAI))
+                    {
+                        entityAI.IsActive = obj.IsActive;
+                    }
                     break;
             }
         }
