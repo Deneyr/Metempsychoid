@@ -76,14 +76,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\AAIEntity.cs" />
-    <Compile Include="AI\AICardBoardLayers\AIBoardGameLayer.cs" />
-    <Compile Include="AI\AICardBoardLayers\AIBoardGameLayerFactory.cs" />
-    <Compile Include="AI\AICardBoardLayers\AICJStarDomain.cs" />
-    <Compile Include="AI\AICardBoardLayers\AICJStarDomainFactory.cs" />
-    <Compile Include="AI\AICardBoardLayers\AIStarEntity.cs" />
-    <Compile Include="AI\AICardBoardLayers\AIStarEntityFactory.cs" />
-    <Compile Include="AI\AICardBoardLayers\AIStarLinkEntity.cs" />
-    <Compile Include="AI\AICardBoardLayers\AIStarLinkEntityFactory.cs" />
+    <Compile Include="AI\AIBoardGameLayer\AIBoardGameLayer.cs" />
+    <Compile Include="AI\AIBoardGameLayer\AIBoardGameLayerFactory.cs" />
+    <Compile Include="AI\AIBoardGameLayer\AICJStarDomain.cs" />
+    <Compile Include="AI\AIBoardGameLayer\AICJStarDomainFactory.cs" />
+    <Compile Include="AI\AIBoardGameLayer\AIStarEntity.cs" />
+    <Compile Include="AI\AIBoardGameLayer\AIStarEntityFactory.cs" />
+    <Compile Include="AI\AIBoardGameLayer\AIStarLinkEntity.cs" />
+    <Compile Include="AI\AIBoardGameLayer\AIStarLinkEntityFactory.cs" />
+    <Compile Include="AI\AIBoardPlayerLayer\AIBoardPlayerLayer.cs" />
+    <Compile Include="AI\AIBoardPlayerLayer\AIBoardPlayerLayerFactory.cs" />
     <Compile Include="AI\AICard\AICardEntity.cs" />
     <Compile Include="AI\AICard\AICardEntityFactory.cs" />
     <Compile Include="AI\AIWorld.cs" />

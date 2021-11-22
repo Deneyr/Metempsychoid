@@ -1,5 +1,5 @@
 ﻿using Astrategia.AI.AICard;
-using Astrategia.AI.AICardBoardLayers;
+using Astrategia.AI.AIBoardGameLayer;
 using Astrategia.Model;
 using Astrategia.Model.Card;
 using Astrategia.Model.Event;
@@ -10,18 +10,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Astrategia.Model.Layer.BoardPlayerLayer;
+using Astrategia.AI.AIBoardPlayerLayer;
 
 namespace Astrategia.AI
 {
     public class AIWorld : IDisposable
     {
-        public static readonly Dictionary<Type, IAIObjectFactory> MappingObjectModelView;
+        public static readonly Dictionary<Type, IAIObjectFactory> MappingObjectModelAI;
 
         private World world;
 
         static AIWorld()
         {
-            MappingObjectModelView = new Dictionary<Type, IAIObjectFactory>();
+            MappingObjectModelAI = new Dictionary<Type, IAIObjectFactory>();
 
             // Layer menu mapping
             //MappingObjectModelView.Add(typeof(CJMenuLayer), new CJMenuLayer2DFactory());
@@ -35,9 +37,9 @@ namespace Astrategia.AI
             // Layer entity Mapping
             //MappingObjectModelView.Add(typeof(EntityLayer), new EntityLayer2DFactory());
 
-            MappingObjectModelView.Add(typeof(BoardGameLayer), new AIBoardGameLayerFactory());
+            MappingObjectModelAI.Add(typeof(BoardGameLayer), new AIBoardGameLayerFactory());
 
-            //MappingObjectModelView.Add(typeof(BoardPlayerLayer), new BoardPlayerLayer2DFactory());
+            MappingObjectModelAI.Add(typeof(BoardPlayerLayer), new AIBoardPlayerLayerFactory());
             //MappingObjectModelView.Add(typeof(MenuBoardPlayerLayer), new MenuBoardPlayerLayer2DFactory());
 
             //MappingObjectModelView.Add(typeof(BoardNotifLayer), new BoardNotifLayer2DFactory());
@@ -47,14 +49,14 @@ namespace Astrategia.AI
             //MappingObjectModelView.Add(typeof(BoardBannerLayer), new BoardBannerLayer2DFactory());
 
             // Star entities
-            MappingObjectModelView.Add(typeof(StarEntity), new AIStarEntityFactory());
-            MappingObjectModelView.Add(typeof(StarLinkEntity), new AIStarLinkEntityFactory());
-            MappingObjectModelView.Add(typeof(CurvedStarLinkEntity), new AIStarLinkEntityFactory());
+            MappingObjectModelAI.Add(typeof(StarEntity), new AIStarEntityFactory());
+            MappingObjectModelAI.Add(typeof(StarLinkEntity), new AIStarLinkEntityFactory());
+            MappingObjectModelAI.Add(typeof(CurvedStarLinkEntity), new AIStarLinkEntityFactory());
 
-            MappingObjectModelView.Add(typeof(CJStarDomain), new AICJStarDomainFactory());
+            MappingObjectModelAI.Add(typeof(CJStarDomain), new AICJStarDomainFactory());
 
             // Card entities
-            MappingObjectModelView.Add(typeof(CardEntity), new AICardEntityFactory());
+            MappingObjectModelAI.Add(typeof(CardEntity), new AICardEntityFactory());
 
             //MappingObjectModelView.Add(typeof(CardEntityDecorator), new CardEntityDecorator2DFactory());
             //MappingObjectModelView.Add(typeof(CardEntityAwakenedDecorator), new CardEntityAwakenedDecorator2DFactory());
@@ -121,7 +123,7 @@ namespace Astrategia.AI
 
         private void OnLayerAdded(ALayer layerToAdd)
         {
-            if (AIWorld.MappingObjectModelView.TryGetValue(layerToAdd.GetType(), out IAIObjectFactory layer2DFactory))
+            if (AIWorld.MappingObjectModelAI.TryGetValue(layerToAdd.GetType(), out IAIObjectFactory layer2DFactory))
             {
                 AAILayer layerAI = layer2DFactory.CreateObjectAI(this, layerToAdd) as AAILayer;
 
@@ -165,7 +167,7 @@ namespace Astrategia.AI
             {
                 if (this.LayersDictionary.TryGetValue(layer, out AAILayer layerAI))
                 {
-                    layerAI.InitializeLayer(AIWorld.MappingObjectModelView[layer.GetType()]);
+                    layerAI.InitializeLayer(AIWorld.MappingObjectModelAI[layer.GetType()]);
                 }
             }
         }

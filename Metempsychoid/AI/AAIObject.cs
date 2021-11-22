@@ -19,6 +19,8 @@ namespace Astrategia.AI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public readonly object objectLock = new object();
+
         public virtual Vector2f Position
         {
             get;

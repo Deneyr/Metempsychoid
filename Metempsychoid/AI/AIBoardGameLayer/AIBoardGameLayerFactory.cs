@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Astrategia.Model;
 using Astrategia.Model.Layer.BoardGameLayer;
 
-namespace Astrategia.AI.AICardBoardLayers
+namespace Astrategia.AI.AIBoardGameLayer
 {
     public class AIBoardGameLayerFactory : AAIObjectFactory
     {

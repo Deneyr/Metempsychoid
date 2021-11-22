@@ -7,7 +7,7 @@ using Astrategia.Model;
 using Astrategia.Model.Layer.BoardGameLayer;
 using SFML.System;
 
-namespace Astrategia.AI.AICardBoardLayers
+namespace Astrategia.AI.AIBoardGameLayer
 {
     public class AIStarLinkEntity : AAIEntity
     {

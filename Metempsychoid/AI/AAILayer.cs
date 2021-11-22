@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Astrategia.Model;
 using Astrategia.Model.Event;
@@ -54,16 +55,6 @@ namespace Astrategia.AI
             this.parentLayer.LevelStateChanged += OnLevelStateChanged;
         }
 
-        public AAIEntity GetAIEntityFromEntity(AEntity entity)
-        {
-            return this.objectToObjectAIs[entity];
-        }
-
-        public AEntity GetEntityFromAIEntity(AAIEntity entity2D)
-        {
-            return this.objectAIToObjects[entity2D];
-        }
-
         public virtual void InitializeLayer(IAIObjectFactory factory)
         {
             foreach (AEntity entity in this.parentLayer.Entities)
@@ -75,53 +66,89 @@ namespace Astrategia.AI
             this.gameEventTimer = Time.Zero;
         }
 
+        public AAIEntity GetAIEntityFromEntity(AEntity entity)
+        {
+            lock (this.objectLock)
+            {
+                return this.objectToObjectAIs[entity];
+            }
+        }
+
+        public AEntity GetEntityFromAIEntity(AAIEntity entity2D)
+        {
+            lock (this.objectLock)
+            {
+                return this.objectAIToObjects[entity2D];
+            }
+        }
+
+        public virtual void SendInfluence(string influence, AAIEntity entityConcernedAI)
+        {
+            // To override
+        }
+
         public override void UpdateAI(Time deltaTime)
         {
-            if (this.pendingGameEvent.Any())
+            lock (this.objectLock)
             {
-                this.gameEventTimer += deltaTime;
-                if (this.gameEventTimer >= this.gameEventPeriod)
+                if (this.pendingGameEvent.Any())
                 {
-                    GameEventContainer gameEventToSend = this.pendingGameEvent.Dequeue();
+                    this.gameEventTimer += deltaTime;
+                    if (this.gameEventTimer >= this.gameEventPeriod)
+                    {
+                        GameEventContainer gameEventToSend = this.pendingGameEvent.Dequeue();
 
-                    this.SendEventToWorld(gameEventToSend.Type, gameEventToSend.Entity, gameEventToSend.Details);
+                        this.SendEventToWorld(gameEventToSend.Type, gameEventToSend.Entity, gameEventToSend.Details);
 
-                    this.gameEventTimer = Time.Zero;
+                        this.gameEventTimer = Time.Zero;
+                    }
                 }
             }
         }
 
         private void OnRotationChanged(float rotation)
         {
-            this.Rotation = rotation;
+            lock (this.objectLock)
+            {
+                this.Rotation = rotation;
+            }
         }
 
         private void OnPositionChanged(Vector2f position)
         {
-            this.Position = position;
+            lock (this.objectLock)
+            {
+                this.Position = position;
+            }
         }
 
         protected virtual void OnEntityRemoved(AEntity obj)
         {
-            if (this.objectToObjectAIs.TryGetValue(obj, out AAIEntity entity2DToRemove))
+            lock (this.objectLock)
             {
-                this.objectAIToObjects.Remove(entity2DToRemove);
-                this.objectToObjectAIs.Remove(obj);
+                if (this.objectToObjectAIs.TryGetValue(obj, out AAIEntity entity2DToRemove))
+                {
+                    this.objectAIToObjects.Remove(entity2DToRemove);
+                    this.objectToObjectAIs.Remove(obj);
 
-                entity2DToRemove.Dispose();
+                    entity2DToRemove.Dispose();
+                }
             }
         }
 
         protected virtual void OnEntityAdded(AEntity obj)
         {
-            this.AddEntity(obj);
+            lock (this.objectLock)
+            {
+                this.AddEntity(obj);
+            }
         }
 
         protected virtual AAIEntity AddEntity(AEntity obj)
         {
             if (this.worldAI.TryGetTarget(out AIWorld worldAI))
             {
-                if (AIWorld.MappingObjectModelView.TryGetValue(obj.GetType(), out IAIObjectFactory objectFactory))
+                if (AIWorld.MappingObjectModelAI.TryGetValue(obj.GetType(), out IAIObjectFactory objectFactory))
                 {
                     AAIEntity objectAI = objectFactory.CreateObjectAI(worldAI, this, obj) as AAIEntity;
 
@@ -137,26 +164,39 @@ namespace Astrategia.AI
         protected virtual void OnEntityPropertyChanged(AEntity obj, string propertyName)
         {
             AAIEntity entityAI;
-            switch (propertyName)
+
+            lock (this.objectLock)
             {
-                case "Position":
-                    if (this.objectToObjectAIs.TryGetValue(obj, out entityAI))
-                    {
-                        entityAI.Position = obj.Position;
-                    }
-                    break;
-                case "Rotation":
-                    if (this.objectToObjectAIs.TryGetValue(obj, out entityAI))
-                    {
-                        entityAI.Rotation = obj.Rotation;
-                    }
-                    break;
-                case "IsActive":
-                    if (this.objectToObjectAIs.TryGetValue(obj, out entityAI))
-                    {
-                        entityAI.IsActive = obj.IsActive;
-                    }
-                    break;
+                switch (propertyName)
+                {
+                    case "Position":
+                        if (this.objectToObjectAIs.TryGetValue(obj, out entityAI))
+                        {
+                            lock (entityAI.objectLock)
+                            {
+                                entityAI.Position = obj.Position;
+                            }
+                        }
+                        break;
+                    case "Rotation":
+                        if (this.objectToObjectAIs.TryGetValue(obj, out entityAI))
+                        {
+                            lock (entityAI.objectLock)
+                            {
+                                entityAI.Rotation = obj.Rotation;
+                            }
+                        }
+                        break;
+                    case "IsActive":
+                        if (this.objectToObjectAIs.TryGetValue(obj, out entityAI))
+                        {
+                            lock (entityAI.objectLock)
+                            {
+                                entityAI.IsActive = obj.IsActive;
+                            }
+                        }
+                        break;
+                }
             }
         }
 
@@ -175,12 +215,15 @@ namespace Astrategia.AI
         
         public virtual void FlushEntities()
         {
-            foreach (IAIObject objectAI in this.objectToObjectAIs.Values)
+            lock (this.objectLock)
             {
-                objectAI.Dispose();
+                foreach (IAIObject objectAI in this.objectToObjectAIs.Values)
+                {
+                    objectAI.Dispose();
+                }
+                this.objectAIToObjects.Clear();
+                this.objectToObjectAIs.Clear();
             }
-            this.objectAIToObjects.Clear();
-            this.objectToObjectAIs.Clear();
         }
 
         public override void Dispose()

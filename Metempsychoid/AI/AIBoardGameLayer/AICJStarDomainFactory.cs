@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Astrategia.Model;
+using Astrategia.Model.Layer.BoardGameLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Astrategia.Model;
-using Astrategia.Model.Layer.BoardGameLayer;
 
-namespace Astrategia.AI.AICardBoardLayers
+namespace Astrategia.AI.AIBoardGameLayer
 {
-    public class AIStarEntityFactory: AAIObjectFactory
+    public class AICJStarDomainFactory : AAIObjectFactory
     {
         public override IAIObject CreateObjectAI(AIWorld worldAI, IObject obj)
         {
@@ -17,11 +17,11 @@ namespace Astrategia.AI.AICardBoardLayers
 
         public override IAIObject CreateObjectAI(AIWorld worldAI, AAILayer layerAI, IObject obj)
         {
-            if (obj is StarEntity)
+            if (obj is CJStarDomain)
             {
-                StarEntity entity = obj as StarEntity;
+                CJStarDomain entity = obj as CJStarDomain;
 
-                return new AIStarEntity(layerAI, this, entity);
+                return new AICJStarDomain(layerAI, this, entity);
             }
 
             return null;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Astrategia.AI.AICardBoardLayers;
+using Astrategia.AI.AIBoardGameLayer;
 using Astrategia.Model;
 using Astrategia.Model.Card;
 using SFML.System;
