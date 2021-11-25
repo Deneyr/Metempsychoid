@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<player>
+  <Name>Joueur	1</Name>
+  <Color>[Color] R(0) G(255) B(0) A(255)</Color>
+  <Deck>
+    <CardName>strength</CardName>
+    <CardName>justice</CardName>
+    <CardName>moon</CardName>
+    <CardName>death</CardName>
+    <CardName>lover</CardName>
+    <CardName>priestess</CardName>
+    <CardName>temperance</CardName>
+    <CardName>cart</CardName>
+    <CardName>devil</CardName>
+    <CardName>fool</CardName>
+    <CardName>hierophant</CardName>
+    <CardName>magician</CardName>
+    <CardName>world</CardName>
+    <CardName>emperor</CardName>
+    <CardName>hangedMan</CardName>
+    <CardName>hermite</CardName>
+    <CardName>empress</CardName>
+    <CardName>wheel</CardName>
+    <CardName>tower</CardName>
+    <CardName>judgement</CardName>
+    <CardName>sun</CardName>
+    <CardName>star</CardName>
+  </Deck>
+</player>

@@ -67,20 +67,20 @@ namespace Astrategia.Model.Node.TestWorld
 
         protected override void InternalUpdateLogic(World world, Time timeElapsed)
         {
-            int indexNextRulePhase = ((int) this.CurrentRulesPhase) + 1;
-
-            if (indexNextRulePhase < 5)
+            if (this.CheckNextRulesPhaseEvent())
             {
-                RulesPhase nextRulePhase = (RulesPhase) indexNextRulePhase;
+                int indexNextRulePhase = ((int)this.CurrentRulesPhase) + 1;
 
-                if (this.CheckNextRulesPhaseEvent())
+                if (indexNextRulePhase < 5)
                 {
+                    RulesPhase nextRulePhase = (RulesPhase)indexNextRulePhase;
+
                     this.CurrentRulesPhase = nextRulePhase;
                 }
-            }
-            else
-            {
-                world.NotifyInternalGameEvent(new InternalGameEvent(InternalEventType.GO_TO_LEVEL, "StartPageLevel"));
+                else
+                {
+                    world.NotifyInternalGameEvent(new InternalGameEvent(InternalEventType.GO_TO_LEVEL, "StartPageLevel"));
+                }
             }
         }
 

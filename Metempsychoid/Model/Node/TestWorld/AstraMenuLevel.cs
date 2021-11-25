@@ -106,6 +106,8 @@ namespace Astrategia.Model.Node.TestWorld
             }
 
             this.InitCardSocketed(world);
+
+            this.BoardGameLayer.SetBehaviorTargetStarEntities(this.BoardGameLayer.StarSystem.Where(pElem => pElem.CardSocketed == null).ToList());
         }
 
         private void InitCardSocketed(World world)
