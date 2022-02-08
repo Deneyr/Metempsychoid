@@ -52,8 +52,16 @@ namespace Astrategia.Model.Layer.BoardNotifLayer.Behavior
                             break;
                     }
 
-                    this.NodeLevel.BoardNotifLayer.NotifyNotifBehaviorPhaseChanged("MoveCardNotifBehavior." + this.State.ToString());
+                    this.NodeLevel.BoardNotifLayer.NotifyNotifBehaviorPhaseChanged(this.StateValue);
                 }
+            }
+        }
+
+        public override string StateValue
+        {
+            get
+            {
+                return "MoveCardNotifBehavior." + this.state.ToString();
             }
         }
 

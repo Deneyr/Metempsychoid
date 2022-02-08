@@ -73,7 +73,7 @@ namespace Astrategia.AI.AIBoardPlayerLayer
                     switch (influence)
                     {
                         case "pickCard":
-                            this.SendEventToWorld(Model.Event.EventType.PICK_CARD, entityConcerned, 0 + ":" + 0);
+                            this.pendingGameEvent.Enqueue(new GameEventContainer(Model.Event.EventType.PICK_CARD, entityConcerned, 0 + ":" + 0));
                             break;
                     }
                 }

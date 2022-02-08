@@ -84,6 +84,9 @@
     <Compile Include="AI\AIBoardGameLayer\AIStarEntityFactory.cs" />
     <Compile Include="AI\AIBoardGameLayer\AIStarLinkEntity.cs" />
     <Compile Include="AI\AIBoardGameLayer\AIStarLinkEntityFactory.cs" />
+    <Compile Include="AI\AIBoardNotifLayer\ActiveCardBehavior.cs" />
+    <Compile Include="AI\AIBoardNotifLayer\AIBoardNotifLayer.cs" />
+    <Compile Include="AI\AIBoardNotifLayer\AIBoardNotifLayerFactory.cs" />
     <Compile Include="AI\AIBoardPlayerLayer\AIBoardPlayerLayer.cs" />
     <Compile Include="AI\AIBoardPlayerLayer\AIBoardPlayerLayerFactory.cs" />
     <Compile Include="AI\AICard\AICardEntity.cs" />

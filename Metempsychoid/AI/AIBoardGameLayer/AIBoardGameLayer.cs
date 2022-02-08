@@ -122,7 +122,7 @@ namespace Astrategia.AI.AIBoardGameLayer
                     switch (influence)
                     {
                         case "socketCard":
-                            this.SendEventToWorld(Model.Event.EventType.SOCKET_CARD, entityConcerned, null);
+                            this.pendingGameEvent.Enqueue(new GameEventContainer(Model.Event.EventType.SOCKET_CARD, entityConcerned, null));
                             break;
                     }
                 }

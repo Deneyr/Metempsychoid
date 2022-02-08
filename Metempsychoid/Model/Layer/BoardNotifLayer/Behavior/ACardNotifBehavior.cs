@@ -25,6 +25,11 @@ namespace Astrategia.Model.Layer.BoardNotifLayer.Behavior
             set;
         }
 
+        public abstract string StateValue
+        {
+            get;
+        }
+
         public override bool IsThereBehaviorLabel
         {
             get

@@ -557,13 +557,13 @@ namespace Astrategia.View.Layer2D.BoardNotifLayer2D
                 this.effectLabel2D.Dispose();
             }
 
-            (this.parentLayer as BoardNotifLayer).CardFocused -= OnCardFocused;
-
             (this.parentLayer as BoardNotifLayer).CardCreated -= OnCardCreated;
             (this.parentLayer as BoardNotifLayer).CardRemoved -= OnCardRemoved;
 
             (this.parentLayer as BoardNotifLayer).CardPicked -= OnCardPicked;
             (this.parentLayer as BoardNotifLayer).CardUnpicked -= OnCardUnpicked;
+
+            (this.parentLayer as BoardNotifLayer).CardFocused -= OnCardFocused;
 
             (this.parentLayer as BoardNotifLayer).CardAwakened -= OnCardAwakened;
 

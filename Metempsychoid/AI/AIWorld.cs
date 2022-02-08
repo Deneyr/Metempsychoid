@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Astrategia.Model.Layer.BoardPlayerLayer;
 using Astrategia.AI.AIBoardPlayerLayer;
+using Astrategia.Model.Layer.BoardNotifLayer;
+using Astrategia.AI.AIBoardNotifLayer;
 
 namespace Astrategia.AI
 {
@@ -42,7 +44,7 @@ namespace Astrategia.AI
             MappingObjectModelAI.Add(typeof(BoardPlayerLayer), new AIBoardPlayerLayerFactory());
             //MappingObjectModelView.Add(typeof(MenuBoardPlayerLayer), new MenuBoardPlayerLayer2DFactory());
 
-            //MappingObjectModelView.Add(typeof(BoardNotifLayer), new BoardNotifLayer2DFactory());
+            MappingObjectModelAI.Add(typeof(BoardNotifLayer), new AIBoardNotifLayerFactory());
             //MappingObjectModelView.Add(typeof(MenuBoardNotifLayer), new MenuBoardNotifLayer2DFactory());
 
             //// Layer foreground mapping
@@ -58,8 +60,8 @@ namespace Astrategia.AI
             // Card entities
             MappingObjectModelAI.Add(typeof(CardEntity), new AICardEntityFactory());
 
-            //MappingObjectModelView.Add(typeof(CardEntityDecorator), new CardEntityDecorator2DFactory());
-            //MappingObjectModelView.Add(typeof(CardEntityAwakenedDecorator), new CardEntityAwakenedDecorator2DFactory());
+            MappingObjectModelAI.Add(typeof(CardEntityDecorator), new AICardEntityFactory());
+            MappingObjectModelAI.Add(typeof(CardEntityAwakenedDecorator), new AICardEntityFactory());
 
             //MappingObjectModelView.Add(typeof(ToolTipEntity), new CardToolTip2DFactory());
 

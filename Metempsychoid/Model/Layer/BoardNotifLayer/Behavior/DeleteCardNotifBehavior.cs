@@ -79,8 +79,16 @@ namespace Astrategia.Model.Layer.BoardNotifLayer.Behavior
                     //        break;
                     //}
 
-                    this.NodeLevel.BoardNotifLayer.NotifyNotifBehaviorPhaseChanged("DeleteCardNotifBehavior." + this.State.ToString());
+                    this.NodeLevel.BoardNotifLayer.NotifyNotifBehaviorPhaseChanged(this.StateValue);
                 }
+            }
+        }
+
+        public override string StateValue
+        {
+            get
+            {
+                return "DeleteCardNotifBehavior." + this.state.ToString();
             }
         }
 
